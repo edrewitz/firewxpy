@@ -47,16 +47,6 @@ from metpy.units import units
 
 mpl.rcParams['font.weight'] = 'bold'
 
-PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
-
-GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
-
-CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
-
-FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
-
-PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
-
 class relative_humidity:
 
     '''
@@ -78,6 +68,7 @@ class relative_humidity:
 
 
     '''
+
 
     def plot_poor_overnight_recovery_relative_humidity_forecast(poor_overnight_recovery_rh_threshold=50, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, ds_short=None, ds_extended=None, ds=None, count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9):
     
@@ -255,6 +246,15 @@ class relative_humidity:
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
         file_path = file_path
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
@@ -1204,6 +1204,15 @@ class relative_humidity:
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
         file_path = file_path
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
@@ -2145,6 +2154,15 @@ class relative_humidity:
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
         file_path = file_path
         cmap = colormaps.relative_humidity_colormap()
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
@@ -3079,6 +3097,15 @@ class relative_humidity:
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
         file_path = file_path
         cmap = colormaps.relative_humidity_change_colormap()
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
@@ -3950,6 +3977,15 @@ class relative_humidity:
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
         file_path = file_path
         cmap = colormaps.low_relative_humidity_colormap()
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
@@ -4865,6 +4901,15 @@ class relative_humidity:
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
         file_path = file_path
         cmap = colormaps.relative_humidity_colormap()
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
@@ -5798,6 +5843,15 @@ class relative_humidity:
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
         file_path = file_path
         cmap = colormaps.relative_humidity_change_colormap()
         props = dict(boxstyle='round', facecolor='wheat', alpha=1)
@@ -6510,7 +6564,7 @@ class temperature:
     7) Minimum Temperature Trend Forecast
 
     '''
-
+    
 
     def plot_extreme_heat_forecast(start_of_warm_season_month=5, end_of_warm_season_month=9, start_of_cool_season_month=10, end_of_cool_season_month=4, temp_scale_warm_start=70, temp_scale_warm_stop=90, temp_scale_cool_start=70, temp_scale_cool_stop=90, temp_scale_step=1, color_table_shrink=0.7, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=10, alpha=0.5, file_path=None, ds_short=None, ds_extended=None, ds=None,count_short=None, count_extended=None, decimate='default', cwa=None, aspect=30, tick=9): 
     
@@ -6696,6 +6750,15 @@ class temperature:
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
         file_path = file_path
         start_of_warm_season_month = start_of_warm_season_month
         end_of_warm_season_month = end_of_warm_season_month
@@ -7727,6 +7790,15 @@ class temperature:
     
         Return: Saves individual images to a folder and creates a GIF from those images.  
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         start_of_warm_season_month = start_of_warm_season_month
         end_of_warm_season_month = end_of_warm_season_month
@@ -8753,6 +8825,15 @@ class temperature:
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
 
         color_table_shrink = color_table_shrink
         title_fontsize = title_fontsize
@@ -9719,6 +9800,15 @@ class temperature:
     
         Return: Saves individual images to a folder and creates a GIF from those images.  
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
         
         start_of_warm_season_month = start_of_warm_season_month
         end_of_warm_season_month = end_of_warm_season_month
@@ -10683,6 +10773,15 @@ class temperature:
     
         Return: Saves individual images to a folder and creates a GIF from those images.  
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
         
         start_of_warm_season_month = start_of_warm_season_month
         end_of_warm_season_month = end_of_warm_season_month
@@ -11636,7 +11735,15 @@ class temperature:
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
-    
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
         decimate = decimate
         state_border_linewidth = state_border_linewidth
         county_border_linewidth = county_border_linewidth
@@ -12452,6 +12559,15 @@ class temperature:
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     
         decimate = decimate
         state_border_linewidth = state_border_linewidth
@@ -13282,6 +13398,16 @@ class hot_dry_and_windy:
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
+
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
 
         pre_greenup_temperature_threshold = pre_greenup_temperature_threshold
         post_greenup_temperature_threshold = post_greenup_temperature_threshold
@@ -14171,7 +14297,15 @@ class hot_dry_and_windy:
     
         Return: Saves individual images to a folder and creates a GIF from those images. 
         '''
-
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
         pre_greenup_temperature_threshold = pre_greenup_temperature_threshold
         post_greenup_temperature_threshold = post_greenup_temperature_threshold
         low_minimum_rh_threshold = low_minimum_rh_threshold
@@ -14873,5 +15007,3 @@ class hot_dry_and_windy:
                     image = imageio.v2.imread(f"Weather Data/NWS Forecasts/{plot_type}/{state}/{reference_system}/STATE/{file}")
                     writer.append_data(image)
             print("GIF Created and saved in f:"+GIF_path)
-            
-        
