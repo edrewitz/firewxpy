@@ -11,17 +11,37 @@ import urllib.request
 import os
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import warnings
-warnings.filterwarnings('ignore')
 
 from cartopy.io.shapereader import Reader
 from cartopy.feature import ShapelyFeature
-from firewxpy.utilities import file_functions
+from utilities import file_functions
 
-#### INFORMATION CLASS ####
-# The information class returns helpful tips for when the user encounters errors
+PSAs = import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
 
+GACC = import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
 
+CWAs = import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", 'black', 'cwa')
+
+FWZs = import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", 'black', 'fwz')
+
+PZs = import_shapefiles(f"NWS Public Zones/z_05mr24.shp", 'black', 'pz')
+
+def get_shapes(file_path):
+
+    try:
+        shape_feature = ShapelyFeature(Reader(file_path).geometries(),
+                                       ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor='black')
+
+        fname = os.path.basename(file_path)
+        print(f"{fname} imported successfully!")
+    
+        return shape_feature
+
+    except Exception as a:
+        error = shape_file_error()
+        print(error)
+
+    
 def shape_file_error():
     error_msg = f"""
     
