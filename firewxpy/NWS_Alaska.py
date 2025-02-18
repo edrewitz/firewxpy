@@ -47,15 +47,15 @@ from metpy.units import units
 
 mpl.rcParams['font.weight'] = 'bold'
 
-PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
+PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
 
-GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
+GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
 
-CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", 'black', 'cwa')
+CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
 
-FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", 'black', 'fwz')
+FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
 
-PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", 'black', 'pz')
+PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
 
 class relative_humidity:
 
