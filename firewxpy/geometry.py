@@ -193,41 +193,20 @@ def import_shapefiles(file_path, line_color, boundary_type):
     if boundary_type == 'cwa':
 
         if os.path.exists(f"NWS CWA Boundaries/w_05mr24.shp"):
-            print("Already Satisfied: CWA Shapefile Exists.")
         else:
-            print("CWA Shapefile needs to be unzipped.")
-
-            print("Unzipping the shapefiles...")
-    
             file_functions.extract_zipped_files(f"NWS CWA Boundaries/w_05mr24.zip", f"NWS CWA Boundaries")
-
-        print("Shapefiles extracted successfully!")
 
     elif boundary_type == 'fwz':
 
         if os.path.exists(f"NWS Fire Weather Zones/fz05mr24.shp"):
-            print("Already Satisfied: FWZ Shapefile Exists.")
         else:
-            print("FWZ Shapefile needs to be unzipped.")
-            
-            print("Unzipping the shapefiles...")
-    
             file_functions.extract_zipped_files(f"NWS Fire Weather Zones/fz05mr24.zip", f"NWS Fire Weather Zones")
-
-        print("Shapefiles extracted successfully!")
 
     elif boundary_type == 'pz':
 
         if os.path.exists(f"NWS Public Zones/z_05mr24.shp"):
-            print("Already Satisfied: FWZ Shapefile Exists.")
         else:
-            print("Public Zones Shapefile needs to be unzipped.")
-
-            print("Unzipping the shapefiles...")
-    
             file_functions.extract_zipped_files(f"NWS Public Zones/z_05mr24.zip", f"NWS Public Zones")
-
-        print("Shapefiles extracted successfully!")
 
     else:
         pass
@@ -235,9 +214,6 @@ def import_shapefiles(file_path, line_color, boundary_type):
     try:
         shape_feature = ShapelyFeature(Reader(file_path).geometries(),
                                        ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor=line_color)
-
-
-        print("Shapefile imported successfully!")
     
         return shape_feature
 
