@@ -65,9 +65,8 @@ def download_shape_files():
     # CWAs
     
     if os.path.exists(cwa_path):
-        print("Already Satisfied: NWS CWA Boundaries folder exists.")
+        pass
     else:
-        print("NWS CWA Boundaries folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
         os.mkdir("NWS CWA Boundaries")
         # Downloads the CWA Shapefiles
@@ -80,14 +79,12 @@ def download_shape_files():
         os.replace('w_05mr24.dbf', f"NWS CWA Boundaries/w_05mr24.dbf")
         os.replace('w_05mr24.prj', f"NWS CWA Boundaries/w_05mr24.prj")
         os.replace('w_05mr24.shx', f"NWS CWA Boundaries/w_05mr24.shx")
-        print("Success!")
 
     # Fire Weather Zones
 
     if os.path.exists(fwz_path):
-        print("Already Satisfied: NWS Fire Weather Zones folder exists.")
+        pass
     else:
-        print("NWS Fire Weather Zones folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
         os.mkdir("NWS Fire Weather Zones")
         # Downloads the FWZ Shapefiles
@@ -100,12 +97,11 @@ def download_shape_files():
         os.replace('fz05mr24.dbf', f"NWS Fire Weather Zones/fz05mr24.dbf")
         os.replace('fz05mr24.prj', f"NWS Fire Weather Zones/fz05mr24.prj")
         os.replace('fz05mr24.shx', f"NWS Fire Weather Zones/fz05mr24.shx")
-        print("Success!")
 
     # Public Zones
 
     if os.path.exists(pz_path):
-        print("Already Satisfied: NWS Public Zones folder exists.")
+        pass
     else:
         print("NWS Public Zones folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
@@ -120,13 +116,11 @@ def download_shape_files():
         os.replace('z_05mr24.dbf', f"NWS Public Zones/z_05mr24.dbf")
         os.replace('z_05mr24.prj', f"NWS Public Zones/z_05mr24.prj")
         os.replace('z_05mr24.shx', f"NWS Public Zones/z_05mr24.shx")
-        print("Success!")
 
     # GACC Boundaries
     if os.path.exists(gacc_path):
-        print("Already Satisfied: GACC Boundaries Shapefiles folder exists.")
+        pass
     else:
-        print("GACC Boundaries Shapefiles folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
         os.mkdir("GACC Boundaries Shapefiles")
         # Downloads files
@@ -143,13 +137,11 @@ def download_shape_files():
         os.replace('National_GACC_Current.prj', f"GACC Boundaries Shapefiles/National_GACC_Current.prj")
         os.replace('National_GACC_Current.shp', f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
         os.replace('National_GACC_Current.shx', f"GACC Boundaries Shapefiles/National_GACC_Current.shx")
-        print("Success!")
 
     # PSA Boundaries
     if os.path.exists(psa_path):
-        print("Already Satisfied: PSA Shapefiles folder exists.")
+        pass
     else:
-        print("PSA Shapefiles folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
         os.mkdir("PSA Shapefiles")
         # Downloads files
@@ -193,34 +185,26 @@ def import_shapefiles(file_path, line_color, boundary_type):
     if boundary_type == 'cwa':
 
         if os.path.exists(f"NWS CWA Boundaries/w_05mr24.shp"):
+            pass
         else:
             file_functions.extract_zipped_files(f"NWS CWA Boundaries/w_05mr24.zip", f"NWS CWA Boundaries")
 
     elif boundary_type == 'fwz':
 
         if os.path.exists(f"NWS Fire Weather Zones/fz05mr24.shp"):
+            pass
         else:
             file_functions.extract_zipped_files(f"NWS Fire Weather Zones/fz05mr24.zip", f"NWS Fire Weather Zones")
 
     elif boundary_type == 'pz':
 
         if os.path.exists(f"NWS Public Zones/z_05mr24.shp"):
+            pass
         else:
             file_functions.extract_zipped_files(f"NWS Public Zones/z_05mr24.zip", f"NWS Public Zones")
 
     else:
         pass
-    
-    try:
-        shape_feature = ShapelyFeature(Reader(file_path).geometries(),
-                                       ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor=line_color)
-    
-        return shape_feature
-
-    except Exception as a:
-        error = shape_file_error()
-        print(error)
-
 
 PSAs = import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
 
