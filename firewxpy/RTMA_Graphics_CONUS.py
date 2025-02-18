@@ -28,16 +28,6 @@ from firewxpy.data_access import RTMA_CONUS
 
 mpl.rcParams['font.weight'] = 'bold'
 
-PSAs = geometry.import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
-
-GACC = geometry.import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
-
-CWAs = geometry.import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", 'black', 'cwa')
-
-FWZs = geometry.import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", 'black', 'fwz')
-
-PZs = geometry.import_shapefiles(f"NWS Public Zones/z_05mr24.shp", 'black', 'pz')
-
 def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, fig_x_length=None, fig_y_length=None, signature_x_position=None, signature_y_position=None, color_table_shrink=1, title_fontsize=12, subplot_title_fontsize=10, signature_fontsize=10, colorbar_fontsize=8, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=2, county_border_linewidth=1, gacc_border_linewidth=2, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', psa_color='black', gacc_color='black', cwa_color='black', fwz_color='black', pz_color='black', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=None, time=None, state='us', gacc_region=None, colorbar_pad=0.02, aspect=30, tick=9):
 
     r'''
@@ -246,6 +236,15 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -766,6 +765,15 @@ def plot_low_and_high_relative_humidity(low_rh_threshold=15, high_rh_threshold=8
     
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -1331,6 +1339,15 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -1874,6 +1891,15 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -2372,6 +2398,15 @@ def plot_temperature_advection(western_bound=None, eastern_bound=None, southern_
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -2875,6 +2910,15 @@ def plot_dew_point_advection(western_bound=None, eastern_bound=None, southern_bo
         Return: Saves individual images to the RTMA subfolder. 
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -3377,6 +3421,15 @@ def plot_relative_humidity_advection(western_bound=None, eastern_bound=None, sou
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -3886,6 +3939,15 @@ def plot_frost_freeze(western_bound=None, eastern_bound=None, southern_bound=Non
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -4379,6 +4441,16 @@ def plot_extreme_heat(temperature_threshold=100, western_bound=None, eastern_bou
         Return: Saves individual images to the RTMA subfolder. 
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
+    
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -4877,6 +4949,15 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -5398,6 +5479,15 @@ def plot_dew_point(western_bound=None, eastern_bound=None, southern_bound=None, 
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -5901,6 +5991,15 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -6422,6 +6521,15 @@ def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_boun
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -6917,6 +7025,15 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
         Return: Saves individual images to the RTMA subfolder. 
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -7433,6 +7550,15 @@ def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None,
         Return: Saves individual images to the RTMA subfolder. 
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -7931,6 +8057,15 @@ def plot_24_hour_wind_speed_comparison(western_bound=None, eastern_bound=None, s
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -8464,6 +8599,15 @@ def plot_wind_speed_and_direction(western_bound=None, eastern_bound=None, southe
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -8996,6 +9140,15 @@ def plot_24_hour_wind_speed_and_direction_comparison(western_bound=None, eastern
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -9616,6 +9769,15 @@ def plot_dry_and_windy_areas(low_rh_threshold=15, high_wind_threshold=25, wester
     
         Return: Saves individual images to the RTMA subfolder.
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -10377,6 +10539,15 @@ def plot_dry_and_gusty_areas(low_rh_threshold=15, high_wind_threshold=25, wester
         Return: Saves individual images to the RTMA subfolder. 
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+    
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
     mapcrs = ccrs.PlateCarree()
     datacrs = ccrs.PlateCarree()
     data = data
@@ -11046,7 +11217,15 @@ def plot_relative_humidity_with_metar_obs(western_bound=None, eastern_bound=None
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
     
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")    
     data = data
     local_time, utc_time = standard.plot_creation_time()
 
@@ -11533,7 +11712,15 @@ def plot_low_relative_humidity_with_metar_obs(low_rh_threshold=15, western_bound
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
     
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")    
     data = data
     local_time, utc_time = standard.plot_creation_time()
 
@@ -12029,7 +12216,15 @@ def plot_wind_speed_with_observed_winds(western_bound=None, eastern_bound=None, 
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
     
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")    
     data = data
     local_time, utc_time = standard.plot_creation_time()
 
@@ -12550,7 +12745,15 @@ def plot_wind_gust_with_observed_winds(western_bound=None, eastern_bound=None, s
         Return: Saves individual images to the RTMA subfolder.
     
     '''
+    PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
     
+    GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+    
+    CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+    
+    FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+    
+    PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")    
     data = data
     local_time, utc_time = standard.plot_creation_time()
 
