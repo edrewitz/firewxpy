@@ -16,16 +16,6 @@ from cartopy.io.shapereader import Reader
 from cartopy.feature import ShapelyFeature
 from utilities import file_functions
 
-PSAs = import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
-
-GACC = import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
-
-CWAs = import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", 'black', 'cwa')
-
-FWZs = import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", 'black', 'fwz')
-
-PZs = import_shapefiles(f"NWS Public Zones/z_05mr24.shp", 'black', 'pz')
-
 def get_shapes(file_path):
 
     try:
@@ -256,5 +246,13 @@ def import_shapefiles(file_path, line_color, boundary_type):
         print(error)
 
 
+PSAs = import_shapefiles(f"PSA Shapefiles/National_PSA_Current.shp", 'black', 'psa')
 
+GACC = import_shapefiles(f"GACC Boundaries Shapefiles/National_GACC_Current.shp", 'black', 'gacc')
+
+CWAs = import_shapefiles(f"NWS CWA Boundaries/w_05mr24.shp", 'black', 'cwa')
+
+FWZs = import_shapefiles(f"NWS Fire Weather Zones/fz05mr24.shp", 'black', 'fwz')
+
+PZs = import_shapefiles(f"NWS Public Zones/z_05mr24.shp", 'black', 'pz')
 
