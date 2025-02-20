@@ -67,5 +67,14 @@ Southern California Geographic Area Coordination Center
 
 **PySolar**: Stafford, B. et. al, PySolar (2007), [https://pysolar.readthedocs.io/en/latest/#contributors] 
 
+**Pandas**: 
+    author       = {The pandas development team},
+    title        = {pandas-dev/pandas: Pandas},
+    publisher    = {Zenodo},
+    version      = {latest},
+    doi          = {10.5281/zenodo.3509134},
+    url          = {https://doi.org/10.5281/zenodo.3509134}
+}
+
 
 
