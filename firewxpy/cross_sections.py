@@ -27,6 +27,7 @@ from firewxpy.calc import scaling, Thermodynamics, unit_conversion
 from firewxpy.utilities import file_functions
 from metpy.units import units
 from firewxpy.data_access import model_data, station_coords
+from metpy.interpolate import cross_section
 
 mpl.rcParams['xtick.labelsize'] = 6
 mpl.rcParams['ytick.labelsize'] = 6
