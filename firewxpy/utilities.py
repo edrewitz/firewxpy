@@ -10,7 +10,8 @@ from datetime import datetime
 
 class file_functions:
 
-    def forecast_cross_sections_graphics_paths(model, style, parameter, reference_system):
+    def forecast_cross_sections_graphics_paths(model, style, parameter, reference_system, start_coords=None, end_coords=None):
+
 
         if os.path.exists(f"Weather Data"):
             print(f"Already Satisfied: f:Weather Data Parent Directory exists.")
@@ -60,8 +61,30 @@ class file_functions:
             os.mkdir(f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}")
             print(f"Built f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter} Branch") 
 
-        path = f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}"
-        path_print = f"f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}"
+        if start_coords != None and end_coords != None:
+            start_lon = start_coords[1]
+            start_lat = start_coords[0]
+            end_lon = end_coords[1]
+            end_lat = end_coords[0]
+
+            slon = str(start_lon)
+            slat = str(start_lat)
+            elon = str(end_lon)
+            elat = str(end_lat)
+
+            if os.path.exists(f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}/{slat}_{slon}_to_{elat}_{elon}"):
+                print(f"Already Satisfied: f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}/{slat}_{slon}_to_{elat}_{elon} exists.")
+            else:
+                os.mkdir(f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}/{slat}_{slon}_to_{elat}_{elon}")
+                print(f"Built f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}/{slat}_{slon}_to_{elat}_{elon} Branch") 
+
+            path = f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}/{slat}_{slon}_to_{elat}_{elon}"
+            path_print = f"f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}/{slat}_{slon}_to_{elat}_{elon}"
+
+        else:
+
+            path = f"Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}"
+            path_print = f"f:Weather Data/Forecast Model Data/{model}/Cross Sections/{style}/{reference_system}/{parameter}"
 
         return path, path_print
 
