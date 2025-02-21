@@ -17,6 +17,7 @@ import firewxpy.dims as dims
 import os
 import time as tim
 import matplotlib.dates as md
+import xarray as xr
 
 from matplotlib.patheffects import withStroke
 from metpy.plots import USCOUNTIES
@@ -306,7 +307,7 @@ class time_cross_sections:
             
             ds = ds.sel(lon=longitude, lat=latitude, method='nearest')
         ds = ds.sel(time=ds['time'][0:29])
-        if model == 'NAM':
+        if model == 'NAM' or model == 'RAP' or model == 'RAP 32':
             ds = ds.sel(lev=ds['lev'][0:21])
         if model == 'GFS0p25':
             ds = ds.sel(lev=ds['lev'][0:13])
@@ -721,7 +722,7 @@ class time_cross_sections:
             ds = ds.sel(lon=longitude, lat=latitude, method='nearest')
         ds = ds.sel(time=ds['time'][0:29])
 
-        if model == 'NAM':
+        if model == 'NAM' or model == 'RAP' or model == 'RAP 32':
             ds = ds.sel(lev=ds['lev'][0:21])
         if model == 'GFS0p25':
             ds = ds.sel(lev=ds['lev'][0:13])
@@ -1154,7 +1155,7 @@ class time_cross_sections:
             ds = ds.sel(lon=longitude, lat=latitude, method='nearest')
         ds = ds.sel(time=ds['time'][0:29])
 
-        if model == 'NAM':
+        if model == 'NAM' or model == 'RAP' or model == 'RAP 32':
             ds = ds.sel(lev=ds['lev'][0:21])
         if model == 'GFS0p25':
             ds = ds.sel(lev=ds['lev'][0:13])
@@ -1596,7 +1597,7 @@ class time_cross_sections:
             ds = ds.sel(lon=longitude, lat=latitude, method='nearest')
         ds = ds.sel(time=ds['time'][0:29])
 
-        if model == 'NAM':
+        if model == 'NAM' or model == 'RAP' or model == 'RAP 32':
             ds = ds.sel(lev=ds['lev'][0:21])
         if model == 'GFS0p25':
             ds = ds.sel(lev=ds['lev'][0:13])
@@ -2024,7 +2025,7 @@ class time_cross_sections:
             ds = ds.sel(lon=longitude, lat=latitude, method='nearest')
         ds = ds.sel(time=ds['time'][0:29])
 
-        if model == 'NAM':
+        if model == 'NAM' or model == 'RAP' or model == 'RAP 32':
             ds = ds.sel(lev=ds['lev'][0:21])
         if model == 'GFS0p25':
             ds = ds.sel(lev=ds['lev'][0:13])
@@ -2431,7 +2432,7 @@ class time_cross_sections:
             ds = ds.sel(lon=longitude, lat=latitude, method='nearest')
         ds = ds.sel(time=ds['time'][0:29])
 
-        if model == 'NAM':
+        if model == 'NAM' or model == 'RAP' or model == 'RAP 32':
             ds = ds.sel(lev=ds['lev'][0:21])
         if model == 'GFS0p25':
             ds = ds.sel(lev=ds['lev'][0:13])
@@ -2850,7 +2851,7 @@ class time_cross_sections:
             ds = ds.sel(lon=longitude, lat=latitude, method='nearest')
         ds = ds.sel(time=ds['time'][0:29])
 
-        if model == 'NAM':
+        if model == 'NAM' or model == 'RAP' or model == 'RAP 32':
             ds = ds.sel(lev=ds['lev'][0:21])
         if model == 'GFS0p25':
             ds = ds.sel(lev=ds['lev'][0:13])
@@ -3307,7 +3308,7 @@ class time_cross_sections:
             ds = ds.sel(lon=longitude, lat=latitude, method='nearest')
         ds = ds.sel(time=ds['time'][0:29])
 
-        if model == 'NAM':
+        if model == 'NAM' or model == 'RAP' or model == 'RAP 32':
             ds = ds.sel(lev=ds['lev'][0:21])
         if model == 'GFS0p25':
             ds = ds.sel(lev=ds['lev'][0:13])
@@ -3486,3 +3487,440 @@ class time_cross_sections:
     
         fig.savefig(f"{path}/{save_name}", bbox_inches='tight')
         print(f"Saved image of cross-section to {path_print}/{save_name}.")
+
+
+class two_point_cross_sections:
+
+    r'''
+    This class hosts functions of forecast cross-sections between two points (lat/lon). 
+
+    '''
+
+    def plot_lower_atmosphere_wind(model, region, starting_point, ending_point, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
+    
+        r'''
+            This function plots a time vs. pressure cross-section forecast for a given point. Paramter: Lower Atmosphere Wind. 
+    
+            Required Arguments:
+    
+            1) model (String) - This is the model the user must select. 
+                                   
+                   Here are the choices: 
+                   1) GFS0p25 - GFS 0.25x0.25 degree
+                   2) NAM - North American Model
+                   3) RAP - RAP for the CONUS
+                   4) RAP 32 - 32km North American RAP
+    
+            2) station_id (String) - The 4-letter airport station identifier. 
+                                     If the user wants to choose a custom point that is not an airport - enter: 'Custom' or 'custom'. 
+
+            3) save_name (String) - The name at which you want to name your graphics file. For example if I was creating a time cross-section for 
+                                    Ontario International Airport in Ontario, California I would name the file "KONT.png" as KONT is the station ID. 
+    
+            Optional Arguments:
+    
+            1) longitude (Float or Integer) - Default = None. The longitude of the point in decimal degrees. 
+            
+            2) latitude (Float or Integer) - Default = None. The latitude of the point in decimal degrees. 
+            
+            3) data (Boolean) - Default = False. This tells the function if the user is downloading the data outside of the function
+                and passing the data in or if the function needs to download the data. A value of False means the data
+                is downloaded inside of the function while a value of True means the user is downloading the data outside
+                of the function and passing it in. For users who intend to make a lot of graphics for a lot of different 
+                things, it is recommended to set this value to True and download the data outside of the function and pass
+                it in so that the amount of data requests on the host servers can be minimized. 
+    
+    
+            4) ds (Array) - Default = None. This is the dataset the user passes in if the user downloads the data outside of the function and passes
+                in the dataset. If the user wishes to download the data inside of the function, this value is None. When downloading data
+                outside of the function and passing in the data, this is for any model that is NOT the 'GEFS0p25 ENS MEAN'. 
+    
+            5) reference_system (String) - Default = 'States Only'. The georgraphical reference system with respect to the borders on the map. If the user
+                                                                     wishes to use a reference system not on this list, please see items 17-23. 
+                
+                Reference Systems: 
+                
+                1) 'States & Counties'
+                2) 'States Only'
+                3) 'GACC Only'
+                4) 'GACC & PSA'
+                5) 'CWA Only'
+                6) 'NWS CWAs & NWS Public Zones'
+                7) 'NWS CWAs & NWS Fire Weather Zones'
+                8) 'NWS CWAs & Counties'
+                9) 'GACC & PSA & NWS Fire Weather Zones'
+                10) 'GACC & PSA & NWS Public Zones'
+                11) 'GACC & PSA & NWS CWA'
+                12) 'GACC & PSA & Counties'
+                13) 'GACC & Counties'
+    
+    
+            6) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+                Default setting is False. Users should change this value to False if they wish to hide state borders. 
+    
+            7) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+                Default setting is False. Users should change this value to False if they wish to hide county borders. 
+    
+            8) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+                Default setting is False. Users should change this value to True if they wish to display GACC borders. 
+    
+            9) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+                Default setting is False. Users should change this value to True if they wish to display PSA borders.
+    
+            10) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+                Default setting is False. Users should change this value to True if they wish to display CWA borders.
+    
+            11) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+                Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
+    
+            12) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+                Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
+    
+            13) state_border_linewidth (Integer or Float) - Linewidth (thickness) of the state borders. Default setting is 1. 
+    
+            14) province_border_linewidth (Integer or Float) - Linewidth (thickness) of the Canadian province borders. Default setting is 1. 
+    
+            15) county_border_linewidth (Integer or Float) - Linewidth (thickness) of the county borders. Default setting is 0.25. 
+    
+            16) gacc_border_linewidth (Integer or Float) - Linewidth (thickness) of the GACC borders. Default setting is 1. 
+    
+            17) psa_border_linewidth (Integer or Float) - Linewidth (thickness) of the PSA borders. Default setting is 0.25. 
+    
+            18) cwa_border_linewidth (Integer or Float) - Linewidth (thickness) of the NWS CWA borders. Default setting is 1. 
+    
+            19) nws_firewx_zones_linewidth (Integer or Float) - Linewidth (thickness) of the NWS FWZ borders. Default setting is 0.25. 
+    
+            20) nws_public_zones_linewidth (Integer or Float) - Linewidth (thickness) of the NWS Public Zone borders. Default setting is 0.25. 
+    
+            21) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+                To change to a dashed line, users should set state_border_linestyle='--'. 
+    
+            22) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+                To change to a dashed line, users should set county_border_linestyle='--'. 
+    
+            23) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+                To change to a dashed line, users should set gacc_border_linestyle='--'. 
+    
+            24) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+                To change to a dashed line, users should set psa_border_linestyle='--'. 
+    
+            25) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+                To change to a dashed line, users should set psa_border_linestyle='--'. 
+    
+            26) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+                To change to a dashed line, users should set psa_border_linestyle='--'. 
+    
+            27) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+                To change to a dashed line, users should set psa_border_linestyle='--'.   
+    
+            Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
+        
+        '''
+        PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
+        
+        GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
+        
+        CWAs = geometry.get_shapes(f"NWS CWA Boundaries/w_05mr24.shp")
+        
+        FWZs = geometry.get_shapes(f"NWS Fire Weather Zones/fz05mr24.shp")
+        
+        PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
+    
+        if reference_system == 'Custom' or reference_system == 'custom':
+            show_state_borders = show_state_borders
+            show_county_borders = show_county_borders
+            show_gacc_borders = show_gacc_borders
+            show_psa_borders = show_psa_borders
+            show_cwa_borders = show_cwa_borders
+            show_nws_firewx_zones = show_nws_firewx_zones
+            show_nws_public_zones = show_nws_public_zones
+    
+            state_border_linewidth = state_border_linewidth
+            county_border_linewidth = county_border_linewidth
+            gacc_border_linewidth = gacc_border_linewidth
+            cwa_border_linewidth = cwa_border_linewidth
+            nws_firewx_zones_linewidth = nws_firewx_zones_linewidth
+            nws_public_zones_linewidth = nws_public_zones_linewidth
+            psa_border_linewidth = psa_border_linewidth
+    
+        if reference_system != 'Custom' and reference_system != 'custom':
+            
+            show_state_borders = False
+            show_county_borders = False
+            show_gacc_borders = False
+            show_psa_borders = False
+            show_cwa_borders = False
+            show_nws_firewx_zones = False
+            show_nws_public_zones = False
+    
+            if reference_system == 'States Only':
+                show_state_borders = True
+                state_border_linewidth=1 
+            if reference_system == 'States & Counties':
+                show_state_borders = True
+                show_county_borders = True
+                state_border_linewidth=1 
+                county_border_linewidth=0.25
+            if reference_system == 'GACC Only':
+                show_gacc_borders = True
+                gacc_border_linewidth=1
+            if reference_system == 'GACC & PSA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                gacc_border_linewidth=1
+                psa_border_linewidth=0.25
+            if reference_system == 'CWA Only':
+                show_cwa_borders = True
+                cwa_border_linewidth=1
+            if reference_system == 'NWS CWAs & NWS Public Zones':
+                show_cwa_borders = True
+                show_nws_public_zones = True
+                cwa_border_linewidth=1
+                nws_public_zones_linewidth=0.25
+            if reference_system == 'NWS CWAs & NWS Fire Weather Zones':
+                show_cwa_borders = True
+                show_nws_firewx_zones = True
+                cwa_border_linewidth=1
+                nws_firewx_zones_linewidth=0.25
+            if reference_system == 'NWS CWAs & Counties':
+                show_cwa_borders = True
+                show_county_borders = True
+                cwa_border_linewidth=1
+                county_border_linewidth=0.25
+            if reference_system == 'GACC & PSA & NWS Fire Weather Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_firewx_zones = True
+                gacc_border_linewidth=1
+                psa_border_linewidth=0.5
+                nws_firewx_zones_linewidth=0.25
+            if reference_system == 'GACC & PSA & NWS Public Zones':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_nws_public_zones = True
+                gacc_border_linewidth=1
+                psa_border_linewidth=0.5
+                nws_public_zones_linewidth=0.25
+            if reference_system == 'GACC & PSA & NWS CWA':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_cwa_borders = True
+                gacc_border_linewidth=1
+                psa_border_linewidth=0.5
+                cwa_border_linewidth=0.25
+            if reference_system == 'GACC & PSA & Counties':
+                show_gacc_borders = True
+                show_psa_borders = True
+                show_county_borders = True
+                gacc_border_linewidth=1
+                psa_border_linewidth=0.5
+                county_border_linewidth=0.25 
+            if reference_system == 'GACC & Counties':
+                show_gacc_borders = True
+                show_county_borders = True
+                gacc_border_linewidth=1
+                county_border_linewidth=0.25 
+
+        start_lon = starting_point[1]
+        start_lat = starting_point[0]
+        end_lon = ending_point[1]
+        end_lat = ending_point[0]
+
+        if region == 'Custom' or region == 'custom':
+
+            if start_lon < end_lon:
+                western_bound = start_lon
+                eastern_bound = end_lon
+            else:
+                eastern_bound = start_lon
+                western_bound = end_lon
+    
+            if start_lat < end_lat:
+                southern_bound = start_lat
+                northern_bound = end_lat
+            else:
+                northern_bound = start_lat
+                southern_bound = end_lat
+
+        if data == False:
+            if model == 'RAP' or model == 'rap' or model == 'Eastern North Pacific RAP' or model == 'eastern north pacific rap':
+                ds = model_data.get_hourly_rap_data_area_forecast(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
+                
+        
+            else:
+                if model == 'RAP 32' or model == 'rap 32':
+                    ds = model_data.get_hourly_rap_data_area_forecast(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
+                else:
+                    ds = model_data.get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
+                
+                
+        if data == True:
+
+            ds = ds
+    
+        ds = ds.squeeze()
+        if model == 'NAM' or model == 'RAP' or model == 'RAP 32':
+            ds = ds.sel(lev=ds['lev'][0:21])
+        if model == 'GFS0p25':
+            ds = ds.sel(lev=ds['lev'][0:13])
+
+        if model == 'GFS0p25' or model == 'RAP 32':
+            ds['lon'] = (ds['lon'] - 360)
+        else:
+            pass
+
+        sfc_pressure = ds['pressfc']/100
+        u = (ds['ugrdprs']) * 2.23694
+        v = (ds['vgrdprs']) * 2.23694
+        gph_500 = (ds['hgtprs'][:, -1, :, :])/10
+    
+        ws = mpcalc.wind_speed(u * units('mph'), v * units('mph'))
+        cross = cross_section(ws, starting_point, ending_point)
+        u_cross = cross_section(u, starting_point, ending_point)
+        v_cross = cross_section(v, starting_point, ending_point)
+        height_cross = cross_section(sfc_pressure, starting_point, ending_point)
+        ws_grid, pressure, index, lon, height = xr.broadcast(cross, cross['lev'], cross['index'], cross['lon'], height_cross) 
+    
+        path, path_print = file_functions.forecast_cross_sections_graphics_paths(model, 'Two Point Cross Section', 'Lower Atmosphere Winds', reference_system)
+
+        for file in os.listdir(f"{path}"):
+            try:
+                os.remove(f"{path}/{file}")
+            except Exception as e:
+                pass
+                
+        print(f"Any old images (if any) in {path_print} have been deleted.")
+
+        stop_loop = len(ds['time']) - 1
+        end_loop = stop_loop + 1
+        time = ds['time']
+        times = time.to_pandas()
+
+        cmap = colormaps.cross_section_wind_speed()
+
+        if stop_loop >= 100:
+            step = 2
+        else:
+            step = 1
+
+        stop = np.nanmax(ws[:,:])
+        end = stop + 1
+        nearest_10 = (round((stop/10),0) * 10) + 10
+        nearest_5 = (round((stop/5),0) * 5) + 10
+
+        min_lon = np.nanmin(cross['lon'])
+        max_lon = np.nanmax(cross['lon'])
+        min_lat = np.nanmin(cross['lat'])
+        max_lat = np.nanmax(cross['lat'])
+
+        wb = min_lon - 6
+        eb = max_lon + 6
+        nb = max_lat + 3
+        sb = min_lat - 3
+
+        start_lon = starting_point[1]
+        start_lat = starting_point[0]
+        end_lon = ending_point[1]
+        end_lat = ending_point[0]
+    
+        if start_lat >= 0:
+            start_lat_symbol = '°N'
+        else:
+            start_lat_symbol = '°S'
+            
+        if end_lat >= 0:
+            end_lat_symbol = '°N'
+        else:
+            end_lat_symbol = '°S'
+    
+        if start_lon <= 180:
+            start_lon_symbol = '°W'
+        else:
+            start_lon_symbol = '°E'
+
+        if end_lon <= 180:
+            end_lon_symbol = '°W'
+        else:
+            end_lon_symbol = '°E'
+
+        if model == 'GFS0p25':
+            decimate = 1
+        else:
+            decimate = 2
+    
+        for i in range(0, end_loop, step):
+    
+            fname = f"Image_{i}.png"
+
+            fig = plt.figure(figsize=(18, 7))
+            gs = gridspec.GridSpec(10, 10)
+            ax1 = fig.add_subplot(gs[0:10, 0:10])
+            ax1.contourf(lon[i, :, :], pressure[i, :, :], ws_grid[i, :, :], cmap=cmap, levels=np.arange(0, end, 1), alpha=0.25)
+            ax1.set_yscale('symlog')
+            ax1.set_yticks(np.arange(1000, 50, -100))
+            ax1.set_yticklabels(np.arange(1000, 50, -100))
+            ax1.set_ylim(1000, 475)
+            ax1.fill_between(lon[i, 0, :], height[i, 0, :], np.nanmax(sfc_pressure), color="black", zorder=10)
+            ax1.barbs(lon[i, ::decimate, ::decimate], pressure[i, ::decimate, ::decimate], u_cross[i, ::decimate, ::decimate], v_cross[i, ::decimate, ::decimate], clip_on=True, zorder=10, color='black', length=5, alpha=0.5)
+            c10 = ax1.contour(lon[i, :, :], pressure[i, :, :], ws_grid[i, :, :], levels=np.arange(0, nearest_10, 10), colors='black', zorder=2, linewidths=1)
+            ax1.clabel(c10, levels=np.arange(0, nearest_10, 10), inline=True, fontsize=8, rightside_up=True)
+            c5 = ax1.contour(lon[i, :, :], pressure[i, :, :], ws_grid[i, :, :], levels=np.arange(5, nearest_5, 10), colors='black', zorder=2, linewidths=1, linestyles='--')
+            ax1.clabel(c5, levels=np.arange(5, nearest_5, 10), inline=True, fontsize=8, rightside_up=True)
+            ax1.text(0.01, -0.08, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax1.transAxes, fontsize=6, fontweight='bold', bbox=props)
+            ax1.text(0.8, -0.08, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax1.transAxes, fontsize=6, fontweight='bold', bbox=props)
+
+            plt.title(f"{model.upper()} LOWER ATMOSPHERIC WIND [MPH]\nSTART: {str(abs(start_lat))}{start_lat_symbol}/{str(abs(start_lon))}{start_lon_symbol} END: {str(abs(end_lat))}{end_lat_symbol}/{str(abs(end_lon))}{end_lon_symbol}\nFORECAST VALID: {times.iloc[i].strftime('%a %d/%H UTC')} | INITIALIZATION: {times.iloc[0].strftime('%a %d/%H UTC')}", fontsize=10, fontweight='bold', loc='left')
+
+            ax2 = fig.add_subplot(gs[0:2, 8:10], projection=ccrs.PlateCarree())
+            ax2.axis("off")
+            ax2.set_extent([wb, eb, sb, nb], ccrs.PlateCarree())
+            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+            ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+            ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+            ax2.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+            if show_rivers == True:
+                ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+            else:
+                pass
+        
+            if show_gacc_borders == True:
+                ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+            else:
+                pass
+            if show_psa_borders == True:
+                ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_county_borders == True:
+                ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_state_borders == True:
+                ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+            else:
+                pass
+            if show_cwa_borders == True:
+                ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_firewx_zones == True:
+                ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+            else:
+                pass
+            if show_nws_public_zones == True:
+                ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+            else:
+                pass    
+
+        
+            ax2.plot(start_lon, start_lat, marker='*', markersize=8, color='k', zorder=15)
+            ax2.plot(end_lon, end_lat, marker='*', markersize=8, color='k', zorder=15)
+            ax2.plot(cross['lon'], cross['lat'], c='k', zorder=10)
+            ax2.contourf(ds['lon'], ds['lat'], gph_500[i, :, :], levels=np.arange(480, 601, 1), cmap=colormaps.gph_colormap(), alpha=0.25, transform=datacrs, extend='both')
+            ax2.text(0.01, 0.01, "Reference System: "+reference_system, transform=ax2.transAxes, fontsize=5, fontweight='bold', bbox=props, zorder=11)
+            ax2.set_title(f"500 MB GPH", fontweight='bold', fontsize=8)
+
+            fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
+            tim.sleep(10)
