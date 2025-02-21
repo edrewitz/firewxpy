@@ -3500,7 +3500,7 @@ class two_point_cross_sections:
     def plot_lower_atmosphere_wind(model, region, starting_point, ending_point, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
     
         r'''
-            This function plots a time vs. pressure cross-section forecast for a given point. Paramter: Lower Atmosphere Wind. 
+            This function plots forecast cross-sections between two points. Paramter: Lower Atmosphere Wind. 
     
             Required Arguments:
     
@@ -3512,19 +3512,23 @@ class two_point_cross_sections:
                    3) RAP - RAP for the CONUS
                    4) RAP 32 - 32km North American RAP
     
-            2) station_id (String) - The 4-letter airport station identifier. 
-                                     If the user wants to choose a custom point that is not an airport - enter: 'Custom' or 'custom'. 
+            2) region (String) - This is the region the user wishes to look at. There are a lot of preset regions. 
+                                 To look at any state use the 2-letter abbreviation for the state in either all capitals
+                                 or all lowercase. For CONUS, use CONUS in all caps or lower case. For a broad view of the
+                                 CONUS, Southern Canada and Northern Mexico use: 'CONUS & South Canada & North Mexico'. For 
+                                 North America use either: NA, na, North America or north america. If the user wishes to use custom
+                                 boundaries, then enter 'Custom' or 'custom'. For Geographic Area Coordination Centers you can use 
+                                 the 4-letter abbreviation in all caps or lower case so for example you would use either 'OSCC' or 
+                                 'oscc' for South Ops. 
 
-            3) save_name (String) - The name at which you want to name your graphics file. For example if I was creating a time cross-section for 
-                                    Ontario International Airport in Ontario, California I would name the file "KONT.png" as KONT is the station ID. 
+            3) starting_point (Tuple) - (lat/lon) in decimal degrees. 
+
+            4) ending_point (Tuple) - (lat/lon) in decimal degrees.
     
             Optional Arguments:
     
-            1) longitude (Float or Integer) - Default = None. The longitude of the point in decimal degrees. 
             
-            2) latitude (Float or Integer) - Default = None. The latitude of the point in decimal degrees. 
-            
-            3) data (Boolean) - Default = False. This tells the function if the user is downloading the data outside of the function
+            1) data (Boolean) - Default = False. This tells the function if the user is downloading the data outside of the function
                 and passing the data in or if the function needs to download the data. A value of False means the data
                 is downloaded inside of the function while a value of True means the user is downloading the data outside
                 of the function and passing it in. For users who intend to make a lot of graphics for a lot of different 
@@ -3532,11 +3536,26 @@ class two_point_cross_sections:
                 it in so that the amount of data requests on the host servers can be minimized. 
     
     
-            4) ds (Array) - Default = None. This is the dataset the user passes in if the user downloads the data outside of the function and passes
+            2) ds (Array) - Default = None. This is the dataset the user passes in if the user downloads the data outside of the function and passes
                 in the dataset. If the user wishes to download the data inside of the function, this value is None. When downloading data
                 outside of the function and passing in the data, this is for any model that is NOT the 'GEFS0p25 ENS MEAN'. 
+
+            3) western_bound (Integer) - The western boundary of the plot. This is only required when the user wishes to make a plot with
+                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
+
+
+            4) eastern_bound (Integer) - The eastern boundary of the plot. This is only required when the user wishes to make a plot with
+                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
+
+
+            5) southern_bound (Integer) - The southern boundary of the plot. This is only required when the user wishes to make a plot with
+                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
+                                         
+
+            6) northern_bound (Integer) - The northern boundary of the plot. This is only required when the user wishes to make a plot with
+                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
     
-            5) reference_system (String) - Default = 'States Only'. The georgraphical reference system with respect to the borders on the map. If the user
+            7) reference_system (String) - Default = 'States Only'. The georgraphical reference system with respect to the borders on the map. If the user
                                                                      wishes to use a reference system not on this list, please see items 17-23. 
                 
                 Reference Systems: 
@@ -3556,65 +3575,65 @@ class two_point_cross_sections:
                 13) 'GACC & Counties'
     
     
-            6) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
+            8) show_state_borders (Boolean) - If set to True, state borders will display. If set to False, state borders will not display. 
                 Default setting is False. Users should change this value to False if they wish to hide state borders. 
     
-            7) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
+            9) show_county_borders (Boolean) - If set to True, county borders will display. If set to False, county borders will not display. 
                 Default setting is False. Users should change this value to False if they wish to hide county borders. 
     
-            8) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
+            10) show_gacc_borders (Boolean) - If set to True, GACC (Geographic Area Coordination Center) borders will display. If set to False, GACC borders will not display. 
                 Default setting is False. Users should change this value to True if they wish to display GACC borders. 
     
-            9) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
+            11) show_psa_borders (Boolean) - If set to True, PSA (Predictive Services Area) borders will display. If set to False, PSA borders will not display. 
                 Default setting is False. Users should change this value to True if they wish to display PSA borders.
     
-            10) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
+            12) show_cwa_borders (Boolean) - If set to True, CWA borders will display. If set to False, CWA borders will not display. 
                 Default setting is False. Users should change this value to True if they wish to display CWA borders.
     
-            11) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
+            13) show_nws_firewx_zones (Boolean) - If set to True, NWS FWZ borders will display. If set to False, NWS FWZ borders will not display. 
                 Default setting is False. Users should change this value to True if they wish to display NWS FWZ borders.
     
-            12) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
+            14) show_nws_public_zones (Boolean) - If set to True, NWS Public Zone borders will display. If set to False, NWS Public Zone borders will not display. 
                 Default setting is False. Users should change this value to True if they wish to display NWS Public Zone borders.
     
-            13) state_border_linewidth (Integer or Float) - Linewidth (thickness) of the state borders. Default setting is 1. 
+            15) state_border_linewidth (Integer or Float) - Linewidth (thickness) of the state borders. Default setting is 1. 
     
-            14) province_border_linewidth (Integer or Float) - Linewidth (thickness) of the Canadian province borders. Default setting is 1. 
+            16) province_border_linewidth (Integer or Float) - Linewidth (thickness) of the Canadian province borders. Default setting is 1. 
     
-            15) county_border_linewidth (Integer or Float) - Linewidth (thickness) of the county borders. Default setting is 0.25. 
+            17) county_border_linewidth (Integer or Float) - Linewidth (thickness) of the county borders. Default setting is 0.25. 
     
-            16) gacc_border_linewidth (Integer or Float) - Linewidth (thickness) of the GACC borders. Default setting is 1. 
+            18) gacc_border_linewidth (Integer or Float) - Linewidth (thickness) of the GACC borders. Default setting is 1. 
     
-            17) psa_border_linewidth (Integer or Float) - Linewidth (thickness) of the PSA borders. Default setting is 0.25. 
+            19) psa_border_linewidth (Integer or Float) - Linewidth (thickness) of the PSA borders. Default setting is 0.25. 
     
-            18) cwa_border_linewidth (Integer or Float) - Linewidth (thickness) of the NWS CWA borders. Default setting is 1. 
+            20) cwa_border_linewidth (Integer or Float) - Linewidth (thickness) of the NWS CWA borders. Default setting is 1. 
     
-            19) nws_firewx_zones_linewidth (Integer or Float) - Linewidth (thickness) of the NWS FWZ borders. Default setting is 0.25. 
+            21) nws_firewx_zones_linewidth (Integer or Float) - Linewidth (thickness) of the NWS FWZ borders. Default setting is 0.25. 
     
-            20) nws_public_zones_linewidth (Integer or Float) - Linewidth (thickness) of the NWS Public Zone borders. Default setting is 0.25. 
+            22) nws_public_zones_linewidth (Integer or Float) - Linewidth (thickness) of the NWS Public Zone borders. Default setting is 0.25. 
     
-            21) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
+            23) state_border_linestyle (String) - Linestyle of the state borders. Default is a solid line. 
                 To change to a dashed line, users should set state_border_linestyle='--'. 
     
-            22) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
+            24) county_border_linestyle (String) - Linestyle of the county borders. Default is a solid line. 
                 To change to a dashed line, users should set county_border_linestyle='--'. 
     
-            23) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
+            25) gacc_border_linestyle (String) - Linestyle of the GACC borders. Default is a solid line. 
                 To change to a dashed line, users should set gacc_border_linestyle='--'. 
     
-            24) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
+            26) psa_border_linestyle (String) - Linestyle of the PSA borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'. 
     
-            25) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
+            27) cwa_border_linestyle (String) - Linestyle of the CWA borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'. 
     
-            26) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
+            28) nws_firewx_zones_linestyle (String) - Linestyle of the NWS FWZ borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'. 
     
-            27) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
+            29) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
                 To change to a dashed line, users should set psa_border_linestyle='--'.   
     
-            Returns: A graphic showing a time vs. pressure cross section for a point saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Time Cross Section/{reference_system}/{parameters}/{save_name}
+            Returns: A set of graphic showing forecast cross-sections between two points saved to path: f:Weather Data/Forecast Model Data/{model}/Cross Sections/Two Point Cross Section/{reference_system}/{parameters}/
         
         '''
         PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
@@ -3925,3 +3944,4 @@ class two_point_cross_sections:
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
             tim.sleep(10)
+
