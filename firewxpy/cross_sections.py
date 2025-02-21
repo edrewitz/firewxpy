@@ -3521,9 +3521,9 @@ class two_point_cross_sections:
                                  the 4-letter abbreviation in all caps or lower case so for example you would use either 'OSCC' or 
                                  'oscc' for South Ops. 
 
-            3) starting_point (Tuple) - (lat/lon) in decimal degrees. 
+            3) starting_point (Tuple) - (lat,lon) in decimal degrees. 
 
-            4) ending_point (Tuple) - (lat/lon) in decimal degrees.
+            4) ending_point (Tuple) - (lat,lon) in decimal degrees.
     
             Optional Arguments:
     
