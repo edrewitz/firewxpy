@@ -490,6 +490,7 @@ class model_data:
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
                                     sys.exit()
+
             
         else:
 
@@ -976,10 +977,25 @@ class model_data:
         return ds
 
 
-    def get_hourly_rap_data_area_forecast(model, region, western_bound, eastern_bound, southern_bound, northern_bound):
+    def get_hourly_rap_data_area_forecast(model, region, western_bound, eastern_bound, southern_bound, northern_bound, two_point_cross_section=False):
+
+        r'''
+        This function retrieves the latest dataset for the hourly RAP model from the NOAA/NCEP/NOMADS server. 
+
+        Required Arguments:
+
+        1) model (String) - 
+
+        '''
     
         local_time, utc_time = standard.plot_creation_time()
         yesterday = utc_time - timedelta(hours=24)
+
+        if region == 'Custom' or region == 'custom' and two_point_cross_section == True:
+            western_bound = western_bound - 1
+            eastern_bound = eastern_bound + 1
+            southern_bound = southern_bound - 1
+            northern_bound = northern_bound + 1                    
     
         western_bound, eastern_bound, southern_bound, northern_bound = coords_for_forecast_model_data(region, western_bound, eastern_bound, southern_bound, northern_bound)
         
