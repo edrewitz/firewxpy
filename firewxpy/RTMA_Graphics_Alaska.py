@@ -11517,3 +11517,4 @@ def plot_hot_dry_and_gusty_areas(pre_greenup_temperature_threshold=65, post_gree
     path, gif_path = file_functions.check_file_paths_alaska(state, cwa, fname, reference_system)
     file_functions.update_images(fig, path, gif_path, fname)
 
+
