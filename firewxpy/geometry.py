@@ -103,6 +103,7 @@ def download_shape_files():
     if os.path.exists(pz_path):
         pass
     else:
+        print("NWS Public Zones folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
         os.mkdir("NWS Public Zones")
         # Downloads files
