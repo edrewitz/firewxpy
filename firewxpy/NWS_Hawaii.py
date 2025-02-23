@@ -12610,4 +12610,5 @@ class temperature:
     
         path, gif_path = file_functions.check_file_paths_alaska(state, island, 'NWS Max T Trend', reference_system)
         file_functions.update_images(figs, path, gif_path, 'NWS Max T Trend')    
-            
+
+
