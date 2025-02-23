@@ -7665,3 +7665,4 @@ class precipitation:
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
+
