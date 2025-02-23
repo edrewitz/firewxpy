@@ -16106,4 +16106,3 @@ class dry_and_windy:
                     image = imageio.v2.imread(f"Weather Data/NWS Forecasts/{plot_type}/{gacc_region}/{reference_system}/{file}")
                     writer.append_data(image)
             print("GIF Created and saved in f:"+GIF_path)
-            
