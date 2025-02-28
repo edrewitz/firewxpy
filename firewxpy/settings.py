@@ -1997,7 +1997,7 @@ def get_state_data_and_coords(state, plot_category, gridspec, plot_type=None):
     title_fontsize = 8
     subplot_title_fontsize=7
 
-    if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+    if state == 'CONUS' or state == 'conus':
         western_bound = -126
         eastern_bound = -66
         southern_bound = 24
