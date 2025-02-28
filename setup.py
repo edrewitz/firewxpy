@@ -6,7 +6,7 @@ if sys.version_info[0] < 3:
 
 setup(
     name = "firewxpy",
-    version = "1.4.5.1",
+    version = "1.4.6",
     packages = find_packages(),
     install_requires=[
         "matplotlib>=3.7",
@@ -18,7 +18,6 @@ setup(
         "siphon>=0.10.0",
         "xarray>=2023.1.0",
         "pysolar>=0.11",
-        "pygrib>=2.1.4",
         "cfgrib>=0.9.10.4",
         "cartopy>=0.21.0",
          "imageio>=2.34.0",
