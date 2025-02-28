@@ -10,6 +10,8 @@
 ##### IMPORTS NEEDED PYTHON MODULES #######
 
 import pandas as pd
+import warnings
+warnings.filterwarnings('ignore')
 
 from dateutil import tz
 from datetime import datetime, timedelta
