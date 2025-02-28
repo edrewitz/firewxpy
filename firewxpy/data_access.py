@@ -14,7 +14,6 @@ Depending on the data source, the data will be downloaded either from an FTP ser
 '''
 
 ##### IMPORTS NEEDED PYTHON MODULES #######
-import pygrib
 import xarray as xr
 import metpy
 import metpy.calc as mpcalc
@@ -33,7 +32,6 @@ import firewxpy.standard as standard
 import warnings
 warnings.filterwarnings('ignore')
 
-from ftplib import FTP
 from siphon.catalog import TDSCatalog
 from metpy.cbook import get_test_data
 from io import StringIO
@@ -46,200 +44,6 @@ try:
     from datetime import datetime, timedelta, UTC
 except Exception as e:
     from datetime import datetime, timedelta
-
-class info:
-
-    r'''
-
-    This class hosts all the functions that are used if an error message is needed to be returned. 
-    Each error message function returns detailed instructions to the user so they do not need to look for the proper syntax for a parameter or a directory. 
-
-    '''
-
-    def directory_name_error():
-        error_msg = f"""
-    
-        WARNING: USER ENTERED AN INVALID DIRECTORY NAME
-    
-        HERE IS THE URL FOR THE NOAA/NWS FTP SERVER WEBSITE: https://tgftp.nws.noaa.gov/
-    
-        HERE IS THE LIST OF VALID DIRECTORY NAMES ***NOTE USER STILL NEEDS TO ENTER THE LAST PORTION OF THE DIRECTORY NAME***
-        
-        AN EXAMPLE OF THE LAST PORTION OF A DIRECTORY NAME IS AS FOLLOWS: /VP.001-003/
-    
-        FULL DIRECTORY NAME LIST:
-    
-        ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
-        CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
-        CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
-        CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
-        CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
-        CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
-        EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
-        GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
-        HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
-        MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
-        NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
-        NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
-        NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
-        NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
-        NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
-        OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
-        PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
-        PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
-        PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
-        SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
-        SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
-        SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
-        SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
-        UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
-        
-        """
-        print(error_msg)
-    
-    def directory_list():
-        dir_list = f"""
-        
-        FULL DIRECTORY NAME LIST:
-            
-        ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
-        CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
-        CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
-        CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
-        CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
-        CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
-        EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
-        GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
-        HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
-        MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
-        NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
-        NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
-        NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
-        NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
-        NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
-        OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
-        PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
-        PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
-        PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
-        SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
-        SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
-        SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
-        SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
-        UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
-        
-        """
-        print(dir_list)
-    
-    
-    def parameter_name_error():
-        error_msg = f"""
-    
-        WARNING - THIS ERROR COULD BE ATTRIBUTED TO EITHER OF THE FOLLOWING:
-
-        1) USER ENTERED AN INVALID PARAMETER NAME
-
-        2) USER SCHEDULED THE SCRIPT TO RUN BETWEEN THE 17TH AND 47TH MINUTE OF THE HOUR
-    
-        FOR THE FULL LIST OF PARAMETER NAMES VISIT THE FOLLOWING LINK:
-    
-        https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-    
-        """
-        print(error_msg)
-    
-    
-    def parameter_list():
-        param_list = f"""
-    
-        FOR THE FULL LIST OF PARAMETERS, PLEASE VISIT THE FOLLOWING LINK:
-    
-        https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-    
-        """
-        print(param_list)
-    
-    def invalid_element():
-        error_msg = f"""
-    
-        WARNING: USER ENTERED INVALID SYNTAX FOR THE FORECAST PARAMETER.
-    
-        VISIT THIS LINK FOR THE FULL LIST OF ALL FORECAST PARAMETERS IN THE PROPER SYNTAX
-    
-        https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/NDFD/NWS/CONUS/CONDUIT/Best.html
-    
-        """
-        print(error_msg)
-
-    def syntax_error():
-        error_msg = f"""
-    
-        WARNING: DATA COULD NOT BE RETRIEVED. 
-    
-        THIS IS DUE TO A LIKELY SYNTAX ERROR. 
-    
-        THIS IS MOST LIKELY DUE TO THE PARAMETER BEING DEFINED WITH INCORRECT SYNTAX
-    
-        FOR THE FULL OPENDAP LIST OF PARAMETERS FOR REAL TIME MESOSCALE ANALYSIS DATA VISIT
-    
-        https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
-    
-        """
-    
-        print(error_msg)
-
-
-    def invalid_parameter_NOMADS_RTMA_Alaska():
-        error_msg = f"""
-
-        WARNING: USER ENTERED AN INVALID PARAMETER NAME
-
-        HERE IS THE LIST OF VALID PARAMETER NAMES FOR ALASKA RTMA DATA
-
-        Variables:
-            (total of 13)
-             
-            ceilceil
-            ** cloud ceiling ceiling [m]
-             
-            dpt2m
-            ** 2 m above ground dew point temperature [k]
-             
-            gust10m
-            ** 10 m above ground wind speed (gust) [m/s]
-             
-            hgtsfc
-            ** surface geopotential height [gpm]
-             
-            pressfc
-            ** surface pressure [pa]
-             
-            spfh2m
-            ** 2 m above ground specific humidity [kg/kg]
-             
-            tcdcclm
-            ** entire atmosphere (considered as a single layer) total cloud cover [%]
-             
-            tmp2m
-            ** 2 m above ground temperature [k]
-             
-            ugrd10m
-            ** 10 m above ground u-component of wind [m/s]
-             
-            vgrd10m
-            ** 10 m above ground v-component of wind [m/s]
-             
-            vissfc
-            ** surface visibility [m]
-             
-            wdir10m
-            ** 10 m above ground wind direction (from which blowing) [degtrue]
-             
-            wind10m
-            ** 10 m above ground wind speed [m/s]
-
-        """
-        print(error_msg)
-
 
 class model_data:
 
@@ -3684,7 +3488,7 @@ class NDFD_CONUS_Hawaii:
 
     '''
 
-    def download_NDFD_grids(directory_name, parameter):
+    def get_ndfd_grids(directory_name, parameter):
 
         r'''
 
@@ -3713,219 +3517,98 @@ class NDFD_CONUS_Hawaii:
     
         directory_name = directory_name
         parameter = parameter
+
+        if os.path.exists(f"NWS Data"):
+            pass
+        else:
+            os.mkdir(f"NWS Data")
+
+        for file in os.listdir(f"NWS Data"):
+            try:
+                os.remove(f"NWS Data"/{file})
+            except Exception as e:
+                pass
+
+        if parameter == 'ds.maxrh.bin':
+            short_term_fname = 'ds.maxrh_short.bin'
+            extended_fname = 'ds.maxrh_extended.bin'
     
+        if parameter == 'ds.minrh.bin':
+            short_term_fname = 'ds.minrh_short.bin'
+            extended_fname = 'ds.minrh_extended.bin'
+    
+        if parameter == 'ds.maxt.bin':
+            short_term_fname = 'ds.maxt_short.bin'
+            extended_fname = 'ds.maxt_extended.bin'
+    
+        if parameter == 'ds.mint.bin':
+            short_term_fname = 'ds.mint_short.bin'
+            extended_fname = 'ds.mint_extended.bin'
+
+        if os.path.exists(short_term_fname):
+            os.remove(short_term_fname)
+            urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
+            os.rename(parameter, short_term_fname)
+        else:
+            urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
+            os.rename(parameter, short_term_fname)
+        
+        if os.path.exists(extended_fname):
+            os.remove(extended_fname)
+            urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
+            os.rename(parameter, extended_fname)
+        else:
+            urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
+            os.rename(parameter, extended_fname)
+
+        os.replace(short_term_fname, f"NWS Data/{short_term_fname}")
+        os.replace(extended_fname, f"NWS Data/{extended_fname}")
+
+        short_path = f"NWS Data/{short_term_fname}"
+        extended_path = f"NWS Data/{extended_fname}"
+
         try:
-    
-            if parameter == 'ds.maxrh.bin':
-                short_term_fname = 'ds.maxrh_short.bin'
-                extended_fname = 'ds.maxrh_extended.bin'
-        
-            if parameter == 'ds.minrh.bin':
-                short_term_fname = 'ds.minrh_short.bin'
-                extended_fname = 'ds.minrh_extended.bin'
-        
-            if parameter == 'ds.maxt.bin':
-                short_term_fname = 'ds.maxt_short.bin'
-                extended_fname = 'ds.maxt_extended.bin'
-        
-            if parameter == 'ds.mint.bin':
-                short_term_fname = 'ds.mint_short.bin'
-                extended_fname = 'ds.mint_extended.bin'
-    
-            if os.path.exists(short_term_fname):
-                os.remove(short_term_fname)
-                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
-                os.rename(parameter, short_term_fname)
-            else:
-                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
-                os.rename(parameter, short_term_fname)
-            
-            if os.path.exists(extended_fname):
-                os.remove(extended_fname)
-                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
-                os.rename(parameter, extended_fname)
-            else:
-                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
-                os.rename(parameter, extended_fname)
-    
-            with open(parameter, 'wb') as myfile, open(short_term_fname, 'rb') as file1, open(extended_fname, 'rb') as file2:
-                myfile.write(file1.read())
-                myfile.write(file2.read())
-    
-            grbs_short = pygrib.open(short_term_fname)
-            grbs_short.seek(0)
-            count_short = 0
-            for grb in grbs_short:
-                count_short = count_short + 1
-    
-            grbs = pygrib.open(parameter)
-            grbs.seek(0)
-            count = 0
-            for grb in grbs:
-                count = count + 1
-            count_extended = count - count_short
-            ds = xr.load_dataset(parameter, engine='cfgrib')
-            ds = ds.metpy.parse_cf()            
-            
-            print("Retrieved NDFD grids.")
-            
-        except Exception as a:
-    
-            standard.idle()
-    
-            print("Trying again to download data...")
-    
-            if parameter == 'ds.maxrh.bin':
-                short_term_fname = 'ds.maxrh_short.bin'
-                extended_fname = 'ds.maxrh_extended.bin'
-        
-            if parameter == 'ds.minrh.bin':
-                short_term_fname = 'ds.minrh_short.bin'
-                extended_fname = 'ds.minrh_extended.bin'
-        
-            if parameter == 'ds.maxt.bin':
-                short_term_fname = 'ds.maxt_short.bin'
-                extended_fname = 'ds.maxt_extended.bin'
-        
-            if parameter == 'ds.mint.bin':
-                short_term_fname = 'ds.mint_short.bin'
-                extended_fname = 'ds.mint_extended.bin'
-    
-            if os.path.exists(short_term_fname):
-                os.remove(short_term_fname)
-                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
-                os.rename(parameter, short_term_fname)
-            else:
-                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
-                os.rename(parameter, short_term_fname)
-            
-            if os.path.exists(extended_fname):
-                os.remove(extended_fname)
-                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
-                os.rename(parameter, extended_fname)
-            else:
-                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
-                os.rename(parameter, extended_fname)
-    
-            with open(parameter, 'wb') as myfile, open(short_term_fname, 'rb') as file1, open(extended_fname, 'rb') as file2:
-                myfile.write(file1.read())
-                myfile.write(file2.read())
+            os.remove(parameter)
+        except Exception as e:
+            pass
 
-
-            grbs_short = pygrib.open(short_term_fname)
-            grbs_short.seek(0)
-            count_short = 0
-            for grb in grbs_short:
-                count_short = count_short + 1
-
-            grbs = pygrib.open(parameter)
-            grbs.seek(0)
-            count = 0
-            for grb in grbs:
-                count = count + 1
-            count_extended = count - count_short
-            ds = xr.load_dataset(parameter, engine='cfgrib')
-            ds = ds.metpy.parse_cf()            
-            
-            print("Retrieved NDFD grids.")
-
-    
-        return grbs, ds, count_short, count_extended
-
-
-    def download_short_term_NDFD_grids(directory_name, parameter):
-
-        r'''
-
-        This function retrieves the latest NWS Forecast (NDFD) files from the NWS FTP Server. 
-
-        Scripts that download files from the CONUS directory are recommended to be run between the 48th and 15th 
-        minute to avoid the script idiling. The reason is because the files in the CONUS directory update between the 15th
-        and 48th minute of the hour (and downloading them during that time makes them extremely hard to work with!!). Due
-        to this, if there is an issue with the data, the program will automatically idle until the 48th minute and resume and try again to download the latest data. 
-
-        Data Source: NOAA/NWS/NDFD (tgftp.nws.noaa.gov)
-
-        Required Arguments: 1) The name of the directory (see FireWxPy documentation for directory paths)
-
-                            2) The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
-
-        Returns: 1) The files holding the forecast data in a GRIB2 format. 
-
-                 2) An xarray data-array of the same forecast data. 
-
-                 3) The count of the number of files in the short-term forecast period. 
-
-                 4) The count of the number of files in the extended forecast period. 
-
-        '''
-    
-        directory_name = directory_name
-        parameter = parameter
-    
+        ds1= xr.load_dataset(short_path, engine='cfgrib')
         try:
-    
-            ds = get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
-    
-            print("Downloaded data successfully!")
-        except Exception as a:
-    
-            standard.idle()
-    
-            print("Trying again to download data...")
-    
-            ds = get_NWS_NDFD_short_term_grid_data(directory_name, parameter)
-    
-            print("Downloaded data successfully!")
-    
-        return ds
+            if ds1['time'][1] == True:
+                ds1 = ds1.isel(time=1)
+            else:
+                ds1 = ds1.isel(time=0)
+        except Exception as e:
+            try:
+                ds1 = ds1.isel(time=0)
+            except Exception as e:
+                ds1 = ds1
+        ds2 = xr.load_dataset(extended_path, engine='cfgrib')
 
-    def download_extended_NDFD_grids(directory_name, parameter):
-
-        r'''
-
-        This function retrieves the latest NWS Forecast (NDFD) files from the NWS FTP Server. 
-
-        Scripts that download files from the CONUS directory are recommended to be run between the 48th and 15th 
-        minute to avoid the script idiling. The reason is because the files in the CONUS directory update between the 15th
-        and 48th minute of the hour (and downloading them during that time makes them extremely hard to work with!!). Due
-        to this, if there is an issue with the data, the program will automatically idle until the 48th minute and resume and try again to download the latest data. 
-
-        Data Source: NOAA/NWS/NDFD (tgftp.nws.noaa.gov)
-
-        Required Arguments: 1) The name of the directory (see FireWxPy documentation for directory paths)
-
-                            2) The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
-
-        Returns: 1) The files holding the forecast data in a GRIB2 format. 
-
-                 2) An xarray data-array of the same forecast data. 
-
-                 3) The count of the number of files in the short-term forecast period. 
-
-                 4) The count of the number of files in the extended forecast period. 
-
-        '''
-    
-        directory_name = directory_name
-        parameter = parameter
-    
         try:
+            if ds2['time'][1] == True:
+                    ds2 = ds2.isel(time=1)
+            else:
+                ds2 = ds2.isel(time=0)  
+        except Exception as e:
+            try:
+                ds2 = ds2.isel(time=0)
+            except Exception as e:
+                ds2 = ds2
+            
+        ds1 = ds1.metpy.parse_cf()
+        ds2 = ds2.metpy.parse_cf()    
+
+        for item in os.listdir(f"NWS Data"):
+            if item.endswith(".idx"):
+                os.remove(f"NWS Data/{item}")
+            
+        print("Retrieved NDFD grids.")
     
-            ds = get_NWS_NDFD_extended_grid_data(directory_name, parameter)
+        return ds1, ds2
     
-            print("Downloaded data successfully!")
-        except Exception as a:
-    
-            standard.idle()
-    
-            print("Trying again to download data...")
-    
-            ds = get_NWS_NDFD_extended_grid_data(directory_name, parameter)
-    
-            print("Downloaded data successfully!")
-    
-        return ds
+
+
 
 class NDFD_Alaska:
 
@@ -4074,593 +3757,6 @@ class NDFD_Alaska:
         return ds_short, ds_extended
 
 
-    def get_NWS_NDFD_7_Day_grid_data(parameter):
-        
-        '''
-                 This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
-                 This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
-        
-                 Inputs:
-
-                    1) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-                                            Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-                                            https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-        
-                Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
-                         This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
-                 
-        '''
-    
-        ###################################################
-        # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
-        ###################################################
-    
-        ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
-        ftp = FTP('tgftp.nws.noaa.gov')
-        ftp.login()
-
-        directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-    
-        ### SEARCHES FOR THE CORRECT DIRECTORY ###
-        try:
-            dirName_short = directory_name + 'VP.001-003/'
-            param = parameter
-            files = ftp.cwd(dirName_short)
-    
-            ### SEARCHES FOR THE CORRECT PARAMETER ###
-            try:
-                ################################
-                # DOWNLOADS THE NWS NDFD GRIDS #
-                ################################
-                
-                with open(param, 'wb') as fp:
-                    ftp.retrbinary('RETR ' + param, fp.write)
-    
-                dirName_extended = directory_name + 'VP.004-007/'
-                param = parameter
-                files = ftp.cwd(dirName_extended)
-    
-                with open(param, 'ab') as fp:
-                    ftp.retrbinary('RETR ' + param, fp.write)
-                
-                ftp.close()
-    
-                
-                #########################
-                # DATA ARRAYS PARAMETER #
-                #########################
-                ds = xr.load_dataset(param, engine='cfgrib')
-                ds = ds.metpy.parse_cf()
-                return ds
-    
-            ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
-    
-            except Exception as a:
-                param_error = info.parameter_name_error()
-                return param_error
-    
-        ### ERROR MESSAGE WHEN THERE IS AN INVALID DIRECTORY NAME ###
-            
-        except Exception as e:
-            dir_error = info.directory_name_error()
-            return dir_error
-
-
-    def get_NWS_NDFD_short_term_grid_data(directory_name, parameter):
-        
-        '''
-                 This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
-                 This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
-        
-                 Inputs:
-                     1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
-                                                  The directory determines the domain the forecast data is valid for. 
-                                                  Here is the full directory list: 
-                                                                            ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
-                                                                            CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
-                                                                            CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
-                                                                            CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
-                                                                            CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
-                                                                            CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
-                                                                            EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
-                                                                            GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
-                                                                            HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
-                                                                            MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
-                                                                            NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
-                                                                            NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
-                                                                            NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
-                                                                            NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
-                                                                            NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
-                                                                            OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
-                                                                            PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
-                                                                            PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
-                                                                            PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
-                                                                            SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
-                                                                            SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
-                                                                            SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
-                                                                            SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
-                                                                            UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
-        
-        
-                    2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-                                            Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-                                            https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-        
-                Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
-                         This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
-                 
-        '''
-    
-        ###################################################
-        # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
-        ###################################################
-    
-        ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
-        ftp = FTP('tgftp.nws.noaa.gov')
-        ftp.login()
-    
-        ### SEARCHES FOR THE CORRECT DIRECTORY ###
-        
-        dirName = directory_name + 'VP.001-003/'
-        param = parameter
-        files = ftp.cwd(dirName)
-
-        ### SEARCHES FOR THE CORRECT PARAMETER ###
-
-        ################################
-        # DOWNLOADS THE NWS NDFD GRIDS #
-        ################################
-        
-        with open(param, 'wb') as fp:
-            ftp.retrbinary('RETR ' + param, fp.write)
-            
-        ftp.close()
-        ds = xr.load_dataset(param, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
-        ds = ds.metpy.parse_cf()
-        return ds
-
-    
-    def get_NWS_NDFD_extended_grid_data(directory_name, parameter):
-        
-        '''
-                 This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
-                 This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
-        
-                 Inputs:
-                     1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
-                                                  The directory determines the domain the forecast data is valid for. 
-                                                  Here is the full directory list: 
-                                                                            ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
-                                                                            CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
-                                                                            CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
-                                                                            CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
-                                                                            CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
-                                                                            CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
-                                                                            EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
-                                                                            GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
-                                                                            HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
-                                                                            MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
-                                                                            NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
-                                                                            NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
-                                                                            NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
-                                                                            NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
-                                                                            NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
-                                                                            OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
-                                                                            PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
-                                                                            PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
-                                                                            PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
-                                                                            SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
-                                                                            SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
-                                                                            SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
-                                                                            SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
-                                                                            UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
-        
-        
-                    2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-                                            Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-                                            https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-        
-                Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
-                         This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
-                 
-        '''
-    
-        ###################################################
-        # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
-        ###################################################
-    
-        ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
-        ftp = FTP('tgftp.nws.noaa.gov')
-        ftp.login()
-    
-        ### SEARCHES FOR THE CORRECT DIRECTORY ###
-        dirName = directory_name + 'VP.004-007/'
-        param = parameter
-        files = ftp.cwd(dirName)
-
-        ### SEARCHES FOR THE CORRECT PARAMETER ###
-        ################################
-        # DOWNLOADS THE NWS NDFD GRIDS #
-        ################################
-        
-        with open(param, 'wb') as fp:
-            ftp.retrbinary('RETR ' + param, fp.write)
-
-        ftp.close()
-        ds = xr.load_dataset(param, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
-        ds = ds.metpy.parse_cf()
-        return ds
-
-def get_NWS_NDFD_7_Day_grid_data(directory_name, parameter):
-    
-    '''
-             This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
-             This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
-    
-             Inputs:
-                 1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
-                                              The directory determines the domain the forecast data is valid for. 
-                                              Here is the full directory list: 
-                                                                        ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
-                                                                        CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
-                                                                        CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
-                                                                        CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
-                                                                        CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
-                                                                        CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
-                                                                        EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
-                                                                        GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
-                                                                        HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
-                                                                        MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
-                                                                        NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
-                                                                        NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
-                                                                        NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
-                                                                        NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
-                                                                        NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
-                                                                        OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
-                                                                        PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
-                                                                        PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
-                                                                        PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
-                                                                        SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
-                                                                        SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
-                                                                        SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
-                                                                        SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
-                                                                        UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
-    
-    
-                2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-                                        Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-                                        https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-    
-            Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
-                     This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
-             
-    '''
-
-    ###################################################
-    # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
-    ###################################################
-
-    ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
-    try:
-        ftp = FTP('tgftp.nws.noaa.gov')
-        ftp.login()
-    
-        ### SEARCHES FOR THE CORRECT DIRECTORY ###
-        dirName_short = directory_name + 'VP.001-003/'
-        param = parameter
-        files = ftp.cwd(dirName_short)
-    
-        ### SEARCHES FOR THE CORRECT PARAMETER ###
-    
-        ################################
-        # DOWNLOADS THE NWS NDFD GRIDS #
-        ################################
-        
-        with open(param, 'wb') as fp:
-            ftp.retrbinary('RETR ' + param, fp.write)
-
-        grbs_short = pygrib.open(param)
-        grbs_short.seek(0)
-        count_short = 0
-        for grb in grbs_short:
-            count_short = count_short + 1
-
-        dirName_extended = directory_name + 'VP.004-007/'
-        param = parameter
-        files = ftp.cwd(dirName_extended)
-
-        with open(param, 'ab') as fp:
-            ftp.retrbinary('RETR ' + param, fp.write)
-        
-        ftp.close()
-
-        #########################
-        # DATA ARRAYS PARAMETER #
-        #########################
-        grbs = pygrib.open(param)
-        grbs.seek(0)
-        count = 0
-        for grb in grbs:
-            count = count + 1
-        count_extended = count - count_short
-        ds = xr.load_dataset(param, engine='cfgrib')
-        ds = ds.metpy.parse_cf()
-        
-    except Exception as e:
-        count_short = get_short_and_extended_grids(directory_name, param)
-
-        grbs = pygrib.open(param)
-        grbs.seek(0)
-        count = 0
-        for grb in grbs:
-            count = count + 1
-        count_extended = count - count_short
-        ds = xr.load_dataset(param, engine='cfgrib')
-        ds = ds.metpy.parse_cf()
-
-    print("Data retrieved successfully!")
-        
-    return grbs, ds, count_short, count_extended
-
-
-def get_short_and_extended_grids(directory_name, parameter):
-    
-    '''
-             This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
-             This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
-    
-             Inputs:
-
-                1) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-                                        Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-                                        https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-    
-            Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
-                     This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
-             
-    '''
-
-    ###################################################
-    # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
-    ###################################################
-
-    parameter = parameter
-
-    directory_name = directory_name
-
-    try:
-        short_term_fname, extended_fname = get_NWS_NDFD_7_Day_grid_data_backup(directory_name, parameter)
-        with open(parameter, 'wb') as myfile, open(short_term_fname, 'rb') as file1, open(extended_fname, 'rb') as file2:
-            myfile.write(file1.read())
-            myfile.write(file2.read())
-
-        grbs = pygrib.open(short_term_fname)
-        grbs.seek(0)
-        count_short = 0
-        for grb in grbs:
-            count_short = count_short + 1
-        return count_short
-    except Exception as e:
-        print("Unable to connect to server. Please try again later.")
-
-
-
-def get_NWS_NDFD_7_Day_grid_data_backup(directory_name, parameter):
-
-    parameter = parameter
-
-    if parameter == 'ds.maxrh.bin':
-        short_term_fname = 'ds.maxrh_short.bin'
-        extended_fname = 'ds.maxrh_extended.bin'
-
-    if parameter == 'ds.minrh.bin':
-        short_term_fname = 'ds.minrh_short.bin'
-        extended_fname = 'ds.minrh_extended.bin'
-
-    if parameter == 'ds.maxt.bin':
-        short_term_fname = 'ds.maxt_short.bin'
-        extended_fname = 'ds.maxt_extended.bin'
-
-    if parameter == 'ds.mint.bin':
-        short_term_fname = 'ds.mint_short.bin'
-        extended_fname = 'ds.mint_extended.bin'
-
-    if parameter == 'ds.critfireo.bin':
-        short_term_fname = 'ds.critfireo_short.bin'
-        extended_fname = 'ds.critfireo_extended.bin'
-
-    if parameter == 'ds.dryfireo.bin':
-        short_term_fname = 'ds.dryfireo_short.bin'
-        extended_fname = 'ds.dryfireo_extended.bin'
-
-    if os.path.exists(short_term_fname):
-        os.remove(short_term_fname)
-        urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
-        os.rename(parameter, short_term_fname)
-    else:
-        urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
-        os.rename(parameter, short_term_fname)
-    
-    if os.path.exists(extended_fname):
-        os.remove(extended_fname)
-        urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
-        os.rename(parameter, extended_fname)
-    else:
-        urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
-        os.rename(parameter, extended_fname)
-
-    return short_term_fname, extended_fname
-
-
-def get_NWS_NDFD_short_term_grid_data(directory_name, parameter):
-    
-    '''
-             This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
-             This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
-    
-             Inputs:
-                 1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
-                                              The directory determines the domain the forecast data is valid for. 
-                                              Here is the full directory list: 
-                                                                        ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
-                                                                        CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
-                                                                        CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
-                                                                        CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
-                                                                        CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
-                                                                        CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
-                                                                        EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
-                                                                        GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
-                                                                        HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
-                                                                        MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
-                                                                        NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
-                                                                        NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
-                                                                        NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
-                                                                        NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
-                                                                        NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
-                                                                        OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
-                                                                        PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
-                                                                        PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
-                                                                        PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
-                                                                        SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
-                                                                        SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
-                                                                        SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
-                                                                        SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
-                                                                        UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
-    
-    
-                2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-                                        Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-                                        https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-    
-            Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
-                     This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
-             
-    '''
-
-    ###################################################
-    # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
-    ###################################################
-
-    ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
-    ftp = FTP('tgftp.nws.noaa.gov')
-    ftp.login()
-
-    ### SEARCHES FOR THE CORRECT DIRECTORY ###
-    try:
-        dirName = directory_name + 'VP.001-003/'
-        param = parameter
-        files = ftp.cwd(dirName)
-
-        ### SEARCHES FOR THE CORRECT PARAMETER ###
-        try:
-            ################################
-            # DOWNLOADS THE NWS NDFD GRIDS #
-            ################################
-            
-            with open(param, 'wb') as fp:
-                ftp.retrbinary('RETR ' + param, fp.write)
-                
-            ftp.close()
-            ds = xr.load_dataset(param, engine='cfgrib')
-            ds = ds.metpy.parse_cf()
-            return ds
-
-        ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
-
-        except Exception as a:
-            param_error = info.parameter_name_error()
-            return param_error
-
-    ### ERROR MESSAGE WHEN THERE IS AN INVALID DIRECTORY NAME ###
-        
-    except Exception as e:
-        dir_error = info.directory_name_error()
-        return dir_error
-
-def get_NWS_NDFD_extended_grid_data(directory_name, parameter):
-    
-    '''
-             This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
-             This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
-    
-             Inputs:
-                 1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
-                                              The directory determines the domain the forecast data is valid for. 
-                                              Here is the full directory list: 
-                                                                        ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
-                                                                        CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
-                                                                        CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
-                                                                        CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
-                                                                        CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
-                                                                        CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
-                                                                        EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
-                                                                        GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
-                                                                        HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
-                                                                        MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
-                                                                        NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
-                                                                        NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
-                                                                        NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
-                                                                        NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
-                                                                        NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
-                                                                        OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
-                                                                        PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
-                                                                        PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
-                                                                        PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
-                                                                        SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
-                                                                        SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
-                                                                        SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
-                                                                        SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
-                                                                        UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
-    
-    
-                2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-                                        Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-                                        https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-    
-            Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
-                     This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
-             
-    '''
-
-    ###################################################
-    # NDFD GRIDS DATA ACCESS FROM NOAA/NWS FTP SERVER #
-    ###################################################
-
-    ### CONNECTS TO THE NOAA/NWS FTP SERVER ###
-    ftp = FTP('tgftp.nws.noaa.gov')
-    ftp.login()
-
-    ### SEARCHES FOR THE CORRECT DIRECTORY ###
-    try:
-        dirName = directory_name + 'VP.004-007/'
-        param = parameter
-        files = ftp.cwd(dirName)
-
-        ### SEARCHES FOR THE CORRECT PARAMETER ###
-        try:
-            ################################
-            # DOWNLOADS THE NWS NDFD GRIDS #
-            ################################
-            
-            with open(param, 'wb') as fp:
-                ftp.retrbinary('RETR ' + param, fp.write)
-
-            ftp.close()
-            ds = xr.load_dataset(param, engine='cfgrib')
-            ds = ds.metpy.parse_cf()
-            return ds
-
-        ### ERROR MESSAGE WHEN THERE IS AN INVALID PARAMETER NAME ###
-
-        except Exception as a:
-            param_error = info.parameter_name_error()
-            return param_error
-
-    ### ERROR MESSAGE WHEN THERE IS AN INVALID DIRECTORY NAME ###
-        
-    except Exception as e:
-        dir_error = info.directory_name_error()
-        return dir_error
 
 def get_rtma_24_hour_comparison_data_with_u_and_v_components(current_time):
 
