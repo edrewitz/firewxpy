@@ -1,4 +1,5 @@
 
+
 import math
 import numpy as np
 import warnings
@@ -542,9 +543,21 @@ class scaling:
         
     def get_NDFD_decimation_by_state(state):
 
+        r'''
+        This function returns the proper decimation factor for each state
+
+        Required Arguments:
+
+        1) state (String) - The 2-letter identifier for the state in either all caps or lower case. 
+        For the entire United States use eiter CONUS or conus
+
+        Return: The decimation factor to apply to the data
+
+        '''
+
         state = state
         
-        if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+        if state == 'CONUS' or state == 'conus':
             decimate = 5525
         if state == 'AK' or state == 'ak':
             decimate = 4025           
@@ -651,6 +664,17 @@ class scaling:
 
 
     def get_NDFD_decimation_by_gacc_region(gacc_region):
+
+        r'''
+        This function returns the proper decimation factor for each GACC Region
+
+        Required Arguments:
+
+        1) gacc_region (String) - The 4-letter identifier for the state in either all caps or lower case. 
+
+        Return: The decimation factor to apply to the data
+
+        '''
 
         gacc_region = gacc_region
 
