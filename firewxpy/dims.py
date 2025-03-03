@@ -71,7 +71,7 @@ def get_metar_mask(state, gacc_region, rtma_ws=False):
     if rtma_ws == False:
         if state != None and gacc_region == None:
             
-            if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
+            if state == 'CONUS' or state == 'conus':
                 mask = 250000
             if state == 'CA' or state == 'ca':
                 mask = 80000
