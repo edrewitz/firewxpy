@@ -43,18 +43,18 @@ class NDFD:
 
         ds = ds
 
-        stop = len(ds['step'])
+        stop = len(ds['valid_time'])
 
         vals = []
 
         for i in range(0, stop, 1):
             val = ds[parameter][i, :, :].to_dataframe()
-            vals.append(val)
+            vals.append(val)        
 
         return vals
         
 
-    def get_valid_times(ds, time_interval):
+    def get_valid_times_xarray(ds, time_interval):
 
         r'''
         This function will get all of the forecast validity times for the time length of the grid for the specific weather element in NDFD. 
@@ -71,10 +71,11 @@ class NDFD:
 
         ds = ds
 
-        stop = len(ds['step'])
+        stop = len(ds['valid_time'])
 
         start_times = []
         end_times = []
+        start_times_utc = []
 
         for i in range(0, stop, 1):
             end_time = ds['valid_time'][i]
@@ -87,10 +88,11 @@ class NDFD:
         for i in range(0, stop, 1):
             start_time = end_times[i] - timedelta(hours=time_interval)
             start_times.append(start_time)
+            start_time_utc = start_time.replace(tzinfo=to_zone)
+            start_time_utc = start_time.astimezone(from_zone)
+            start_times_utc.append(start_time_utc)
 
-        return start_times, end_times
-        
-
+        return start_times, end_times, start_times_utc
 
 class checks:
 
