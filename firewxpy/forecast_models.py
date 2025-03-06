@@ -363,7 +363,7 @@ class dynamics:
             levels = np.arange(1000, 1280, 10)
         
     
-        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
             decimate = 20
             step = 1
             
@@ -922,7 +922,7 @@ class dynamics:
             ticks = levels[::2]
         
     
-        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
             decimate = 20
             step = 1
             
@@ -1984,7 +1984,7 @@ class dynamics:
                 ticks = speeds[::5]
             
         
-            if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
+            if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
                 decimate = 20
                 step = 1
                 
@@ -2527,7 +2527,7 @@ class dynamics:
         mslp_labels = mslp_levels
         speed_ticks = speeds[::5]
     
-        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
             step = 1
         
         if model == 'CMCENS' or model == 'GEFS0p50':
@@ -3035,7 +3035,7 @@ class temperature:
                 
         print(f"Any old images (if any) in {path_print} have been deleted.")
     
-        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
             step = 1
         
         if model == 'CMCENS' or model == 'GEFS0p50':
@@ -3068,7 +3068,7 @@ class temperature:
                 else:
                     decimate = decimate + 1
                     
-            elif model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
+            elif model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
                 if region == 'conus' or region == 'North America' or region == 'north america' or region == 'NA' or region == 'na':
                     decimate = decimate * 2
                 else:
@@ -3745,7 +3745,7 @@ class temperature:
                 
         print(f"Any old images (if any) in {path_print} have been deleted.")
     
-        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
             step = 1
         
         if model == 'GEFS0p50':
@@ -4311,7 +4311,7 @@ class temperature:
             temp_low_levels = np.arange(-60, 0, 5)
             temp_high_levels = np.arange(5, 55, 10)            
     
-        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
             decimate = 20
             step = 1
             
@@ -4890,7 +4890,7 @@ class relative_humidity:
     
         str_level = f"SURFACE"
     
-        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
             step = 1
         
         if model == 'CMCENS' or model == 'GEFS0p50':
@@ -5583,7 +5583,7 @@ class relative_humidity:
             rh_low_levels = np.arange(0, 50, 10)
             rh_high_levels = np.arange(55, 110, 10)            
     
-        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
             decimate = 20
             step = 1
             
@@ -6187,7 +6187,7 @@ class critical_firewx_conditions:
     
         str_level = f"SURFACE"
     
-        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
             step = 1
         
         if model == 'CMCENS' or model == 'GEFS0p50':
@@ -7410,7 +7410,7 @@ class precipitation:
     
         str_level = f"SURFACE"
     
-        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM':
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
             step = 1
         
         if model == 'CMCENS' or model == 'GEFS0p50':
@@ -7665,4 +7665,3 @@ class precipitation:
                 print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
-
