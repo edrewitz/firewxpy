@@ -20,7 +20,9 @@ setup(
         "pysolar>=0.11",
         "cfgrib>=0.9.10.4",
         "cartopy>=0.21.0",
-         "imageio>=2.34.0",
+        "imageio>=2.34.0",
+        "pytz>=2024.1"
+      
     ],
     author="Eric J. Drewitz",
     description="Provides automated weather graphics with a focus on fire weather.",
