@@ -10,7 +10,7 @@ from firewxpy.data_access import RTMA_CONUS, NDFD_CONUS_Hawaii, NDFD_Alaska, RTM
 
 from firewxpy.NWS_Forecasts import temperature as nws_temperature_forecast
 from firewxpy.NWS_Forecasts import relative_humidity as nws_relative_humidity_forecast
-from firewxpy.NWS_Forecast import critical_firewx as nws_critical_firewx_forecast
+from firewxpy.NWS_Forecasts import critical_firewx as nws_critical_firewx_forecast
 
 from firewxpy.forecast_models import dynamics as model_dynamics
 from firewxpy.forecast_models import temperature as model_temperature
