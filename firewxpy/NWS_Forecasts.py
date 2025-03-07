@@ -3462,7 +3462,7 @@ class relative_humidity:
             if i == 1:
                 try:
 
-                    diff = ve['unknown'] - vs['unknown']
+                    diff = ve['maxrh'] - vs['maxrh']
     
                     stn.plot_parameter('C', diff[::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
 
