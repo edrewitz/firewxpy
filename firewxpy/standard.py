@@ -3,6 +3,7 @@ This file hosts standard functions which are used across all plotting functions:
 
     1) plot_creation_time()
     2) no_data_graphic()
+    3) get_timezone()
 
  This file was written by Meteorologist Eric J. Drewitz 
 
@@ -17,8 +18,22 @@ import pytz
 from datetime import datetime, timedelta
 from matplotlib import pyplot as plt
 import time as t
-import warnings
-warnings.filterwarnings('ignore')
+
+def get_timezone():
+
+    r'''
+    This function returns the current timezone abbreviation from the computer's date/time settings.
+    Example: Pacific Standard Time = PST
+
+    '''
+    now = datetime.now()
+    timezone = now.astimezone().tzinfo
+    capital_letters = ""
+    for char in str(timezone):
+        if char.isupper():
+            capital_letters += char
+            
+    return capital_letters
 
 
 def plot_creation_time():
