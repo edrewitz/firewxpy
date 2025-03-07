@@ -3481,7 +3481,7 @@ class relative_humidity:
 
             else:
 
-                stn.plot_parameter('C', val['unknown'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
+                stn.plot_parameter('C', val['maxrh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
 
                 try:
                     cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['maxrh'][i-1, :, :] - ds_extended['maxrh'][i-2, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
