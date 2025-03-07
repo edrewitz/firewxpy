@@ -26,7 +26,7 @@ class NDFD:
 
     '''
 
-    def ndfd_to_dataframe(ds, parameter):
+    def ndfd_to_dataframe(ds, parameter, diff=False, temperature_to_F=False):
 
         r'''
         This function parses the NDFD GRIB2 file and converts the data array into a pandas dataframe
@@ -36,6 +36,12 @@ class NDFD:
         1) ds (xarray.dataarray) - The NDFD GRIB2 dataset
 
         2) parameter (String) - The variable name. 
+
+        Optional Arguments:
+
+        1) diff (Boolean) - Default = False. If set to True, the difference between value[i+1] and value[i] will be returned (val[i+1] - val[i]). 
+
+        2) temperature_to_F (Boolean) - Default = False. If set to True, values will be converted from Kelvin to Fahrenheit. 
 
         Return: A pandas dataframe of the NDFD values. 
 
@@ -47,9 +53,24 @@ class NDFD:
 
         vals = []
 
-        for i in range(0, stop, 1):
-            val = ds[parameter][i, :, :].to_dataframe()
-            vals.append(val)        
+        if temperature_to_F == True:
+            ds[parameter] = unit_conversion.Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(ds[parameter])
+        else:
+            pass
+
+        if diff == False:
+            for i in range(0, stop, 1):
+                val = ds[parameter][i, :, :].to_dataframe()
+                vals.append(val) 
+
+        else:
+            for i in range(1, stop, 1):
+                try:
+                    val = ds[parameter][i, :, :] - ds[parameter][i-1, :, :]
+                    val = val.to_dataframe()
+                    vals.append(val)    
+                except Exception as e:
+                    pass
 
         return vals
         
@@ -192,9 +213,6 @@ class checks:
             
 
         return new_metar_time
-
-
-
 
 
 
