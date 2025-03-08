@@ -1,5 +1,6 @@
+
+
 import os
-import imageio
 import matplotlib.pyplot as plt
 import time
 from zipfile import ZipFile
@@ -368,7 +369,7 @@ class file_functions:
             print(station_id+" Daily Weather Summary Saved to "+path)
 
 
-    def noaa_graphics_paths(state, gacc_region, plot_type, reference_system, cwa, island=None):
+    def noaa_graphics_paths(state, gacc_region, plot_type, reference_system, island=None, cwa=None):
 
         r'''
         This function creates the file directory for the images to save to. 
@@ -395,19 +396,18 @@ class file_functions:
             11) 'GACC & PSA & NWS CWA'
             12) 'GACC & PSA & Counties'
             13) 'GACC & Counties'
-            14) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA. 
-                For a view of the entire state - set cwa=None. 
-    
-            NWS CWA Abbreviations:
-    
-            1) AER - NWS Anchorage East Domain
-            2) ALU - NWS Anchorage West Domain
-            3) AJK - NWS Juneau
-            4) AFG - NWS Fairbanks
 
         Optional Arguments:
 
         1) island (String) - *For Hawaii only* - The name of the island
+        2) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA
+
+        NWS CWA Abbreviations:
+
+        1) AER - NWS Anchorage East Domain
+        2) ALU - NWS Anchorage West Domain
+        3) AJK - NWS Juneau
+        4) AFG - NWS Fairbanks
 
         Return: The file path of the directory branch
         '''
