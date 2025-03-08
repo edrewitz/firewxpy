@@ -38,7 +38,7 @@ def gph_change_colormap():
     return gph_change_colormap
 
 def temperature_change_colormap():
-    temperature_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("temperature change", ["darkblue", "blue", "deepskyblue", "white", "white", "orangered", "red", "darkred"])
+    temperature_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("temperature change", ["darkblue", "blue", "deepskyblue", "white", "orangered", "red", "darkred"])
 
     return temperature_change_colormap
 
@@ -84,7 +84,7 @@ def relative_humidity_colormap():
 
 
 def relative_humidity_change_colormap():
-    relative_humidity_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("relative humidity", ["saddlebrown", "peru", "orange", "gold", "white", "white", "yellowgreen", "lawngreen", "springgreen", "lime"])
+    relative_humidity_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("relative humidity", ["saddlebrown", "peru", "orange", "gold", "white", "yellowgreen", "lawngreen", "springgreen", "lime"])
     
     return relative_humidity_change_colormap
 
