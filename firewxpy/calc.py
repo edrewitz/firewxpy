@@ -2,6 +2,8 @@
 
 import math
 import numpy as np
+import warnings
+warnings.filterwarnings('ignore')
 
 class unit_conversion:
 
