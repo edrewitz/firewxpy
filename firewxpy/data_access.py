@@ -3897,6 +3897,26 @@ class NDFD_GRIDS:
             short_term_fname = 'ds.mint_short.bin'
             extended_fname = 'ds.mint_extended.bin'
 
+        if parameter == 'ds.rhm.bin':
+            short_term_fname = 'ds.rhm_short.bin'
+            extended_fname = 'ds.rhm_extended.bin'    
+
+        if parameter == 'ds.temp.bin':
+            short_term_fname = 'ds.temp_short.bin'
+            extended_fname = 'ds.temp_extended.bin' 
+
+        if parameter == 'ds.wspd.bin':
+            short_term_fname = 'ds.wspd_short.bin'
+            extended_fname = 'ds.wspd_extended.bin'  
+
+        if parameter == 'ds.wgust.bin':
+            short_term_fname = 'ds.wgust_short.bin'
+            extended_fname = 'ds.wgust_extended.bin'   
+
+        if parameter == 'ds.wdir.bin':
+            short_term_fname = 'ds.wdir_short.bin'
+            extended_fname = 'ds.wdir_extended.bin'               
+
         if os.path.exists(short_term_fname):
             os.remove(short_term_fname)
             urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.001-003/{parameter}", f"{parameter}")
@@ -3962,7 +3982,7 @@ class NDFD_GRIDS:
             if item.endswith(".idx"):
                 os.remove(f"NWS Data/{item}")
             
-        print("Retrieved NDFD grids.")
+        print(f"Retrieved {parameter} NDFD grids.")
     
         return ds1, ds2
 
