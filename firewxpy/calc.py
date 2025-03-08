@@ -2,8 +2,6 @@
 
 import math
 import numpy as np
-import warnings
-warnings.filterwarnings('ignore')
 
 class unit_conversion:
 
@@ -37,11 +35,7 @@ class unit_conversion:
     def Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temperature_data_or_dewpoint_data):
 
         r'''
-        THIS FUNCTION TAKES IN THE CURRENT TEMPERATURE OR DEWPOINT DATA ARRAY AND THE TEMPERATURE OR DEWPOINT DATA ARRAY FROM 24 HOURS AGO AND RETURNS THE TEMPERATURE OR DEWPOINT DIFFERENCE. THIS FUNCTION CONVERTS THE DATA FROM KELVIN TO FAHRENHEIT.
-
-        THIS FUNCTION ALSO RETURNS A BLANK PANDAS DATAFRAME IF THERE IS NO DATA AVAILIABLE
-
-        (C) METEOROLOGIST ERIC J. DREWITZ
+        This function converts the temperature from kelvin to fahrenheit
         '''
         
         degC = temperature_data_or_dewpoint_data - 273.15
@@ -54,10 +48,7 @@ class unit_conversion:
     def Temperature_Data_or_Dewpoint_Data_Kelvin_to_Celsius(temperature_data_or_dewpoint_data):
 
         r'''
-        THIS FUNCTION TAKES IN THE CURRENT TEMPERATURE OR DEWPOINT DATA ARRAY AND THE TEMPERATURE OR DEWPOINT DATA ARRAY FROM 24 HOURS AGO AND RETURNS THE TEMPERATURE OR DEWPOINT DIFFERENCE. THIS FUNCTION CONVERTS THE DATA FROM KELVIN TO FAHRENHEIT.
-
-
-        (C) METEOROLOGIST ERIC J. DREWITZ
+        This function converts the temperature from kelvin to celsius
         '''
         
         degC = (temperature_data_or_dewpoint_data - 273.15)
@@ -68,11 +59,7 @@ class unit_conversion:
     def Temperature_or_Dewpoint_Change_Data_Kelvin_to_Fahrenheit(current_temperature_or_dewpoint_data, temperature_or_dewpoint_data_from_24_hours_ago):
 
         r'''
-        THIS FUNCTION TAKES IN THE CURRENT TEMPERATURE DATA ARRAY AND THE TEMPERATURE DATA ARRAY FROM 24 HOURS AGO AND RETURNS THE TEMPERATURE DIFFERENCE. THIS FUNCTION CONVERTS THE DATA FROM KELVIN TO FAHRENHEIT.
-
-        THIS FUNCTION ALSO RETURNS A BLANK PANDAS DATAFRAME IF THERE IS NO DATA AVAILIABLE
-
-        (C) METEOROLOGIST ERIC J. DREWITZ
+        This function converts the temperature change from kelvin to fahrenheit
         '''
         
         degC = current_temperature_or_dewpoint_data - 273.15
@@ -88,11 +75,7 @@ class unit_conversion:
     def Temperature_or_Dewpoint_Change_Data_Kelvin_to_Celsius(current_temperature_or_dewpoint_data, temperature_or_dewpoint_data_from_24_hours_ago):
 
         r'''
-        THIS FUNCTION TAKES IN THE CURRENT TEMPERATURE DATA ARRAY AND THE TEMPERATURE DATA ARRAY FROM 24 HOURS AGO AND RETURNS THE TEMPERATURE DIFFERENCE. THIS FUNCTION CONVERTS THE DATA FROM KELVIN TO FAHRENHEIT.
-
-        THIS FUNCTION ALSO RETURNS A BLANK PANDAS DATAFRAME IF THERE IS NO DATA AVAILIABLE
-
-        (C) METEOROLOGIST ERIC J. DREWITZ
+        This function converts the temperature change from kelvin to celsius between the current time and 24hrs ago
         '''
         
         degC = current_temperature_or_dewpoint_data - 273.15
@@ -106,10 +89,7 @@ class unit_conversion:
     def Temperature_Or_Dewpoint_Change_to_Fahrenheit_24_hour_comparison(current_temperature_or_dewpoint_dataset, temperature_or_dewpoint_dataset_from_24_hours_ago):
 
         r'''
-        THIS FUNCTION PARSES THROUGH THE TEMPERATURE CHANGE AND RETURNS THE TEMPERATURE CHANGE. THIS FUNCTION CONVERTS THE DATA ARRAY FROM KELVIN TO FAHRENHEIT
-
-
-        (C) METEOROLOGIST ERIC J. DREWITZ
+        This function converts the temperature change from kelvin to fahrenheit between the current time and 24hrs ago
 
         '''
         
