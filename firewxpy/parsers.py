@@ -27,7 +27,7 @@ class NDFD:
 
     '''
 
-    def ndfd_to_dataframe(ds, parameter, diff=False, temperature_to_F=False, decimate=False):
+    def ndfd_to_dataframe(ds, parameter, diff=False, temperature_to_F=False, decimate=False, state=None):
 
         r'''
         This function parses the NDFD GRIB2 file and converts the data array into a pandas dataframe
@@ -42,9 +42,11 @@ class NDFD:
 
         1) diff (Boolean) - Default = False. If set to True, the difference between value[i+1] and value[i] will be returned (val[i+1] - val[i]). 
 
-        2) temperature_to_F (Boolean) - Default = False. If set to True, values will be converted from Kelvin to Fahrenheit. 
+        2) temperature_to_F (Boolean) - Default = False. If set to True, values will be converted from Kelvin to Fahrenheit.
 
-        3) decimate (Boolean) - Default = False. If set to True, the data will be decimated by a factor of 50 on both the x and y coordinates. 
+        3) decimate (Boolean) - Default = False. If set to True, the data will be decimated on both the x and y coordinates.
+
+        4) state (String) - The state abbreviation. This is used to determine the decimation factor to the x and y coordinates. 
 
         Return: A pandas dataframe of the NDFD values. 
 
@@ -62,8 +64,12 @@ class NDFD:
             pass
 
         if decimate != False:
+            if state == 'CONUS' or state == 'conus':
+                decimate = 300
+            else:
+                decimate = 50
             for i in range(0, stop, 1):
-                val = ds[parameter][i, ::50, ::50].to_dataframe()
+                val = ds[parameter][i, ::decimate, ::decimate].to_dataframe()
                 vals.append(val) 
             
         if decimate == False:
@@ -223,8 +229,6 @@ class checks:
             
 
         return new_metar_time
-
-
 
 
 
