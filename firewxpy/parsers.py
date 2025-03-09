@@ -65,7 +65,7 @@ class NDFD:
 
         if decimate != False:
             if state == 'CONUS' or state == 'conus':
-                decimate = 300
+                decimate = 100
             else:
                 decimate = 50
             for i in range(0, stop, 1):
