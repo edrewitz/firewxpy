@@ -8906,38 +8906,38 @@ class critical_firewx:
         short_times = short_times.to_pandas()
         extended_times = extended_times.to_pandas()
 
-        short_vals_rh = NDFD.ndfd_to_dataframe(rh_short, 'r2', decimate=True)
-        extended_vals_rh = NDFD.ndfd_to_dataframe(rh_extended, 'r2', decimate=True)      
+        short_vals_rh = NDFD.ndfd_to_dataframe(rh_short, 'r2', decimate=True, state=state)
+        extended_vals_rh = NDFD.ndfd_to_dataframe(rh_extended, 'r2', decimate=True, state=state)      
         
         if use_wind_gust == False:
-            short_vals_u = NDFD.ndfd_to_dataframe(ws_short, 'u', decimate=True)
-            extended_vals_u = NDFD.ndfd_to_dataframe(ws_extended, 'u', decimate=True)
-            short_vals_v = NDFD.ndfd_to_dataframe(ws_short, 'v', decimate=True)
-            extended_vals_v = NDFD.ndfd_to_dataframe(ws_extended, 'v', decimate=True)
-            short_vals_ws = NDFD.ndfd_to_dataframe(ws_short, 'si10', decimate=True)
-            extended_vals_ws = NDFD.ndfd_to_dataframe(ws_extended, 'si10', decimate=True) 
+            short_vals_u = NDFD.ndfd_to_dataframe(ws_short, 'u', decimate=True, state=state)
+            extended_vals_u = NDFD.ndfd_to_dataframe(ws_extended, 'u', decimate=True, state=state)
+            short_vals_v = NDFD.ndfd_to_dataframe(ws_short, 'v', decimate=True, state=state)
+            extended_vals_v = NDFD.ndfd_to_dataframe(ws_extended, 'v', decimate=True, state=state)
+            short_vals_ws = NDFD.ndfd_to_dataframe(ws_short, 'si10', decimate=True, state=state)
+            extended_vals_ws = NDFD.ndfd_to_dataframe(ws_extended, 'si10', decimate=True, state=state) 
             parameter = 'si10'
         else:
-            short_vals_u = NDFD.ndfd_to_dataframe(wgust_short, 'u', decimate=True)
+            short_vals_u = NDFD.ndfd_to_dataframe(wgust_short, 'u', decimate=True, state=state)
             try:
-                extended_vals_u = NDFD.ndfd_to_dataframe(wgust_extended, 'u', decimate=True) 
+                extended_vals_u = NDFD.ndfd_to_dataframe(wgust_extended, 'u', decimate=True, state=state) 
             except Exception as e:
                 pass
-            short_vals_v = NDFD.ndfd_to_dataframe(wgust_short, 'v', decimate=True)
+            short_vals_v = NDFD.ndfd_to_dataframe(wgust_short, 'v', decimate=True, state=state)
             try:
-                extended_vals_v = NDFD.ndfd_to_dataframe(wgust_extended, 'v', decimate=True)
+                extended_vals_v = NDFD.ndfd_to_dataframe(wgust_extended, 'v', decimate=True, state=state)
             except Exception as e:
                 pass
-            short_vals_ws = NDFD.ndfd_to_dataframe(wgust_short, 'i10fg', decimate=True)
+            short_vals_ws = NDFD.ndfd_to_dataframe(wgust_short, 'i10fg', decimate=True, state=state)
             try:
-                extended_vals_ws = NDFD.ndfd_to_dataframe(wgust_extended, 'i10fg', decimate=True)
+                extended_vals_ws = NDFD.ndfd_to_dataframe(wgust_extended, 'i10fg', decimate=True, state=state)
             except Exception as e:
                 pass
             parameter = 'i10fg'
 
         if add_temperature_parameter == True:
-            short_vals_temp = NDFD.ndfd_to_dataframe(temp_short, 't2m', temperature_to_F=True, decimate=True)
-            extended_vals_temp = NDFD.ndfd_to_dataframe(temp_extended, 't2m', temperature_to_F=True, decimate=True) 
+            short_vals_temp = NDFD.ndfd_to_dataframe(temp_short, 't2m', temperature_to_F=True, decimate=True, state=state)
+            extended_vals_temp = NDFD.ndfd_to_dataframe(temp_extended, 't2m', temperature_to_F=True, decimate=True, state=state) 
         else:
             pass
 
