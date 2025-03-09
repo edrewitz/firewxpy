@@ -8470,7 +8470,7 @@ class critical_firewx:
     
     '''
 
-    def plot_critical_firewx_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, x=0.01, y=0.97, use_wind_gust=False, add_temperature_parameter=False, data=False, rh_short=None, ws_short=None, wdir_short=None, wgust_short=None, temp_short=None, rh_extended=None, ws_extended=None, wdir_extended=None, wgust_extended=None, temp_extended=None, low_rh_threshold=15, wind_threshold=25, temperature_threshold=75):
+    def plot_critical_firewx_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, x=0.01, y=0.97, use_wind_gust=False, add_temperature_parameter=False, data=False, rh_short=None, ws_short=None, wdir_short=None, wgust_short=None, temp_short=None, rh_extended=None, ws_extended=None, wdir_extended=None, wgust_extended=None, temp_extended=None, low_rh_threshold=15, wind_threshold=25, temperature_threshold=75):
 
 
         r'''
@@ -8582,20 +8582,13 @@ class critical_firewx:
         25) nws_public_zones_linestyle (String) - Linestyle of the NWS Public Zone borders. Default is a solid line. 
             To change to a dashed line, users should set psa_border_linestyle='--'. 
 
-        26) decimate (String [Default]/Integer [Custom]) - Default = 'default'. This is the number of which the data is decimated by in order for the spacing of the 
-            sample points to appear in good order. Example: A value of 300 plots the sample point for one row
-            of data every 300 lines of data. Higher values equal less sample points that are more spaced apart. 
-            Lower values equal more sample points which are less spaced apart. The default value is None. If
-            the default value is selected, the decimation is scaled automatically, however if the user wishes 
-            to change the spacing of the sample points, then the user must edit this value. 
-
-        27) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+        26) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
             If the user wishes to make a graphic for the entire CONUS, there are 2 acceptable abbreviations: 'CONUS' or 'conus'. 
             Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
             acceptable. Default setting is 'conus'. If the user wishes to make a plot based on gacc_region, this value must be 
             changed to None. 
 
-        28) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+        27) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
             If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
             None and the gacc_region variable must be set to one of the acceptable abbreviations. 
 
@@ -8621,19 +8614,19 @@ class critical_firewx:
             
             Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
 
-        29) x1 (Float) - Default = 0.01. The x-position of the signature text box with respect to the axis of the image. 
+        28) x1 (Float) - Default = 0.01. The x-position of the signature text box with respect to the axis of the image. 
 
-        30) y1 (Float) - Default = -0.03. The y-position of the signature text box with respect to the axis of the image. 
+        29) y1 (Float) - Default = -0.03. The y-position of the signature text box with respect to the axis of the image. 
 
-        31) x2 (Float) - Default = 0.725. The x-position of the timestamp text box with respect to the axis of the image.
+        30) x2 (Float) - Default = 0.725. The x-position of the timestamp text box with respect to the axis of the image.
 
-        32) y2 (Float) - Default = -0.025. The y-position of the timestamp text box with respect to the axis of the image.
+        31) y2 (Float) - Default = -0.025. The y-position of the timestamp text box with respect to the axis of the image.
 
-        33) x3 (Float) - Default = 0.01. The x-position of the reference system text box with respect to the axis of the image.
+        32) x3 (Float) - Default = 0.01. The x-position of the reference system text box with respect to the axis of the image.
 
-        34) y3 (Float) - Default = 0.01. The y-position of the reference system text box with respect to the axis of the image.
+        33) y3 (Float) - Default = 0.01. The y-position of the reference system text box with respect to the axis of the image.
 
-        35) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA. 
+        34) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA. 
             For a view of the entire state - set cwa=None. 
 
             NWS CWA Abbreviations:
@@ -8646,13 +8639,13 @@ class critical_firewx:
             
             4) AFG - NWS Fairbanks   
 
-        36) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
+        35) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
     
-        37) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
+        36) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
 
-        38) x (Float) - Default = 0.01. The x-position of the textbox with respect to the axis of the image showing the value of the contour line. This is only to be changed when making a custom plot.
+        37) x (Float) - Default = 0.01. The x-position of the textbox with respect to the axis of the image showing the value of the contour line. This is only to be changed when making a custom plot.
 
-        42) y (Float) - Default = 0.97. The y-position of the textbox with respect to the axis of the image showing the value of the contour line. This is only to be changed when making a custom plot.   
+        38) y (Float) - Default = 0.97. The y-position of the textbox with respect to the axis of the image showing the value of the contour line. This is only to be changed when making a custom plot.   
 
         39) use_wind_gust (Boolean) - Default = False. If set to True, the critical fire weather forecast will use wind gust rather than sustained wind speed. If set to False, sustained
             wind speed will be used. 
@@ -8798,32 +8791,22 @@ class critical_firewx:
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
+       
 
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-
-            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            
 
             western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
             if state == 'AK' or state == 'ak':
                western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            sp, x, y = settings.get_sp_dims_and_textbox_coords(gacc_region)
-
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+            if state != None and gacc_region == None:
+                sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            if state == None and gacc_region != None:
+                sp, x, y = settings.get_sp_dims_and_textbox_coords(gacc_region)
+                wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
 
         if state =='Custom' or state == 'custom':
     
@@ -8838,13 +8821,6 @@ class critical_firewx:
             y2=y2
             x3=x3
             y3=y3
-
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
     
         else:
             pass
@@ -8930,38 +8906,38 @@ class critical_firewx:
         short_times = short_times.to_pandas()
         extended_times = extended_times.to_pandas()
 
-        short_vals_rh = NDFD.ndfd_to_dataframe(rh_short, 'r2')
-        extended_vals_rh = NDFD.ndfd_to_dataframe(rh_extended, 'r2')      
+        short_vals_rh = NDFD.ndfd_to_dataframe(rh_short, 'r2', decimate=True)
+        extended_vals_rh = NDFD.ndfd_to_dataframe(rh_extended, 'r2', decimate=True)      
         
         if use_wind_gust == False:
-            short_vals_u = NDFD.ndfd_to_dataframe(ws_short, 'u')
-            extended_vals_u = NDFD.ndfd_to_dataframe(ws_extended, 'u')
-            short_vals_v = NDFD.ndfd_to_dataframe(ws_short, 'v')
-            extended_vals_v = NDFD.ndfd_to_dataframe(ws_extended, 'v')
-            short_vals_ws = NDFD.ndfd_to_dataframe(ws_short, 'si10')
-            extended_vals_ws = NDFD.ndfd_to_dataframe(ws_extended, 'si10') 
+            short_vals_u = NDFD.ndfd_to_dataframe(ws_short, 'u', decimate=True)
+            extended_vals_u = NDFD.ndfd_to_dataframe(ws_extended, 'u', decimate=True)
+            short_vals_v = NDFD.ndfd_to_dataframe(ws_short, 'v', decimate=True)
+            extended_vals_v = NDFD.ndfd_to_dataframe(ws_extended, 'v', decimate=True)
+            short_vals_ws = NDFD.ndfd_to_dataframe(ws_short, 'si10', decimate=True)
+            extended_vals_ws = NDFD.ndfd_to_dataframe(ws_extended, 'si10', decimate=True) 
             parameter = 'si10'
         else:
-            short_vals_u = NDFD.ndfd_to_dataframe(wgust_short, 'u')
+            short_vals_u = NDFD.ndfd_to_dataframe(wgust_short, 'u', decimate=True)
             try:
-                extended_vals_u = NDFD.ndfd_to_dataframe(wgust_extended, 'u') 
+                extended_vals_u = NDFD.ndfd_to_dataframe(wgust_extended, 'u', decimate=True) 
             except Exception as e:
                 pass
-            short_vals_v = NDFD.ndfd_to_dataframe(wgust_short, 'v')
+            short_vals_v = NDFD.ndfd_to_dataframe(wgust_short, 'v', decimate=True)
             try:
-                extended_vals_v = NDFD.ndfd_to_dataframe(wgust_extended, 'v')
+                extended_vals_v = NDFD.ndfd_to_dataframe(wgust_extended, 'v', decimate=True)
             except Exception as e:
                 pass
-            short_vals_ws = NDFD.ndfd_to_dataframe(wgust_short, 'i10fg')
+            short_vals_ws = NDFD.ndfd_to_dataframe(wgust_short, 'i10fg', decimate=True)
             try:
-                extended_vals_ws = NDFD.ndfd_to_dataframe(wgust_extended, 'i10fg')
+                extended_vals_ws = NDFD.ndfd_to_dataframe(wgust_extended, 'i10fg', decimate=True)
             except Exception as e:
                 pass
             parameter = 'i10fg'
 
         if add_temperature_parameter == True:
-            short_vals_temp = NDFD.ndfd_to_dataframe(temp_short, 't2m', temperature_to_F=True)
-            extended_vals_temp = NDFD.ndfd_to_dataframe(temp_extended, 't2m', temperature_to_F=True) 
+            short_vals_temp = NDFD.ndfd_to_dataframe(temp_short, 't2m', temperature_to_F=True, decimate=True)
+            extended_vals_temp = NDFD.ndfd_to_dataframe(temp_extended, 't2m', temperature_to_F=True, decimate=True) 
         else:
             pass
 
@@ -9047,15 +9023,15 @@ class critical_firewx:
             
             valid_time = short_end_times[i]             
 
-            stn = mpplots.StationPlot(ax, u['longitude'][::decimate], u['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, u['longitude'], u['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
 
-            stn.plot_barb(u['u'][::decimate], v['v'][::decimate], color='black', alpha=1, zorder=10, linewidth=0.5)
+            stn.plot_barb(u['u'], v['v'], color='black', alpha=1, zorder=10, linewidth=0.5)
             
-            stn.plot_parameter('NW', ws[parameter][::decimate], color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
-            stn.plot_parameter('SW', rh['r2'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
+            stn.plot_parameter('NW', ws[parameter], color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
+            stn.plot_parameter('SW', rh['r2'], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
             if add_temperature_parameter == True:
-                stn.plot_parameter('NE', temp['t2m'][::decimate], color='red', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
+                stn.plot_parameter('NE', temp['t2m'], color='red', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
 
             try:
                 ax.pcolormesh(mask_short['longitude'], mask_short['latitude'], mask_short[i, :, :], cmap=cmap, alpha=0.5, transform=datacrs, zorder=2)
@@ -9157,18 +9133,18 @@ class critical_firewx:
                 
                 valid_time = extended_end_times[i]             
     
-                stn = mpplots.StationPlot(ax, u['longitude'][::decimate], u['latitude'][::decimate],
+                stn = mpplots.StationPlot(ax, u['longitude'], u['latitude'],
                                                  transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-                stn.plot_barb(u['u'][::decimate], v['v'][::decimate], color='black', alpha=1, zorder=10, linewidth=0.5)
+                stn.plot_barb(u['u'][::decimate], v['v'], color='black', alpha=1, zorder=10, linewidth=0.5)
                 
-                stn.plot_parameter('NW', ws[parameter][::decimate], color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
-                stn.plot_parameter('SW', rh['r2'][::decimate], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
+                stn.plot_parameter('NW', ws[parameter], color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
+                stn.plot_parameter('SW', rh['r2'], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
                 if add_temperature_parameter == True:
-                    stn.plot_parameter('NE', temp['t2m'][::decimate], color='red', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
+                    stn.plot_parameter('NE', temp['t2m'], color='red', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
     
                 try:
-                    ax.pcolormesh(mask_short['longitude'], mask_short['latitude'], mask_short[i, :, :], cmap=cmap, alpha=0.5, transform=datacrs, zorder=2)
+                    ax.pcolormesh(mask_extended['longitude'], mask_extended['latitude'], mask_extended[i, :, :], cmap=cmap, alpha=0.5, transform=datacrs, zorder=2)
                 except Exception as e:
                     pass
     
@@ -9206,7 +9182,6 @@ class critical_firewx:
                 print(f"Saved {fname} to {path_print}")
         except Exception as e:
             pass
-
 
 
 
