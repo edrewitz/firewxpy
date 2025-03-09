@@ -3926,18 +3926,30 @@ class NDFD_GRIDS:
             os.rename(parameter, short_term_fname)
         
         if os.path.exists(extended_fname):
-            os.remove(extended_fname)
-            urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
-            os.rename(parameter, extended_fname)
+            try:
+                os.remove(extended_fname)
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
+                os.rename(parameter, extended_fname)
+            except Exception as e:
+                pass
         else:
-            urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
-            os.rename(parameter, extended_fname)
+            try:
+                urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
+                os.rename(parameter, extended_fname)
+            except Exception as e:
+                pass
 
         os.replace(short_term_fname, f"NWS Data/{short_term_fname}")
-        os.replace(extended_fname, f"NWS Data/{extended_fname}")
+        try:
+            os.replace(extended_fname, f"NWS Data/{extended_fname}")
+        except Exception as e:
+            pass
 
         short_path = f"NWS Data/{short_term_fname}"
-        extended_path = f"NWS Data/{extended_fname}"
+        try:
+            extended_path = f"NWS Data/{extended_fname}"
+        except Exception as e:
+            pass
 
         try:
             os.remove(parameter)
@@ -3959,24 +3971,31 @@ class NDFD_GRIDS:
             except Exception as e:
                 ds1 = ds1
 
-        if state != 'AK' or state != 'ak' or state == None:
-            ds2 = xr.load_dataset(extended_path, engine='cfgrib')
-        else:
-            ds2 = xr.open_dataset(extended_path, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
-
         try:
-            if ds2['time'][1] == True:
-                    ds2 = ds2.isel(time=1)
+
+            if state != 'AK' or state != 'ak' or state == None:
+                ds2 = xr.load_dataset(extended_path, engine='cfgrib')
             else:
-                ds2 = ds2.isel(time=0)  
-        except Exception as e:
+                ds2 = xr.open_dataset(extended_path, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
+    
             try:
-                ds2 = ds2.isel(time=0)
+                if ds2['time'][1] == True:
+                        ds2 = ds2.isel(time=1)
+                else:
+                    ds2 = ds2.isel(time=0)  
             except Exception as e:
-                ds2 = ds2
+                try:
+                    ds2 = ds2.isel(time=0)
+                except Exception as e:
+                    ds2 = ds2
+        except Exception as e:
+            pass
             
         ds1 = ds1.metpy.parse_cf()
-        ds2 = ds2.metpy.parse_cf()    
+        try:
+            ds2 = ds2.metpy.parse_cf() 
+        except Exception as e:
+            ds2 = False
 
         for item in os.listdir(f"NWS Data"):
             if item.endswith(".idx"):
@@ -4253,6 +4272,10 @@ class obs:
             metar_time = datetime.utcnow() - timedelta(minutes=minute)
     
         return metar_time
+
+
+
+
 
 
 
