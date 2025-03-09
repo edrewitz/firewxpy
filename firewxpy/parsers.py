@@ -67,7 +67,7 @@ class NDFD:
             if state == 'CONUS' or state == 'conus':
                 decimate = 100
             elif state == 'AK' or state == 'ak':
-                decimate = 75
+                decimate = 85
             else:
                 decimate = 50
             for i in range(0, stop, 1):
