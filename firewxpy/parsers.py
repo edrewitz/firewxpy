@@ -66,6 +66,8 @@ class NDFD:
         if decimate != False:
             if state == 'CONUS' or state == 'conus':
                 decimate = 100
+            elif state == 'AK' or state == 'ak':
+                decimate = 75
             else:
                 decimate = 50
             for i in range(0, stop, 1):
@@ -229,6 +231,8 @@ class checks:
             
 
         return new_metar_time
+
+
 
 
 
