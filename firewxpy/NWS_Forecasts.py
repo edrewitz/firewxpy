@@ -8851,14 +8851,14 @@ class critical_firewx:
 
         if add_temperature_parameter == True:            
             if use_wind_gust == False:
-                path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Critical Fire Weather Forecast T >= {temperature_threshold} & RH <= {low_rh_threshold} & Wind Speed >= {wind_threshold}", reference_system, cwa)
+                path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Critical Fire Weather Forecast T {temperature_threshold} & RH {low_rh_threshold} & Wind Speed {wind_threshold}", reference_system, cwa)
             else:
-                path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Critical Fire Weather Forecast T >= {temperature_threshold} & RH <= {low_rh_threshold} & Wind Gust >= {wind_threshold}", reference_system, cwa)
+                path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Critical Fire Weather Forecast T {temperature_threshold} & RH {low_rh_threshold} & Wind Gust {wind_threshold}", reference_system, cwa)
         else:
             if use_wind_gust == False:
-                path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Critical Fire Weather Forecast RH <= {low_rh_threshold} & Wind Speed >= {wind_threshold}", reference_system, cwa)
+                path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Critical Fire Weather Forecast RH {low_rh_threshold} & Wind Speed {wind_threshold}", reference_system, cwa)
             else:
-                path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Critical Fire Weather Forecast RH <= {low_rh_threshold} & Wind Gust >= {wind_threshold}", reference_system, cwa)            
+                path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Critical Fire Weather Forecast RH {low_rh_threshold} & Wind Gust {wind_threshold}", reference_system, cwa)            
 
         for file in os.listdir(f"{path}"):
             try:
@@ -9206,5 +9206,8 @@ class critical_firewx:
                 print(f"Saved {fname} to {path_print}")
         except Exception as e:
             pass
+
+
+
 
 
