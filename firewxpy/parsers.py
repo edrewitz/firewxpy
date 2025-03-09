@@ -27,7 +27,7 @@ class NDFD:
 
     '''
 
-    def ndfd_to_dataframe(ds, parameter, diff=False, temperature_to_F=False):
+    def ndfd_to_dataframe(ds, parameter, diff=False, temperature_to_F=False, decimate=False):
 
         r'''
         This function parses the NDFD GRIB2 file and converts the data array into a pandas dataframe
@@ -44,6 +44,8 @@ class NDFD:
 
         2) temperature_to_F (Boolean) - Default = False. If set to True, values will be converted from Kelvin to Fahrenheit. 
 
+        3) decimate (Boolean) - Default = False. If set to True, the data will be decimated by a factor of 50 on both the x and y coordinates. 
+
         Return: A pandas dataframe of the NDFD values. 
 
         '''
@@ -59,19 +61,26 @@ class NDFD:
         else:
             pass
 
-        if diff == False:
+        if decimate != False:
             for i in range(0, stop, 1):
-                val = ds[parameter][i, :, :].to_dataframe()
+                val = ds[parameter][i, ::50, ::50].to_dataframe()
                 vals.append(val) 
+            
+        if decimate == False:
 
-        else:
-            for i in range(1, stop, 1):
-                try:
-                    val = ds[parameter][i, :, :] - ds[parameter][i-1, :, :]
-                    val = val.to_dataframe()
-                    vals.append(val)    
-                except Exception as e:
-                    pass
+            if diff == False:
+                for i in range(0, stop, 1):
+                    val = ds[parameter][i, :, :].to_dataframe()
+                    vals.append(val) 
+    
+            else:
+                for i in range(1, stop, 1):
+                    try:
+                        val = ds[parameter][i, :, :] - ds[parameter][i-1, :, :]
+                        val = val.to_dataframe()
+                        vals.append(val)    
+                    except Exception as e:
+                        pass
 
         return vals
         
@@ -214,6 +223,7 @@ class checks:
             
 
         return new_metar_time
+
 
 
 
