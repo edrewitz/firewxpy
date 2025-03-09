@@ -461,74 +461,60 @@ class file_functions:
             os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}")
             print(f" Built f:Weather Data/{folder}/{plot_type}/{state}")
 
-        if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}"):
+        if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}"):
             pass
         else:
-            os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}")
-            print(f" Built f:Weather Data/{folder}/{plot_type}/{state}/{plot_type}")
-
-        if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}"):
-            pass
-        else:
-            os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}")
-            print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}")
+            os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}")
+            print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}")
 
         if state == 'HI' or state == 'hi':
             if island == None:
                 island = 'STATE'
-                if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{island}"):
+                if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{island}"):
                     pass
                 else:
-                    os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{island}")
-                    print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{island}")
+                    os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{island}")
+                    print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{island}")
 
-                path = f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{island}"
-                path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{island}"
+                path = f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{island}"
+                path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{island}"
 
             else:
-                if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{island}"):
+                if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{island}"):
                     pass
                 else:
-                    os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{island}")
-                    print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{island}")                
+                    os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{island}")
+                    print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{island}")                
             
-                path = f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{island}"
-                path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{island}"
+                path = f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{island}"
+                path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{island}"
 
 
         elif state == 'AK' or state == 'ak':
             if cwa == None:
                 cwa = 'STATE'
-                if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{cwa}"):
+                if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}"):
                     pass
                 else:
-                    os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{cwa}")
-                    print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{cwa}")
+                    os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}")
+                    print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}")
 
-                path = f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{cwa}"
-                path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{cwa}"
+                path = f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}"
+                path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}"
 
             else:
-                if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{cwa}"):
+                if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}"):
                     pass
                 else:
-                    os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{cwa}")
-                    print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{cwa}")                
+                    os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}")
+                    print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}")                
             
-                path = f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{cwa}"
-                path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}/{cwa}"
+                path = f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}"
+                path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}"
 
         
         else:
-            path = f"Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}"
-            path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{plot_type}/{reference_system}"
+            path = f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}"
+            path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}"
 
         return path, path_print
-
-
-
-
-
-
-
-
