@@ -37,7 +37,11 @@ class unit_conversion:
     def Temperature_Data_or_Dewpoint_Data_Kelvin_to_Fahrenheit(temperature_data_or_dewpoint_data):
 
         r'''
-        This function converts the temperature from kelvin to fahrenheit
+        THIS FUNCTION TAKES IN THE CURRENT TEMPERATURE OR DEWPOINT DATA ARRAY AND THE TEMPERATURE OR DEWPOINT DATA ARRAY FROM 24 HOURS AGO AND RETURNS THE TEMPERATURE OR DEWPOINT DIFFERENCE. THIS FUNCTION CONVERTS THE DATA FROM KELVIN TO FAHRENHEIT.
+
+        THIS FUNCTION ALSO RETURNS A BLANK PANDAS DATAFRAME IF THERE IS NO DATA AVAILIABLE
+
+        (C) METEOROLOGIST ERIC J. DREWITZ
         '''
         
         degC = temperature_data_or_dewpoint_data - 273.15
@@ -50,7 +54,10 @@ class unit_conversion:
     def Temperature_Data_or_Dewpoint_Data_Kelvin_to_Celsius(temperature_data_or_dewpoint_data):
 
         r'''
-        This function converts the temperature from kelvin to celsius
+        THIS FUNCTION TAKES IN THE CURRENT TEMPERATURE OR DEWPOINT DATA ARRAY AND THE TEMPERATURE OR DEWPOINT DATA ARRAY FROM 24 HOURS AGO AND RETURNS THE TEMPERATURE OR DEWPOINT DIFFERENCE. THIS FUNCTION CONVERTS THE DATA FROM KELVIN TO FAHRENHEIT.
+
+
+        (C) METEOROLOGIST ERIC J. DREWITZ
         '''
         
         degC = (temperature_data_or_dewpoint_data - 273.15)
@@ -61,7 +68,11 @@ class unit_conversion:
     def Temperature_or_Dewpoint_Change_Data_Kelvin_to_Fahrenheit(current_temperature_or_dewpoint_data, temperature_or_dewpoint_data_from_24_hours_ago):
 
         r'''
-        This function converts the temperature change from kelvin to fahrenheit
+        THIS FUNCTION TAKES IN THE CURRENT TEMPERATURE DATA ARRAY AND THE TEMPERATURE DATA ARRAY FROM 24 HOURS AGO AND RETURNS THE TEMPERATURE DIFFERENCE. THIS FUNCTION CONVERTS THE DATA FROM KELVIN TO FAHRENHEIT.
+
+        THIS FUNCTION ALSO RETURNS A BLANK PANDAS DATAFRAME IF THERE IS NO DATA AVAILIABLE
+
+        (C) METEOROLOGIST ERIC J. DREWITZ
         '''
         
         degC = current_temperature_or_dewpoint_data - 273.15
@@ -77,7 +88,11 @@ class unit_conversion:
     def Temperature_or_Dewpoint_Change_Data_Kelvin_to_Celsius(current_temperature_or_dewpoint_data, temperature_or_dewpoint_data_from_24_hours_ago):
 
         r'''
-        This function converts the temperature change from kelvin to celsius between the current time and 24hrs ago
+        THIS FUNCTION TAKES IN THE CURRENT TEMPERATURE DATA ARRAY AND THE TEMPERATURE DATA ARRAY FROM 24 HOURS AGO AND RETURNS THE TEMPERATURE DIFFERENCE. THIS FUNCTION CONVERTS THE DATA FROM KELVIN TO FAHRENHEIT.
+
+        THIS FUNCTION ALSO RETURNS A BLANK PANDAS DATAFRAME IF THERE IS NO DATA AVAILIABLE
+
+        (C) METEOROLOGIST ERIC J. DREWITZ
         '''
         
         degC = current_temperature_or_dewpoint_data - 273.15
@@ -91,7 +106,10 @@ class unit_conversion:
     def Temperature_Or_Dewpoint_Change_to_Fahrenheit_24_hour_comparison(current_temperature_or_dewpoint_dataset, temperature_or_dewpoint_dataset_from_24_hours_ago):
 
         r'''
-        This function converts the temperature change from kelvin to fahrenheit between the current time and 24hrs ago
+        THIS FUNCTION PARSES THROUGH THE TEMPERATURE CHANGE AND RETURNS THE TEMPERATURE CHANGE. THIS FUNCTION CONVERTS THE DATA ARRAY FROM KELVIN TO FAHRENHEIT
+
+
+        (C) METEOROLOGIST ERIC J. DREWITZ
 
         '''
         
@@ -171,6 +189,47 @@ class Thermodynamics:
        
 
 class scaling:
+
+    def get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound):
+
+        western_bound_init = -126
+        eastern_bound_init = -66
+        southern_bound_init = 24
+        northern_bound_init = 50.5
+
+        wb_init = abs(western_bound_init)
+        eb_init = abs(eastern_bound_init)
+        nb_init = abs(northern_bound_init)
+        sb_init = abs(southern_bound_init)
+
+        L1_init = wb_init - eb_init
+        L2_init = nb_init - sb_init
+
+        A_init = L1_init * L2_init
+
+        wb = abs(western_bound)
+        eb = abs(eastern_bound)
+        nb = abs(northern_bound)
+        sb = abs(southern_bound)
+
+        L1 = wb - eb
+        L2 = nb - sb
+
+        A = L1 * L2
+
+        decimate_init = 100
+
+        decimate = (A * decimate_init) / A_init
+
+        decimate = int(round(decimate, -1))
+
+        if decimate <= 20:
+            decimate = 20
+        else:
+            decimate = decimate
+
+        return decimate
+    
 
     def get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, barbs):
 
