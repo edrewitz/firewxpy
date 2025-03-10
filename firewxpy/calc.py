@@ -224,7 +224,12 @@ class scaling:
         decimate = int(round(decimate, -1))
 
         if decimate <= 20:
-            decimate = 20
+            if decimate <= 5:
+                decimate = 20
+            else:
+                decimate = decimate * 5
+        elif decimate < 100 and decimate > 20:
+            decimate = decimate * 2
         else:
             decimate = decimate
 
