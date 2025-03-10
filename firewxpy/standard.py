@@ -19,7 +19,7 @@ from datetime import datetime, timedelta
 from matplotlib import pyplot as plt
 import time as t
 
-def get_timezone():
+def get_timezone_abbreviation():
 
     r'''
     This function returns the current timezone abbreviation from the computer's date/time settings.
@@ -34,6 +34,14 @@ def get_timezone():
             capital_letters += char
             
     return capital_letters
+
+def get_timezone():
+
+    now = datetime.now()
+    timezone = now.astimezone().tzinfo
+
+    return timezone
+    
 
 
 def plot_creation_time():
