@@ -27,7 +27,7 @@ class NDFD:
 
     '''
 
-    def ndfd_to_dataframe(ds, parameter, diff=False, temperature_to_F=False, decimate=False, state=None):
+    def ndfd_to_dataframe(ds, parameter, diff=False, temperature_to_F=False, decimate=None):
 
         r'''
         This function parses the NDFD GRIB2 file and converts the data array into a pandas dataframe
@@ -44,9 +44,7 @@ class NDFD:
 
         2) temperature_to_F (Boolean) - Default = False. If set to True, values will be converted from Kelvin to Fahrenheit.
 
-        3) decimate (Boolean) - Default = False. If set to True, the data will be decimated on both the x and y coordinates.
-
-        4) state (String) - The state abbreviation. This is used to determine the decimation factor to the x and y coordinates. 
+        3) decimate (Integer) - Default = None. If set to a non-None value, the data will be decimated on both the x and y coordinates by the magnitude of the set value.
 
         Return: A pandas dataframe of the NDFD values. 
 
@@ -54,7 +52,10 @@ class NDFD:
 
         ds = ds
 
-        stop = len(ds['valid_time'])
+        try:
+            stop = len(ds['valid_time'])
+        except Exception as e:
+            stop = len(ds['step'])
 
         vals = []
 
@@ -63,18 +64,21 @@ class NDFD:
         else:
             pass
 
-        if decimate != False:
-            if state == 'CONUS' or state == 'conus':
-                decimate = 100
-            elif state == 'AK' or state == 'ak':
-                decimate = 85
+        if decimate != None:
+            if diff == False:
+                for i in range(0, stop, 1):
+                    val = ds[parameter][i, ::decimate, ::decimate].to_dataframe()
+                    vals.append(val) 
             else:
-                decimate = 50
-            for i in range(0, stop, 1):
-                val = ds[parameter][i, ::decimate, ::decimate].to_dataframe()
-                vals.append(val) 
+                for i in range(1, stop, 1):
+                    try:
+                        val = ds[parameter][i, ::decimate, ::decimate] - ds[parameter][i-1, ::decimate, ::decimate]
+                        val = val.to_dataframe()
+                        vals.append(val)    
+                    except Exception as e:
+                        pass                
             
-        if decimate == False:
+        if decimate == None:
 
             if diff == False:
                 for i in range(0, stop, 1):
@@ -231,6 +235,8 @@ class checks:
             
 
         return new_metar_time
+
+
 
 
 
