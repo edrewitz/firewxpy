@@ -30,6 +30,7 @@ import firewxpy.settings as settings
 import firewxpy.standard as standard
 import firewxpy.dims as dims
 import os
+import pandas as pd
 import xarray as xr
 import warnings
 warnings.filterwarnings('ignore')
@@ -40,6 +41,9 @@ from firewxpy.calc import scaling, unit_conversion
 from firewxpy.utilities import file_functions
 from firewxpy.data_access import NDFD_GRIDS
 from firewxpy.parsers import NDFD
+from metpy.units import units
+from dateutil import tz
+from datetime import datetime, timedelta
 
 
 mpl.rcParams['font.weight'] = 'bold'
@@ -55,7 +59,8 @@ mapcrs = ccrs.PlateCarree()
 datacrs = ccrs.PlateCarree()
 
 local_time, utc_time = standard.plot_creation_time()
-timezone = standard.get_timezone()
+timezone = standard.get_timezone_abbreviation()
+tzone = standard.get_timezone()
 
 def get_cwa_coords(cwa):
 
@@ -64,11 +69,11 @@ def get_cwa_coords(cwa):
     if cwa == 'AER' or cwa == 'aer':
         wb, eb, sb, nb = [-155, -140.75, 55.5, 64.5]
     if cwa == 'ALU' or cwa == 'alu':
-        wb, wb, sb, nb = [-170, -151, 52, 62.9]
+        wb, eb, sb, nb = [-170, -151, 52, 62.9]
     if cwa == 'AJK' or cwa == 'ajk':
-        wb, wb, sb, nb = [-145, -129.5, 54, 60.75]
+        wb, eb, sb, nb = [-145, -129.5, 54, 60.75]
     if cwa == 'AFG' or cwa == 'afg':
-        wb, wb, sb, nb = [-170, -140.75, 59, 72]
+        wb, eb, sb, nb = [-170, -140.75, 59, 72]
 
     return wb, eb, sb, nb
 
@@ -7166,7 +7171,7 @@ class temperature:
             print(f"Saved {fname} to {path_print}")
 
 
-    def plot_minimum_temperature_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
+    def plot_minimum_temperature_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa='STATE', signature_fontsize=6, stamp_fontsize=5):
 
 
         r'''
@@ -7379,7 +7384,7 @@ class temperature:
         state = state
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
@@ -7476,31 +7481,14 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
+        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        if state != 'AK' and state != 'ak' or gacc_region != None:
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
-
-            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-            if state == 'AK' or state == 'ak':
-               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-
-            sp, x, y = settings.get_sp_dims_and_textbox_coords(gacc_region)
-
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
         if state =='Custom' or state == 'custom':
     
@@ -7516,12 +7504,6 @@ class temperature:
             x3=x3
             y3=y3
 
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
     
         else:
             pass
@@ -7552,11 +7534,23 @@ class temperature:
         short_times = short_times.to_pandas()
         extended_times = extended_times.to_pandas()
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', diff=True, temperature_to_F=True)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', diff=True, temperature_to_F=True)
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
 
-        short_vals_init = NDFD.ndfd_to_dataframe(ds_short, 'tmin')
-        extended_vals_init = NDFD.ndfd_to_dataframe(ds_extended, 'tmin')
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
+
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', diff=True, temperature_to_F=True, decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', diff=True, temperature_to_F=True, decimate=decimate)
+
+        short_vals_init = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=True, decimate=decimate)
+        extended_vals_init = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=True, decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -7622,10 +7616,10 @@ class temperature:
                 except Exception as e:
                     pass
     
-                stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+                stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                                  transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
         
-                stn.plot_parameter('C', val['tmin'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+                stn.plot_parameter('C', val['tmin'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
                 try:
                     cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], (ds_short['tmin'][i, :, :] - ds_short['tmin'][i-1, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
@@ -7701,7 +7695,7 @@ class temperature:
             except Exception as e:
                 pass
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
             if i == 1:
@@ -7709,9 +7703,9 @@ class temperature:
 
                     diff = ve['tmin'] - vs['tmin']
     
-                    stn.plot_parameter('C', diff[::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+                    stn.plot_parameter('C', diff, color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
-                    cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['tmin'][0, :, :] - ds_short['tmin'][short_stop - 1, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
+                    cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['tmin'][0, :, :] - ds_short['tmin'][short_stop, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
                     cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
                 except Exception as e:
                     pass
@@ -7720,7 +7714,7 @@ class temperature:
 
             else:
 
-                stn.plot_parameter('C', val['tmin'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+                stn.plot_parameter('C', val['tmin'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
                 try:
                     cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['tmin'][i-1, :, :] - ds_extended['tmin'][i-2, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
@@ -7790,10 +7784,10 @@ class temperature:
         except Exception as e:
             pass
 
-        stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+        stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                          transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
         
-        stn.plot_parameter('C', val['tmin'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+        stn.plot_parameter('C', val['tmin'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
         try:
             cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['tmin'][-1, :, :] - ds_extended['tmin'][-2, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
@@ -7815,7 +7809,7 @@ class temperature:
         print(f"Saved {fname_7} to {path_print}")
 
 
-    def plot_maximum_temperature_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
+    def plot_maximum_temperature_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
 
 
         r'''
@@ -8028,7 +8022,7 @@ class temperature:
         state = state
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
@@ -8125,31 +8119,14 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
+        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        if state != 'AK' and state != 'ak' or gacc_region != None:
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
-
-            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-            if state == 'AK' or state == 'ak':
-               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-
-            sp, x, y = settings.get_sp_dims_and_textbox_coords(gacc_region)
-
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
         if state =='Custom' or state == 'custom':
     
@@ -8164,13 +8141,6 @@ class temperature:
             y2=y2
             x3=x3
             y3=y3
-
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
     
         else:
             pass
@@ -8191,34 +8161,42 @@ class temperature:
             ds_short = ds_short
             ds_extended = ds_extended
 
-        short_stop = len(ds_short['step'])
-        extended_stop = len(ds_extended['step'])
-        extended_start = short_stop
-        total_count = short_stop + extended_stop
+        ds = ds_short.combine_first(ds_extended)
 
-        short_times = ds_short['valid_time']
-        extended_times = ds_extended['valid_time']
-        short_times = short_times.to_pandas()
-        extended_times = extended_times.to_pandas()
+        stop = len(ds['step'])
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmax', diff=True, temperature_to_F=True)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmax', diff=True, temperature_to_F=True)
+        times = ds_short['valid_time'].combine_first(ds_extended['valid_time'])
+        times = times.to_pandas()
+        times = pd.to_datetime(times)
 
-        short_vals_init = NDFD.ndfd_to_dataframe(ds_short, 'tmax')
-        extended_vals_init = NDFD.ndfd_to_dataframe(ds_extended, 'tmax')
+        starts = []
+        for t in times:
+            time = t - timedelta(hours=12)
+            starts.append(time)
 
-        short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
-        extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
 
-        vs = short_vals_init[short_stop - 1]
-        ve = extended_vals_init[0]
-        s = short_start_times[short_stop - 1]
-        s1 = extended_start_times[0]
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
 
-        for i in range(1, short_stop, 1):
+        vals = NDFD.ndfd_to_dataframe(ds, 'tmax', diff=True, temperature_to_F=True, decimate=decimate)
 
-            fname = f"A_Short_Term_{i}.png"
+        diffs = []
+        for i in range(1, stop, 1):
+            p = i-1
+            diff = ds['tmax'][i, :, :] - ds['tmax'][p, :, :]
+            diffs.append(diff)
 
+        for i in range(0, len(diffs), 1):
+
+            fname = f"Image_{i}.png"
             index = i + 1
 
             fig = plt.figure(figsize=(12,12))
@@ -8264,124 +8242,25 @@ class temperature:
             else:
                 pass  
 
-                try:
-                    val = short_vals[i-1]
-                    start = short_start_times[i-1]
-                    start_1 = short_start_times[i]
-                except Exception as e:
-                    pass
-    
-                stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
-        
-                stn.plot_parameter('C', val['tmax'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-                try:
-                    cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], (ds_short['tmax'][i, :, :] - ds_short['tmax'][i-1, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-                except Exception as e:
-                    pass
-
-            plt.title(f"National Weather Service Forecast\nMaximum Temperature Trend [Δ°F]", fontsize=8, fontweight='bold', loc='left')
-            plt.title(f"Day {index}: {start_1.strftime('%a %m/%d')} - Day {index-1}: {start.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
-            
-            ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NWS/NDFD", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-            ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-            ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
-
-            fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
-
-
-        for i in range(1, extended_stop, 1):
-
-            fname = f"B_Extended_Term_{i}.png"
-            fname_7 = f"B_Extended_Term_{i+1}.png"
-
-            index = extended_start + i
-
-            fig = plt.figure(figsize=(12,12))
-            fig.set_facecolor('aliceblue')
-            ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-            ax.add_feature(provinces, linewidth=1, zorder=1)
-            if show_rivers == True:
-                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-            else:
-                pass
-        
-            if show_gacc_borders == True:
-                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-            else:
-                pass
-            if show_psa_borders == True:
-                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_county_borders == True:
-                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_state_borders == True:
-                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-            else:
-                pass
-            if show_cwa_borders == True:
-                ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_firewx_zones == True:
-                ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_public_zones == True:
-                ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-            else:
-                pass  
-
             try:
-                val = extended_vals[i-2]
-                start = extended_start_times[i-2]
-                start_1 = extended_start_times[i-1]
+                val = vals[i]
             except Exception as e:
                 pass
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            if i == 1:
-                try:
+            stn.plot_parameter('C', val['tmax'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
-                    diff = ve['tmax'] - vs['tmax']
-    
-                    stn.plot_parameter('C', diff[::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-                    cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['tmax'][0, :, :] - ds_short['tmax'][short_stop - 1, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-                except Exception as e:
-                    pass
-
-                plt.title(f"Day {index}: {s1.strftime('%a %m/%d')} - Day {index-1}: {s.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
-
-            else:
-
-                stn.plot_parameter('C', val['tmax'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-                try:
-                    cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['tmax'][i-1, :, :] - ds_extended['tmax'][i-2, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-                except Exception as e:
-                    pass
-                    
-                    
-                plt.title(f"Day {index}: {start_1.strftime('%a %m/%d')} - Day {index-1}: {start.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
+            try:
+                cs = ax.contourf(ds['longitude'][:, :], ds['latitude'][:, :], diffs[i], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
+                cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
+            except Exception as e:
+                pass
 
             plt.title(f"National Weather Service Forecast\nMaximum Temperature Trend [Δ°F]", fontsize=8, fontweight='bold', loc='left')
-
+            plt.title(f"Day {index +1}: {starts[index].strftime('%a %m/%d')} - Day {index}: {starts[i].strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
+            
             ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NWS/NDFD", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
             ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
@@ -8389,79 +8268,6 @@ class temperature:
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             print(f"Saved {fname} to {path_print}")
 
-        fig = plt.figure(figsize=(12,12))
-        fig.set_facecolor('aliceblue')
-        ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-        ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-        ax.add_feature(provinces, linewidth=1, zorder=1)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-    
-        if show_gacc_borders == True:
-            ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-        else:
-            pass
-        if show_cwa_borders == True:
-            ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_nws_firewx_zones == True:
-            ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-        else:
-            pass
-        if show_nws_public_zones == True:
-            ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-        else:
-            pass  
-
-        try:
-            val = extended_vals[-1]
-            start = extended_start_times[-2]
-            start_1 = extended_start_times[-1]
-        except Exception as e:
-            pass
-
-        stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
-                                         transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
-        
-        stn.plot_parameter('C', val['tmax'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-        try:
-            cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['tmax'][-1, :, :] - ds_extended['tmax'][-2, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-            cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-
-        except Exception as e:
-            pass
-            
-            
-        plt.title(f"Day {index + 1}: {start_1.strftime('%a %m/%d')} - Day {index}: {start.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
-
-        plt.title(f"National Weather Service Forecast\nMaximum Temperature Trend [Δ°F]", fontsize=8, fontweight='bold', loc='left')
-
-        ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NWS/NDFD", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-        ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-        ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
-
-        fig.savefig(f"{path}/{fname_7}", bbox_inches='tight')
-        print(f"Saved {fname_7} to {path_print}")
 
 class critical_firewx:
 
@@ -8470,7 +8276,7 @@ class critical_firewx:
     
     '''
 
-    def plot_critical_firewx_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, x=0.01, y=0.97, use_wind_gust=False, add_temperature_parameter=False, data=False, rh_short=None, ws_short=None, wdir_short=None, wgust_short=None, temp_short=None, rh_extended=None, ws_extended=None, wdir_extended=None, wgust_extended=None, temp_extended=None, low_rh_threshold=15, wind_threshold=25, temperature_threshold=75):
+    def plot_critical_firewx_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa='STATE', signature_fontsize=6, stamp_fontsize=5, x=0.01, y=0.97, use_wind_gust=False, add_temperature_parameter=False, data=False, rh_short=None, ws_short=None, wdir_short=None, wgust_short=None, temp_short=None, rh_extended=None, ws_extended=None, wdir_extended=None, wgust_extended=None, temp_extended=None, low_rh_threshold=15, wind_threshold=25, temperature_threshold=75):
 
 
         r'''
@@ -8627,7 +8433,7 @@ class critical_firewx:
         33) y3 (Float) - Default = 0.01. The y-position of the reference system text box with respect to the axis of the image.
 
         34) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA. 
-            For a view of the entire state - set cwa=None. 
+            For a view of the entire state - set cwa='STATE'. 
 
             NWS CWA Abbreviations:
     
@@ -8699,9 +8505,10 @@ class critical_firewx:
         PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
 
         state = state
+        cwa = cwa
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
@@ -8791,22 +8598,15 @@ class critical_firewx:
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-       
 
-            
+        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        if state != 'AK' and state != 'ak' or gacc_region != None:
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-            if state == 'AK' or state == 'ak':
-               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-            if state != 'AK' and state != 'ak' or gacc_region != None:
-                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
-
-            if state != None and gacc_region == None:
-                sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
-            if state == None and gacc_region != None:
-                sp, x, y = settings.get_sp_dims_and_textbox_coords(gacc_region)
-                wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
         if state =='Custom' or state == 'custom':
     
@@ -8906,38 +8706,50 @@ class critical_firewx:
         short_times = short_times.to_pandas()
         extended_times = extended_times.to_pandas()
 
-        short_vals_rh = NDFD.ndfd_to_dataframe(rh_short, 'r2', decimate=True, state=state)
-        extended_vals_rh = NDFD.ndfd_to_dataframe(rh_extended, 'r2', decimate=True, state=state)      
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
+
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
+
+        short_vals_rh = NDFD.ndfd_to_dataframe(rh_short, 'r2', decimate=decimate)
+        extended_vals_rh = NDFD.ndfd_to_dataframe(rh_extended, 'r2', decimate=decimate)      
         
         if use_wind_gust == False:
-            short_vals_u = NDFD.ndfd_to_dataframe(ws_short, 'u', decimate=True, state=state)
-            extended_vals_u = NDFD.ndfd_to_dataframe(ws_extended, 'u', decimate=True, state=state)
-            short_vals_v = NDFD.ndfd_to_dataframe(ws_short, 'v', decimate=True, state=state)
-            extended_vals_v = NDFD.ndfd_to_dataframe(ws_extended, 'v', decimate=True, state=state)
-            short_vals_ws = NDFD.ndfd_to_dataframe(ws_short, 'si10', decimate=True, state=state)
-            extended_vals_ws = NDFD.ndfd_to_dataframe(ws_extended, 'si10', decimate=True, state=state) 
+            short_vals_u = NDFD.ndfd_to_dataframe(ws_short, 'u', decimate=decimate)
+            extended_vals_u = NDFD.ndfd_to_dataframe(ws_extended, 'u', decimate=decimate)
+            short_vals_v = NDFD.ndfd_to_dataframe(ws_short, 'v', decimate=decimate)
+            extended_vals_v = NDFD.ndfd_to_dataframe(ws_extended, 'v', decimate=decimate)
+            short_vals_ws = NDFD.ndfd_to_dataframe(ws_short, 'si10', decimate=decimate)
+            extended_vals_ws = NDFD.ndfd_to_dataframe(ws_extended, 'si10', decimate=decimate) 
             parameter = 'si10'
         else:
-            short_vals_u = NDFD.ndfd_to_dataframe(wgust_short, 'u', decimate=True, state=state)
+            short_vals_u = NDFD.ndfd_to_dataframe(wgust_short, 'u', decimate=decimate)
             try:
-                extended_vals_u = NDFD.ndfd_to_dataframe(wgust_extended, 'u', decimate=True, state=state) 
+                extended_vals_u = NDFD.ndfd_to_dataframe(wgust_extended, 'u', decimate=decimate) 
             except Exception as e:
                 pass
-            short_vals_v = NDFD.ndfd_to_dataframe(wgust_short, 'v', decimate=True, state=state)
+            short_vals_v = NDFD.ndfd_to_dataframe(wgust_short, 'v', decimate=decimate)
             try:
-                extended_vals_v = NDFD.ndfd_to_dataframe(wgust_extended, 'v', decimate=True, state=state)
+                extended_vals_v = NDFD.ndfd_to_dataframe(wgust_extended, 'v', decimate=decimate)
             except Exception as e:
                 pass
-            short_vals_ws = NDFD.ndfd_to_dataframe(wgust_short, 'i10fg', decimate=True, state=state)
+            short_vals_ws = NDFD.ndfd_to_dataframe(wgust_short, 'i10fg', decimate=decimate)
             try:
-                extended_vals_ws = NDFD.ndfd_to_dataframe(wgust_extended, 'i10fg', decimate=True, state=state)
+                extended_vals_ws = NDFD.ndfd_to_dataframe(wgust_extended, 'i10fg', decimate=decimate)
             except Exception as e:
                 pass
             parameter = 'i10fg'
 
         if add_temperature_parameter == True:
-            short_vals_temp = NDFD.ndfd_to_dataframe(temp_short, 't2m', temperature_to_F=True, decimate=True, state=state)
-            extended_vals_temp = NDFD.ndfd_to_dataframe(temp_extended, 't2m', temperature_to_F=True, decimate=True, state=state) 
+            short_vals_temp = NDFD.ndfd_to_dataframe(temp_short, 't2m', temperature_to_F=True, decimate=decimate)
+            extended_vals_temp = NDFD.ndfd_to_dataframe(temp_extended, 't2m', temperature_to_F=True, decimate=decimate) 
         else:
             pass
 
@@ -9136,7 +8948,7 @@ class critical_firewx:
                 stn = mpplots.StationPlot(ax, u['longitude'], u['latitude'],
                                                  transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-                stn.plot_barb(u['u'][::decimate], v['v'], color='black', alpha=1, zorder=10, linewidth=0.5)
+                stn.plot_barb(u['u'], v['v'], color='black', alpha=1, zorder=10, linewidth=0.5)
                 
                 stn.plot_parameter('NW', ws[parameter], color='cyan', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
                 stn.plot_parameter('SW', rh['r2'], color='lime', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
@@ -9186,3 +8998,19 @@ class critical_firewx:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
