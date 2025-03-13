@@ -482,8 +482,6 @@ class dynamics:
                 os.remove(f"{path}/{file}")
             except Exception as e:
                 pass
-                
-        print(f"Any old images (if any) in {path_print} have been deleted.")
         
         for t in range(0, end, step):
         
@@ -567,7 +565,6 @@ class dynamics:
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
         
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -593,9 +590,9 @@ class dynamics:
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
+        print(f"Saved forecast graphics to {path_print}.")
     
     
     def plot_geopotential_height(model, region, level=500, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States Only', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=7, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
@@ -1037,8 +1034,6 @@ class dynamics:
                 os.remove(f"{path}/{file}")
             except Exception as e:
                 pass
-                
-        print(f"Any old images (if any) in {path_print} have been deleted.")
         
         for t in range(0, end, step):
         
@@ -1105,8 +1100,7 @@ class dynamics:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-        
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -1120,11 +1114,10 @@ class dynamics:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                 if mapcrs == datacrs:
                     tim.sleep(10)
-
+        print(f"Saved forecast graphics to {path_print}.")
 
     def plot_24hr_geopotential_height_change(model, region, level=500, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States Only', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=7, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
 
@@ -1535,8 +1528,6 @@ class dynamics:
                 os.remove(f"{path}/{file}")
             except Exception as e:
                 pass
-                
-        print(f"Any old images (if any) in {path_print} have been deleted.")
         
         for t in range(0, end, step):
     
@@ -1617,7 +1608,6 @@ class dynamics:
         
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
-                    print(f"Saved image for forecast {times.iloc[t1].strftime('%a %d/%H UTC')} to {path_print}.")
                     if mapcrs == datacrs:
                         tim.sleep(10)
     
@@ -1642,11 +1632,11 @@ class dynamics:
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                 
-                    print(f"Saved image for forecast {times.iloc[t1].strftime('%a %d/%H UTC')} to {path_print}.")
                     if mapcrs == datacrs:
                         tim.sleep(10)
                 except Exception as e:
                     pass
+        print(f"Saved forecast graphics to {path_print}.")
 
     def plot_geopotential_height_and_wind(model, region, level=250, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States Only', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=7, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
 
@@ -2100,8 +2090,6 @@ class dynamics:
                 os.remove(f"{path}/{file}")
             except Exception as e:
                 pass
-                
-        print(f"Any old images (if any) in {path_print} have been deleted.")
         
         for t in range(0, end, step):
         
@@ -2185,7 +2173,6 @@ class dynamics:
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
         
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -2211,9 +2198,9 @@ class dynamics:
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
+        print(f"Saved forecast graphics to {path_print}.")
 
     def plot_10m_winds_mslp(model, region, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=7, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
 
@@ -2573,8 +2560,6 @@ class dynamics:
                 os.remove(f"{path}/{file}")
             except Exception as e:
                 pass
-                
-        print(f"Any old images (if any) in {path_print} have been deleted.")
         
         for t in range(0, end, step):
         
@@ -2649,7 +2634,6 @@ class dynamics:
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
         
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -2666,10 +2650,9 @@ class dynamics:
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
-
+        print(f"Saved forecast graphics to {path_print}.")
 
 class temperature:
 
@@ -3032,9 +3015,7 @@ class temperature:
                 os.remove(f"{path}/{file}")
             except Exception as e:
                 pass
-                
-        print(f"Any old images (if any) in {path_print} have been deleted.")
-    
+
         if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
             step = 1
         
@@ -3179,7 +3160,6 @@ class temperature:
         
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                     if mapcrs == datacrs:
                         tim.sleep(10)
         
@@ -3204,8 +3184,7 @@ class temperature:
                         cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                     if mapcrs == datacrs:
                         tim.sleep(10)
         
@@ -3290,8 +3269,7 @@ class temperature:
                         cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
         
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                     if mapcrs == datacrs:
                         tim.sleep(10)
         
@@ -3316,10 +3294,10 @@ class temperature:
                         cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                     if mapcrs == datacrs:
                         tim.sleep(10)
+            print(f"Saved forecast graphics to {path_print}.")
 
         if model == 'GEFS0p25 ENS MEAN':
     
@@ -3415,9 +3393,9 @@ class temperature:
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
-                print(f"Saved image for forecast {times.strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
+            print(f"Saved forecast graphics to {path_print}.")
 
 
     def plot_freezing_level(model, region, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=7, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
@@ -3742,9 +3720,7 @@ class temperature:
                 os.remove(f"{path}/{file}")
             except Exception as e:
                 pass
-                
-        print(f"Any old images (if any) in {path_print} have been deleted.")
-    
+
         if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
             step = 1
         
@@ -3862,7 +3838,6 @@ class temperature:
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
         
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -3879,8 +3854,7 @@ class temperature:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -3956,8 +3930,7 @@ class temperature:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-        
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -3974,10 +3947,10 @@ class temperature:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                 if mapcrs == datacrs:
                     tim.sleep(10)
+        print(f"Saved forecast graphics to {path_print}.")
 
 
     def plot_heights_temperature_wind(model, region, level=850, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States Only', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=7, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8):
@@ -4427,9 +4400,7 @@ class temperature:
                 os.remove(f"{path}/{file}")
             except Exception as e:
                 pass
-                
-        print(f"Any old images (if any) in {path_print} have been deleted.")
-        
+
         for t in range(0, end, step):
         
             fname = f"Image_{t}.png"
@@ -4520,8 +4491,7 @@ class temperature:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-        
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -4555,10 +4525,10 @@ class temperature:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                 if mapcrs == datacrs:
                     tim.sleep(10)
+        print(f"Saved forecast graphics to {path_print}.")
 
 
 class relative_humidity:
@@ -4938,9 +4908,7 @@ class relative_humidity:
                 os.remove(f"{path}/{file}")
             except Exception as e:
                 pass
-                
-        print(f"Any old images (if any) in {path_print} have been deleted.")
-        
+
         if data == False and model != 'GEFS0p25 ENS MEAN':
             ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
 
@@ -5039,7 +5007,6 @@ class relative_humidity:
         
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                     if mapcrs == datacrs:
                         tim.sleep(10)
         
@@ -5060,7 +5027,6 @@ class relative_humidity:
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                 
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                     if mapcrs == datacrs:
                         tim.sleep(10)
         
@@ -5140,8 +5106,7 @@ class relative_humidity:
                     cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                     if mapcrs == datacrs:
                         tim.sleep(10)
         
@@ -5161,8 +5126,7 @@ class relative_humidity:
                     cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                
-                    print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                     if mapcrs == datacrs:
                         tim.sleep(10)
 
@@ -5253,10 +5217,9 @@ class relative_humidity:
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
-                print(f"Saved image for forecast {times.strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
-
+        print(f"Saved forecast graphics to {path_print}.")
 
     def plot_heights_relative_humidity_wind(model, region, level=700, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States Only', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=7, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8):
 
@@ -5699,9 +5662,7 @@ class relative_humidity:
                 os.remove(f"{path}/{file}")
             except Exception as e:
                 pass
-                
-        print(f"Any old images (if any) in {path_print} have been deleted.")
-        
+
         for t in range(0, end, step):
         
             fname = f"Image_{t}.png"
@@ -5792,11 +5753,9 @@ class relative_humidity:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-        
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                 if mapcrs == datacrs:
                     tim.sleep(10)
-    
     
             else:
                 
@@ -5828,10 +5787,9 @@ class relative_humidity:
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
             
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
-
+        print(f"Saved forecast graphics to {path_print}.")
             
 
 class critical_firewx_conditions:
@@ -6285,9 +6243,7 @@ class critical_firewx_conditions:
                         os.remove(f"{path}/{file}")
                     except Exception as e:
                         pass
-    
-        print(f"Any old images (if any) in {path_print} have been deleted.")
-    
+
         if model != 'GEFS0p25 ENS MEAN':
     
             end1 = (int(round((len(ds['time']) - 1)/6, 0)) - 1)
@@ -6400,7 +6356,6 @@ class critical_firewx_conditions:
             
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                 
-                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                         if mapcrs == datacrs:
                             tim.sleep(10)
             
@@ -6428,7 +6383,6 @@ class critical_firewx_conditions:
                 
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                     
-                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                         if mapcrs == datacrs:
                             tim.sleep(10)
             
@@ -6525,7 +6479,6 @@ class critical_firewx_conditions:
             
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                 
-                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                         if mapcrs == datacrs:
                             tim.sleep(10)
             
@@ -6553,7 +6506,6 @@ class critical_firewx_conditions:
                 
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                     
-                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                         if mapcrs == datacrs:
                             tim.sleep(10)
     
@@ -6671,7 +6623,6 @@ class critical_firewx_conditions:
             
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                 
-                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                         if mapcrs == datacrs:
                             tim.sleep(10)
             
@@ -6705,7 +6656,6 @@ class critical_firewx_conditions:
                 
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                     
-                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                         if mapcrs == datacrs:
                             tim.sleep(10)
             
@@ -6809,7 +6759,6 @@ class critical_firewx_conditions:
             
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                 
-                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                         if mapcrs == datacrs:
                             tim.sleep(10)
             
@@ -6843,7 +6792,6 @@ class critical_firewx_conditions:
                 
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                     
-                        print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                         if mapcrs == datacrs:
                             tim.sleep(10)
     
@@ -6958,7 +6906,6 @@ class critical_firewx_conditions:
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                 
-                    print(f"Saved image for forecast {times.strftime('%a %d/%H UTC')} to {path_print}.")
                     if mapcrs == datacrs:
                         tim.sleep(10)
     
@@ -7079,11 +7026,10 @@ class critical_firewx_conditions:
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
                 
-                    print(f"Saved image for forecast {times.strftime('%a %d/%H UTC')} to {path_print}.")
                     if mapcrs == datacrs:
                         tim.sleep(10)
 
-
+        print(f"Saved forecast graphics to {path_print}.")
 
 class precipitation:
 
@@ -7459,8 +7405,6 @@ class precipitation:
             except Exception as e:
                 pass
                 
-        print(f"Any old images (if any) in {path_print} have been deleted.")
-        
         if data == False:
             ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
             
@@ -7549,7 +7493,6 @@ class precipitation:
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
         
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -7566,8 +7509,7 @@ class precipitation:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -7643,8 +7585,7 @@ class precipitation:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-        
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -7661,7 +7602,7 @@ class precipitation:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
-                print(f"Saved image for forecast {times.iloc[t].strftime('%a %d/%H UTC')} to {path_print}.")
+
                 if mapcrs == datacrs:
                     tim.sleep(10)
+        print(f"Saved forecast graphics to {path_print}.")
