@@ -23,7 +23,6 @@ def get_shapes(file_path):
                                        ccrs.PlateCarree(), facecolor=(0,0,0,0), edgecolor='black')
 
         fname = os.path.basename(file_path)
-        print(f"{fname} imported successfully!")
     
         return shape_feature
 
