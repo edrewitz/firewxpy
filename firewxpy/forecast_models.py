@@ -459,7 +459,10 @@ class dynamics:
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
         
         if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
+            if model == 'RAP' or model == 'RAP 32':
+                ds = model_data.get_hourly_rap_data_area_forecast(model, region, wb, eb, sb, nb)
+            else:
+                ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
             
         if data == True:
             ds = ds
@@ -467,6 +470,9 @@ class dynamics:
     
         if model == 'CMCENS' or model == 'GEFS0p50':
             ds['absvprs'] = mpcalc.vorticity((ds['ugrdprs'][0, :, level_idx, :, :] * units('m/s')), (ds['vgrdprs'][0, :, level_idx, :, :] * units('m/s')))
+
+        if model == 'RAP' or model == 'RAP 32':
+            ds['absvprs'] = mpcalc.vorticity((ds['ugrdprs'][:, level_idx, :, :] * units('m/s')), (ds['vgrdprs'][:, level_idx, :, :] * units('m/s')))
     
         cmap = colormaps.vorticity_colormap()
     
@@ -584,8 +590,10 @@ class dynamics:
                 else:
                     c = ax.contour(ds['lon'], ds['lat'], (ds['hgtprs'][t, level_idx, :, :]/10), levels=levels, colors='black', zorder=2, transform=datacrs, linewidths=1)
                     ax.clabel(c, levels=levels, inline=True, fontsize=8, rightside_up=True)
-                
-                cs = ax.contourf(ds['lon'], ds['lat'], ds['absvprs'][t, level_idx, :, :], cmap=cmap, transform=datacrs, levels=np.arange(0, 55e-5, 50e-6), alpha=0.35, extend='max')
+                try:
+                    cs = ax.contourf(ds['lon'], ds['lat'], ds['absvprs'][t, level_idx, :, :], cmap=cmap, transform=datacrs, levels=np.arange(0, 55e-5, 50e-6), alpha=0.35, extend='max')
+                except Exception as e:
+                    cs = ax.contourf(ds['lon'], ds['lat'], ds['absvprs'][t, :, :], cmap=cmap, transform=datacrs, levels=np.arange(0, 55e-5, 50e-6), alpha=0.35, extend='max')
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', format="{x:.0e}")
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
@@ -1015,7 +1023,10 @@ class dynamics:
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
         
         if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
+            if model == 'RAP' or model == 'RAP 32':
+                ds = model_data.get_hourly_rap_data_area_forecast(model, region, wb, eb, sb, nb)
+            else:
+                ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
             
         if data == True:
             ds = ds
@@ -1509,7 +1520,10 @@ class dynamics:
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
         
         if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
+            if model == 'RAP' or model == 'RAP 32':
+                ds = model_data.get_hourly_rap_data_area_forecast(model, region, wb, eb, sb, nb)
+            else:
+                ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
             
         if data == True:
             ds = ds
@@ -2071,7 +2085,10 @@ class dynamics:
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
         
         if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
+            if model == 'RAP' or model == 'RAP 32':
+                ds = model_data.get_hourly_rap_data_area_forecast(model, region, wb, eb, sb, nb)
+            else:
+                ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
             
         if data == True:
             ds = ds
@@ -2541,7 +2558,10 @@ class dynamics:
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
         
         if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
+            if model == 'RAP' or model == 'RAP 32':
+                ds = model_data.get_hourly_rap_data_area_forecast(model, region, wb, eb, sb, nb)
+            else:
+                ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
             
         if data == True:
             ds = ds
@@ -3058,7 +3078,10 @@ class temperature:
                 decimate = decimate
         
         if data == False and model != 'GEFS0p25 ENS MEAN':
-            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
+            if model == 'RAP' or model == 'RAP 32':
+                ds = model_data.get_hourly_rap_data_area_forecast(model, region, wb, eb, sb, nb)
+            else:
+                ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
 
         if data == False and model == 'GEFS0p25 ENS MEAN':
             ds_list = model_data.get_nomads_model_data_via_https(model, region, 'heightAboveGround', wb, eb, sb, nb, get_u_and_v_wind_components=False, add_wind_gusts=False)
@@ -3753,7 +3776,10 @@ class temperature:
                 decimate = decimate
         
         if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
+            if model == 'RAP' or model == 'RAP 32':
+                ds = model_data.get_hourly_rap_data_area_forecast(model, region, wb, eb, sb, nb)
+            else:
+                ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
             
         if data == True:
             ds = ds
@@ -4380,7 +4406,10 @@ class temperature:
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
         
         if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
+            if model == 'RAP' or model == 'RAP 32':
+                ds = model_data.get_hourly_rap_data_area_forecast(model, region, wb, eb, sb, nb)
+            else:
+                ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
             
         if data == True:
             ds = ds
@@ -4910,7 +4939,10 @@ class relative_humidity:
                 pass
 
         if data == False and model != 'GEFS0p25 ENS MEAN':
-            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
+            if model == 'RAP' or model == 'RAP 32':
+                ds = model_data.get_hourly_rap_data_area_forecast(model, region, wb, eb, sb, nb)
+            else:
+                ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
 
         if data == False and model == 'GEFS0p25 ENS MEAN':
             ds_list = model_data.get_nomads_model_data_via_https(model, region, 'heightAboveGround', wb, eb, sb, nb, get_u_and_v_wind_components=False, add_wind_gusts=False)
@@ -5642,8 +5674,11 @@ class relative_humidity:
             sample_point_fontsize, x, y = settings.get_sp_dims_and_textbox_coords(region)
         
         if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
-            
+            if model == 'RAP' or model == 'RAP 32':
+                ds = model_data.get_hourly_rap_data_area_forecast(model, region, wb, eb, sb, nb)
+            else:
+                ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
+                
         if data == True:
             ds = ds
     
@@ -5799,7 +5834,7 @@ class critical_firewx_conditions:
 
     '''
 
-    def plot_favorable_firewx_conditions(model, region, low_rh_threshold=15, high_wind_threshold=25, use_wind_gust=False, temperature_threshold=None, data=False, ds=None, ds_list=None, u=None, v=None, gusts=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=7, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
+    def plot_favorable_firewx_conditions(model, region, low_rh_threshold=15, high_wind_threshold=25, use_wind_gust=False, temperature_threshold=None, data=False, ds=None, ds_list=None, u=None, v=None, gusts=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=20, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
 
         r'''
         This function plots the Favorable Fire Weather Forecast. 
@@ -5978,7 +6013,7 @@ class critical_firewx_conditions:
                                                               This should only be changed if the user wishes to make a custom plot. 
                                                               Preset values are called from the settings module for each region. 
 
-                            43) decimate (Integer) - Default = 7. This determines how far spaced apart the points are when plotting the values overlaying the shading. 
+                            43) decimate (Integer) - Default = 20. This determines how far spaced apart the points are when plotting the values overlaying the shading. 
                                                      Higher numbers result in more sparse numbers or modeled station plots or wind barbs etc. This is only to be changed
                                                      when making a custom plot. 
 
@@ -6187,7 +6222,10 @@ class critical_firewx_conditions:
                 decimate = decimate
         
         if data == False and model != 'GEFS0p25 ENS MEAN':
-            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
+            if model == 'RAP' or model == 'RAP 32':
+                ds = model_data.get_hourly_rap_data_area_forecast(model, region, wb, eb, sb, nb)
+            else:
+                ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
     
         if data == False and model == 'GEFS0p25 ENS MEAN':
             ds_list, u, v, gusts = model_data.get_nomads_model_data_via_https(model, region, 'heightAboveGround', wb, eb, sb, nb, get_u_and_v_wind_components=True, add_wind_gusts=True)
@@ -7406,7 +7444,10 @@ class precipitation:
                 pass
                 
         if data == False:
-            ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
+            if model == 'RAP' or model == 'RAP 32':
+                ds = model_data.get_hourly_rap_data_area_forecast(model, region, wb, eb, sb, nb)
+            else:
+                ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
             
         if data == True:
             ds = ds
