@@ -369,7 +369,7 @@ class file_functions:
             print(station_id+" Daily Weather Summary Saved to "+path)
 
 
-    def noaa_graphics_paths(state, gacc_region, plot_type, reference_system, cwa, island=None):
+    def noaa_graphics_paths(state, gacc_region, plot_type, reference_system, cwa, island=None, spc=False):
 
         r'''
         This function creates the file directory for the images to save to. 
@@ -401,6 +401,8 @@ class file_functions:
 
         1) island (String) - *For Hawaii only* - The name of the island
         2) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA
+        3) spc (Boolean) - Default = False. - If set to True, the graphics will be saved to the SPC Outlooks branch.
+           If set to fale, the graphics will be saved to the NWS Forecasts branch. 
 
         NWS CWA Abbreviations:
 
@@ -432,7 +434,7 @@ class file_functions:
         except Exception as e:
             pass
 
-        if plot_type == 'SPC Critical Fire Weather Forecast' or plot_type == 'SPC Dry Lightning Forecast':
+        if spc == True:
             folder = "SPC Outlooks"
         else:
             folder = "NWS Forecasts"
