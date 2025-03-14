@@ -415,32 +415,29 @@ class relative_humidity:
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-        if state != 'Custom' or state != 'custom':
+                    
+        try:  
             western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-        if state == 'AK' or state == 'ak':
-           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-        if state != 'AK' and state != 'ak' or gacc_region != None:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+            if state == 'AK' or state == 'ak':
+               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, 'Poor Overnight RH Recovery', reference_system, cwa)
 
@@ -467,9 +464,6 @@ class relative_humidity:
         short_times = short_times.to_pandas()
         extended_times = extended_times.to_pandas()
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'maxrh')
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'maxrh')
-
         decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
         try:
             if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
@@ -481,6 +475,9 @@ class relative_humidity:
 
         if state == 'SWCC' or state == 'swcc':
             decimate = 30
+
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'maxrh', decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'maxrh', decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -561,10 +558,10 @@ class relative_humidity:
             start = short_start_times[i]
             end = short_end_times[i]             
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['maxrh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['maxrh'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], ds_short['maxrh'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5)
             cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
@@ -638,10 +635,10 @@ class relative_humidity:
             start = extended_start_times[i]
             end = extended_end_times[i]
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['maxrh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['maxrh'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], ds_extended['maxrh'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5)
 
@@ -968,31 +965,28 @@ class relative_humidity:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-        if state == 'AK' or state == 'ak':
-           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-        if state != 'AK' and state != 'ak' or gacc_region != None:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+        try:  
+            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+            if state == 'AK' or state == 'ak':
+               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, 'Excellent Overnight RH Recovery', reference_system, cwa)
 
@@ -1019,9 +1013,6 @@ class relative_humidity:
         short_times = short_times.to_pandas()
         extended_times = extended_times.to_pandas()
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'maxrh')
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'maxrh')
-
         decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
         try:
             if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
@@ -1033,6 +1024,9 @@ class relative_humidity:
 
         if state == 'SWCC' or state == 'swcc':
             decimate = 30
+
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'maxrh', decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'maxrh', decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -1113,10 +1107,10 @@ class relative_humidity:
             start = short_start_times[i]
             end = short_end_times[i]             
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['maxrh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['maxrh'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], ds_short['maxrh'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5)
             cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
@@ -1190,10 +1184,10 @@ class relative_humidity:
             start = extended_start_times[i]
             end = extended_end_times[i]
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['maxrh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['maxrh'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], ds_extended['maxrh'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5)
 
@@ -1526,31 +1520,28 @@ class relative_humidity:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-        if state == 'AK' or state == 'ak':
-           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-        if state != 'AK' and state != 'ak' or gacc_region != None:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+        try:  
+            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+            if state == 'AK' or state == 'ak':
+               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, 'Low Minimum RH', reference_system, cwa)
 
@@ -1589,8 +1580,8 @@ class relative_humidity:
         if state == 'SWCC' or state == 'swcc':
             decimate = 30
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'unknown')
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'unknown')
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'unknown', decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'unknown', decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -1671,10 +1662,10 @@ class relative_humidity:
             start = short_start_times[i]
             end = short_end_times[i]             
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['unknown'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['unknown'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], ds_short['unknown'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5)
             cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
@@ -1748,10 +1739,10 @@ class relative_humidity:
             start = extended_start_times[i]
             end = extended_end_times[i]
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['unknown'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['unknown'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], ds_extended['unknown'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5)
 
@@ -2089,31 +2080,28 @@ class relative_humidity:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-        if state == 'AK' or state == 'ak':
-           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-        if state != 'AK' and state != 'ak' or gacc_region != None:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+        try:  
+            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+            if state == 'AK' or state == 'ak':
+               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Minimum RH Low Contour {low_rh_threshold}% High Contour {high_rh_threshold}%", reference_system, cwa)
 
@@ -2152,8 +2140,8 @@ class relative_humidity:
         if state == 'SWCC' or state == 'swcc':
             decimate = 30
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'unknown')
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'unknown')
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'unknown', decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'unknown', decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -2234,10 +2222,10 @@ class relative_humidity:
             start = short_start_times[i]
             end = short_end_times[i]             
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['unknown'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['unknown'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], ds_short['unknown'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5)
             cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
@@ -2319,10 +2307,10 @@ class relative_humidity:
             start = extended_start_times[i]
             end = extended_end_times[i]
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['unknown'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['unknown'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], ds_extended['unknown'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5)
             cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
@@ -2575,8 +2563,6 @@ class relative_humidity:
         else:
             state = state
 
-        thresh = low_rh_threshold + 1
-
         levels = np.arange(0, 102, 1)
         labels = levels[::5]
 
@@ -2667,31 +2653,28 @@ class relative_humidity:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-        if state == 'AK' or state == 'ak':
-           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-        if state != 'AK' and state != 'ak' or gacc_region != None:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+        try:  
+            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+            if state == 'AK' or state == 'ak':
+               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Maximum RH Low Contour {low_rh_threshold}% High Contour {high_rh_threshold}%", reference_system, cwa)
 
@@ -2730,8 +2713,8 @@ class relative_humidity:
         if state == 'SWCC' or state == 'swcc':
             decimate = 30
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'maxrh')
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'maxrh')
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'maxrh', decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'maxrh', decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -2812,12 +2795,12 @@ class relative_humidity:
             start = short_start_times[i]
             end = short_end_times[i]             
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['maxrh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['maxrh'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
-            cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], ds_short['maxrh'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5)
+            cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], ds_short['maxrh'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
             cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
 
             c_low = ax.contour(ds_short['longitude'][:, :], ds_short['latitude'][:, :], mpcalc.smooth_gaussian(ds_short['maxrh'][i, :, :], n=8), levels=[low_rh_threshold], colors='darkred', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
@@ -2826,7 +2809,7 @@ class relative_humidity:
             c_high = ax.contour(ds_short['longitude'][:, :], ds_short['latitude'][:, :], mpcalc.smooth_gaussian(ds_short['maxrh'][i, :, :], n=8), levels=[high_rh_threshold], colors='darkblue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
             ax.clabel(c_high, levels=[high_rh_threshold], inline=True, fontsize=8, rightside_up=True)    
 
-            plt.title(f"National Weather Service Forecast [Night {index}]\nMaximum Relative Humidity", fontsize=8, fontweight='bold', loc='left')
+            plt.title(f"National Weather Service Forecast [Night {index}]\nMaximum Relative Humidity Forecast [%]", fontsize=8, fontweight='bold', loc='left')
             if dt == False:
                 plt.title(f"Valid: {start.strftime(f'%a %d/%H:00 {timezone}')} - {end.strftime(f'%a %d/%H:00 {timezone}')}", fontsize=7, fontweight='bold', loc='right')
             else:
@@ -2837,8 +2820,6 @@ class relative_humidity:
             ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NWS/NDFD", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
             ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
-
-            ax.text(x, y, f"Red Contour Line: RH = {low_rh_threshold}% | Blue Contour Line: RH = {high_rh_threshold}%", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
         print(f"Saved short-term forecast graphics to {path_print}")
@@ -2897,13 +2878,12 @@ class relative_humidity:
             start = extended_start_times[i]
             end = extended_end_times[i]
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['maxrh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['maxrh'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
-            cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], ds_extended['maxrh'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5)
-            cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
+            cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], ds_extended['maxrh'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
 
             c_low = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian(ds_extended['maxrh'][i, :, :], n=8), levels=[low_rh_threshold], colors='darkred', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
             ax.clabel(c_low, levels=[low_rh_threshold], inline=True, fontsize=8, rightside_up=True)  
@@ -2911,14 +2891,14 @@ class relative_humidity:
             c_high = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian(ds_extended['maxrh'][i, :, :], n=8), levels=[high_rh_threshold], colors='darkblue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
             ax.clabel(c_high, levels=[high_rh_threshold], inline=True, fontsize=8, rightside_up=True)    
 
-            plt.title(f"National Weather Service Forecast [Night {index}]\nMaximum Relative Humidity", fontsize=8, fontweight='bold', loc='left')
+            cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
+
+            plt.title(f"National Weather Service Forecast [Night {index}]\nMaximum Relative Humidity Forecast [%]", fontsize=8, fontweight='bold', loc='left')
             plt.title(f"Valid: {start.strftime(f'%a %d/%H:00 {timezone}')} - {end.strftime(f'%a %d/%H:00 {timezone}')}", fontsize=7, fontweight='bold', loc='right')
 
             ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NWS/NDFD", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
             ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-            ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
-
-            ax.text(x, y, f"Red Contour Line: RH = {low_rh_threshold}% | Blue Contour Line: RH = {high_rh_threshold}%", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+            ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
         print(f"Saved extended forecast graphics to {path_print}")
@@ -3236,31 +3216,28 @@ class relative_humidity:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-        if state == 'AK' or state == 'ak':
-           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-        if state != 'AK' and state != 'ak' or gacc_region != None:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+        try:  
+            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+            if state == 'AK' or state == 'ak':
+               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-    
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         if show_contours == True:
             text = 'With Contours'
@@ -3715,31 +3692,28 @@ class relative_humidity:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-        if state == 'AK' or state == 'ak':
-           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-        if state != 'AK' and state != 'ak' or gacc_region != None:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+        try:  
+            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+            if state == 'AK' or state == 'ak':
+               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-    
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         if show_contours == True:
             text = 'With Contours'
@@ -4196,31 +4170,28 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-        if state == 'AK' or state == 'ak':
-           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-        if state != 'AK' and state != 'ak' or gacc_region != None:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+        try:  
+            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+            if state == 'AK' or state == 'ak':
+               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, 'Frost Freeze Forecast', reference_system, cwa)
 
@@ -4259,8 +4230,8 @@ class temperature:
         if state == 'SWCC' or state == 'swcc':
             decimate = 30
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=True)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=True)
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=True, decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=True, decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -4341,10 +4312,10 @@ class temperature:
             start = short_start_times[i]
             end = short_end_times[i]             
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['tmin'][::decimate], color='orange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
+            stn.plot_parameter('C', val['tmin'], color='orange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
 
             cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], ds_short['tmin'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='min')
             cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
@@ -4418,10 +4389,10 @@ class temperature:
             start = extended_start_times[i]
             end = extended_end_times[i]
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['tmin'][::decimate], color='orange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
+            stn.plot_parameter('C', val['tmin'], color='orange', path_effects=[withStroke(linewidth=1, foreground='black')], zorder=10)
 
             cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], ds_extended['tmin'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='min')
 
@@ -4751,31 +4722,28 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-        if state == 'AK' or state == 'ak':
-           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-        if state != 'AK' and state != 'ak' or gacc_region != None:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+        try:  
+            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+            if state == 'AK' or state == 'ak':
+               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, 'Extremely Warm Low Temperatures', reference_system, cwa)
 
@@ -4815,8 +4783,8 @@ class temperature:
             decimate = 30
 
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=True)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=True)
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=True, decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=True, decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -4896,10 +4864,10 @@ class temperature:
             start = short_start_times[i]
             end = short_end_times[i]             
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['tmin'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['tmin'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], ds_short['tmin'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='max')
             cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
@@ -4973,10 +4941,10 @@ class temperature:
             start = extended_start_times[i]
             end = extended_end_times[i]
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['tmin'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['tmin'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], ds_extended['tmin'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='max')
 
@@ -5306,31 +5274,28 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-        if state == 'AK' or state == 'ak':
-           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-        if state != 'AK' and state != 'ak' or gacc_region != None:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+        try:  
+            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+            if state == 'AK' or state == 'ak':
+               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, 'Extreme Heat Forecast', reference_system, cwa)
 
@@ -5370,8 +5335,8 @@ class temperature:
             decimate = 30
 
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmax', temperature_to_F=True)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmax', temperature_to_F=True)
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmax', temperature_to_F=True, decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmax', temperature_to_F=True, decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -5452,10 +5417,10 @@ class temperature:
             start = short_start_times[i]
             end = short_end_times[i]             
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['tmax'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['tmax'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], ds_short['tmax'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='max')
             cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
@@ -5529,10 +5494,10 @@ class temperature:
             start = extended_start_times[i]
             end = extended_end_times[i]
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['tmax'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['tmax'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], ds_extended['tmax'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='max')
 
@@ -6984,31 +6949,28 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-        if state == 'AK' or state == 'ak':
-           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-        if state != 'AK' and state != 'ak' or gacc_region != None:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+        try:  
+            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+            if state == 'AK' or state == 'ak':
+               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-    
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Minimum Temperature Trend {text}", reference_system, cwa)
 
@@ -7445,31 +7407,28 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-        if state == 'AK' or state == 'ak':
-           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-        if state != 'AK' and state != 'ak' or gacc_region != None:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+        try:  
+            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+            if state == 'AK' or state == 'ak':
+               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-    
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Maximum Temperature Trend", reference_system, cwa)
 
@@ -7925,31 +7884,28 @@ class critical_firewx:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-        if state == 'AK' or state == 'ak':
-           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
-        if state != 'AK' and state != 'ak' or gacc_region != None:
-            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
+        try:  
+            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+            if state == 'AK' or state == 'ak':
+               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-    
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         if add_temperature_parameter == True:            
             if use_wind_gust == False:
@@ -8179,14 +8135,14 @@ class critical_firewx:
 
             if add_temperature_parameter == True:
                 if use_wind_gust == False:
-                    plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(T >= {temperature_threshold}[°F] & RH <= {low_rh_threshold}[%] & Sustained Wind Speed >= {wind_threshold}[MPH])", fontsize=8, fontweight='bold', loc='left')
+                    plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(T >= {temperature_threshold} [°F] & RH <= {low_rh_threshold} [%] & Sustained Wind Speed >= {wind_threshold}[MPH])", fontsize=8, fontweight='bold', loc='left')
                 else:
-                    plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(T >= {temperature_threshold}[°F] & RH <= {low_rh_threshold}[%] & Wind Gust >= {wind_threshold}[MPH])", fontsize=8, fontweight='bold', loc='left')
+                    plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(T >= {temperature_threshold} [°F] & RH <= {low_rh_threshold} [%] & Wind Gust >= {wind_threshold}[MPH])", fontsize=8, fontweight='bold', loc='left')
             else:
                 if use_wind_gust == False:
-                    plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(RH <= {low_rh_threshold}[%] & Sustained Wind Speed >= {wind_threshold}[MPH])", fontsize=8, fontweight='bold', loc='left')
+                    plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(RH <= {low_rh_threshold} [%] & Sustained Wind Speed >= {wind_threshold} [MPH])", fontsize=8, fontweight='bold', loc='left')
                 else:
-                    plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(RH <= {low_rh_threshold}[%] & Wind Gust >= {wind_threshold}[MPH])", fontsize=8, fontweight='bold', loc='left')
+                    plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(RH <= {low_rh_threshold} [%] & Wind Gust >= {wind_threshold} [MPH])", fontsize=8, fontweight='bold', loc='left')
                     
                     
             plt.title(f"Valid: {valid_time.strftime(f'%a %d/%H:00 {timezone}')}", fontsize=7, fontweight='bold', loc='right')
@@ -8289,14 +8245,14 @@ class critical_firewx:
     
                 if add_temperature_parameter == True:
                     if use_wind_gust == False:
-                        plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(T >= {temperature_threshold}[°F] & RH <= {low_rh_threshold}[%] & Sustained Wind Speed >= {wind_threshold}[MPH])", fontsize=8, fontweight='bold', loc='left')
+                        plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(T >= {temperature_threshold} [°F] & RH <= {low_rh_threshold} [%] & Sustained Wind Speed >= {wind_threshold} [MPH])", fontsize=8, fontweight='bold', loc='left')
                     else:
-                        plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(T >= {temperature_threshold}[°F] & RH <= {low_rh_threshold}[%] & Wind Gust >= {wind_threshold}[MPH])", fontsize=8, fontweight='bold', loc='left')
+                        plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(T >= {temperature_threshold} [°F] & RH <= {low_rh_threshold} [%] & Wind Gust >= {wind_threshold} [MPH])", fontsize=8, fontweight='bold', loc='left')
                 else:
                     if use_wind_gust == False:
-                        plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(RH <= {low_rh_threshold}[%] & Sustained Wind Speed >= {wind_threshold}[MPH])", fontsize=8, fontweight='bold', loc='left')
+                        plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(RH <= {low_rh_threshold} [%] & Sustained Wind Speed >= {wind_threshold} [MPH])", fontsize=8, fontweight='bold', loc='left')
                     else:
-                        plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(RH <= {low_rh_threshold}[%] & Wind Gust >= {wind_threshold}[MPH])", fontsize=8, fontweight='bold', loc='left')
+                        plt.title(f"National Weather Service Forecast\nCritical Fire Weather Forecast\n(RH <= {low_rh_threshold} [%] & Wind Gust >= {wind_threshold} [MPH])", fontsize=8, fontweight='bold', loc='left')
                         
                         
                 plt.title(f"Valid: {valid_time.strftime(f'%a %d/%H:00 {timezone}')}", fontsize=7, fontweight='bold', loc='right')
@@ -8320,10 +8276,6 @@ class critical_firewx:
             print(f"Saved extended forecast graphics to {path_print}")
         except Exception as e:
             pass
-
-
-
-
 
 
 
