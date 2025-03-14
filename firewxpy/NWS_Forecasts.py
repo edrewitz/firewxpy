@@ -317,7 +317,7 @@ class relative_humidity:
         state = state
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
@@ -415,28 +415,15 @@ class relative_humidity:
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-
+        if state != 'Custom' or state != 'custom':
             western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-            if state == 'AK' or state == 'ak':
-               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
+        if state == 'AK' or state == 'ak':
+           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        if state != 'AK' and state != 'ak' or gacc_region != None:
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
         if state =='Custom' or state == 'custom':
     
@@ -452,13 +439,6 @@ class relative_humidity:
             x3=x3
             y3=y3
 
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
-    
         else:
             pass
 
@@ -489,6 +469,18 @@ class relative_humidity:
 
         short_vals = NDFD.ndfd_to_dataframe(ds_short, 'maxrh')
         extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'maxrh')
+
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
+
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -590,7 +582,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved short-term forecast graphics to {path_print}")
 
 
         for i in range(0, extended_stop, 1):
@@ -663,7 +655,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved extended forecast graphics to {path_print}")
 
 
     def plot_excellent_overnight_recovery_relative_humidity_forecast(excellent_overnight_recovery_rh_threshold=80, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
@@ -883,7 +875,7 @@ class relative_humidity:
         state = state
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
@@ -976,27 +968,14 @@ class relative_humidity:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
+        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        if state != 'AK' and state != 'ak' or gacc_region != None:
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-            if state == 'AK' or state == 'ak':
-               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
         if state =='Custom' or state == 'custom':
     
@@ -1012,13 +991,6 @@ class relative_humidity:
             x3=x3
             y3=y3
 
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
-    
         else:
             pass
 
@@ -1049,6 +1021,18 @@ class relative_humidity:
 
         short_vals = NDFD.ndfd_to_dataframe(ds_short, 'maxrh')
         extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'maxrh')
+
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
+
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -1150,7 +1134,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved short-term forecast graphics to {path_print}")
 
 
         for i in range(0, extended_stop, 1):
@@ -1223,7 +1207,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved extended forecast graphics to {path_print}")
 
 
     def plot_low_minimum_relative_humidity_forecast(low_rh_threshold=15, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
@@ -1443,7 +1427,7 @@ class relative_humidity:
         state = state
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
@@ -1542,27 +1526,14 @@ class relative_humidity:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
+        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        if state != 'AK' and state != 'ak' or gacc_region != None:
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-            if state == 'AK' or state == 'ak':
-               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
         if state =='Custom' or state == 'custom':
     
@@ -1578,13 +1549,6 @@ class relative_humidity:
             x3=x3
             y3=y3
 
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
-    
         else:
             pass
 
@@ -1612,6 +1576,18 @@ class relative_humidity:
         extended_times = ds_extended['valid_time']
         short_times = short_times.to_pandas()
         extended_times = extended_times.to_pandas()
+
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
+
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
 
         short_vals = NDFD.ndfd_to_dataframe(ds_short, 'unknown')
         extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'unknown')
@@ -1716,7 +1692,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved short-term forecast graphics to {path_print}")
 
 
         for i in range(0, extended_stop, 1):
@@ -1789,7 +1765,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved extended forecast graphics to {path_print}")
 
 
     def plot_minimum_relative_humidity_forecast(low_rh_threshold=15, high_rh_threshold=60, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, x=0.01, y=0.97):
@@ -2017,7 +1993,7 @@ class relative_humidity:
         state = state
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
@@ -2113,31 +2089,14 @@ class relative_humidity:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
+        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        if state != 'AK' and state != 'ak' or gacc_region != None:
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
-
-            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-            if state == 'AK' or state == 'ak':
-               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-
-            sp, x, y = settings.get_sp_dims_and_textbox_coords(gacc_region)
-
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
         if state =='Custom' or state == 'custom':
     
@@ -2153,13 +2112,6 @@ class relative_humidity:
             x3=x3
             y3=y3
 
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
-    
         else:
             pass
 
@@ -2187,6 +2139,18 @@ class relative_humidity:
         extended_times = ds_extended['valid_time']
         short_times = short_times.to_pandas()
         extended_times = extended_times.to_pandas()
+
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
+
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
 
         short_vals = NDFD.ndfd_to_dataframe(ds_short, 'unknown')
         extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'unknown')
@@ -2299,7 +2263,7 @@ class relative_humidity:
             ax.text(x, y, f"Red Contour Line: RH = {low_rh_threshold}% | Blue Contour Line: RH = {high_rh_threshold}%", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved short-term forecast graphics to {path_print}")
 
 
         for i in range(0, extended_stop, 1):
@@ -2379,7 +2343,7 @@ class relative_humidity:
             ax.text(x, y, f"Red Contour Line: RH = {low_rh_threshold}% | Blue Contour Line: RH = {high_rh_threshold}%", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved extended forecast graphics to {path_print}")
 
 
     def plot_maximum_relative_humidity_forecast(low_rh_threshold=30, high_rh_threshold=80, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, x=0.01, y=0.97):
@@ -2607,7 +2571,7 @@ class relative_humidity:
         state = state
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
@@ -2703,31 +2667,14 @@ class relative_humidity:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
+        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        if state != 'AK' and state != 'ak' or gacc_region != None:
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
-
-            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-            if state == 'AK' or state == 'ak':
-               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-
-            sp, x, y = settings.get_sp_dims_and_textbox_coords(gacc_region)
-
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
         if state =='Custom' or state == 'custom':
     
@@ -2743,13 +2690,6 @@ class relative_humidity:
             x3=x3
             y3=y3
 
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
-    
         else:
             pass
 
@@ -2777,6 +2717,18 @@ class relative_humidity:
         extended_times = ds_extended['valid_time']
         short_times = short_times.to_pandas()
         extended_times = extended_times.to_pandas()
+
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
+
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
 
         short_vals = NDFD.ndfd_to_dataframe(ds_short, 'maxrh')
         extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'maxrh')
@@ -2889,7 +2841,7 @@ class relative_humidity:
             ax.text(x, y, f"Red Contour Line: RH = {low_rh_threshold}% | Blue Contour Line: RH = {high_rh_threshold}%", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved short-term forecast graphics to {path_print}")
 
 
         for i in range(0, extended_stop, 1):
@@ -2969,14 +2921,14 @@ class relative_humidity:
             ax.text(x, y, f"Red Contour Line: RH = {low_rh_threshold}% | Blue Contour Line: RH = {high_rh_threshold}%", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved extended forecast graphics to {path_print}")
 
 
-    def plot_maximum_relative_humidity_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, x=0.01, y=0.97):
+    def plot_maximum_relative_humidity_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, show_contours=False):
 
 
         r'''
-        This function plots the latest available NOAA/NWS Maximum RH Forecast Trend. 
+        This function plots the latest available NOAA/NWS Maximum Relative Humidity Forecast Trend. 
 
         Required Arguments: None
 
@@ -3169,12 +3121,10 @@ class relative_humidity:
     
         40) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
 
-        41) x (Float) - Default = 0.01. The x-position of the textbox with respect to the axis of the image showing the value of the contour line. This is only to be changed when making a custom plot.
+        41) show_contours (Boolean) - Default = True. If set to False, contours will be hidden. 
 
-        42) y (Float) - Default = 0.97. The y-position of the textbox with respect to the axis of the image showing the value of the contour line. This is only to be changed when making a custom plot.         
-
-        Return: Saves individual images to f:Weather Data/NWS Forecasts/Maximum RH Trend/{reference_system}. 
-        If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Maximum RH Trend/{reference_system}/{cwa}
+        Return: Saves individual images to f:Weather Data/NWS Forecasts/Maximum Relative Humidity Trend/{reference_system}. 
+        If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Maximum Relative Humidity Trend/{reference_system}/{cwa}
         '''
         PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
         
@@ -3189,15 +3139,15 @@ class relative_humidity:
         state = state
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
         levels = np.arange(-60, 61, 1)
         labels = levels[::5]
 
-        lower = [-50, -30, -15]
-        higher = [15, 30, 50]
+        lower = [-60, -40, -20]
+        higher = [20, 40, 60]
 
         cmap = colormaps.relative_humidity_change_colormap()
 
@@ -3286,31 +3236,14 @@ class relative_humidity:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
+        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        if state != 'AK' and state != 'ak' or gacc_region != None:
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
-
-            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-            if state == 'AK' or state == 'ak':
-               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-
-            sp, x, y = settings.get_sp_dims_and_textbox_coords(gacc_region)
-
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
         if state =='Custom' or state == 'custom':
     
@@ -3325,18 +3258,16 @@ class relative_humidity:
             y2=y2
             x3=x3
             y3=y3
-
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
     
         else:
             pass
 
-        path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Maximum RH Trend", reference_system, cwa)
+        if show_contours == True:
+            text = 'With Contours'
+        else:
+            text = 'Without Contours'
+
+        path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Maximum Relative Humidity Trend {text}", reference_system, cwa)
 
         for file in os.listdir(f"{path}"):
             try:
@@ -3352,34 +3283,42 @@ class relative_humidity:
             ds_short = ds_short
             ds_extended = ds_extended
 
-        short_stop = len(ds_short['step'])
-        extended_stop = len(ds_extended['step'])
-        extended_start = short_stop
-        total_count = short_stop + extended_stop
+        ds = ds_short.combine_first(ds_extended)
 
-        short_times = ds_short['valid_time']
-        extended_times = ds_extended['valid_time']
-        short_times = short_times.to_pandas()
-        extended_times = extended_times.to_pandas()
+        stop = len(ds['step'])
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'maxrh', diff=True)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'maxrh', diff=True)
+        times = ds_short['valid_time'].combine_first(ds_extended['valid_time'])
+        times = times.to_pandas()
+        times = pd.to_datetime(times)
 
-        short_vals_init = NDFD.ndfd_to_dataframe(ds_short, 'maxrh')
-        extended_vals_init = NDFD.ndfd_to_dataframe(ds_extended, 'maxrh')
+        starts = []
+        for t in times:
+            time = t - timedelta(hours=24)
+            starts.append(time)
 
-        short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
-        extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
 
-        vs = short_vals_init[short_stop - 1]
-        ve = extended_vals_init[0]
-        s = short_start_times[short_stop - 1]
-        s1 = extended_start_times[0]
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
 
-        for i in range(1, short_stop, 1):
+        vals = NDFD.ndfd_to_dataframe(ds, 'maxrh', diff=True, decimate=decimate)
 
-            fname = f"A_Short_Term_{i}.png"
+        diffs = []
+        for i in range(1, stop, 1):
+            p = i-1
+            diff = ds['maxrh'][i, :, :] - ds['maxrh'][p, :, :]
+            diffs.append(diff)
 
+        for i in range(0, len(diffs), 1):
+
+            fname = f"Image_{i}.png"
             index = i + 1
 
             fig = plt.figure(figsize=(12,12))
@@ -3425,240 +3364,50 @@ class relative_humidity:
             else:
                 pass  
 
-                try:
-                    val = short_vals[i-1]
-                    start = short_start_times[i-1]
-                    start_1 = short_start_times[i]
-                except Exception as e:
-                    pass
-    
-                stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
-        
-                stn.plot_parameter('C', val['maxrh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-                try:
-                    cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], (ds_short['maxrh'][i, :, :] - ds_short['maxrh'][i-1, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-        
-                    c_low = ax.contour(ds_short['longitude'][:, :], ds_short['latitude'][:, :], mpcalc.smooth_gaussian((ds_short['maxrh'][i, :, :] - ds_short['maxrh'][i-1, :, :]), n=8), levels=lower, colors='darkred', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                    ax.clabel(c_low, levels=lower, inline=True, fontsize=8, rightside_up=True)  
-        
-                    c_high = ax.contour(ds_short['longitude'][:, :], ds_short['latitude'][:, :], mpcalc.smooth_gaussian((ds_short['maxrh'][i, :, :] - ds_short['maxrh'][i-1, :, :]), n=8), levels=higher, colors='darkblue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                    ax.clabel(c_high, levels=higher, inline=True, fontsize=8, rightside_up=True)   
-                except Exception as e:
-                    pass
-
-            plt.title(f"National Weather Service Forecast\nMaximum Relative Humidity Trend [Δ%]", fontsize=8, fontweight='bold', loc='left')
-            plt.title(f"Night {index}: {start_1.strftime('%a %m/%d')} - Night {index-1}: {start.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
-            
-            ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NWS/NDFD", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-            ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-            ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
-
-            ax.text(x, y, f"Red Contour Line: Decreasing RH | Blue Contour Line: Increasing RH", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
-
-            fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
-
-
-        for i in range(1, extended_stop, 1):
-
-            fname = f"B_Extended_Term_{i}.png"
-            fname_7 = f"B_Extended_Term_{i+1}.png"
-
-            index = extended_start + i
-
-            fig = plt.figure(figsize=(12,12))
-            fig.set_facecolor('aliceblue')
-            ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-            ax.add_feature(provinces, linewidth=1, zorder=1)
-            if show_rivers == True:
-                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-            else:
-                pass
-        
-            if show_gacc_borders == True:
-                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-            else:
-                pass
-            if show_psa_borders == True:
-                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_county_borders == True:
-                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_state_borders == True:
-                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-            else:
-                pass
-            if show_cwa_borders == True:
-                ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_firewx_zones == True:
-                ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_public_zones == True:
-                ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-            else:
-                pass  
-
             try:
-                val = extended_vals[i-2]
-                start = extended_start_times[i-2]
-                start_1 = extended_start_times[i-1]
+                val = vals[i]
             except Exception as e:
                 pass
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            if i == 1:
+            stn.plot_parameter('C', val['maxrh'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+
+            try:
+                cs = ax.contourf(ds['longitude'][:, :], ds['latitude'][:, :], diffs[i], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
+                cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
+            except Exception as e:
+                pass
+
+            if show_contours == True:
                 try:
-
-                    diff = ve['maxrh'] - vs['maxrh']
-    
-                    stn.plot_parameter('C', diff[::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-                    cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['maxrh'][0, :, :] - ds_short['maxrh'][short_stop - 1, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-        
-                    c_low = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian((ds_extended['maxrh'][0, :, :] - ds_short['maxrh'][short_stop - 1, :, :]), n=8), levels=lower, colors='darkred', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                    c_low = ax.contour(ds['longitude'][:, :], ds['latitude'][:, :], mpcalc.smooth_gaussian(diffs[i] * units('percent'), n=8), levels=lower, colors='darkred', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
                     ax.clabel(c_low, levels=lower, inline=True, fontsize=8, rightside_up=True)  
         
-                    c_high = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian((ds_extended['maxrh'][0, :, :] - ds_short['maxrh'][short_stop - 1, :, :]), n=8), levels=higher, colors='darkblue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                    ax.clabel(c_high, levels=higher, inline=True, fontsize=8, rightside_up=True) 
+                    c_high = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian(diffs[i] * units('percent'), n=8), levels=higher, colors='darkblue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                    ax.clabel(c_high, levels=higher, inline=True, fontsize=8, rightside_up=True)  
                 except Exception as e:
                     pass
-
-                plt.title(f"Night {index}: {s1.strftime('%a %m/%d')} - Night {index-1}: {s.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
-
             else:
-
-                stn.plot_parameter('C', val['maxrh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-                try:
-                    cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['maxrh'][i-1, :, :] - ds_extended['maxrh'][i-2, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-        
-                    c_low = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian((ds_extended['maxrh'][i-1, :, :] - ds_extended['maxrh'][i-2, :, :]), n=8), levels=lower, colors='darkred', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                    ax.clabel(c_low, levels=lower, inline=True, fontsize=8, rightside_up=True)  
-        
-                    c_high = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian((ds_extended['maxrh'][i-1, :, :] - ds_extended['maxrh'][i-2, :, :]), n=8), levels=higher, colors='darkblue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                    ax.clabel(c_high, levels=higher, inline=True, fontsize=8, rightside_up=True)    
-                except Exception as e:
-                    pass
-                    
-                plt.title(f"Night {index}: {start_1.strftime('%a %m/%d')} - Night {index-1}: {start.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
+                pass
 
             plt.title(f"National Weather Service Forecast\nMaximum Relative Humidity Trend [Δ%]", fontsize=8, fontweight='bold', loc='left')
-
+            plt.title(f"Night {index +1}: {starts[index].strftime('%a %m/%d')} - Night {index}: {starts[i].strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
+            
             ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NWS/NDFD", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
             ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
-            ax.text(x, y, f"Red Contour Line: Decreasing RH | Blue Contour Line: Increasing RH", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
-
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved forecast graphics to {path_print}")
 
 
-        fig = plt.figure(figsize=(12,12))
-        fig.set_facecolor('aliceblue')
-        ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-        ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-        ax.add_feature(provinces, linewidth=1, zorder=1)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-    
-        if show_gacc_borders == True:
-            ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-        else:
-            pass
-        if show_cwa_borders == True:
-            ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_nws_firewx_zones == True:
-            ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-        else:
-            pass
-        if show_nws_public_zones == True:
-            ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-        else:
-            pass  
-
-        try:
-            val = extended_vals[-1]
-            start = extended_start_times[-2]
-            start_1 = extended_start_times[-1]
-        except Exception as e:
-            pass
-
-        stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
-                                         transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
-        
-        stn.plot_parameter('C', val['maxrh'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-        try:
-            cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['maxrh'][-1, :, :] - ds_extended['maxrh'][-2, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-            cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-
-            c_low = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian((ds_extended['maxrh'][-1, :, :] - ds_extended['maxrh'][-2, :, :]), n=8), levels=lower, colors='darkred', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-            ax.clabel(c_low, levels=lower, inline=True, fontsize=8, rightside_up=True)  
-
-            c_high = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian((ds_extended['maxrh'][-1, :, :] - ds_extended['maxrh'][-2, :, :]), n=8), levels=higher, colors='darkblue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-            ax.clabel(c_high, levels=higher, inline=True, fontsize=8, rightside_up=True)    
-        except Exception as e:
-            pass
-            
-            
-        plt.title(f"Night {index + 1}: {start_1.strftime('%a %m/%d')} - Night {index}: {start.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
-
-        plt.title(f"National Weather Service Forecast\nMaximum Relative Humidity Trend [Δ%]", fontsize=8, fontweight='bold', loc='left')
-
-        ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NWS/NDFD", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-        ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-        ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
-
-        ax.text(x, y, f"Red Contour Line: Decreasing RH | Blue Contour Line: Increasing RH", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
-
-        fig.savefig(f"{path}/{fname_7}", bbox_inches='tight')
-        print(f"Saved {fname_7} to {path_print}")
-
-
-    def plot_minimum_relative_humidity_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, x=0.01, y=0.97):
+    def plot_minimum_relative_humidity_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, show_contours=False):
 
 
         r'''
-        This function plots the latest available NOAA/NWS Minimum RH Forecast Trend. 
+        This function plots the latest available NOAA/NWS Minimum Relative Humidity Forecast Trend. 
 
         Required Arguments: None
 
@@ -3851,12 +3600,10 @@ class relative_humidity:
     
         40) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
 
-        41) x (Float) - Default = 0.01. The x-position of the textbox with respect to the axis of the image showing the value of the contour line. This is only to be changed when making a custom plot.
+        41) show_contours (Boolean) - Default = True. If set to False, contours will be hidden. 
 
-        42) y (Float) - Default = 0.97. The y-position of the textbox with respect to the axis of the image showing the value of the contour line. This is only to be changed when making a custom plot.         
-
-        Return: Saves individual images to f:Weather Data/NWS Forecasts/Minimum RH Trend/{reference_system}. 
-        If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Minimum RH Trend/{reference_system}/{cwa}
+        Return: Saves individual images to f:Weather Data/NWS Forecasts/Minimum Relative Humidity Trend/{reference_system}. 
+        If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Minimum Relative Humidity Trend/{reference_system}/{cwa}
         '''
         PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
         
@@ -3871,15 +3618,15 @@ class relative_humidity:
         state = state
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
         levels = np.arange(-60, 61, 1)
         labels = levels[::5]
 
-        lower = [-50, -30, -15]
-        higher = [15, 30, 50]
+        lower = [-60, -40, -20]
+        higher = [20, 40, 60]
 
         cmap = colormaps.relative_humidity_change_colormap()
 
@@ -3968,31 +3715,14 @@ class relative_humidity:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
+        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        if state != 'AK' and state != 'ak' or gacc_region != None:
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
-
-            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-            if state == 'AK' or state == 'ak':
-               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-
-            sp, x, y = settings.get_sp_dims_and_textbox_coords(gacc_region)
-
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
         if state =='Custom' or state == 'custom':
     
@@ -4007,18 +3737,16 @@ class relative_humidity:
             y2=y2
             x3=x3
             y3=y3
-
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
     
         else:
             pass
 
-        path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Minimum RH Trend", reference_system, cwa)
+        if show_contours == True:
+            text = 'With Contours'
+        else:
+            text = 'Without Contours'
+
+        path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Minimum Relative Humidity Trend {text}", reference_system, cwa)
 
         for file in os.listdir(f"{path}"):
             try:
@@ -4034,34 +3762,42 @@ class relative_humidity:
             ds_short = ds_short
             ds_extended = ds_extended
 
-        short_stop = len(ds_short['step'])
-        extended_stop = len(ds_extended['step'])
-        extended_start = short_stop
-        total_count = short_stop + extended_stop
+        ds = ds_short.combine_first(ds_extended)
 
-        short_times = ds_short['valid_time']
-        extended_times = ds_extended['valid_time']
-        short_times = short_times.to_pandas()
-        extended_times = extended_times.to_pandas()
+        stop = len(ds['step'])
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'unknown', diff=True)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'unknown', diff=True)
+        times = ds_short['valid_time'].combine_first(ds_extended['valid_time'])
+        times = times.to_pandas()
+        times = pd.to_datetime(times)
 
-        short_vals_init = NDFD.ndfd_to_dataframe(ds_short, 'unknown')
-        extended_vals_init = NDFD.ndfd_to_dataframe(ds_extended, 'unknown')
+        starts = []
+        for t in times:
+            time = t - timedelta(hours=12)
+            starts.append(time)
 
-        short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
-        extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
 
-        vs = short_vals_init[short_stop - 1]
-        ve = extended_vals_init[0]
-        s = short_start_times[short_stop - 1]
-        s1 = extended_start_times[0]
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
 
-        for i in range(1, short_stop, 1):
+        vals = NDFD.ndfd_to_dataframe(ds, 'unknown', diff=True, decimate=decimate)
 
-            fname = f"A_Short_Term_{i}.png"
+        diffs = []
+        for i in range(1, stop, 1):
+            p = i-1
+            diff = ds['unknown'][i, :, :] - ds['unknown'][p, :, :]
+            diffs.append(diff)
 
+        for i in range(0, len(diffs), 1):
+
+            fname = f"Image_{i}.png"
             index = i + 1
 
             fig = plt.figure(figsize=(12,12))
@@ -4107,233 +3843,43 @@ class relative_humidity:
             else:
                 pass  
 
-                try:
-                    val = short_vals[i-1]
-                    start = short_start_times[i-1]
-                    start_1 = short_start_times[i]
-                except Exception as e:
-                    pass
-    
-                stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
-                                                 transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
-        
-                stn.plot_parameter('C', val['unknown'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-                try:
-                    cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], (ds_short['unknown'][i, :, :] - ds_short['unknown'][i-1, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-        
-                    c_low = ax.contour(ds_short['longitude'][:, :], ds_short['latitude'][:, :], mpcalc.smooth_gaussian((ds_short['unknown'][i, :, :] - ds_short['unknown'][i-1, :, :]) * units('percent'), n=8), levels=lower, colors='darkred', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                    ax.clabel(c_low, levels=lower, inline=True, fontsize=8, rightside_up=True)  
-        
-                    c_high = ax.contour(ds_short['longitude'][:, :], ds_short['latitude'][:, :], mpcalc.smooth_gaussian((ds_short['unknown'][i, :, :] - ds_short['unknown'][i-1, :, :]) * units('percent'), n=8), levels=higher, colors='darkblue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                    ax.clabel(c_high, levels=higher, inline=True, fontsize=8, rightside_up=True)   
-                except Exception as e:
-                    pass
-
-            plt.title(f"National Weather Service Forecast\nMinimum Relative Humidity Trend [Δ%]", fontsize=8, fontweight='bold', loc='left')
-            plt.title(f"Day {index}: {start_1.strftime('%a %m/%d')} - Day {index-1}: {start.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
-            
-            ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NWS/NDFD", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-            ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-            ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
-
-            ax.text(x, y, f"Red Contour Line: Decreasing RH | Blue Contour Line: Increasing RH", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
-
-            fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
-
-
-        for i in range(1, extended_stop, 1):
-
-            fname = f"B_Extended_Term_{i}.png"
-            fname_7 = f"B_Extended_Term_{i+1}.png"
-
-            index = extended_start + i
-
-            fig = plt.figure(figsize=(12,12))
-            fig.set_facecolor('aliceblue')
-            ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-            ax.add_feature(provinces, linewidth=1, zorder=1)
-            if show_rivers == True:
-                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-            else:
-                pass
-        
-            if show_gacc_borders == True:
-                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-            else:
-                pass
-            if show_psa_borders == True:
-                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_county_borders == True:
-                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_state_borders == True:
-                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-            else:
-                pass
-            if show_cwa_borders == True:
-                ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_firewx_zones == True:
-                ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_public_zones == True:
-                ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-            else:
-                pass  
-
             try:
-                val = extended_vals[i-2]
-                start = extended_start_times[i-2]
-                start_1 = extended_start_times[i-1]
+                val = vals[i]
             except Exception as e:
                 pass
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            if i == 1:
+            stn.plot_parameter('C', val['unknown'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+
+            try:
+                cs = ax.contourf(ds['longitude'][:, :], ds['latitude'][:, :], diffs[i], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
+                cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
+            except Exception as e:
+                pass
+
+            if show_contours == True:
                 try:
-
-                    diff = ve['unknown'] - vs['unknown']
-    
-                    stn.plot_parameter('C', diff[::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-                    cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['unknown'][0, :, :] - ds_short['unknown'][short_stop - 1, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-        
-                    c_low = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian((ds_extended['unknown'][0, :, :] - ds_short['unknown'][short_stop - 1, :, :]) * units('percent'), n=8), levels=lower, colors='darkred', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                    c_low = ax.contour(ds['longitude'][:, :], ds['latitude'][:, :], mpcalc.smooth_gaussian(diffs[i] * units('percent'), n=8), levels=lower, colors='darkred', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
                     ax.clabel(c_low, levels=lower, inline=True, fontsize=8, rightside_up=True)  
         
-                    c_high = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian((ds_extended['unknown'][0, :, :] - ds_short['unknown'][short_stop - 1, :, :]) * units('percent'), n=8), levels=higher, colors='darkblue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                    ax.clabel(c_high, levels=higher, inline=True, fontsize=8, rightside_up=True) 
+                    c_high = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian(diffs[i] * units('percent'), n=8), levels=higher, colors='darkblue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
+                    ax.clabel(c_high, levels=higher, inline=True, fontsize=8, rightside_up=True)  
                 except Exception as e:
                     pass
-
-                plt.title(f"Day {index}: {s1.strftime('%a %m/%d')} - Day {index-1}: {s.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
-
             else:
-
-                stn.plot_parameter('C', val['unknown'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-                try:
-                    cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['unknown'][i-1, :, :] - ds_extended['unknown'][i-2, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-        
-                    c_low = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian((ds_extended['unknown'][i-1, :, :] - ds_extended['unknown'][i-2, :, :]) * units('percent'), n=8), levels=lower, colors='darkred', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                    ax.clabel(c_low, levels=lower, inline=True, fontsize=8, rightside_up=True)  
-        
-                    c_high = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian((ds_extended['unknown'][i-1, :, :] - ds_extended['unknown'][i-2, :, :]) * units('percent'), n=8), levels=higher, colors='darkblue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-                    ax.clabel(c_high, levels=higher, inline=True, fontsize=8, rightside_up=True)    
-                except Exception as e:
-                    pass
-                    
-                    
-                plt.title(f"Day {index}: {start_1.strftime('%a %m/%d')} - Day {index-1}: {start.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
+                pass
 
             plt.title(f"National Weather Service Forecast\nMinimum Relative Humidity Trend [Δ%]", fontsize=8, fontweight='bold', loc='left')
-
+            plt.title(f"Day {index +1}: {starts[index].strftime('%a %m/%d')} - Day {index}: {starts[i].strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
+            
             ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NWS/NDFD", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
             ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
-            ax.text(x, y, f"Red Contour Line: Decreasing RH | Blue Contour Line: Increasing RH", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
-
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
-
-        fig = plt.figure(figsize=(12,12))
-        fig.set_facecolor('aliceblue')
-        ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-        ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-        ax.add_feature(provinces, linewidth=1, zorder=1)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-    
-        if show_gacc_borders == True:
-            ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-        else:
-            pass
-        if show_cwa_borders == True:
-            ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_nws_firewx_zones == True:
-            ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-        else:
-            pass
-        if show_nws_public_zones == True:
-            ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-        else:
-            pass  
-
-        try:
-            val = extended_vals[-1]
-            start = extended_start_times[-2]
-            start_1 = extended_start_times[-1]
-        except Exception as e:
-            pass
-
-        stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
-                                         transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
-        
-        stn.plot_parameter('C', val['unknown'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-        try:
-            cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['unknown'][-1, :, :] - ds_extended['unknown'][-2, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-            cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-
-            c_low = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian((ds_extended['unknown'][-1, :, :] - ds_extended['unknown'][-2, :, :]) * units('percent'), n=8), levels=lower, colors='darkred', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-            ax.clabel(c_low, levels=lower, inline=True, fontsize=8, rightside_up=True)  
-
-            c_high = ax.contour(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], mpcalc.smooth_gaussian((ds_extended['unknown'][-1, :, :] - ds_extended['unknown'][-2, :, :]) * units('percent'), n=8), levels=higher, colors='darkblue', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
-            ax.clabel(c_high, levels=higher, inline=True, fontsize=8, rightside_up=True)    
-        except Exception as e:
-            pass
-            
-            
-        plt.title(f"Day {index + 1}: {start_1.strftime('%a %m/%d')} - Day {index}: {start.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
-
-        plt.title(f"National Weather Service Forecast\nMinimum Relative Humidity Trend [Δ%]", fontsize=8, fontweight='bold', loc='left')
-
-        ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NWS/NDFD", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-        ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-        ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
-
-        ax.text(x, y, f"Red Contour Line: Decreasing RH | Blue Contour Line: Increasing RH", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
-
-        fig.savefig(f"{path}/{fname_7}", bbox_inches='tight')
-        print(f"Saved {fname_7} to {path_print}")
+        print(f"Saved forecast graphics to {path_print}")
 
 
 class temperature:
@@ -4556,7 +4102,7 @@ class temperature:
         state = state
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
@@ -4650,27 +4196,14 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
+        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        if state != 'AK' and state != 'ak' or gacc_region != None:
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-            if state == 'AK' or state == 'ak':
-               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
         if state =='Custom' or state == 'custom':
     
@@ -4686,13 +4219,6 @@ class temperature:
             x3=x3
             y3=y3
 
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
-    
         else:
             pass
 
@@ -4720,6 +4246,18 @@ class temperature:
         extended_times = ds_extended['valid_time']
         short_times = short_times.to_pandas()
         extended_times = extended_times.to_pandas()
+
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
+
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
 
         short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=True)
         extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=True)
@@ -4824,7 +4362,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved short-term forecast graphics to {path_print}")
 
 
         for i in range(0, extended_stop, 1):
@@ -4897,7 +4435,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved extended forecast graphics to {path_print}")
 
 
     def plot_extremely_warm_low_temperature_forecast(warm_low_threshold=80, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
@@ -5117,7 +4655,7 @@ class temperature:
         state = state
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
@@ -5213,27 +4751,14 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
+        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        if state != 'AK' and state != 'ak' or gacc_region != None:
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-            if state == 'AK' or state == 'ak':
-               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
         if state =='Custom' or state == 'custom':
     
@@ -5249,13 +4774,6 @@ class temperature:
             x3=x3
             y3=y3
 
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
-    
         else:
             pass
 
@@ -5283,6 +4801,19 @@ class temperature:
         extended_times = ds_extended['valid_time']
         short_times = short_times.to_pandas()
         extended_times = extended_times.to_pandas()
+
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
+
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
+
 
         short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=True)
         extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=True)
@@ -5386,7 +4917,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved short-term forecast graphics to {path_print}")
 
 
         for i in range(0, extended_stop, 1):
@@ -5459,7 +4990,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved extended forecast graphics to {path_print}")
 
 
     def plot_extreme_heat_forecast(extreme_heat_threshold=110, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
@@ -5679,7 +5210,7 @@ class temperature:
         state = state
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
@@ -5775,27 +5306,14 @@ class temperature:
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
 
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
+        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+           western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+           directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+        if state != 'AK' and state != 'ak' or gacc_region != None:
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-            if state == 'AK' or state == 'ak':
-               western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
-
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+        sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
         if state =='Custom' or state == 'custom':
     
@@ -5811,13 +5329,6 @@ class temperature:
             x3=x3
             y3=y3
 
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
-    
         else:
             pass
 
@@ -5845,6 +5356,19 @@ class temperature:
         extended_times = ds_extended['valid_time']
         short_times = short_times.to_pandas()
         extended_times = extended_times.to_pandas()
+
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
+
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
+
 
         short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmax', temperature_to_F=True)
         extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmax', temperature_to_F=True)
@@ -5949,7 +5473,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved short-term forecast graphics to {path_print}")
 
 
         for i in range(0, extended_stop, 1):
@@ -6022,10 +5546,10 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved extended forecast graphics to {path_print}")
 
 
-    def plot_maximum_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, temp_scale_warm_start=40, temp_scale_warm_stop=110, temp_scale_cool_start=20, temp_scale_cool_stop=90, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
+    def plot_maximum_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, temp_scale_warm_start=30, temp_scale_warm_stop=90, temp_scale_cool_start=0, temp_scale_cool_stop=70, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
 
 
         r'''
@@ -6039,13 +5563,13 @@ class temperature:
 
         2) end_of_warm_season_month (Integer) - Default = 10 (October). The numeric value for the month the warm season ends. 
 
-        3) temp_scale_warm_start (Integer) - Default = 40. The bottom bound temperature value in Fahrenheit of the warm season temperature range. 
+        3) temp_scale_warm_start (Integer) - Default = 30. The bottom bound temperature value in Fahrenheit of the warm season temperature range. 
 
-        4) temp_scale_warm_stop (Integer) - Default = 110. The top bound temperature value in Fahrenheit of the warm season temperature range.
+        4) temp_scale_warm_stop (Integer) - Default = 90. The top bound temperature value in Fahrenheit of the warm season temperature range.
 
-        5) temp_scale_cool_start (Integer) - Default = 20. The bottom bound temperature value in Fahrenheit of the cool season temperature range. 
+        5) temp_scale_cool_start (Integer) - Default = 0. The bottom bound temperature value in Fahrenheit of the cool season temperature range. 
 
-        6) temp_scale_cool_stop (Integer) - Default = 90. The top bound temperature value in Fahrenheit of the cool season temperature range.         
+        6) temp_scale_cool_stop (Integer) - Default = 70. The top bound temperature value in Fahrenheit of the cool season temperature range.         
 
         7) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
            The default setting is None. If set to None, the user must select a state or gacc_region. 
@@ -6250,7 +5774,7 @@ class temperature:
         state = state
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
@@ -6347,52 +5871,29 @@ class temperature:
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-
+                    
+        try:  
             western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
             if state == 'AK' or state == 'ak':
                western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
-    
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, 'Max T Forecast', reference_system, cwa)
 
@@ -6419,20 +5920,32 @@ class temperature:
         short_times = short_times.to_pandas()
         extended_times = extended_times.to_pandas()
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmax', temperature_to_F=True)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmax', temperature_to_F=True)
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
+
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
+
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmax', temperature_to_F=True, decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmax', temperature_to_F=True, decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
 
-        init_hr = 12
+        init_hr = 0
         hour = short_start_times_utc[0].hour
         dt = False
         if hour == init_hr:
             start = 0
             skip = False
         else:
-            if local_time.hour < 14:
+            if local_time.hour >= 18 and local_time.hour <= 2:
                 start = 0
                 skip = False
                 dt = True
@@ -6501,10 +6014,10 @@ class temperature:
             start = short_start_times[i]
             end = short_end_times[i]             
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['tmax'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['tmax'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], ds_short['tmax'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
             cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
@@ -6522,7 +6035,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved short-term forecast graphics to {path_print}")
 
 
         for i in range(0, extended_stop, 1):
@@ -6578,10 +6091,10 @@ class temperature:
             start = extended_start_times[i]
             end = extended_end_times[i]
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['tmax'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['tmax'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], ds_extended['tmax'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
 
@@ -6595,7 +6108,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved extended forecast graphics to {path_print}")
 
 
     def plot_minimum_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, temp_scale_warm_start=30, temp_scale_warm_stop=90, temp_scale_cool_start=0, temp_scale_cool_stop=70, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
@@ -6823,7 +6336,7 @@ class temperature:
         state = state
 
         if gacc_region != None:
-            state = None
+            state = gacc_region
         else:
             state = state
 
@@ -6920,52 +6433,29 @@ class temperature:
                 show_county_borders = True
                 if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                     county_border_linewidth=0.25
-
-        if state != None and gacc_region == None:
-            directory_name = settings.get_state_directory(state)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_state(state)
-            else:
-                decimate = decimate
-
+                    
+        try:  
             western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
             if state == 'AK' or state == 'ak':
                western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
-    
-        if state == None and gacc_region != None:
-            directory_name = settings.get_gacc_region_directory(gacc_region)
-    
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_gacc_region(gacc_region)
-            else:
-                decimate = decimate
+               directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/'
+            if state != 'AK' and state != 'ak' or gacc_region != None:
+                directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-            wb, eb, sb, nb, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', gacc_region)
+            sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
 
-        if state =='Custom' or state == 'custom':
-    
+        except Exception as e:
             western_bound = western_bound
             eastern_bound = eastern_bound
             southern_bound = southern_bound
             northern_bound = northern_bound
-            state = 'Custom'
             x1=x1
             y1=y1
             x2=x2
             y2=y2
             x3=x3
             y3=y3
-
-            if decimate == 'default':
-                decimate = scaling.get_NDFD_decimation_by_region(western_bound, eastern_bound, southern_bound, northern_bound, 'conus')
-            else:
-                decimate = decimate
-
-            directory_name = settings.check_NDFD_directory_name('conus')
-    
-        else:
-            pass
+            directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
         path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, 'Min T Forecast', reference_system, cwa)
 
@@ -6992,8 +6482,20 @@ class temperature:
         short_times = short_times.to_pandas()
         extended_times = extended_times.to_pandas()
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=True)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=True)
+        decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
+        try:
+            if cwa == 'AER' or cwa == 'aer' or cwa == 'ALU' or cwa == 'alu' or cwa == 'AJK' or cwa == 'ajk':
+                decimate = 30
+            if cwa == 'AFG' or cwa == 'afg':
+                decimate = 50
+        except Exception as e:
+            pass
+
+        if state == 'SWCC' or state == 'swcc':
+            decimate = 30
+
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=True, decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=True, decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -7074,10 +6576,10 @@ class temperature:
             start = short_start_times[i]
             end = short_end_times[i]             
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['tmin'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['tmin'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], ds_short['tmin'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
             cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
@@ -7095,7 +6597,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved short-term forecast graphics to {path_print}")
 
 
         for i in range(0, extended_stop, 1):
@@ -7151,10 +6653,10 @@ class temperature:
             start = extended_start_times[i]
             end = extended_end_times[i]
 
-            stn = mpplots.StationPlot(ax, val['longitude'][::decimate], val['latitude'][::decimate],
+            stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            stn.plot_parameter('C', val['tmin'][::decimate], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            stn.plot_parameter('C', val['tmin'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
             cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], ds_extended['tmin'][i, :, :], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
 
@@ -7168,10 +6670,10 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved extended forecast graphics to {path_print}")
 
 
-    def plot_minimum_temperature_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa='STATE', signature_fontsize=6, stamp_fontsize=5):
+    def plot_minimum_temperature_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
 
 
         r'''
@@ -7371,6 +6873,7 @@ class temperature:
         Return: Saves individual images to f:Weather Data/NWS Forecasts/Minimum Temperature Trend/{reference_system}. 
         If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Minimum Temperature Trend/{reference_system}/{cwa}
         '''
+            
         PSAs = geometry.get_shapes(f"PSA Shapefiles/National_PSA_Current.shp")
         
         GACC = geometry.get_shapes(f"GACC Boundaries Shapefiles/National_GACC_Current.shp")
@@ -7503,12 +7006,11 @@ class temperature:
             y2=y2
             x3=x3
             y3=y3
-
     
         else:
             pass
 
-        path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Minimum Temperature Trend", reference_system, cwa)
+        path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Minimum Temperature Trend {text}", reference_system, cwa)
 
         for file in os.listdir(f"{path}"):
             try:
@@ -7524,15 +7026,18 @@ class temperature:
             ds_short = ds_short
             ds_extended = ds_extended
 
-        short_stop = len(ds_short['step'])
-        extended_stop = len(ds_extended['step'])
-        extended_start = short_stop
-        total_count = short_stop + extended_stop
+        ds = ds_short.combine_first(ds_extended)
 
-        short_times = ds_short['valid_time']
-        extended_times = ds_extended['valid_time']
-        short_times = short_times.to_pandas()
-        extended_times = extended_times.to_pandas()
+        stop = len(ds['step'])
+
+        times = ds_short['valid_time'].combine_first(ds_extended['valid_time'])
+        times = times.to_pandas()
+        times = pd.to_datetime(times)
+
+        starts = []
+        for t in times:
+            time = t - timedelta(hours=24)
+            starts.append(time)
 
         decimate = scaling.get_ndfd_decimation(western_bound, eastern_bound, southern_bound, northern_bound)
         try:
@@ -7546,24 +7051,17 @@ class temperature:
         if state == 'SWCC' or state == 'swcc':
             decimate = 30
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', diff=True, temperature_to_F=True, decimate=decimate)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', diff=True, temperature_to_F=True, decimate=decimate)
+        vals = NDFD.ndfd_to_dataframe(ds, 'tmin', diff=True, temperature_to_F=True, decimate=decimate)
 
-        short_vals_init = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=True, decimate=decimate)
-        extended_vals_init = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=True, decimate=decimate)
+        diffs = []
+        for i in range(1, stop, 1):
+            p = i-1
+            diff = ds['tmin'][i, :, :] - ds['tmin'][p, :, :]
+            diffs.append(diff)
 
-        short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
-        extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
+        for i in range(0, len(diffs), 1):
 
-        vs = short_vals_init[short_stop - 1]
-        ve = extended_vals_init[0]
-        s = short_start_times[short_stop - 1]
-        s1 = extended_start_times[0]
-
-        for i in range(1, short_stop, 1):
-
-            fname = f"A_Short_Term_{i}.png"
-
+            fname = f"Image_{i}.png"
             index = i + 1
 
             fig = plt.figure(figsize=(12,12))
@@ -7609,204 +7107,32 @@ class temperature:
             else:
                 pass  
 
-                try:
-                    val = short_vals[i-1]
-                    start = short_start_times[i-1]
-                    start_1 = short_start_times[i]
-                except Exception as e:
-                    pass
-    
-                stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
-                                                 transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
-        
-                stn.plot_parameter('C', val['tmin'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-                try:
-                    cs = ax.contourf(ds_short['longitude'][:, :], ds_short['latitude'][:, :], (ds_short['tmin'][i, :, :] - ds_short['tmin'][i-1, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-                except Exception as e:
-                    pass
-
-            plt.title(f"National Weather Service Forecast\nMinimum Temperature Trend [Δ°F]", fontsize=8, fontweight='bold', loc='left')
-            plt.title(f"Night {index}: {start_1.strftime('%a %m/%d')} - Night {index-1}: {start.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
-            
-            ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NWS/NDFD", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-            ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-            ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
-
-            fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
-
-
-        for i in range(1, extended_stop, 1):
-
-            fname = f"B_Extended_Term_{i}.png"
-            fname_7 = f"B_Extended_Term_{i+1}.png"
-
-            index = extended_start + i
-
-            fig = plt.figure(figsize=(12,12))
-            fig.set_facecolor('aliceblue')
-            ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-            ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-            ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-            ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-            ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-            ax.add_feature(provinces, linewidth=1, zorder=1)
-            if show_rivers == True:
-                ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-            else:
-                pass
-        
-            if show_gacc_borders == True:
-                ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-            else:
-                pass
-            if show_psa_borders == True:
-                ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_county_borders == True:
-                ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_state_borders == True:
-                ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-            else:
-                pass
-            if show_cwa_borders == True:
-                ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_firewx_zones == True:
-                ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_public_zones == True:
-                ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-            else:
-                pass  
-
             try:
-                val = extended_vals[i-2]
-                start = extended_start_times[i-2]
-                start_1 = extended_start_times[i-1]
+                val = vals[i]
             except Exception as e:
                 pass
 
             stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
                                              transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
     
-            if i == 1:
-                try:
+            stn.plot_parameter('C', val['tmin'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
 
-                    diff = ve['tmin'] - vs['tmin']
-    
-                    stn.plot_parameter('C', diff, color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
+            try:
+                cs = ax.contourf(ds['longitude'][:, :], ds['latitude'][:, :], diffs[i], levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
+                cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
+            except Exception as e:
+                pass
 
-                    cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['tmin'][0, :, :] - ds_short['tmin'][short_stop, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-                except Exception as e:
-                    pass
-
-                plt.title(f"Night {index}: {s1.strftime('%a %m/%d')} - Night {index-1}: {s.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
-
-            else:
-
-                stn.plot_parameter('C', val['tmin'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-                try:
-                    cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['tmin'][i-1, :, :] - ds_extended['tmin'][i-2, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-                    cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-                except Exception as e:
-                    pass
-                    
-                    
-                plt.title(f"Night {index}: {start_1.strftime('%a %m/%d')} - Night {index-1}: {start.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
 
             plt.title(f"National Weather Service Forecast\nMinimum Temperature Trend [Δ°F]", fontsize=8, fontweight='bold', loc='left')
-
+            plt.title(f"Night {index +1}: {starts[index].strftime('%a %m/%d')} - Night {index}: {starts[i].strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
+            
             ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NWS/NDFD", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
             ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
-
-        fig = plt.figure(figsize=(12,12))
-        fig.set_facecolor('aliceblue')
-        ax = fig.add_subplot(1, 1, 1, projection=mapcrs)
-        ax.set_extent([western_bound, eastern_bound, southern_bound, northern_bound], datacrs)
-        ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-        ax.add_feature(cfeature.LAND, color='beige', zorder=1)
-        ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-        ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-        ax.add_feature(provinces, linewidth=1, zorder=1)
-        if show_rivers == True:
-            ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-        else:
-            pass
-    
-        if show_gacc_borders == True:
-            ax.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-        else:
-            pass
-        if show_psa_borders == True:
-            ax.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_county_borders == True:
-            ax.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_state_borders == True:
-            ax.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-        else:
-            pass
-        if show_cwa_borders == True:
-            ax.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-        else:
-            pass
-        if show_nws_firewx_zones == True:
-            ax.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-        else:
-            pass
-        if show_nws_public_zones == True:
-            ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-        else:
-            pass  
-
-        try:
-            val = extended_vals[-1]
-            start = extended_start_times[-2]
-            start_1 = extended_start_times[-1]
-        except Exception as e:
-            pass
-
-        stn = mpplots.StationPlot(ax, val['longitude'], val['latitude'],
-                                         transform=ccrs.PlateCarree(), fontsize=8, zorder=10, clip_on=True)
-        
-        stn.plot_parameter('C', val['tmin'], color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=10)
-
-        try:
-            cs = ax.contourf(ds_extended['longitude'][:, :], ds_extended['latitude'][:, :], (ds_extended['tmin'][-1, :, :] - ds_extended['tmin'][-2, :, :]), levels=levels, cmap=cmap, transform=datacrs, alpha=0.5, extend='both')
-            cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=labels)
-
-        except Exception as e:
-            pass
-            
-            
-        plt.title(f"Night {index + 1}: {start_1.strftime('%a %m/%d')} - Night {index}: {start.strftime('%a %m/%d')}", fontsize=7, fontweight='bold', loc='right')
-
-        plt.title(f"National Weather Service Forecast\nMinimum Temperature Trend [Δ°F]", fontsize=8, fontweight='bold', loc='left')
-
-        ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NWS/NDFD", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
-        ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
-        ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
-
-        fig.savefig(f"{path}/{fname_7}", bbox_inches='tight')
-        print(f"Saved {fname_7} to {path_print}")
+        print(f"Saved forecast graphics to {path_print}")
 
 
     def plot_maximum_temperature_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
@@ -8266,7 +7592,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved forecast graphics to {path_print}")
 
 
 class critical_firewx:
@@ -8881,7 +8207,7 @@ class critical_firewx:
                     ax.text(x, y, f"Key: Cyan = Wind Gust | Green = RH", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)                
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            print(f"Saved {fname} to {path_print}")
+        print(f"Saved short-term forecast graphics to {path_print}")
 
         try:
 
@@ -8991,10 +8317,9 @@ class critical_firewx:
                         ax.text(x, y, f"Key: Cyan = Wind Gust | Green = RH", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)                
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                print(f"Saved {fname} to {path_print}")
+            print(f"Saved extended forecast graphics to {path_print}")
         except Exception as e:
             pass
-
 
 
 
