@@ -2485,7 +2485,7 @@ class time_cross_sections:
         if model == 'GFS0p25':
             theta_e = theta_e.reshape(29,13)
         if model == 'RAP':
-            theta_e = theta_e.reshape(22,37)
+            theta_e = theta_e.reshape(22,21)
         lat = abs(round(float(ds['lat'].values), 1))
         lon = abs(round(float(ds['lon'].values), 1))
     
@@ -2905,7 +2905,7 @@ class time_cross_sections:
         if model == 'GFS0p25':
             theta_e = theta_e.reshape(29,13)
         if model == 'RAP':
-            theta_e = theta_e.reshape(22,37)
+            theta_e = theta_e.reshape(22,21)
         rh = ds['rhprs']
         lat = abs(round(float(ds['lat'].values), 1))
         lon = abs(round(float(ds['lon'].values), 1))
@@ -2985,7 +2985,7 @@ class time_cross_sections:
         try:
             plt.title(f"VALID: {times[0].strftime('%a %d/%HZ')}-{times[28].strftime('%a %d/%HZ')}", fontsize=8, fontweight='bold', loc='right')
         except Exception as e:
-            plt.title(f"VALID: {times[0].strftime('%a %d/%HZ')}-{times[22].strftime('%a %d/%HZ')}", fontsize=8, fontweight='bold', loc='right')
+            plt.title(f"VALID: {times[0].strftime('%a %d/%HZ')}-{times[21].strftime('%a %d/%HZ')}", fontsize=8, fontweight='bold', loc='right')
         ax1.text(0.01, -0.08, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS", transform=ax1.transAxes, fontsize=6, fontweight='bold', bbox=props)
         ax1.text(0.8, -0.08, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax1.transAxes, fontsize=6, fontweight='bold', bbox=props)
     
