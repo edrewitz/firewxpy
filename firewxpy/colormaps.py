@@ -84,7 +84,7 @@ def relative_humidity_colormap():
 
 
 def relative_humidity_change_colormap():
-    relative_humidity_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("relative humidity", ["saddlebrown", "peru", "orange", "gold", "white", "yellowgreen", "lawngreen", "springgreen", "lime"])
+    relative_humidity_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("relative humidity", ["saddlebrown", "peru", "orange", "gold", "lightgrey", "yellowgreen", "lawngreen", "springgreen", "lime"])
     
     return relative_humidity_change_colormap
 
