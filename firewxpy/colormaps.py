@@ -109,6 +109,11 @@ def SPC_Dry_Lightning_Risk_Outlook_colormap():
     
     return SPC_Dry_Lightning_Risk_Outlook_colormap
 
+def spc_convective_outlook_colormap():
+    spc_convective_outlook_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("SPC Convective Outlook", ["green", "yellowgreen", "darkorange", "darkred", "violet"])
+    
+    return spc_convective_outlook_colormap
+
 
 def red_flag_warning_alaska_temperature_parameter_colormap():
     red_flag_warning_alaska_temperature_parameter_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("temperature", ["pink", "lightcoral", "red", "darkred"])
