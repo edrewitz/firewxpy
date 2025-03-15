@@ -232,7 +232,6 @@ class model_data:
                                     print("00z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
             
             if utc_time.hour >= 6 and utc_time.hour < 12:
                 
@@ -261,7 +260,6 @@ class model_data:
                                     print("06z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
             
             if utc_time.hour >= 12 and utc_time.hour < 18:
                 
@@ -290,7 +288,7 @@ class model_data:
                                     print("12z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
+
             
             if utc_time.hour >= 18 and utc_time.hour < 24:
                 
@@ -319,7 +317,6 @@ class model_data:
                                     print("18z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
 
             
         else:
@@ -354,7 +351,6 @@ class model_data:
                                     print("00z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
                     
             
             if utc_time.hour >= 6 and utc_time.hour < 12:
@@ -384,7 +380,6 @@ class model_data:
                                     print("06z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
             
             if utc_time.hour >= 12 and utc_time.hour < 18:
                 
@@ -413,7 +408,6 @@ class model_data:
                                     print("12z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
             
             if utc_time.hour >= 18 and utc_time.hour < 24:
                 
@@ -442,7 +436,6 @@ class model_data:
                                     print("18z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
 
 
                     
@@ -1533,7 +1526,6 @@ class model_data:
                                     print("00z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
                    
             
             if utc_time.hour >= 6 and utc_time.hour < 12:
@@ -1563,7 +1555,6 @@ class model_data:
                                     print("06z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
             
             if utc_time.hour >= 12 and utc_time.hour < 18:
                 
@@ -1592,7 +1583,6 @@ class model_data:
                                     print("12z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
             
             if utc_time.hour >= 18 and utc_time.hour < 24:
                 
@@ -1621,7 +1611,6 @@ class model_data:
                                     print("18z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
             
         else:
 
@@ -1654,7 +1643,6 @@ class model_data:
                                     print("00z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
                     
             
             if utc_time.hour >= 6 and utc_time.hour < 12:
@@ -1684,7 +1672,6 @@ class model_data:
                                     print("06z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
             
             if utc_time.hour >= 12 and utc_time.hour < 18:
                 
@@ -1713,7 +1700,6 @@ class model_data:
                                     print("12z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
             
             if utc_time.hour >= 18 and utc_time.hour < 24:
                 
@@ -1742,7 +1728,6 @@ class model_data:
                                     print("18z run downloaded successfully!")      
                                 except Exception as e:
                                     print("Latest available dataset is over a day old. Not even worth the time at this point!")
-                                    sys.exit()
 
 
 
@@ -2447,7 +2432,6 @@ class model_data:
                                 print("Yesterday's 00z run retrieved successfully.") 
                             except Exception as e:
                                 print("The latest available dataset is over a day old. Not even worth it at this point!")
-                                sys.exit()
                             
         if utc_time.hour >= 6 and utc_time.hour < 12:
             try:
@@ -2479,7 +2463,6 @@ class model_data:
                                 print("Yesterday's 06z run retrieved successfully.")
                             except Exception as e:
                                 print("The latest available dataset is over a day old. Not even worth it at this point!")
-                                sys.exit()                
         
         if utc_time.hour >= 12 and utc_time.hour < 18:
             try:
@@ -2512,7 +2495,6 @@ class model_data:
                                 print("Yesterday's 12z run retrieved successfully.")
                             except Exception as e:
                                 print("The latest available dataset is over a day old. Not even worth it at this point!")
-                                sys.exit()   
         
         if utc_time.hour >= 18 and utc_time.hour < 24:
             try:
@@ -2545,7 +2527,6 @@ class model_data:
                                 print("Yesterday's 18z run retrieved successfully.")
                             except Exception as e:
                                 print("The latest available dataset is over a day old. Not even worth it at this point!")
-                                sys.exit() 
 
 
         return ds
@@ -3915,7 +3896,20 @@ class NDFD_GRIDS:
 
         if parameter == 'ds.wdir.bin':
             short_term_fname = 'ds.wdir_short.bin'
-            extended_fname = 'ds.wdir_extended.bin'               
+            extended_fname = 'ds.wdir_extended.bin'  
+
+        if parameter == 'ds.critfireo.bin':
+            short_term_fname = 'ds.critfireo_short.bin'
+            extended_fname = 'ds.critfireo_extended.bin'     
+
+        if parameter == 'ds.dryfireo.bin':
+            short_term_fname = 'ds.dryfireo_short.bin'
+            extended_fname = 'ds.dryfireo_extended.bin' 
+
+        if parameter == 'ds.conhazo.bin':
+            short_term_fname = 'ds.conhazo_short.bin'
+            extended_fname = 'ds.conhazo_extended.bin' 
+
 
         if os.path.exists(short_term_fname):
             os.remove(short_term_fname)
@@ -3930,14 +3924,16 @@ class NDFD_GRIDS:
                 os.remove(extended_fname)
                 urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
                 os.rename(parameter, extended_fname)
+                extended = True
             except Exception as e:
-                pass
+                extended = False
         else:
             try:
                 urllib.request.urlretrieve(f"https://tgftp.nws.noaa.gov{directory_name}VP.004-007/{parameter}", f"{parameter}")
                 os.rename(parameter, extended_fname)
+                extended = True
             except Exception as e:
-                pass
+                extended = False
 
         os.replace(short_term_fname, f"NWS Data/{short_term_fname}")
         try:
@@ -3971,31 +3967,38 @@ class NDFD_GRIDS:
             except Exception as e:
                 ds1 = ds1
 
-        try:
-
-            if state != 'AK' or state != 'ak' or state == None:
-                ds2 = xr.load_dataset(extended_path, engine='cfgrib')
-            else:
-                ds2 = xr.open_dataset(extended_path, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
-    
+        if extended == True:
             try:
-                if ds2['time'][1] == True:
-                        ds2 = ds2.isel(time=1)
+    
+                if state != 'AK' or state != 'ak' or state == None:
+                    ds2 = xr.load_dataset(extended_path, engine='cfgrib')
                 else:
-                    ds2 = ds2.isel(time=0)  
-            except Exception as e:
+                    ds2 = xr.open_dataset(extended_path, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
+        
                 try:
-                    ds2 = ds2.isel(time=0)
+                    if ds2['time'][1] == True:
+                            ds2 = ds2.isel(time=1)
+                    else:
+                        ds2 = ds2.isel(time=0)  
                 except Exception as e:
-                    ds2 = ds2
-        except Exception as e:
-            pass
+                    try:
+                        ds2 = ds2.isel(time=0)
+                    except Exception as e:
+                        ds2 = ds2
+            except Exception as e:
+                pass
+        else:
+            ds2 = False
             
         ds1 = ds1.metpy.parse_cf()
-        try:
-            ds2 = ds2.metpy.parse_cf() 
-        except Exception as e:
-            ds2 = False
+
+        if extended == True:
+            try:
+                ds2 = ds2.metpy.parse_cf() 
+            except Exception as e:
+                ds2 = False
+        else:
+            pass
 
         for item in os.listdir(f"NWS Data"):
             if item.endswith(".idx"):
@@ -4272,8 +4275,5 @@ class obs:
             metar_time = datetime.utcnow() - timedelta(minutes=minute)
     
         return metar_time
-
-
-
 
 
