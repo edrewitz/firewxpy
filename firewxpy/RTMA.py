@@ -1353,7 +1353,7 @@ def plot_dewpoint(western_bound=None, eastern_bound=None, southern_bound=None, n
 
     if show_low_high_thresholds == True:
         sp, x, y = settings.get_sp_dims_and_textbox_coords(state)
-        ax.text(x, y, f"Red Contour Line: DWPT = {low_dwpt_threshold}% | Blue Contour Line: DWPT = {high_dwpt_threshold}%", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
+        ax.text(x, y, f"Red Contour Line: DWPT = {low_dwpt_threshold}°F | Blue Contour Line: DWPT = {high_dwpt_threshold}°F", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
         c_low = ax.contour(lon, lat, mpcalc.smooth_gaussian(dwpt[0, :, :] * units('degF'), n=8), levels=[low_dwpt_threshold], colors='darkred', zorder=2, transform=datacrs, linewidths=1, linestyles='--')
         ax.clabel(c_low, levels=[low_dwpt_threshold], inline=True, fontsize=8, rightside_up=True)  
     
