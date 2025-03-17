@@ -2566,7 +2566,7 @@ class dynamics:
         if data == True:
             ds = ds
     
-        cmap = colormaps.wind_speed_colormap()
+        cmap = colormaps.cross_section_wind_speed()
     
         end = len(ds['time']) - 1
         time = ds['time']
