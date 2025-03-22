@@ -3125,7 +3125,7 @@ class obs:
         os.replace(ds.name, f"METAR Data/{ds.name}")
         file_size = (os.path.getsize(f"METAR Data/{ds.name}")/1000000)
 
-        if file_size < 1.3:
+        if file_size < 1.2:
             os.remove(f"METAR Data/{ds.name}")
             ds = metar_cat.datasets[-6]
             ds.download()
