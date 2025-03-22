@@ -12,6 +12,219 @@ This file hosts all the functions that return the settings for each plot for eac
 
 import cartopy.crs as ccrs
 
+
+def get_shrink(region, cwa):
+
+    r'''
+    This function returns a new shrink value for any plots using a Lambert Conformal projection
+
+    Required Arguments:
+
+    1) region (String) - Region abbreviation
+
+    2) cwa (String) **For Alaska Only as of the moment** The NWS CWA abbreviation. 
+
+    Returns: The shrink value for the colorbar
+
+    '''
+
+    if region == 'AK' or region == 'ak':
+        if cwa == None:
+            shrink = 0.85
+        if cwa == 'AER' or cwa == 'aer':
+            shrink=0.9
+        if cwa == 'ALU' or cwa == 'alu':
+            shrink=0.8
+        if cwa == 'AJK' or cwa == 'ajk':
+            shrink=0.63
+        if cwa == 'AFG' or cwa == 'afg':
+            shrink=0.73
+            
+    if region == 'HI' or region == 'hi':
+        shrink = 0.6
+
+    if region == 'CONUS' or region == 'conus':
+        shrink = 0.475
+
+    if region == 'OSCC' or region == 'oscc' or region == 'SOPS' or region == 'sops':
+        shrink = 0.8
+
+    if region == 'ONCC' or region == 'oncc' or region == 'NOPS' or region == 'nops':
+        shrink = 1
+
+    if region == 'GBCC' or region == 'gbcc' or region == 'GB' or region == 'gb':
+        shrink = 1
+
+    if region == 'NRCC' or region == 'nrcc' or region == 'NR' or region == 'nr':
+        shrink = 0.44
+
+    if region == 'RMCC' or region == 'rmcc' or region == 'RM' or region == 'rm':
+        shrink = 0.7
+
+    if region == 'SWCC' or region == 'swcc' or region == 'SW' or region == 'sw':
+        shrink = 0.6
+
+    if region == 'SACC' or region == 'sacc' or region == 'SE' or region == 'se':
+        shrink = 0.5
+
+    if region == 'EACC' or region == 'eacc' or region == 'E' or region == 'e':
+        shrink = 0.525
+
+    if region == 'PNW' or region == 'pnw' or region == 'NWCC' or region == 'nwcc' or region == 'NW' or region == 'nw':
+        shrink = 1
+
+    if region == 'CONUS & South Canada & North Mexico':
+        shrink = 0.5
+
+    if region == 'Canada' or region == 'canada':
+        shrink = 0.5
+
+    if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
+        shrink = 0.5
+
+    if region == 'ME' or region == 'me':
+        shrink = 1
+
+    if region == 'NH' or region == 'nh':
+        shrink = 1
+
+    if region == 'VT' or region == 'vt':
+        shrink = 1
+
+    if region == 'MA' or region == 'ma':
+        shrink = 0.475
+
+    if region == 'RI' or region == 'ri':
+        shrink = 0.95
+
+    if region == 'CT' or region == 'ct':
+        shrink = 0.7
+
+    if region == 'NJ' or region == 'nj':
+        shrink = 1
+
+    if region == 'DE' or region == 'de':
+        shrink = 1
+
+    if region == 'NY' or region == 'ny':
+        shrink = 0.65
+
+    if region == 'PA' or region == 'pa':
+        shrink = 0.55
+
+    if region == 'OH' or region == 'oh':
+        shrink = 1
+
+    if region == 'MI' or region == 'mi':
+        shrink = 1
+
+    if region == 'MN' or region == 'mn':
+        shrink = 0.95
+
+    if region == 'WI' or region == 'wi':
+        shrink = 0.95
+
+    if region == 'IA' or region == 'ia':
+        shrink = 0.6
+
+    if region == 'IN' or region == 'in':
+        shrink = 1
+
+    if region == 'MO' or region == 'mo':
+        shrink = 0.7
+
+    if region == 'IL' or region == 'il':
+        shrink = 1
+
+    if region == 'ND' or region == 'nd':
+        shrink = 0.525
+
+    if region == 'SD' or region == 'sd':
+        shrink = 0.55
+
+    if region == 'NE' or region == 'ne':
+        shrink = 0.475
+
+    if region == 'MD' or region == 'md':
+        shrink = 0.465
+
+    if region == 'VA' or region == 'va':
+        shrink = 0.475
+
+    if region == 'SC' or region == 'sc':
+        shrink = 0.725
+
+    if region == 'KY' or region == 'ky':
+        shrink = 0.475
+
+    if region == 'WV' or region == 'wv':
+        shrink = 0.85
+
+    if region == 'NC' or region == 'nc':
+        shrink = 0.465
+
+    if region == 'NV' or region == 'nv':
+        shrink = 1
+
+    if region == 'FL' or region == 'fl':
+        shrink = 0.79
+
+    if region == 'OR' or region == 'or':
+        shrink = 0.65
+
+    if region == 'WA' or region == 'wa':
+        shrink = 0.65
+
+    if region == 'ID' or region == 'id':
+        shrink = 1
+
+    if region == 'GA' or region == 'ga':
+        shrink = 1
+
+    if region == 'AL' or region == 'al':
+        shrink = 1
+
+    if region == 'MS' or region == 'ms':
+        shrink = 1
+
+    if region == 'LA' or region == 'la':
+        shrink = 0.815
+
+    if region == 'AR' or region == 'ar':
+        shrink = 0.775
+
+    if region == 'TX' or region == 'tx':
+        shrink = 0.815
+
+    if region == 'OK' or region == 'ok':
+        shrink = 0.42
+
+    if region == 'NM' or region == 'nm':
+        shrink = 1
+
+    if region == 'AZ' or region == 'az':
+        shrink = 1
+
+    if region == 'UT' or region == 'ut':
+        shrink = 1
+
+    if region == 'CO' or region == 'co':
+        shrink = 0.7
+
+    if region == 'WY' or region == 'wy':
+        shrink = 0.7
+
+    if region == 'MT' or region == 'mt':
+        shrink = 0.5
+
+    if region == 'KS' or region == 'ks':
+        shrink = 0.5
+
+    if region == 'TN' or region == 'tn':
+        shrink = 0.3
+            
+    return shrink
+
 def get_sp_dims_and_textbox_coords(region):
 
     region = region
