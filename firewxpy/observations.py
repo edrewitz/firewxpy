@@ -56,6 +56,33 @@ tzone = standard.get_timezone()
 from_zone = tz.tzutc()
 to_zone = tz.tzlocal()
 
+def get_cwa_coords(cwa):
+
+    r'''
+    This function returns the coordinate bounds for the Alaska NWS CWAs
+
+    Required Arguments:
+
+    1) cwa (String) **For Alaska Only as of the moment** The NWS CWA abbreviation. 
+
+    Returns: Coordinate boundaries in decimal degrees
+
+    '''
+
+    if cwa == None:
+        wb, eb, sb, nb = [-170, -128, 50, 75]
+    if cwa == 'AER' or cwa == 'aer':
+        wb, eb, sb, nb = [-155, -140.75, 55.5, 64.5]
+    if cwa == 'ALU' or cwa == 'alu':
+        wb, eb, sb, nb = [-170, -151, 52, 62.9]
+    if cwa == 'AJK' or cwa == 'ajk':
+        wb, eb, sb, nb = [-145, -129.5, 54, 60.75]
+    if cwa == 'AFG' or cwa == 'afg':
+        wb, eb, sb, nb = [-170, -140.75, 59, 72]
+
+    return wb, eb, sb, nb
+
+
 def plot_gridded_relative_humidity_observations(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.5, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, df=None, mask=300000, time=None, state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, interpolation_type='cressman', shrink=0.7):
 
     r'''
@@ -168,7 +195,7 @@ def plot_gridded_relative_humidity_observations(western_bound=None, eastern_boun
     27) df (Pandas DataFrame) - Default = None. The Pandas DataFrame of the METAR data. Set df=df when 
         downloading the data outside of the function and passing it in. 
 
-    28) mask (Integer or Float) - Default = 3. This determines how many METARs show up on the graphic. 
+    28) mask (Integer or Float) - Default = 300000. This determines how many METARs show up on the graphic. 
         Lower values equal more METAR observations. Default reflects that of CONUS so when looking at a
         smaller area, you most likely would want to set this to a lower value. The value must be a positive
         non-zero number. 
@@ -177,13 +204,13 @@ def plot_gridded_relative_humidity_observations(western_bound=None, eastern_boun
         When downloading the data outside of the function and passing in the data
         into the function, set time=time. 
 
-    37) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
+    30) state (String) - The two letter state abbreviation for the state the user wishes to make the graphic for. 
         If the user wishes to make a graphic for the entire CONUS, there are 4 acceptable abbreviations: 'US' or 'us'
         or 'USA' or 'usa'. Example: If the user wishes to make a plot for the state of California both 'CA' or 'ca' are
         acceptable. Default setting is 'us'. If the user wishes to make a plot based on gacc_region, this value must be 
         changed to None. 
 
-    30) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
+    31) gacc_region (String) - The abbreviation for each of the 10 GACC regions. Default setting is None. 
         If the user wishes to make a plot based on GACC Region than state, the state variable must be set to 
         None and the gacc_region variable must be set to one of the acceptable abbreviations. 
 
@@ -209,19 +236,19 @@ def plot_gridded_relative_humidity_observations(western_bound=None, eastern_boun
         
         Alaska: Setting state='AK' or state='ak' suffices here. Leave gacc_region=None and set the state variable as shown. 
 
-    31) x1 (Float) - Default = 0.01. The x-position of the signature text box with respect to the axis of the image. 
+    32) x1 (Float) - Default = 0.01. The x-position of the signature text box with respect to the axis of the image. 
 
-    32) y1 (Float) - Default = -0.03. The y-position of the signature text box with respect to the axis of the image. 
+    33) y1 (Float) - Default = -0.03. The y-position of the signature text box with respect to the axis of the image. 
 
-    33) x2 (Float) - Default = 0.725. The x-position of the timestamp text box with respect to the axis of the image.
+    34) x2 (Float) - Default = 0.725. The x-position of the timestamp text box with respect to the axis of the image.
 
-    34) y2 (Float) - Default = -0.025. The y-position of the timestamp text box with respect to the axis of the image.
+    35) y2 (Float) - Default = -0.025. The y-position of the timestamp text box with respect to the axis of the image.
 
-    35) x3 (Float) - Default = 0.01. The x-position of the reference system text box with respect to the axis of the image.
+    36) x3 (Float) - Default = 0.01. The x-position of the reference system text box with respect to the axis of the image.
 
-    36) y3 (Float) - Default = 0.01. The y-position of the reference system text box with respect to the axis of the image.
+    37) y3 (Float) - Default = 0.01. The y-position of the reference system text box with respect to the axis of the image.
 
-    37) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA. 
+    38) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA. 
         For a view of the entire state - set cwa=None. 
 
         NWS CWA Abbreviations:
@@ -234,13 +261,30 @@ def plot_gridded_relative_humidity_observations(western_bound=None, eastern_boun
         
         4) AFG - NWS Fairbanks        
 
-    38) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
+    39) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
 
-    39) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
+    40) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
 
-    Return: Saves individual images to f:Weather Data/Observations/METAR MAP/{state}/{reference_system}. 
-    If the user selects a cwa the path will look like this: f:Weather Data/Observations/METAR MAP/{state}/{reference_system}/{cwa}
+    41) interpolation_type (String) - Default='cressman'. This determines the type of interpolation method used. 
 
+        Here are the various interpolation methods:
+
+        1) cressman
+        2) barnes
+        3) linear
+        4) nearest
+        5) cubic
+        6) rbf
+        7) natural neighbor
+
+    42) shrink (Integer or Float) - Default = 0.7. This is how the colorbar is sized to the figure. 
+        This is a feature of matplotlib, as per their definition, the shrink is:
+        "Fraction by which to multiply the size of the colorbar." 
+        This should only be changed if the user wishes to change the size of the colorbar. 
+        Preset values are called from the settings module for each state and/or gacc_region.
+    
+    Return: Saves individual images to f:Weather Data/Observations/GRIDDED RELATIVE HUMIDITY/{state}/{reference_system}/{interpolation_type}. 
+    If the user selects a cwa the path will look like this: f:Weather Data/Observations/METAR MAP/{state}/{reference_system}/{cwa}/{interpolation_type}.
 
     '''
 
@@ -355,9 +399,16 @@ def plot_gridded_relative_humidity_observations(western_bound=None, eastern_boun
     fname = f"Gridded RH.png"
 
     try:
-        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
-        if shrink < 0.8:
-            shrink = shrink + 0.1
+        western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, s, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'NH' or state == 'nh' or state == 'VT' or state == 'vt' or state == 'NJ' or state == 'nj' or state == 'IN' or state == 'in' or state == 'IL' or state == 'il' or state == 'ID' or state == 'id' or state == 'AL' or state == 'al' or state == 'MS' or state == 'ms':
+            western_bound = western_bound - 0.5
+            eastern_bound = eastern_bound + 0.5
+        shrink = settings.get_shrink(state, cwa)
+        if cwa != None:
+            western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+        else:
+            pass
+
     except Exception as e:
         western_bound = western_bound
         eastern_bound = eastern_bound
@@ -376,8 +427,6 @@ def plot_gridded_relative_humidity_observations(western_bound=None, eastern_boun
         sfc_data = df 
         metar_time = time
 
-    #sfc_data = sfc_data[(sfc_data['longitude'] >= western_bound) & (sfc_data['longitude'] <= eastern_bound) &  (sfc_data['latitude'] >= southern_bound) & (sfc_data['latitude'] <= northern_bound)]
-
     sfc_data['rh'] = Thermodynamics.relative_humidity_from_temperature_and_dewpoint_celsius(sfc_data['air_temperature'], sfc_data['dew_point_temperature'])
 
 
@@ -391,10 +440,7 @@ def plot_gridded_relative_humidity_observations(western_bound=None, eastern_boun
         parallel = 35
 
     mapcrs = ccrs.LambertConformal(central_longitude=clon, central_latitude=clat, standard_parallels=[parallel])
-    #mapcrs = ccrs.PlateCarree(central_longitude=0.001)
-    #lon = sfc_data['longitude'].to_numpy()
-    #lat = sfc_data['latitude'].to_numpy()
-    #rh = sfc_data['rh'].to_numpy()
+    
     lon = sfc_data['longitude'].values
     lat = sfc_data['latitude'].values
     rh = sfc_data['rh'].values
@@ -407,16 +453,6 @@ def plot_gridded_relative_humidity_observations(western_bound=None, eastern_boun
                                        sfc_data['latitude'].values)
     
     sfc_data = sfc_data[mpcalc.reduce_point_density(point_locs, mask)]
-
-    '''
-    locs = pd.DataFrame()
-    
-    locs['longitude'] = sfc_data['longitude'].values
-    locs['latitude'] = sfc_data['latitude'].values
-
-    locs = locs.to_numpy()
-    '''
-    #sfc_data = sfc_data[mpcalc.reduce_point_density(locs, mask)]
 
     metar_time = metar_time.replace(tzinfo=from_zone)
     metar_time = metar_time.astimezone(to_zone)
@@ -465,7 +501,7 @@ def plot_gridded_relative_humidity_observations(western_bound=None, eastern_boun
     else:
         pass  
 
-    plt.title(f"RH OBSERVATIONS [VALUES] & INTERPOLATION [SHADED]\nINTERPOLATION METHOD: {interpolation_type.upper()}", fontsize=8, fontweight='bold', loc='left')
+    plt.title(f"RH OBSERVATIONS [VALUES (%)] & INTERPOLATION [SHADED (%)]\nINTERPOLATION METHOD: {interpolation_type.upper()}", fontsize=8, fontweight='bold', loc='left')
     
     plt.title("Analysis Valid: " + metar_time.strftime(f'%m/%d/%Y %H:00 {timezone}') + " (" + metar_time_utc.strftime('%H:00 UTC')+")", fontsize=7, fontweight='bold', loc='right')
 
