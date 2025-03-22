@@ -1,4 +1,10 @@
+"""
+This file is written by:
 
+(C) Eric J. Drewitz 2025
+        USDA/USFS
+
+"""
 
 import os
 import matplotlib.pyplot as plt
@@ -15,6 +21,31 @@ class file_functions:
     '''
 
     def forecast_cross_sections_graphics_paths(model, style, parameter, reference_system, start_coords=None, end_coords=None):
+
+        r'''
+        This function builds the directory for cross section graphics if the directory doesn't already exist. 
+
+        Required Inputs:
+
+        1) model (String) - The computer model used. 
+
+        2) style (String) - The type of cross section (Time Cross-section vs. Cross-section between two points)
+
+        3) parameter (String) - The parameter the user is analyzing
+
+        4) reference_system (String) - The type of reference system used (i.e. States & Counties). 
+
+        Optional Arguments:
+
+        ** FOR CROSS-SECTION BETWEEN TWO POINTS ONLY **
+
+        1) start_coords (tuple) - The starting latitude and longitude. 
+
+        2) end_coords (tuple) - The ending latitude and longitude
+
+        Returns: The path that is the branch for the specific cross-section graphics to the Weather Data directory. 
+
+        '''
 
 
         if os.path.exists(f"Weather Data"):
@@ -95,6 +126,23 @@ class file_functions:
 
     def point_forecast_sounding_graphics_paths(model, latitude, longitude, reference_system):
 
+        r'''
+        This function builds the paths in the directory for various forecast sounding graphics. 
+
+        Required Arguments:
+
+        1) model (String) - The computer model that is being used. 
+
+        2) latitude (Integer or Float) - The latitude value in decimal degrees.
+
+        3) longitude (Integer or Float) - The longitude value in decimal degrees. 
+
+        4) reference_system (String) - The type of reference system used (i.e. States & Counties). 
+
+        Returns: The path that is the branch for the forecast sounding graphics to the Weather Data directory. 
+
+        '''
+
         if latitude >= 0:
             lat_symbol = 'N'
         if latitude < 0:
@@ -162,6 +210,27 @@ class file_functions:
     
 
     def forecast_model_graphics_paths(model, region, reference_system, parameter, str_level):
+
+        r'''
+        This function builds the paths in the directory for various forecast model graphics. 
+
+        Required Arguments:
+
+        1) model (String) - The computer model that is being used. 
+
+        2) region (String) - The region abbreviation. 
+
+        3) reference_system (String) - The type of reference system used (i.e. States & Counties). 
+
+        4) parameter (String) - The parameter being analyzed. 
+
+        5) str_level (String) - The value of the pressure level as a string. 
+
+        Optional Arguments: None
+
+        Returns: The path that is the branch for the forecast model graphics to the Weather Data directory. 
+
+        '''
 
         model = model.upper()
         region = region.upper()
@@ -274,6 +343,17 @@ class file_functions:
 
 
     def extract_zipped_files(file_path, extraction_folder):
+
+        r'''
+        This function unzips a file in a folder. 
+
+        Required Arguments:
+
+        1) file_path (String) - The path to the file that needs unzipping.
+
+        2) extraction_folder (String) - The folder that the zipped files are located in.
+
+        '''
     
         # Load the zipfile
         with ZipFile(file_path, 'r') as zObject:
@@ -283,11 +363,23 @@ class file_functions:
 
     def save_daily_sounding_graphic(figure, station_id, date):
 
+        r'''
+        This function builds the path for the observed sounding graphics and saves the file. 
+
+        Required Arguments:
+
+        1) figure (matplotlib figure) - The figure that needs to be saved. 
+
+        2) station_id (String) - The station ID for the upper-air station. 
+
+        3) date (datetime) - The date and time of the sounding. 
+
+        '''
+
         station_id = station_id
         station_id = station_id.upper()
         fig = figure
         date = date
-        
 
         if date == None:
 
@@ -340,6 +432,17 @@ class file_functions:
     
 
     def save_daily_weather_summary(figure, station_id):
+
+        r'''
+        This function saves the daily weather summary to a path created by this function. 
+
+        Required Arguments:
+
+        1) figure (matplotlib figure) - The figure that needs to be saved. 
+
+        2) station_id (String) - The station ID for the observation site. 
+
+        '''
 
         station_id = station_id
         station_id = station_id.upper()
@@ -397,18 +500,19 @@ class file_functions:
             12) 'GACC & PSA & Counties'
             13) 'GACC & Counties'
 
+        5) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA
+
+            NWS CWA Abbreviations:
+    
+            1) AER - NWS Anchorage East Domain
+            2) ALU - NWS Anchorage West Domain
+            3) AJK - NWS Juneau
+            4) AFG - NWS Fairbanks
+
         Optional Arguments:
 
-        1) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA
-        2) spc (Boolean) - Default = False. - If set to True, the graphics will be saved to the SPC Outlooks branch.
+        1) spc (Boolean) - Default = False. - If set to True, the graphics will be saved to the SPC Outlooks branch.
            If set to fale, the graphics will be saved to the NWS Forecasts branch. 
-
-        NWS CWA Abbreviations:
-
-        1) AER - NWS Anchorage East Domain
-        2) ALU - NWS Anchorage West Domain
-        3) AJK - NWS Juneau
-        4) AFG - NWS Fairbanks
 
         Return: The file path of the directory branch
         '''
@@ -515,18 +619,19 @@ class file_functions:
             12) 'GACC & PSA & Counties'
             13) 'GACC & Counties'
 
+        5) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA
+
+            NWS CWA Abbreviations:
+    
+            1) AER - NWS Anchorage East Domain
+            2) ALU - NWS Anchorage West Domain
+            3) AJK - NWS Juneau
+            4) AFG - NWS Fairbanks
+
         Optional Arguments:
-
-        1) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA
-        2) spc (Boolean) - Default = False. - If set to True, the graphics will be saved to the SPC Outlooks branch.
+        
+        1) spc (Boolean) - Default = False. - If set to True, the graphics will be saved to the SPC Outlooks branch.
            If set to fale, the graphics will be saved to the NWS Forecasts branch. 
-
-        NWS CWA Abbreviations:
-
-        1) AER - NWS Anchorage East Domain
-        2) ALU - NWS Anchorage West Domain
-        3) AJK - NWS Juneau
-        4) AFG - NWS Fairbanks
 
         Return: The file path of the directory branch
         '''
@@ -631,21 +736,22 @@ class file_functions:
             12) 'GACC & PSA & Counties'
             13) 'GACC & Counties'
 
+        5) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA
+
+            NWS CWA Abbreviations:
+    
+            1) AER - NWS Anchorage East Domain
+            2) ALU - NWS Anchorage West Domain
+            3) AJK - NWS Juneau
+            4) AFG - NWS Fairbanks
+
         Optional Arguments:
 
-        1) island (String) - *For Hawaii only* - The name of the island
-        2) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA
-        3) spc (Boolean) - Default = False. - If set to True, the graphics will be saved to the SPC Outlooks branch.
-           If set to fale, the graphics will be saved to the NWS Forecasts branch. 
+        1) interp (Boolean) - Default=False. This is only set to True for graphics requiring interpolation methods (Gridded Observations). 
 
-        NWS CWA Abbreviations:
+        2) interp_type (String) - The type of interpolation method used. interp=True must be set for this to be used. 
 
-        1) AER - NWS Anchorage East Domain
-        2) ALU - NWS Anchorage West Domain
-        3) AJK - NWS Juneau
-        4) AFG - NWS Fairbanks
-
-        Return: The file path of the directory branch
+        Return: The file path of the directory branch for observations graphics. 
         '''
 
         if state == None and gacc_region != None:
