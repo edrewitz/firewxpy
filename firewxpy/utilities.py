@@ -599,7 +599,7 @@ class file_functions:
             os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}")
             print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}")
 
-        if interp != None:
+        if interp != None and state != 'AK' and state != 'ak':
             if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{interp_type}"):
                 pass
             else:
