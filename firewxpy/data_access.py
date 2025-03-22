@@ -4159,30 +4159,19 @@ class obs:
         return df, maximum_temperature, maximum_temperature_time, maximum_temperature_time_local, minimum_temperature, minimum_temperature_time, minimum_temperature_time_local, minimum_relative_humidity, minimum_relative_humidity_time, minimum_relative_humidity_time_local, maximum_relative_humidity, maximum_relative_humidity_time, maximum_relative_humidity_time_local, maximum_wind_speed, wind_dir, maximum_wind_speed_time, maximum_wind_speed_time_local, maximum_wind_gust, maximum_wind_gust_time, maximum_wind_gust_time_local, station_id, previous_day_utc
 
 
-    def get_METAR_Data(current_time, plot_projection, mask):
+    def get_metar_data():
     
         r'''
         This function downloads and returns the latest METAR data. 
-        This function also uses MetPy to calculate the relative humidity dataset from the temperature and dewpoint datasets. 
         
-        Inputs: 1) current_time (Datetime) - Current date and time in UTC. 
-                2) plot_projection (Cartopy Coordinate Reference System) - The coordinate reference system of the data being plotted. This is usually PlateCarree. 
-                                                                           This function is to be used if the user does not want the Real Time Mesoscale Analysis data synced with the METAR. 
-                                                                           METAR data updates faster than Real Time Mesoscale Analysis data so that is the only advantage of having both 
-                                                                           datasets not time synced. However in most cases, this is NOT the recommended option and the time synced data
-                                                                           is recommended. 
-               
-                3) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
+        Inputs: None 
     
-        Returns: 1) sfc_data - The entire METAR dataset. 
-                 2) sfc_data_u_kt - The u-component (west-east) of the wind velocity in knots. 
-                 3) sfc_data_v_kt - The v-component (north-south) of the wind velocity in knots. 
-                 4) sfc_data_rh - The relative humidity in the METAR dataset. 
-                 5) sfc_data_mask - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
-                 6) metar_time - The time of the METAR report. 
-    
+        Returns: 
+        
+        1) df (Pandas DataFrame) - DataFrame of the latest METAR data
+        
+        2) time (datetime) - The time of the latest METAR dataset 
         '''
-        metar_time = current_time
     
         main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
         backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
@@ -4198,7 +4187,6 @@ class obs:
         # Accesses the METAR data
     
         if main_server_status == 200:
-            print("Main UCAR THREDDS Server is online. Connecting!")
             
             try:
                 metar_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.xml')
@@ -4208,7 +4196,6 @@ class obs:
                 metar_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.xml')
     
         if main_server_status != 200 and backup_server_status == 200:
-            print("Main UCAR THREDDS Server is down. Connecting to the backup UCAR THREDDS Server!") 
             try:
                 metar_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.xml')
     
@@ -4219,61 +4206,91 @@ class obs:
     
         if main_server_status != 200 and backup_server_status != 200:
             print("ERROR! Cannot connect to either the main or backup server. Aborting!")
-            
-        # Opens METAR file
-        metar_file = metar_cat.datasets.filter_time_nearest(metar_time).remote_open()
-        
-        # Decodes bytes into strings
-        metar_text = StringIO(metar_file.read().decode('latin-1'))
-        
-        # Parses through data
-        sfc_data = parse_metar_file(metar_text, year=metar_time.year, month=metar_time.month)
-        sfc_units = sfc_data.units
-        
-        # Creates dataframe
-        sfc_data = sfc_data[sfc_data['station_id'].isin(airports_df['ident'])]
-        
-        sfc_data = pandas_dataframe_to_unit_arrays(sfc_data, sfc_units)
-        
-        sfc_data['u'], sfc_data['v'] = mpcalc.wind_components(sfc_data['wind_speed'], sfc_data['wind_direction'])
-        
-        sfc_data_u_kt = sfc_data['u'].to('kts')
-        sfc_data_v_kt = sfc_data['v'].to('kts')
-        
-        sfc_data_rh = mpcalc.relative_humidity_from_dewpoint(sfc_data['air_temperature'], sfc_data['dew_point_temperature'])
-        
-        
-        locs = plot_projection.transform_points(ccrs.PlateCarree(), sfc_data['longitude'].m, sfc_data['latitude'].m)
-        
-        # Creates mask for plotting METAR obs
-        sfc_data_mask = mpcalc.reduce_point_density(locs[:, :], mask)
-    
-        print("METAR Data successfully retrieved for " + metar_time.strftime('%m/%d/%Y %H00 UTC'))
-        return sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time
 
-    def latest_metar_time(current_time):
-    
+        ds = metar_cat.datasets[-5]
+
+        if os.path.exists(f"METAR Data"):
+            pass
+        else:
+            os.mkdir(f"METAR Data")
+
+        for file in os.listdir(f"METAR Data"):
+            try:
+                os.remove(f"METAR Data/{file}")
+            except Exception as e:
+                pass
+
+        ds.download()
+        os.replace(ds.name, f"METAR Data/{ds.name}")
+        file_size = (os.path.getsize(f"METAR Data/{ds.name}")/1000000)
+
+        if file_size < 1.3:
+            os.remove(f"METAR Data/{ds.name}")
+            ds = metar_cat.datasets[-6]
+            ds.download()
+            os.replace(ds.name, f"METAR Data/{ds.name}")
+        else:
+            pass
+        
+        df = parse_metar_file(f"METAR Data/{ds.name}")
+        name = os.path.basename(f"METAR Data/{ds.name}")
+        year = f"{name[6]}{name[7]}{name[8]}{name[9]}"
+        month = f"{name[10]}{name[11]}"
+        day = f"{name[12]}{name[13]}"
+        hour = f"{name[15]}{name[16]}"
+
+        time = datetime(int(year), int(month), int(day), int(hour))
+
+        df = df.dropna(subset=['latitude', 'longitude', 'air_temperature', 'dew_point_temperature', 'cloud_coverage', 'eastward_wind', 'northward_wind'])
+        
+        return df, time
+
+class FEMS:
+
+    r'''
+    This class hosts functions to retrieve the latest fuels data from FEMS
+    '''
+
+    def get_single_station_data(station_id, number_of_days, start_date=None, end_date=None, fuel_model='Y', to_csv=True):
+
         r'''
-        This function is a timecheck to ensure the latest full dataset is downloaded rather than an incomplete dataset. 
-        After 30 minutes past the hour, the newer dataset begins to trickle in, however at this time the new dataset is missing several observations. 
-        This check uses the python datetime module to get the current time and if the current minute is past the 30 minute mark, the metar_time
-        which is the time variable used in our dataset query will be adjusted to back to the top of the current hour to ensure the latest complete 
-        dataset is the dataset that is downloaded. 
-    
-        Inputs: 1) current_time (Datetime) - Current date and time in UTC. 
-    
-        Returns: 1) metar_time (Datetime) - The corrected time if the script the user is running runs past the 30 minute mark. 
-        '''
-    
-        
-        runtime = current_time
-        minute = runtime.minute
-        # Times for METAR reports
-        if runtime.minute <30:
-            metar_time = datetime.utcnow() 
-        if runtime.minute >=30:
-            metar_time = datetime.utcnow() - timedelta(minutes=minute)
-    
-        return metar_time
+        This function retrieves the dataframe for a single station in FEMS
 
+
+        '''
+
+        if number_of_days == 'Custom' or number_of_days == 'custom':
+
+            df = pd.read_csv(f"https://fems.fs2c.usda.gov/api/climatology/download-nfdr?stationIds={str(station_id)}&endDate={end_date}Z&startDate={start_date}Z&dataFormat=csv&dataset=all&fuelModels={fuel_model}")    
+        else:
+
+            try:
+                now = datetime.now(UTC)
+            except Exception as e:
+                now = datetime.utcnow()
+                
+            start = now - timedelta(days=number_of_days)
+            
+            df = pd.read_csv(f"https://fems.fs2c.usda.gov/api/climatology/download-nfdr?stationIds={str(station_id)}&endDate={now.strftime(f'%Y-%m-%d')}T{now.strftime(f'%H:%M:%S')}Z&startDate={start.strftime(f'%Y-%m-%d')}T{start.strftime(f'%H:%M:%S')}Z&dataFormat=csv&dataset=all&fuelModels={fuel_model}") 
+
+        if to_csv == True:
+
+            if os.path.exists(f"FEMS Data"):
+                pass
+            else:
+                os.mkdir(f"FEMS Data")
+
+            fname = f"{station_id} {number_of_days} Days Fuel Model {fuel_model}.csv"
+            
+            try:
+                os.remove(f"FEMS Data/{fname}")
+            except Exception as e:
+                pass
+
+            file = df.to_csv(fname, index=False)
+            os.replace(f"{fname}", f"FEMS Data/{fname}")
+        else:
+            pass
+        
+        return df
 
