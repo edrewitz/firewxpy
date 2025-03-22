@@ -2531,393 +2531,7 @@ class model_data:
 
         return ds
 
-
-
-class RTMA_Alaska:
-
-    r'''
-    
-    This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data for Alaska. 
-
-    This class hosts the functions the users will import and call if the users wish to download the data outside of the 
-    plotting function and pass the data into the plotting function.
-    
-    This is the recommended method for users who wish to create a large amount of graphics at one time to limit the number of server requests. 
-
-    '''
-
-    def get_RTMA_dataset(current_time):
-    
-        r'''
-    
-        This function retrieves the latest RTMA Dataset for the user. 
-
-        Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
-
-        Required Argument: 1) Current Time in UTC
-
-        Returns: 1) The latest 2.5km x 2.5km RTMA Dataset
-
-                 2) The time corresponding to the dataset
-    
-        '''
-        
-        times = []
-        for i in range(0, 5):
-            time = pd.to_datetime(current_time - timedelta(hours=i))
-            times.append(time)
-    
-        url_0 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[0].strftime('%Y%m%d')+'/akrtma_anl_'+times[0].strftime('%H')+'z'
-        url_1 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[1].strftime('%Y%m%d')+'/akrtma_anl_'+times[1].strftime('%H')+'z'
-        url_2 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[2].strftime('%Y%m%d')+'/akrtma_anl_'+times[2].strftime('%H')+'z'
-        url_3 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[3].strftime('%Y%m%d')+'/akrtma_anl_'+times[3].strftime('%H')+'z'
-        url_4 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[4].strftime('%Y%m%d')+'/akrtma_anl_'+times[4].strftime('%H')+'z'
-    
-        try:
-            ds = xr.open_dataset(url_0, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-            print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
-            strtime = times[0]
-            return ds, strtime
-            
-        except Exception as a:
-            try:
-                print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
-                ds = xr.open_dataset(url_1, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-                print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
-                strtime = times[1]
-                return ds, strtime
-                
-            except Exception as b:
-                    try:
-                        print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
-                        ds = xr.open_dataset(url_2, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-                        print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
-                        strtime = times[2]
-                        return ds, strtime
-                        
-                    except Exception as c:
-                        try:
-                            print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
-                            ds = xr.open_dataset(url_3, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-                            print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
-                            strtime = times[3]
-                            return ds, strtime
-                        except Exception as d:
-    
-                            try:
-                                print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
-                                ds = xr.open_dataset(url_4, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-                                print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
-                                strtime = times[4]
-                                return ds, strtime
-                                
-                            except Exception as e:
-                                print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
-    
-            
-        except Exception as f:
-            error = info.invalid_parameter_NOMADS_RTMA_Alaska()
-            print(error)
-
-
-    def get_RTMA_24_hour_comparison_datasets(current_time):
-    
-        r'''
-        
-        This function retrieves the latest RTMA Dataset and the RTMA Dataset for 24-Hours prior to the current dataset for the user for Alaska. 
-
-        Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
-
-        Required Argument: 1) Current Time in UTC
-
-        Returns: 1) The latest 2.5km x 2.5km RTMA Dataset
-
-                 2) 1) The 2.5km x 2.5km RTMA Dataset from 24-Hours prior to the current dataset
-
-                 3) The time corresponding to the dataset
-
-                 4) The time corresponding to the dataset from 24-Hours prior to the current dataset 
-    
-        '''
-        
-        times = []
-        new_times = []
-        for i in range(0, 5):
-            time = pd.to_datetime(current_time - timedelta(hours=i))
-            times.append(time)
-    
-        for t in times:
-            new_time = t - timedelta(hours=24)
-            new_times.append(new_time)
-    
-        url_0 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[0].strftime('%Y%m%d')+'/akrtma_anl_'+times[0].strftime('%H')+'z'
-        url_1 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[1].strftime('%Y%m%d')+'/akrtma_anl_'+times[1].strftime('%H')+'z'
-        url_2 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[2].strftime('%Y%m%d')+'/akrtma_anl_'+times[2].strftime('%H')+'z'
-        url_3 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[3].strftime('%Y%m%d')+'/akrtma_anl_'+times[3].strftime('%H')+'z'
-        url_4 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[4].strftime('%Y%m%d')+'/akrtma_anl_'+times[4].strftime('%H')+'z'
-    
-        url_5 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[0].strftime('%Y%m%d')+'/akrtma_anl_'+times[0].strftime('%H')+'z'
-        url_6 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[1].strftime('%Y%m%d')+'/akrtma_anl_'+times[1].strftime('%H')+'z'
-        url_7 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[2].strftime('%Y%m%d')+'/akrtma_anl_'+times[2].strftime('%H')+'z'
-        url_8 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[3].strftime('%Y%m%d')+'/akrtma_anl_'+times[3].strftime('%H')+'z'
-        url_9 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[4].strftime('%Y%m%d')+'/akrtma_anl_'+times[4].strftime('%H')+'z'
-    
-        try:
-            ds = xr.open_dataset(url_0, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-            print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
-            ds_24 = xr.open_dataset(url_5, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-            print("Data was successfully retrieved for " + new_times[0].strftime('%m/%d/%Y %HZ'))
-            strtime = times[0]
-            strtime_24 = new_times[0]
-            return ds, ds_24, strtime, strtime_24
-            
-        except Exception as a:
-            try:
-                print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
-                ds = xr.open_dataset(url_1, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-                print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
-                ds_24 = xr.open_dataset(url_6, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-                print("Data was successfully retrieved for " + new_times[1].strftime('%m/%d/%Y %HZ'))
-                strtime = times[1]
-                strtime_24 = new_times[1]
-                return ds, ds_24, strtime, strtime_24
-                
-            except Exception as b:
-                    try:
-                        print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
-                        ds = xr.open_dataset(url_2, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-                        print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
-                        ds_24 = xr.open_dataset(url_7, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-                        print("Data was successfully retrieved for " + new_times[2].strftime('%m/%d/%Y %HZ'))
-                        strtime = times[2]
-                        strtime_24 = new_times[2]
-                        return ds, ds_24, strtime, strtime_24
-                        
-                    except Exception as c:
-                        try:
-                            print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
-                            ds = xr.open_dataset(url_3, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-                            print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
-                            ds_24 = xr.open_dataset(url_8, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-                            print("Data was successfully retrieved for " + new_times[3].strftime('%m/%d/%Y %HZ'))
-                            strtime = times[3]
-                            strtime_24 = new_times[3]
-                            return ds, ds_24, strtime, strtime_24
-                            
-                        except Exception as d:
-    
-                            try:
-                                print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
-                                ds = xr.open_dataset(url_4, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-                                print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
-                                ds_24 = xr.open_dataset(url_9, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
-                                print("Data was successfully retrieved for " + new_times[4].strftime('%m/%d/%Y %HZ'))
-                                strtime = times[4]
-                                strtime_24 = new_times[4]
-                                return ds, ds_24, strtime, strtime_24
-                                
-                            except Exception as e:
-                                print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
-    
-            
-        except Exception as f:
-            error = info.invalid_parameter_NOMADS_RTMA_Alaska()
-            print(error)
-
-
-class RTMA_Hawaii:
-
-    r'''
-    
-    This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data for CONUS. 
-
-    This class hosts the functions the users will import and call if the users wish to download the data outside of the 
-    plotting function and pass the data into the plotting function.
-    
-    This is the recommended method for users who wish to create a large amount of graphics at one time to limit the number of server requests. 
-
-    '''
-
-    def get_RTMA_dataset(current_time):
-    
-        r'''
-    
-        This function retrieves the latest RTMA Dataset for the user. 
-
-        Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
-
-        Required Argument: 1) Current Time in UTC
-
-        Returns: 1) The latest 2.5km x 2.5km RTMA Dataset
-
-                 2) The time corresponding to the dataset
-    
-        '''
-        
-        times = []
-        for i in range(0, 5):
-            time = pd.to_datetime(current_time - timedelta(hours=i))
-            times.append(time)
-    
-        url_0 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[0].strftime('%Y%m%d')+'/hirtma_anl_'+times[0].strftime('%H')+'z'
-        url_1 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[1].strftime('%Y%m%d')+'/hirtma_anl_'+times[1].strftime('%H')+'z'
-        url_2 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[2].strftime('%Y%m%d')+'/hirtma_anl_'+times[2].strftime('%H')+'z'
-        url_3 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[3].strftime('%Y%m%d')+'/hirtma_anl_'+times[3].strftime('%H')+'z'
-        url_4 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[4].strftime('%Y%m%d')+'/hirtma_anl_'+times[4].strftime('%H')+'z'
-    
-        try:
-            ds = xr.open_dataset(url_0, engine='netcdf4')
-            print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
-            strtime = times[0]
-            return ds, strtime
-            
-        except Exception as a:
-            try:
-                print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
-                ds = xr.open_dataset(url_1, engine='netcdf4')
-                print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
-                strtime = times[1]
-                return ds, strtime
-                
-            except Exception as b:
-                    try:
-                        print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
-                        ds = xr.open_dataset(url_2, engine='netcdf4')
-                        print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
-                        strtime = times[2]
-                        return ds, strtime
-                        
-                    except Exception as c:
-                        try:
-                            print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
-                            ds = xr.open_dataset(url_3, engine='netcdf4')
-                            print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
-                            strtime = times[3]
-                            return ds, strtime
-                        except Exception as d:
-    
-                            try:
-                                print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
-                                ds = xr.open_dataset(url_4, engine='netcdf4')
-                                print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
-                                strtime = times[4]
-                                return ds, strtime
-                                
-                            except Exception as e:
-                                print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
-    
-            
-        except Exception as f:
-            error = info.invalid_parameter_NOMADS_RTMA_Alaska()
-            print(error)
-    
-    
-    def get_RTMA_24_hour_comparison_datasets(current_time):
-    
-        r'''
-        
-        This function retrieves the latest RTMA Dataset and the RTMA Dataset for 24-Hours prior to the current dataset for the user. 
-
-        Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
-
-        Required Argument: 1) Current Time in UTC
-
-        Returns: 1) The latest 2.5km x 2.5km RTMA Dataset
-
-                 2) 1) The 2.5km x 2.5km RTMA Dataset from 24-Hours prior to the current dataset
-
-                 3) The time corresponding to the dataset
-
-                 4) The time corresponding to the dataset from 24-Hours prior to the current dataset 
-    
-        '''
-        
-        times = []
-        new_times = []
-        for i in range(0, 5):
-            time = pd.to_datetime(current_time - timedelta(hours=i))
-            times.append(time)
-    
-        for t in times:
-            new_time = t - timedelta(hours=24)
-            new_times.append(new_time)
-    
-        url_0 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[0].strftime('%Y%m%d')+'/hirtma_anl_'+times[0].strftime('%H')+'z'
-        url_1 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[1].strftime('%Y%m%d')+'/hirtma_anl_'+times[1].strftime('%H')+'z'
-        url_2 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[2].strftime('%Y%m%d')+'/hirtma_anl_'+times[2].strftime('%H')+'z'
-        url_3 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[3].strftime('%Y%m%d')+'/hirtma_anl_'+times[3].strftime('%H')+'z'
-        url_4 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[4].strftime('%Y%m%d')+'/hirtma_anl_'+times[4].strftime('%H')+'z'
-    
-        url_5 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+new_times[0].strftime('%Y%m%d')+'/hirtma_anl_'+times[0].strftime('%H')+'z'
-        url_6 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+new_times[1].strftime('%Y%m%d')+'/hirtma_anl_'+times[1].strftime('%H')+'z'
-        url_7 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+new_times[2].strftime('%Y%m%d')+'/hirtma_anl_'+times[2].strftime('%H')+'z'
-        url_8 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+new_times[3].strftime('%Y%m%d')+'/hirtma_anl_'+times[3].strftime('%H')+'z'
-        url_9 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+new_times[4].strftime('%Y%m%d')+'/hirtma_anl_'+times[4].strftime('%H')+'z'
-    
-        try:
-            ds = xr.open_dataset(url_0, engine='netcdf4')
-            print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
-            ds_24 = xr.open_dataset(url_5, engine='netcdf4')
-            print("Data was successfully retrieved for " + new_times[0].strftime('%m/%d/%Y %HZ'))
-            strtime = times[0]
-            strtime_24 = new_times[0]
-            return ds, ds_24, strtime, strtime_24
-            
-        except Exception as a:
-            try:
-                print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
-                ds = xr.open_dataset(url_1, engine='netcdf4')
-                print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
-                ds_24 = xr.open_dataset(url_6, engine='netcdf4')
-                print("Data was successfully retrieved for " + new_times[1].strftime('%m/%d/%Y %HZ'))
-                strtime = times[1]
-                strtime_24 = new_times[1]
-                return ds, ds_24, strtime, strtime_24
-                
-            except Exception as b:
-                    try:
-                        print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
-                        ds = xr.open_dataset(url_2, engine='netcdf4')
-                        print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
-                        ds_24 = xr.open_dataset(url_7, engine='netcdf4')
-                        print("Data was successfully retrieved for " + new_times[2].strftime('%m/%d/%Y %HZ'))
-                        strtime = times[2]
-                        strtime_24 = new_times[2]
-                        return ds, ds_24, strtime, strtime_24
-                        
-                    except Exception as c:
-                        try:
-                            print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
-                            ds = xr.open_dataset(url_3, engine='netcdf4')
-                            print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
-                            ds_24 = xr.open_dataset(url_8, engine='netcdf4')
-                            print("Data was successfully retrieved for " + new_times[3].strftime('%m/%d/%Y %HZ'))
-                            strtime = times[3]
-                            strtime_24 = new_times[3]
-                            return ds, ds_24, strtime, strtime_24
-                            
-                        except Exception as d:
-    
-                            try:
-                                print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
-                                ds = xr.open_dataset(url_4, engine='netcdf4')
-                                print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
-                                ds_24 = xr.open_dataset(url_9, engine='netcdf4')
-                                print("Data was successfully retrieved for " + new_times[4].strftime('%m/%d/%Y %HZ'))
-                                strtime = times[4]
-                                strtime_24 = new_times[4]
-                                return ds, ds_24, strtime, strtime_24
-                                
-                            except Exception as e:
-                                print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
-    
-            
-        except Exception as f:
-            error = info.invalid_parameter_NOMADS_RTMA_Alaska()
-            print(error)
-
-
-class RTMA_CONUS:
+class RTMA:
 
     r'''
     
@@ -2930,81 +2544,8 @@ class RTMA_CONUS:
 
     '''
 
-    def get_RTMA_dataset(current_time):
     
-        r'''
-    
-        This function retrieves the latest RTMA Dataset for the user. 
-
-        Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
-
-        Required Argument: 1) Current Time in UTC
-
-        Returns: 1) The latest 2.5km x 2.5km RTMA Dataset
-
-                 2) The time corresponding to the dataset
-    
-        '''
-        
-        times = []
-        for i in range(0, 5):
-            time = pd.to_datetime(current_time - timedelta(hours=i))
-            times.append(time)
-    
-        url_0 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[0].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[0].strftime('%H')+'z'
-        url_1 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[1].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[1].strftime('%H')+'z'
-        url_2 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[2].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[2].strftime('%H')+'z'
-        url_3 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[3].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[3].strftime('%H')+'z'
-        url_4 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[4].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[4].strftime('%H')+'z'
-    
-        try:
-            ds = xr.open_dataset(url_0, engine='netcdf4')
-            print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
-            strtime = times[0]
-            return ds, strtime
-            
-        except Exception as a:
-            try:
-                print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
-                ds = xr.open_dataset(url_1, engine='netcdf4')
-                print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
-                strtime = times[1]
-                return ds, strtime
-                
-            except Exception as b:
-                    try:
-                        print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
-                        ds = xr.open_dataset(url_2, engine='netcdf4')
-                        print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
-                        strtime = times[2]
-                        return ds, strtime
-                        
-                    except Exception as c:
-                        try:
-                            print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
-                            ds = xr.open_dataset(url_3, engine='netcdf4')
-                            print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
-                            strtime = times[3]
-                            return ds, strtime
-                        except Exception as d:
-    
-                            try:
-                                print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
-                                ds = xr.open_dataset(url_4, engine='netcdf4')
-                                print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
-                                strtime = times[4]
-                                return ds, strtime
-                                
-                            except Exception as e:
-                                print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
-    
-            
-        except Exception as f:
-            error = info.invalid_parameter_NOMADS_RTMA_Alaska()
-            print(error)
-    
-    
-    def get_RTMA_24_hour_comparison_datasets(current_time):
+    def get_rtma_datasets(region, current_time):
     
         r'''
         
@@ -3012,7 +2553,11 @@ class RTMA_CONUS:
 
         Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
 
-        Required Argument: 1) Current Time in UTC
+        Required Arguments:
+
+        1) region (String) - The abbreviation for the region (state, GACC Region, CONUS, etc.)
+        
+        2) Current Time in UTC
 
         Returns: 1) The latest 2.5km x 2.5km RTMA Dataset
 
@@ -3033,35 +2578,75 @@ class RTMA_CONUS:
         for t in times:
             new_time = t - timedelta(hours=24)
             new_times.append(new_time)
-    
-        url_0 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[0].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[0].strftime('%H')+'z'
-        url_1 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[1].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[1].strftime('%H')+'z'
-        url_2 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[2].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[2].strftime('%H')+'z'
-        url_3 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[3].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[3].strftime('%H')+'z'
-        url_4 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[4].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[4].strftime('%H')+'z'
-    
-        url_5 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[0].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[0].strftime('%H')+'z'
-        url_6 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[1].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[1].strftime('%H')+'z'
-        url_7 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[2].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[2].strftime('%H')+'z'
-        url_8 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[3].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[3].strftime('%H')+'z'
-        url_9 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[4].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[4].strftime('%H')+'z'
+
+        if region == 'AK' or region == 'ak':
+            url_0 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[0].strftime('%Y%m%d')+'/akrtma_anl_'+times[0].strftime('%H')+'z'
+            url_1 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[1].strftime('%Y%m%d')+'/akrtma_anl_'+times[1].strftime('%H')+'z'
+            url_2 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[2].strftime('%Y%m%d')+'/akrtma_anl_'+times[2].strftime('%H')+'z'
+            url_3 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[3].strftime('%Y%m%d')+'/akrtma_anl_'+times[3].strftime('%H')+'z'
+            url_4 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+times[4].strftime('%Y%m%d')+'/akrtma_anl_'+times[4].strftime('%H')+'z'
+        
+            url_5 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[0].strftime('%Y%m%d')+'/akrtma_anl_'+times[0].strftime('%H')+'z'
+            url_6 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[1].strftime('%Y%m%d')+'/akrtma_anl_'+times[1].strftime('%H')+'z'
+            url_7 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[2].strftime('%Y%m%d')+'/akrtma_anl_'+times[2].strftime('%H')+'z'
+            url_8 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[3].strftime('%Y%m%d')+'/akrtma_anl_'+times[3].strftime('%H')+'z'
+            url_9 = 'http://nomads.ncep.noaa.gov:80/dods/akrtma/akrtma'+new_times[4].strftime('%Y%m%d')+'/akrtma_anl_'+times[4].strftime('%H')+'z'
+
+        elif region == 'HI' or region == 'hi':
+            
+            url_0 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[0].strftime('%Y%m%d')+'/hirtma_anl_'+times[0].strftime('%H')+'z'
+            url_1 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[1].strftime('%Y%m%d')+'/hirtma_anl_'+times[1].strftime('%H')+'z'
+            url_2 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[2].strftime('%Y%m%d')+'/hirtma_anl_'+times[2].strftime('%H')+'z'
+            url_3 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[3].strftime('%Y%m%d')+'/hirtma_anl_'+times[3].strftime('%H')+'z'
+            url_4 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+times[4].strftime('%Y%m%d')+'/hirtma_anl_'+times[4].strftime('%H')+'z'
+        
+            url_5 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+new_times[0].strftime('%Y%m%d')+'/hirtma_anl_'+times[0].strftime('%H')+'z'
+            url_6 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+new_times[1].strftime('%Y%m%d')+'/hirtma_anl_'+times[1].strftime('%H')+'z'
+            url_7 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+new_times[2].strftime('%Y%m%d')+'/hirtma_anl_'+times[2].strftime('%H')+'z'
+            url_8 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+new_times[3].strftime('%Y%m%d')+'/hirtma_anl_'+times[3].strftime('%H')+'z'
+            url_9 = 'http://nomads.ncep.noaa.gov:80/dods/hirtma/hirtma'+new_times[4].strftime('%Y%m%d')+'/hirtma_anl_'+times[4].strftime('%H')+'z'        
+        
+        else:
+            url_0 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[0].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[0].strftime('%H')+'z'
+            url_1 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[1].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[1].strftime('%H')+'z'
+            url_2 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[2].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[2].strftime('%H')+'z'
+            url_3 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[3].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[3].strftime('%H')+'z'
+            url_4 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+times[4].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[4].strftime('%H')+'z'
+        
+            url_5 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[0].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[0].strftime('%H')+'z'
+            url_6 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[1].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[1].strftime('%H')+'z'
+            url_7 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[2].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[2].strftime('%H')+'z'
+            url_8 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[3].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[3].strftime('%H')+'z'
+            url_9 = 'http://nomads.ncep.noaa.gov:80/dods/rtma2p5/rtma2p5'+new_times[4].strftime('%Y%m%d')+'/rtma2p5_anl_'+times[4].strftime('%H')+'z'
     
         try:
-            ds = xr.open_dataset(url_0, engine='netcdf4')
-            print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
-            ds_24 = xr.open_dataset(url_5, engine='netcdf4')
-            print("Data was successfully retrieved for " + new_times[0].strftime('%m/%d/%Y %HZ'))
+            if region == 'AK' or region == 'ak':
+                ds = xr.open_dataset(url_0, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
+                ds_24 = xr.open_dataset(url_5, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                print("Data was successfully retrieved for " + new_times[0].strftime('%m/%d/%Y %HZ'))
+            else:
+                ds = xr.open_dataset(url_0, engine='netcdf4')
+                print("Data was successfully retrieved for " + times[0].strftime('%m/%d/%Y %HZ'))
+                ds_24 = xr.open_dataset(url_5, engine='netcdf4')
+                print("Data was successfully retrieved for " + new_times[0].strftime('%m/%d/%Y %HZ'))        
             strtime = times[0]
             strtime_24 = new_times[0]
             return ds, ds_24, strtime, strtime_24
             
         except Exception as a:
             try:
-                print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
-                ds = xr.open_dataset(url_1, engine='netcdf4')
-                print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
-                ds_24 = xr.open_dataset(url_6, engine='netcdf4')
-                print("Data was successfully retrieved for " + new_times[1].strftime('%m/%d/%Y %HZ'))
+                print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
+                if region == 'AK' or region == 'ak':
+                    ds = xr.open_dataset(url_1, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                    print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
+                    ds_24 = xr.open_dataset(url_6, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                    print("Data was successfully retrieved for " + new_times[1].strftime('%m/%d/%Y %HZ'))
+                else:
+                    ds = xr.open_dataset(url_1, engine='netcdf4')
+                    print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
+                    ds_24 = xr.open_dataset(url_6, engine='netcdf4')
+                    print("Data was successfully retrieved for " + new_times[1].strftime('%m/%d/%Y %HZ'))        
                 strtime = times[1]
                 strtime_24 = new_times[1]
                 return ds, ds_24, strtime, strtime_24
@@ -3069,21 +2654,33 @@ class RTMA_CONUS:
             except Exception as b:
                     try:
                         print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[2].strftime('%m/%d/%Y %HZ'))
-                        ds = xr.open_dataset(url_2, engine='netcdf4')
-                        print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
-                        ds_24 = xr.open_dataset(url_7, engine='netcdf4')
-                        print("Data was successfully retrieved for " + new_times[2].strftime('%m/%d/%Y %HZ'))
-                        strtime = times[2]
-                        strtime_24 = new_times[2]
-                        return ds, ds_24, strtime, strtime_24
+                        if region == 'AK' or region == 'ak':
+                            ds = xr.open_dataset(url_2, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                            print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
+                            ds_24 = xr.open_dataset(url_7, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                            print("Data was successfully retrieved for " + new_times[2].strftime('%m/%d/%Y %HZ'))
+                        else:
+                            ds = xr.open_dataset(url_2, engine='netcdf4')
+                            print("Data was successfully retrieved for " + times[2].strftime('%m/%d/%Y %HZ'))
+                            ds_24 = xr.open_dataset(url_7, engine='netcdf4')
+                            print("Data was successfully retrieved for " + new_times[2].strftime('%m/%d/%Y %HZ')) 
+                            strtime = times[2]
+                            strtime_24 = new_times[2]
+                            return ds, ds_24, strtime, strtime_24
                         
                     except Exception as c:
                         try:
                             print("There is no data for " + times[2].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[3].strftime('%m/%d/%Y %HZ'))
-                            ds = xr.open_dataset(url_3, engine='netcdf4')
-                            print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
-                            ds_24 = xr.open_dataset(url_8, engine='netcdf4')
-                            print("Data was successfully retrieved for " + new_times[3].strftime('%m/%d/%Y %HZ'))
+                            if region == 'AK' or region == 'ak':
+                                ds = xr.open_dataset(url_3, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                                print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
+                                ds_24 = xr.open_dataset(url_8, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                                print("Data was successfully retrieved for " + new_times[3].strftime('%m/%d/%Y %HZ'))
+                            else:
+                                ds = xr.open_dataset(url_3, engine='netcdf4')
+                                print("Data was successfully retrieved for " + times[3].strftime('%m/%d/%Y %HZ'))
+                                ds_24 = xr.open_dataset(url_8, engine='netcdf4')
+                                print("Data was successfully retrieved for " + new_times[3].strftime('%m/%d/%Y %HZ')) 
                             strtime = times[3]
                             strtime_24 = new_times[3]
                             return ds, ds_24, strtime, strtime_24
@@ -3092,720 +2689,26 @@ class RTMA_CONUS:
     
                             try:
                                 print("There is no data for " + times[3].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[4].strftime('%m/%d/%Y %HZ'))
-                                ds = xr.open_dataset(url_4, engine='netcdf4')
-                                print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
-                                ds_24 = xr.open_dataset(url_9, engine='netcdf4')
-                                print("Data was successfully retrieved for " + new_times[4].strftime('%m/%d/%Y %HZ'))
+                                if region == 'AK' or region == 'ak':
+                                    ds = xr.open_dataset(url_4, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                                    print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    ds_24 = xr.open_dataset(url_9, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
+                                    print("Data was successfully retrieved for " + new_times[4].strftime('%m/%d/%Y %HZ'))
+                                else:
+                                    ds = xr.open_dataset(url_4, engine='netcdf4')
+                                    print("Data was successfully retrieved for " + times[4].strftime('%m/%d/%Y %HZ'))
+                                    ds_24 = xr.open_dataset(url_9, engine='netcdf4')
+                                    print("Data was successfully retrieved for " + new_times[4].strftime('%m/%d/%Y %HZ')) 
                                 strtime = times[4]
                                 strtime_24 = new_times[4]
                                 return ds, ds_24, strtime, strtime_24
                                 
                             except Exception as e:
                                 print("The latest dataset is over 4 hours old which isn't current. Please try again later.")
-    
+
             
         except Exception as f:
-            error = info.invalid_parameter_NOMADS_RTMA_Alaska()
-            print(error)
-
-
-    def get_current_rtma_relative_humidity_data(current_time):
-    
-        r"""
-        This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis for temperature and dewpoint. 
-        This function then uses MetPy to create a relative humidity dataset from the temperature and dewpoint datasets. 
-        This function then returns the relative humidity dataset. 
-    
-        Inputs:
-               1) current_time (Datetime) - Current time in UTC.
-    
-        Returns: 1) If there are zero errors, the latest relative humidity dataset and the time for that dataset are returned. 
-                 2) If there is an error, an error message is returned. 
-    
-        """
-    
-        times = []
-    
-        for i in range(0,5):
-            new_time = current_time - timedelta(hours=i)
-            times.append(new_time)
-    
-        try:
-            main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-            main_server_status = main_server_response.status_code
-        except Exception as a:
-            pass
-            
-        try:
-            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            first_backup_server_status = first_backup_server_response.status_code
-        except Exception as b:
-            pass
-        
-        try:
-            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            second_backup_server_status = second_backup_server_response.status_code
-        except Exception as c:
-            pass
-        
-        if main_server_status == 200:
-            print("Main UCAR THREDDS Server is online. Connecting!")
-    
-            try:
-                rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-        
-                rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                time = times[0]
-                
-                return rtma_rh *100, time
-                
-            except Exception as e:
-        
-                print("Relative Humidity Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
-                
-                try:
-                    rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                    rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                    rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-            
-                    rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                    print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                    time = times[1]
-                   
-                    return rtma_rh *100, time
-    
-                except Exception as a:
-        
-                    print("Relative Humidity data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
-                    
-                    try:
-                        rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                        rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                        rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-                
-                        rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                        print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                        time = times[2]
-                        
-                        return rtma_rh *100, time
-    
-                    except Exception as b:
-                                    
-                        print("Relative Humidity data is unavailiable for "+times[2].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
-                        
-                        try:
-                            rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                            rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                            rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-                    
-                            rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                            print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                            time = times[3]
-                            
-                            return rtma_rh *100, time
-        
-                        except Exception as c:
-                                    
-                            print("Relative Humidity data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[4].strftime('%m/%d/%Y %H00 UTC'))
-                            
-                            try:
-                                rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                                rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                                rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-                        
-                                rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                                print("Data retrieval for " + times[4].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                                time = times[4]
-                                
-                                return rtma_rh *100, time
-                                       
-                        
-                            except Exception as k:
-                                print("WARNING: Latest dataset is more than 4 hours old.\nQuitting - Please try again later.")
-        
-                                return None
-    
-        if main_server_status != 200 and first_backup_server_status == 200:
-            print("Main UCAR THREDDS Server is down. Connected to the first backup UCAR THREDDS Server!")
-            try:
-                rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-        
-                rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                time = times[0]
-                
-                return rtma_rh *100, time
-                
-            except Exception as e:
-        
-                print("Relative Humidity Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
-                
-                try:
-                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                    rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                    rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-            
-                    rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                    print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                    time = times[1]
-                    
-                    return rtma_rh *100, time
-          
-                except Exception as a:
-        
-                    print("Relative Humidity data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
-                    
-                    try:
-                        rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                        rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                        rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-                
-                        rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                        print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                        time = times[2]
-                        
-                        return rtma_rh *100, time
-        
-                    except Exception as b:
-                                    
-                        print("Relative Humidity data is unavailiable for "+times[2].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
-                        
-                        try:
-                            rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                            rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                            rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-                    
-                            rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                            print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                            time = times[3]
-                            
-                            return rtma_rh *100, time
-        
-                        except Exception as c:
-                                    
-                            print("Relative Humidity data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[4].strftime('%m/%d/%Y %H00 UTC'))
-                            
-                            try:
-                                rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                                rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                                rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-                        
-                                rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                                print("Data retrieval for " + times[4].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                                time = times[4]
-                                
-                                return rtma_rh *100, time
-                                       
-                        
-                            except Exception as k:
-                                print("WARNING: Latest dataset is more than 4 hours old.\nQuitting - Please try again later.")
-        
-                                return None
-    
-        if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status == 200:
-            print("Main UCAR THREDDS Server is down. Connected to the second backup UCAR THREDDS Server!")
-            try:
-                rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-        
-                rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                time = times[0]
-                
-                return rtma_rh *100, time
-                
-            except Exception as e:
-        
-                print("Relative Humidity Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
-                
-                try:
-                    rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                    rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                    rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-            
-                    rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                    print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                    time = times[1]
-                    
-                    return rtma_rh *100, time
-          
-                except Exception as a:
-        
-                    print("Relative Humidity data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
-                    
-                    try:
-                        rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                        rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                        rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-                
-                        rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                        print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                        time = times[2]
-                        
-                        return rtma_rh *100, time
-        
-                    except Exception as b:
-                                    
-                        print("Relative Humidity data is unavailiable for "+times[2].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
-                        
-                        try:
-                            rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                            rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                            rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-                    
-                            rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                            print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                            time = times[3]
-                            
-                            return rtma_rh *100, time
-        
-                        except Exception as c:
-                                    
-                            print("Relative Humidity data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[4].strftime('%m/%d/%Y %H00 UTC'))
-                            
-                            try:
-                                rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[4].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                                rtma_temp = rtma_data['Temperature_Analysis_height_above_ground'].squeeze()
-                                rtma_dwpt = rtma_data['Dewpoint_temperature_Analysis_height_above_ground'].squeeze()
-                        
-                                rtma_rh = mpcalc.relative_humidity_from_dewpoint(rtma_temp, rtma_dwpt)
-                                print("Data retrieval for " + times[4].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-    
-                                time = times[4]
-                                
-                                return rtma_rh *100, time
-                                       
-                        
-                            except Exception as k:
-                                print("WARNING: Latest dataset is more than 4 hours old.\nQuitting - Please try again later.")
-        
-                                return None
-    
-        if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
-            print("Unable to connect to either the main or backup servers. Aborting!")
-
-
-    def RTMA_Relative_Humidity_Synced_With_METAR(current_time, mask):
-    
-        r'''
-
-        This function retrieves the latest RTMA Relative Humidity Dataset and METAR Dataset for the user. 
-
-        Data Source: UCAR/THREDDS (https://thredds.ucar.edu/)
-
-        Required Argument: 1) Current Time in UTC
-
-                           2) (Mask) Minimum radius allowed between points. If units are not provided, meters is assumed. 
-
-        Returns: A list of all the aformentioned data:
-
-                 RTMA RH Data = data[0]
-                 The time corresponding to the dataset = data[1]
-                 Surface METAR Data = data[2]
-                 METAR u-component of wind (kt) = data[3]
-                 METAR v-component of wind (kt) = data[4]
-                 METAR RH Data = data[5]
-                 Mask (Minimum radius allowed between points) = data[6]
-                 Time of METAR Observations = data[7]
-                 Projection for the data = data[8]     
-        
-        '''
-    
-        current_time = current_time
-        mask = mask
-    
-        metar_time = obs.latest_metar_time(current_time)
-    
-        rtma_data, rtma_time = RTMA_CONUS.get_current_rtma_relative_humidity_data(current_time)
-    
-        plot_projection = rtma_data.metpy.cartopy_crs
-        
-        new_metar_time = parsers.checks.check_RTMA_vs_METAR_Times(rtma_time, metar_time)
-    
-        sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised = obs.get_METAR_Data(new_metar_time, plot_projection, mask)
-    
-        data = []
-        data.append(rtma_data)
-        data.append(rtma_time)
-        data.append(sfc_data)
-        data.append(sfc_data_u_kt)
-        data.append(sfc_data_v_kt)
-        data.append(sfc_data_rh)
-        data.append(sfc_data_mask)
-        data.append(metar_time_revised)
-        data.append(plot_projection)
-    
-        return data
-
-    def RTMA_Synced_With_METAR(parameter, current_time, mask):
-    
-        r'''
-        This function is the recommended method to download the Real Time Mesoscale Analysis dataset with the METAR dataset as this function syncs the time of the
-        latest available Real Time Mesoscale Analysis dataset with the latest available complete METAR dataset. 
-    
-        Inputs: 1) parameter (String) - The weather parameter the user wishes to download. 
-                                       To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
-    
-                2) current_time (Datetime) - Current date and time in UTC. 
-                3) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed. 
-        
-        Returns: 1) rtma_data - The latest avaiable Real Time Mesoscale Analysis dataset
-                 2) rtma_time - The time of the latest avaiable Real Time Mesoscale Analysis dataset
-                 3) sfc_data - The entire METAR dataset. 
-                 4) sfc_data_u_kt - The u-component (west-east) of the wind velocity in knots. 
-                 5) sfc_data_v_kt - The v-component (north-south) of the wind velocity in knots. 
-                 6) sfc_data_rh - The relative humidity in the METAR dataset. 
-                 7) sfc_data_mask - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed.
-                 8) metar_time_revised - The corrected time (if needed) for the latest complete METAR dataset. 
-                 9) plot_projection - The coordinate reference system of the data being plotted. This is usually PlateCarree.
-        '''
-    
-        parameter = parameter
-        current_time = current_time
-        mask = mask
-    
-        metar_time = obs.latest_metar_time(current_time)
-    
-        rtma_data, rtma_time = RTMA_CONUS.get_current_rtma_data(current_time, parameter)
-    
-        plot_projection = rtma_data.metpy.cartopy_crs
-        
-        new_metar_time = parsers.checks.check_RTMA_vs_METAR_Times(rtma_time, metar_time)
-    
-        sfc_data, sfc_data_u_kt, sfc_data_v_kt, sfc_data_rh, sfc_data_mask, metar_time_revised = obs.get_METAR_Data(new_metar_time, plot_projection, mask)
-        data = []
-        data.append(rtma_data)
-        data.append(rtma_time)
-        data.append(sfc_data)
-        data.append(sfc_data_u_kt)
-        data.append(sfc_data_v_kt)
-        data.append(sfc_data_rh)
-        data.append(sfc_data_mask)
-        data.append(metar_time_revised)
-        data.append(plot_projection)
-    
-        return data
-
-
-    def get_current_rtma_data(current_time, parameter):
-    
-        r"""
-        This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis for any available parameter. 
-    
-        Inputs:
-               1) current_time (Datetime) - Current time in UTC.
-               2) parameter (String) - The weather parameter the user wishes to download. 
-                                       To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
-    
-        Returns: 1) If there are zero errors, the latest dataset and the time of the dataset for the requested parameter will be returned. 
-                 2) If there is an error, an error message is returned. 
-    
-        """
-    
-        times = []
-    
-        for i in range(0,5):
-            new_time = current_time - timedelta(hours=i)
-            times.append(new_time)
-    
-        try:
-            main_server_response = requests.get("https://thredds.ucar.edu/thredds/catalog/catalog.xml")
-            main_server_status = main_server_response.status_code
-        except Exception as a:
-            pass
-            
-        try:
-            first_backup_server_response = requests.get("https://thredds-test.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            first_backup_server_status = first_backup_server_response.status_code
-        except Exception as b:
-            pass
-         
-        try:
-            second_backup_server_response = requests.get("https://thredds-dev.unidata.ucar.edu/thredds/catalog/catalog.xml")
-            second_backup_server_status = second_backup_server_response.status_code
-        except Exception as c:
-            pass
-    
-        if main_server_status == 200:
-            print("Main UCAR THREDDS Server is online. Connecting!")
-            try:
-                rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                rtma_parameter = rtma_data[parameter].squeeze()
-    
-                print("Data retrieval for " + current_time.strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                
-                return rtma_parameter, current_time
-                
-            except Exception as e:
-        
-                print(parameter + " Data is unavailiable for "+current_time.strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[0].strftime('%m/%d/%Y %H00 UTC'))
-                
-                try:
-                    rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                    rtma_parameter = rtma_data[parameter].squeeze()
-                    time = times[0]
-        
-                    print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                    return rtma_parameter, time
-        
-                except Exception as a:
-        
-                    print(parameter + " Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
-                   
-                    try:
-                        rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                        rtma_parameter = rtma_data[parameter].squeeze()
-                        time = times[1]
-            
-                        print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                        return rtma_parameter, time
-        
-        
-                    except Exception as b:
-                                    
-                        print(parameter + " Data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
-        
-                        try:
-                            rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                            rtma_parameter = rtma_data[parameter].squeeze()
-                            time = times[2]
-            
-                            print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                            return rtma_parameter, time
-        
-                        except Exception as c:
-                                    
-                            print(parameter + " Data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
-        
-                            try:
-                                rtma_cat = TDSCatalog('https://thredds.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                                rtma_parameter = rtma_data[parameter].squeeze()
-                                time = times[3]
-                
-                                print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                                return rtma_parameter, time
-                            
-                        
-                            except syntaxError as k:
-                                error = info.syntax_error()
-        
-                                return error
-    
-        if main_server_status != 200 and first_backup_server_status == 200:
-            print("Main UCAR THREDDS Server is down. Connected to the first backup UCAR THREDDS Server!")
-            try:
-                rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                rtma_parameter = rtma_data[parameter].squeeze()
-    
-                print("Data retrieval for " + current_time.strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                
-                return rtma_parameter, current_time
-                
-            except Exception as e:
-        
-                print(parameter + " Data is unavailiable for "+current_time.strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[0].strftime('%m/%d/%Y %H00 UTC'))
-                
-                try:
-                    rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                    rtma_parameter = rtma_data[parameter].squeeze()
-                    time = times[0]
-        
-                    print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                    return rtma_parameter, time
-        
-                except Exception as a:
-        
-                    print(parameter + " Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
-                   
-                    try:
-                        rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                        rtma_parameter = rtma_data[parameter].squeeze()
-                        time = times[1]
-            
-                        print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                        return rtma_parameter, time
-        
-        
-                    except Exception as b:
-                                    
-                        print(parameter + " Data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
-        
-                        try:
-                            rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                            rtma_parameter = rtma_data[parameter].squeeze()
-                            time = times[2]
-            
-                            print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                            return rtma_parameter, time
-        
-                        except Exception as c:
-                                    
-                            print(parameter + " Data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
-        
-                            try:
-                                rtma_cat = TDSCatalog('https://thredds-test.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                                rtma_parameter = rtma_data[parameter].squeeze()
-                                time = times[3]
-                
-                                print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                                return rtma_parameter, time
-                            
-                        
-                            except syntaxError as k:
-                                error = info.syntax_error()
-        
-                                return error
-    
-        if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status == 200:
-    
-            print("Main UCAR THREDDS Server is down. Connected to the second backup UCAR THREDDS Server!")
-            try:
-                rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+current_time.strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                rtma_parameter = rtma_data[parameter].squeeze()
-    
-                print("Data retrieval for " + current_time.strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                
-                return rtma_parameter, current_time
-                
-            except Exception as e:
-        
-                print(parameter + " Data is unavailiable for "+current_time.strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[0].strftime('%m/%d/%Y %H00 UTC'))
-                
-                try:
-                    rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                    rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[0].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                    rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                    rtma_parameter = rtma_data[parameter].squeeze()
-                    time = times[0]
-        
-                    print("Data retrieval for " + times[0].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                    return rtma_parameter, time
-        
-                except Exception as a:
-        
-                    print(parameter + " Data is unavailiable for "+times[0].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[1].strftime('%m/%d/%Y %H00 UTC'))
-                   
-                    try:
-                        rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                        rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[1].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                        rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                        rtma_parameter = rtma_data[parameter].squeeze()
-                        time = times[1]
-            
-                        print("Data retrieval for " + times[1].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                        return rtma_parameter, time
-        
-        
-                    except Exception as b:
-                                    
-                        print(parameter + " Data is unavailiable for "+times[1].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[2].strftime('%m/%d/%Y %H00 UTC'))
-        
-                        try:
-                            rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                            rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[2].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                            rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                            rtma_parameter = rtma_data[parameter].squeeze()
-                            time = times[2]
-            
-                            print("Data retrieval for " + times[2].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                            return rtma_parameter, time
-        
-                        except Exception as c:
-                                    
-                            print(parameter + " Data is unavailiable for "+times[3].strftime('%m/%d/%Y %H00 UTC')+ "\nWill try to download the most recent dataset from "+times[3].strftime('%m/%d/%Y %H00 UTC'))
-        
-                            try:
-                                rtma_cat = TDSCatalog('https://thredds-dev.unidata.ucar.edu/thredds/catalog/grib/NCEP/RTMA/CONUS_2p5km/RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2/catalog.xml')
-                                rtma_data = rtma_cat.datasets['RTMA_CONUS_2p5km_'+times[3].strftime('%Y%m%d_%H00')+'.grib2'].remote_access(use_xarray=True)
-                                rtma_data = rtma_data.metpy.parse_cf().metpy.assign_latitude_longitude()
-                                rtma_parameter = rtma_data[parameter].squeeze()
-                                time = times[3]
-                
-                                print("Data retrieval for " + times[3].strftime('%m/%d/%Y %H00 UTC') + " is successful")
-                                return rtma_parameter, time
-                            
-                        
-                            except syntaxError as k:
-                                error = info.syntax_error()
-        
-                                return error
-            
-            print("Unable to connect to either the main or backup servers. Aborting!")
-    
-        if main_server_status != 200 and first_backup_server_status != 200 and second_backup_server_status != 200:
-            print("Unable to connect to either the main or backup servers. Aborting!")
+            print(f"No Data available for {state} at {current_time.strftime('%m/%d/%Y %HZ')}")
 
 
 class NDFD_GRIDS:
@@ -4007,8 +2910,6 @@ class NDFD_GRIDS:
         print(f"Retrieved {parameter} NDFD grids.")
     
         return ds1, ds2
-
-
     
 class obs:
 
