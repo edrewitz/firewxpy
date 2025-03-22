@@ -350,7 +350,7 @@ def plot_gridded_relative_humidity_observations(western_bound=None, eastern_boun
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25    
 
-    path, path_print = file_functions.obs_graphics_paths(state, gacc_region, f'Gridded Relative Humidity', reference_system, cwa)
+    path, path_print = file_functions.obs_graphics_paths(state, gacc_region, f'Gridded Relative Humidity', reference_system, cwa, interp=True, interp_type=interpolation_type)
 
     fname = f"Gridded RH.png"
 
@@ -398,13 +398,11 @@ def plot_gridded_relative_humidity_observations(western_bound=None, eastern_boun
     lon = sfc_data['longitude'].values
     lat = sfc_data['latitude'].values
     rh = sfc_data['rh'].values
-    print(rh)
+    
     xp, yp, _ = mapcrs.transform_points(datacrs, lon, lat).T
     x_masked, y_masked, rh_vals = remove_nan_observations(xp, yp, rh)
     x_grid, y_grid, rh_values = interpolate_to_grid(x_masked, y_masked, rh_vals, interp_type=interpolation_type)
 
-    print(x_grid)
-    print(rh_values)
     point_locs = mapcrs.transform_points(ccrs.PlateCarree(), sfc_data['longitude'].values,
                                        sfc_data['latitude'].values)
     
@@ -1137,6 +1135,7 @@ def graphical_daily_summary(station_id):
     fig.text(0.27, 0.07, "Plot Created With FireWxPy (C) Eric J. Drewitz 2024\nData Source: thredds.ucar.edu\nImage Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", fontsize=14, fontweight='bold', verticalalignment='top', bbox=props, zorder=10)    
 
     file_functions.save_daily_weather_summary(fig, station_id)
+
 
 
     
