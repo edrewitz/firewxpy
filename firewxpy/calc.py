@@ -11,9 +11,14 @@ class unit_conversion:
     THIS CLASS HOSTS A VARIETY OF FUNCTIONS TO CONVERT UNITS
     '''
 
-    def meters_per_second_to_mph(rtma_wind):
+    def fahrenheit_to_celsius(f):
 
-        return rtma_wind * 2.23694
+        c = (5/9) * (f-32)
+        return c
+
+    def meters_per_second_to_mph(wind_speed):
+
+        return wind_speed * 2.23694
 
     def knots_to_mph(wind_speed):
 
