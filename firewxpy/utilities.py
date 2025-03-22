@@ -505,3 +505,125 @@ class file_functions:
             path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}"
 
         return path, path_print
+
+
+    def obs_graphics_paths(state, gacc_region, plot_type, reference_system, cwa):
+
+        r'''
+        This function creates the file directory for the images to save to. 
+
+        Required Arguments:
+
+        1) state (String) - The two letter state abbreviation in both upper or lower case
+        2) gacc_region (String) - The 4-letter GACC Region abbreviation
+        3) plot_type (String) - The type of product to be plotted (i.e. Maximum Temperature Forecast)
+        4) reference_system (String) - The georgraphical reference system with respect to the borders on the map. If the user
+            wishes to use a reference system not on this list, please see items 17-23. 
+            Reference Systems: 
+            
+            1) 'States & Counties'
+            2) 'States Only'
+            3) 'GACC Only'
+            4) 'GACC & PSA'
+            5) 'CWA Only'
+            6) 'NWS CWAs & NWS Public Zones'
+            7) 'NWS CWAs & NWS Fire Weather Zones'
+            8) 'NWS CWAs & Counties'
+            9) 'GACC & PSA & NWS Fire Weather Zones'
+            10) 'GACC & PSA & NWS Public Zones'
+            11) 'GACC & PSA & NWS CWA'
+            12) 'GACC & PSA & Counties'
+            13) 'GACC & Counties'
+
+        Optional Arguments:
+
+        1) island (String) - *For Hawaii only* - The name of the island
+        2) cwa (String) - *For Alaska only* - The 3-letter abbreviation for the National Weather Service CWA
+        3) spc (Boolean) - Default = False. - If set to True, the graphics will be saved to the SPC Outlooks branch.
+           If set to fale, the graphics will be saved to the NWS Forecasts branch. 
+
+        NWS CWA Abbreviations:
+
+        1) AER - NWS Anchorage East Domain
+        2) ALU - NWS Anchorage West Domain
+        3) AJK - NWS Juneau
+        4) AFG - NWS Fairbanks
+
+        Return: The file path of the directory branch
+        '''
+
+        if state == None and gacc_region != None:
+            state = gacc_region
+
+        else:
+            state = state
+
+        plot_type = plot_type
+        island = island
+        cwa = cwa
+        state = state.upper()
+        plot_type = plot_type.upper()
+        try:
+            island = island.upper()
+        except Exception as e:
+            pass
+        try:
+            cwa = cwa.upper()
+        except Exception as e:
+            pass
+
+        folder = 'Observations'
+
+        if os.path.exists(f"Weather Data"):
+            pass
+        else:
+            os.mkdir(f"Weather Data")
+            print(f"Built f:Weather Data")
+
+        if os.path.exists(f"Weather Data/{folder}"):
+            pass
+        else:
+            os.mkdir(f"Weather Data/{folder}")
+            print(f"Built f:Weather Data/{folder}")
+
+        if os.path.exists(f"Weather Data/{folder}/{plot_type}"):
+            pass
+        else:
+            os.mkdir(f"Weather Data/{folder}/{plot_type}")
+            print(f"Built f:Weather Data/{folder}/{plot_type}")
+
+        if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}"):
+            pass
+        else:
+            os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}")
+            print(f" Built f:Weather Data/{folder}/{plot_type}/{state}")
+
+        if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}"):
+            pass
+        else:
+            os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}")
+            print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}")
+
+        if state == 'AK' or state == 'ak':
+
+            cwa = cwa
+            if cwa == None:
+                cwa = 'STATE'
+            else:
+                cwa = cwa
+
+            if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}"):
+                pass
+            else:
+                os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}")
+                print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}")                
+        
+            path = f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}"
+            path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}"
+
+        
+        else:
+            path = f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}"
+            path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}"
+
+        return path, path_print
