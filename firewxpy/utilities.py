@@ -507,7 +507,7 @@ class file_functions:
         return path, path_print
 
 
-    def obs_graphics_paths(state, gacc_region, plot_type, reference_system, cwa):
+    def obs_graphics_paths(state, gacc_region, plot_type, reference_system, cwa, interp=False, interp_type=None):
 
         r'''
         This function creates the file directory for the images to save to. 
@@ -559,14 +559,9 @@ class file_functions:
             state = state
 
         plot_type = plot_type
-        island = island
         cwa = cwa
         state = state.upper()
         plot_type = plot_type.upper()
-        try:
-            island = island.upper()
-        except Exception as e:
-            pass
         try:
             cwa = cwa.upper()
         except Exception as e:
@@ -604,6 +599,13 @@ class file_functions:
             os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}")
             print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}")
 
+        if interp != None:
+            if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{interp_type}"):
+                pass
+            else:
+                os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{interp_type}")
+                print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{interp_type}")            
+
         if state == 'AK' or state == 'ak':
 
             cwa = cwa
@@ -617,13 +619,26 @@ class file_functions:
             else:
                 os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}")
                 print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}")                
-        
-            path = f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}"
-            path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}"
 
+            if interp != None:
+                if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}/{interp_type}"):
+                    pass
+                else:
+                    os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}/{interp_type}")
+                    print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}/{interp_type}")  
+
+                path = f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}/{interp_type}"
+                path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}/{interp_type}"
+            else:
+                path = f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}"
+                path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}"
         
         else:
-            path = f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}"
-            path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}"
+            if interp == None:
+                path = f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}"
+                path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}"
+            else:
+                path = f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{interp_type}"
+                path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{interp_type}"                
 
         return path, path_print
