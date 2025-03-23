@@ -51,6 +51,12 @@ def station_coords(station_id):
     r'''
     This function returns the latitude and lonigitude coordinates for any airport. 
 
+    Required Arguments:
+
+    1) station_id (String) - The ID for the ASOS station. 
+
+    Returns: The latitude/longitude coordinates of the ASOS station in decimal degrees.
+
     '''
 
     station_id = station_id.upper()
@@ -79,6 +85,45 @@ class model_data:
     '''
 
     def get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound):
+
+        r'''
+        This function retrieves the latest forecast model data from NCEP/NOMADS OPENDAP. 
+
+        Required Arguments:
+
+        1) model (String) - The forecast model that is being used. 
+
+        2) region (String) - The abbreviation for the region used. 
+
+        3) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+           The default setting is None. If set to None, the user must select a state or gacc_region. 
+           This setting should be changed from None to an integer or float value if the user wishes to
+           have a custom area selected. Negative values denote the western hemisphere and positive 
+           values denote the eastern hemisphere. 
+
+        4) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+           The default setting is None. If set to None, the user must select a state or gacc_region. 
+           This setting should be changed from None to an integer or float value if the user wishes to
+           have a custom area selected. Negative values denote the western hemisphere and positive 
+           values denote the eastern hemisphere. 
+
+        5) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+           The default setting is None. If set to None, the user must select a state or gacc_region. 
+           This setting should be changed from None to an integer or float value if the user wishes to
+           have a custom area selected. Positive values denote the northern hemisphere and negative 
+           values denote the southern hemisphere. 
+
+        6) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+           The default setting is None. If set to None, the user must select a state or gacc_region. 
+           This setting should be changed from None to an integer or float value if the user wishes to
+           have a custom area selected. Positive values denote the northern hemisphere and negative 
+           values denote the southern hemisphere.
+
+        Optional Arguments: None
+
+        Returns: An xarray.data_array of the forecast model data. 
+
+        '''
 
         local_time, utc_time = standard.plot_creation_time()
         yesterday = utc_time - timedelta(hours=24)
@@ -445,6 +490,32 @@ class model_data:
         return ds
 
     def get_hourly_rap_data_point_forecast(model, station_id, longitude, latitude):
+
+        r'''
+        This function downloads and retrieves the latest data for the Rapid Refresh Model from the 
+        NCEP/NOMADS OPENDAP server. 
+
+        Required Arguments:
+
+        1) model (String) - The forecast model that is being used. 
+           Choices 1) RAP 2) RAP 32 (32km Full North America)
+
+        2) station_id (String) - The ID for the ASOS station. If the user wishes to pick a custom point
+           that is not an ASOS location, enter 'Custom' or 'custom' for the station_id. 
+
+        3) longitude (Integer or Float) - If the user is entering a custom location that is not an ASOS station location,
+           enter the longitude value in this place in decimal degrees. If using an ASOS station location, enter None in this
+           place. 
+
+        4) latitude (Integer or Float) - If the user is entering a custom location that is not an ASOS station location,
+           enter the latitude value in this place in decimal degrees. If using an ASOS station location, enter None in this
+           place. 
+
+        Optional Arguments: None
+
+        Returns: An xarray.data_array of the Rapid Refresh Model for the closest grid point to the specified location. 
+        
+        '''
     
         local_time, utc_time = standard.plot_creation_time()
         yesterday = utc_time - timedelta(hours=24)
@@ -805,9 +876,41 @@ class model_data:
         r'''
         This function retrieves the latest dataset for the hourly RAP model from the NOAA/NCEP/NOMADS server. 
 
-        Required Arguments:
+        1) model (String) - The forecast model that is being used. 
+           Choices 1) RAP 2) RAP 32 (32km Full North America)
 
-        1) model (String) - 
+        2) region (String) - The abbreviation for the region used. 
+
+        3) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+           The default setting is None. If set to None, the user must select a state or gacc_region. 
+           This setting should be changed from None to an integer or float value if the user wishes to
+           have a custom area selected. Negative values denote the western hemisphere and positive 
+           values denote the eastern hemisphere. 
+
+        4) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+           The default setting is None. If set to None, the user must select a state or gacc_region. 
+           This setting should be changed from None to an integer or float value if the user wishes to
+           have a custom area selected. Negative values denote the western hemisphere and positive 
+           values denote the eastern hemisphere. 
+
+        5) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+           The default setting is None. If set to None, the user must select a state or gacc_region. 
+           This setting should be changed from None to an integer or float value if the user wishes to
+           have a custom area selected. Positive values denote the northern hemisphere and negative 
+           values denote the southern hemisphere. 
+
+        6) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+           The default setting is None. If set to None, the user must select a state or gacc_region. 
+           This setting should be changed from None to an integer or float value if the user wishes to
+           have a custom area selected. Positive values denote the northern hemisphere and negative 
+           values denote the southern hemisphere.
+
+        Optional Arguments: 
+
+        1) two_point_cross_section (Boolean) - Default = False. When downloading the data and intending to make a cross-section 
+           between two points, set two_point_cross_section=True. 
+
+        Returns: An xarray.data_array of the forecast model data. 
 
         '''
     
@@ -1314,6 +1417,31 @@ class model_data:
 
     def get_nomads_opendap_data_point_forecast(model, station_id, longitude, latitude):
 
+        r'''
+        This function downloads and retrieves the latest data for the forecast model data from the 
+        NCEP/NOMADS OPENDAP server. 
+
+        Required Arguments:
+
+        1) model (String) - The forecast model that is being used. 
+
+        2) station_id (String) - The ID for the ASOS station. If the user wishes to pick a custom point
+           that is not an ASOS location, enter 'Custom' or 'custom' for the station_id. 
+
+        3) longitude (Integer or Float) - If the user is entering a custom location that is not an ASOS station location,
+           enter the longitude value in this place in decimal degrees. If using an ASOS station location, enter None in this
+           place. 
+
+        4) latitude (Integer or Float) - If the user is entering a custom location that is not an ASOS station location,
+           enter the latitude value in this place in decimal degrees. If using an ASOS station location, enter None in this
+           place. 
+
+        Optional Arguments: None
+
+        Returns: An xarray.data_array of the forecast model data for the closest grid point to the specified location. 
+        
+        '''
+
         local_time, utc_time = standard.plot_creation_time()
         yesterday = utc_time - timedelta(hours=24)
 
@@ -1741,60 +1869,64 @@ class model_data:
         r'''
         This function grabs the latest model data from the NOAA/NCEP/NOMADS HTTPS Server and returns it to the user. 
 
-        Required Arguments: 1) model (String) - This is the model the user must select. 
+        Required Arguments: 
+        
+        1) model (String) - This is the model the user must select. 
                                
-                               Here are the choices: 
-                               1) GEFS0p25 ENS MEAN - GEFS 0.25x0.25 degree ensemble mean
-                               2) GEFS0p25 CHEM - GEFS 0.25x0.25 coarse and fine particulates
-                               3) GEFS0p50 CHEM - GEFS 0.5x0.5 coarse and fine particulates
-                               4) UKMET - UKMET model
+           Here are the choices: 
+           1) GEFS0p25 ENS MEAN - GEFS 0.25x0.25 degree ensemble mean
+           2) GEFS0p25 CHEM - GEFS 0.25x0.25 coarse and fine particulates
+           3) GEFS0p50 CHEM - GEFS 0.5x0.5 coarse and fine particulates
+           4) UKMET - UKMET model
 
-                            2) region (String) - This is the region the user wishes to look at. There are a lot of preset regions. 
-                                                 To look at any state use the 2-letter abbreviation for the state in either all capitals
-                                                 or all lowercase. For CONUS, use CONUS in all caps or lower case. For a broad view of the
-                                                 CONUS, Southern Canada and Northern Mexico use: 'CONUS & South Canada & North Mexico'. For 
-                                                 North America use either: NA, na, North America or north america. If the user wishes to use custom
-                                                 boundaries, then enter 'Custom' or 'custom'. For Geographic Area Coordination Centers you can use 
-                                                 the 4-letter abbreviation in all caps or lower case so for example you would use either 'OSCC' or 
-                                                 'oscc' for South Ops. 
+        2) region (String) - This is the region the user wishes to look at. There are a lot of preset regions. 
+                             To look at any state use the 2-letter abbreviation for the state in either all capitals
+                             or all lowercase. For CONUS, use CONUS in all caps or lower case. For a broad view of the
+                             CONUS, Southern Canada and Northern Mexico use: 'CONUS & South Canada & North Mexico'. For 
+                             North America use either: NA, na, North America or north america. If the user wishes to use custom
+                             boundaries, then enter 'Custom' or 'custom'. For Geographic Area Coordination Centers you can use 
+                             the 4-letter abbreviation in all caps or lower case so for example you would use either 'OSCC' or 
+                             'oscc' for South Ops. 
 
-                            3) typeOfLevel (String) - This determines which parameters are available for the GEFS 0.25x0.25 Ensemble Mean. The choices are as
-                                                      follows: 
+        3) typeOfLevel (String) - This determines which parameters are available for the GEFS 0.25x0.25 Ensemble Mean. The choices are as
+                                  follows: 
 
-                                                      1) surface
-                                                      2) meanSea
-                                                      3) depthBelowLandLayer
-                                                      4) heightAboveGround
-                                                      5) atmosphereSingleLayer
-                                                      6) cloudCeiling
-                                                      7) heightAboveGroundLayer
-                                                      8) pressureFromGroundLayer
-                            
-                                                      For both the UKMET and GEFS CHEM you can enter a value of None here. 
+                                  1) surface
+                                  2) meanSea
+                                  3) depthBelowLandLayer
+                                  4) heightAboveGround
+                                  5) atmosphereSingleLayer
+                                  6) cloudCeiling
+                                  7) heightAboveGroundLayer
+                                  8) pressureFromGroundLayer
+        
+                                  For both the UKMET and GEFS CHEM you can enter a value of None here. 
 
-                            4) western_bound (Integer) - The western boundary of the plot. This is only required when the user wishes to make a plot with
-                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
-
-
-                            5) eastern_bound (Integer) - The eastern boundary of the plot. This is only required when the user wishes to make a plot with
-                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
+        4) western_bound (Integer) - The western boundary of the plot. This is only required when the user wishes to make a plot with
+                                     custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
 
 
-                            6) southern_bound (Integer) - The southern boundary of the plot. This is only required when the user wishes to make a plot with
-                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
-                                                         
+        5) eastern_bound (Integer) - The eastern boundary of the plot. This is only required when the user wishes to make a plot with
+                                     custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
 
-                            7) northern_bound (Integer) - The northern boundary of the plot. This is only required when the user wishes to make a plot with
-                                                         custom boundaries. This should be set to None if the user wishes to use a pre-defined region.
 
-        Optional Arguments: 1) get_u_and_v_wind_components (Boolean) - Default = False. When having the typeOfLevel set to 'heightAboveGround' there is an issue
-                                                                       with retrieving the u and v wind components. You will see an error message. Fortunately, 
-                                                                       in FireWxPy we fix that for you so you can disregard the errors. When setting this value to True
-                                                                       you will also return lists of the u and v datasets. 
+        6) southern_bound (Integer) - The southern boundary of the plot. This is only required when the user wishes to make a plot with
+                                     custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
+                                     
 
-                            2) add_wind_gusts (Boolean) - Default = True. When having get_u_and_v_wind_components=True, you can opt to add an additional list to be 
-                                                          returned which will have the wind gust dataset. 
-
+        7) northern_bound (Integer) - The northern boundary of the plot. This is only required when the user wishes to make a plot with
+                                     custom boundaries. This should be set to None if the user wishes to use a pre-defined region.
+    
+        Optional Arguments: 
+        
+        1) get_u_and_v_wind_components (Boolean) - Default = False. When having the typeOfLevel set to 'heightAboveGround' there is an issue
+                                                   with retrieving the u and v wind components. You will see an error message. Fortunately, 
+                                                   in FireWxPy we fix that for you so you can disregard the errors. When setting this value to True
+                                                   you will also return lists of the u and v datasets. 
+    
+        2) add_wind_gusts (Boolean) - Default = True. When having get_u_and_v_wind_components=True, you can opt to add an additional list to be 
+                                      returned which will have the wind gust dataset. 
+    
         Returns: Depending on the values you enter above determines how many lists of datasets are returned. 
                  If the user does not use 'GEFS0p25 ENS MEAN' for the model of choice, a single list of the datasets are returned. 
                  If the user uses 'GEFS0p25 ENS MEAN' and does not have typeOfLevel set to 'heightAboveGround', a single list of the datasets are returned. 
@@ -2312,6 +2444,19 @@ class model_data:
 
     def msc_datamart_datasets(product, directory_path):
 
+        r'''
+        This function retrieves the latest data from the Canadian RDPA
+
+        Required Arguments:
+
+        1) product (String) - The type of product: 1) 'RDPA 6hr' 2) 'RDPA 24hr'
+
+        Optional Arguments: None
+
+        Returns: An xarray.data_array of the latest RDPA data. 
+
+        '''
+
         local_time, utc_time = standard.plot_creation_time()
         yesterday = utc_time - timedelta(hours=24)
 
@@ -2559,13 +2704,15 @@ class RTMA:
         
         2) Current Time in UTC
 
-        Returns: 1) The latest 2.5km x 2.5km RTMA Dataset
-
-                 2) 1) The 2.5km x 2.5km RTMA Dataset from 24-Hours prior to the current dataset
-
-                 3) The time corresponding to the dataset
-
-                 4) The time corresponding to the dataset from 24-Hours prior to the current dataset 
+        Returns: 
+        
+        1) The latest 2.5km x 2.5km RTMA Dataset
+        
+        2) 1) The 2.5km x 2.5km RTMA Dataset from 24-Hours prior to the current dataset
+        
+        3) The time corresponding to the dataset
+        
+        4) The time corresponding to the dataset from 24-Hours prior to the current dataset 
     
         '''
         
@@ -2730,24 +2877,17 @@ class NDFD_GRIDS:
 
         This function retrieves the latest NWS Forecast (NDFD) files from the NWS FTP Server. 
 
-        Scripts that download files from the CONUS directory are recommended to be run between the 48th and 15th 
-        minute to avoid the script idiling. The reason is because the files in the CONUS directory update between the 15th
-        and 48th minute of the hour (and downloading them during that time makes them extremely hard to work with!!). Due
-        to this, if there is an issue with the data, the program will automatically idle until the 48th minute and resume and try again to download the latest data. 
-
         Data Source: NOAA/NWS/NDFD (tgftp.nws.noaa.gov)
 
-        Required Arguments: 1) The name of the directory (see FireWxPy documentation for directory paths)
+        Required Arguments: 
+        
+        1) directory_name (String) - The name of the directory (see FireWxPy documentation for directory paths)
 
-                            2) The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
+        2) parameter (String) - The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
 
-        Returns: 1) The files holding the forecast data in a GRIB2 format. 
+        3) state (String) - The state or region being used. 
 
-                 2) An xarray data-array of the same forecast data. 
-
-                 3) The count of the number of files in the short-term forecast period. 
-
-                 4) The count of the number of files in the extended forecast period. 
+        Returns: An xarray.data_array of the latest NWS/SPC Forecast data
 
         '''
     
@@ -3155,8 +3295,35 @@ class FEMS:
     def get_single_station_data(station_id, number_of_days, start_date=None, end_date=None, fuel_model='Y', to_csv=True):
 
         r'''
-        This function retrieves the dataframe for a single station in FEMS
+        This function retrieves the dataframe for a single RAWS station in FEMS
 
+        Required Arguments:
+
+        1) station_id (Integer) - The WIMS or RAWS ID of the station. 
+
+        2) number_of_days (Integer or String) - How many days the user wants the summary for (90 for 90 days).
+           If the user wants to use a custom date range enter 'Custom' or 'custom' in this field. 
+
+        Optional Arguments:
+
+        1) start_date (String) - Default = None. The start date if the user wants to define a custom period. Enter as a string
+           in the following format 'YYYY-mm-dd'
+
+        2) end_date (String) - Default = None. The end date if the user wants to define a custom period. Enter as a string
+           in the following format 'YYYY-mm-dd'
+
+        3) fuel_model (String) - Default = 'Y'. The fuel model being used. 
+           Fuel Models List:
+
+           Y - Timber
+           X - Brush
+           W - Grass/Shrub
+           V - Grass
+           Z - Slash
+
+        4) to_csv (Boolean) - Default = True. This will save the data into a CSV file and build a directory to hold the CSV files. 
+
+        Returns: A Pandas DataFrame of the NFDRS data from FEMS.            
 
         '''
 
