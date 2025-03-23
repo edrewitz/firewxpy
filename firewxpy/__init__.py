@@ -4,7 +4,7 @@ import firewxpy.SPC_Outlook_Graphics as spc
 
 from firewxpy.standard import plot_creation_time
 
-from firewxpy.data_access import RTMA_CONUS, NDFD_CONUS_Hawaii, NDFD_Alaska, RTMA_Alaska, RTMA_Hawaii, model_data
+from firewxpy.data_access import RTMA, NDFD_GRIDS, obs, model_data
 
 from firewxpy.NWS_Forecasts import temperature as nws_temperature_forecast
 from firewxpy.NWS_Forecasts import relative_humidity as nws_relative_humidity_forecast
