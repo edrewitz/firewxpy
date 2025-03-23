@@ -3906,6 +3906,7 @@ def plot_24_hour_wind_comparison(western_bound=None, eastern_bound=None, souther
     lon = ds['lon']
 
     lat_24 = ds_24['lat']
+    lon_24 = ds_24['lon']
     ws_24 = ds_24['wind10m'] * 2.23694
     u_24= ds_24['ugrd10m'] * 2.23694
     v_24 = ds_24['vgrd10m'] * 2.23694
@@ -3923,6 +3924,7 @@ def plot_24_hour_wind_comparison(western_bound=None, eastern_bound=None, souther
     decimate = scaling.get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, True)
 
     plot_lon, plot_lat = np.meshgrid(lon[::decimate], lat[::decimate])
+    plot_lon_24, plot_lat_24 = np.meshgrid(lon_24[::decimate], lat_24[::decimate])
         
     fig = plt.figure(figsize=(12,12))
     fig.set_facecolor('aliceblue')
@@ -3983,16 +3985,20 @@ def plot_24_hour_wind_comparison(western_bound=None, eastern_bound=None, souther
     stn = mpplots.StationPlot(ax, plot_lon.flatten(), plot_lat.flatten(),
                                  transform=ccrs.PlateCarree(), fontsize=8, zorder=7, clip_on=True)
 
+    stn1 = mpplots.StationPlot(ax, plot_lon_24.flatten(), plot_lat_24.flatten(),
+                                 transform=ccrs.PlateCarree(), zorder=7, fontsize=8, clip_on=True)
+
     if sample_points == 'values':
         diff = diff[::decimate, ::decimate].to_numpy().flatten()
         stn.plot_parameter('C', diff, color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=7)
 
     if sample_points == 'barbs':
-        stn.plot_barb(u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='black', length=4.5, alpha=1, zorder=7, linewidth=0.8, label=time.strftime(f'%m/%d %H:00 {timezone}'))     
-        stn.plot_barb(u_24[0, :, :][::decimate, ::decimate], v_24[0, :, :][::decimate, ::decimate], color='lime', length=4.5, alpha=1, zorder=7, linewidth=0.8, label=time_24.strftime(f'%m/%d %H:00 {timezone}')) 
-        leg = ax.legend(loc=(0.7, 0.92), framealpha=1, fontsize='x-small')
+        stn.plot_barb(u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='crimson', length=4.5, alpha=1, zorder=7, linewidth=0.8, label=time.strftime(f'%m/%d %H:00 {timezone}'))     
+        stn1.plot_barb(u_24[0, :, :][::decimate, ::decimate], v_24[0, :, :][::decimate, ::decimate], color='lime', length=4.5, alpha=1, zorder=7, linewidth=0.8, label=time_24.strftime(f'%m/%d %H:00 {timezone}')) 
+        leg = ax.legend(loc=(0.01, 0.08), framealpha=1, fontsize='x-small')
         leg.set_zorder(12)
 
     fig.savefig(f"{path}/24-Hour RTMA WIND Comparison.png", bbox_inches='tight')
     print(f"Saved 24-Hour RTMA WIND Comparison graphic to {path_print}")
+
 
