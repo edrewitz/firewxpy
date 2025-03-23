@@ -1,3 +1,12 @@
+"""
+This file hosts all the various colortables used in FireWxPy
+
+(C) Eric J. Drewitsz 2025
+        USDA/USFS
+
+"""
+
+
 import matplotlib.colors
 import warnings
 warnings.filterwarnings('ignore')
@@ -53,7 +62,7 @@ def dew_point_colormap():
     return dew_point_colormap
 
 def dew_point_change_colormap():
-    dew_point_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("dew point change", ["darkorange", "darkkhaki", "white", "white", "forestgreen", "aqua"])
+    dew_point_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("dew point change", ["darkorange", "darkkhaki", "lightgrey", "forestgreen", "aqua"])
 
     return dew_point_change_colormap
 
