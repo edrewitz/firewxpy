@@ -77,7 +77,7 @@ def theta_e_colormap():
     return theta_e_colormap
 
 def wind_speed_change_colormap():
-    wind_speed_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("wind speed change", ["magenta", "blue", "white", "white", "darkgoldenrod", "darkorange"])
+    wind_speed_change_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("wind speed change", ["magenta", "blue", "lightgrey", "darkorange", "darkred"])
 
     return wind_speed_change_colormap
 
