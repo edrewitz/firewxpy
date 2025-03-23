@@ -3995,7 +3995,7 @@ def plot_24_hour_wind_comparison(western_bound=None, eastern_bound=None, souther
     if sample_points == 'barbs':
         stn.plot_barb(u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='crimson', length=4.5, alpha=1, zorder=7, linewidth=0.8, label=time.strftime(f'%m/%d %H:00 {timezone}'))     
         stn1.plot_barb(u_24[0, :, :][::decimate, ::decimate], v_24[0, :, :][::decimate, ::decimate], color='lime', length=4.5, alpha=1, zorder=7, linewidth=0.8, label=time_24.strftime(f'%m/%d %H:00 {timezone}')) 
-        leg = ax.legend(loc=(0.01, 0.08), framealpha=1, fontsize='x-small')
+        leg = ax.legend(loc=(0.01, 0.06), framealpha=1, fontsize='x-small')
         leg.set_zorder(12)
 
     fig.savefig(f"{path}/24-Hour RTMA WIND Comparison.png", bbox_inches='tight')
