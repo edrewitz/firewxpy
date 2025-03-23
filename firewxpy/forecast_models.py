@@ -1,3 +1,10 @@
+"""
+This file has all the regular forecast model graphics on maps. 
+
+(C) Eric J. Drewitz 2025
+
+"""
+
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import cartopy.crs as ccrs
