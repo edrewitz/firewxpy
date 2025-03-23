@@ -1,6 +1,4 @@
-import firewxpy.RTMA_Graphics_CONUS as rtma_conus
-import firewxpy.RTMA_Graphics_Alaska as rtma_alaska
-import firewxpy.RTMA_Graphics_Hawaii as rtma_hawaii
+import firewxpy.RTMA as rtma
 
 import firewxpy.SPC_Outlook_Graphics as spc
 
