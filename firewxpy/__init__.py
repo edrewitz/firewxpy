@@ -20,6 +20,7 @@ from firewxpy.cross_sections import time_cross_sections, two_point_cross_section
 
 from firewxpy.observations import gridded_observations as gridded_obs
 from firewxpy.observations import METAR_Observations as metar_obs
+from firewxpy.observations import scatter_observations as scatter_obs
 
 from firewxpy.soundings import plot_observed_sounding, plot_observed_sounding_custom_date_time, plot_forecast_soundings
 
