@@ -470,11 +470,11 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
 
         plt.title(f"SPC Outlook [Day {index}]\nCritical Fire Weather Outlook", fontsize=8, fontweight='bold', loc='left')
         if dt == False:
-            plt.title(f"Valid: {start.strftime(f'%a %d/%H:00 {timezone}')} - {end.strftime(f'%a %d/%H:00 {timezone}')}", fontsize=7, fontweight='bold', loc='right')
+            plt.title(f"Valid: {start.strftime(f'%a %d/%H:00 UTC')} - {end.strftime(f'%a %d/%H:00 UTC')}", fontsize=7, fontweight='bold', loc='right')
         else:
             start_hour = short_start_times[0].hour - hours
             end_hour = short_end_times[0].hour - hours
-            plt.title(f"Valid: {start.strftime(f'%a %d/{start_hour}:00 {timezone}')} - {end.strftime(f'%a %d/{end_hour}:00 {timezone}')}", fontsize=7, fontweight='bold', loc='right')
+            plt.title(f"Valid: {start.strftime(f'%a %d/{start_hour}:00 UTC')} - {end.strftime(f'%a %d/{end_hour}:00 UTC')}", fontsize=7, fontweight='bold', loc='right')
 
         ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/SPC", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
         ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
@@ -542,7 +542,7 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
         cbar.ax.set_yticklabels(['Elevated', 'Critical', 'Extreme'])
 
         plt.title(f"SPC Outlook [Day {index}]\nCritical Fire Weather Outlook", fontsize=8, fontweight='bold', loc='left')
-        plt.title(f"Valid: {start.strftime(f'%a %d/%H:00 {timezone}')} - {end.strftime(f'%a %d/%H:00 {timezone}')}", fontsize=7, fontweight='bold', loc='right')
+        plt.title(f"Valid: {start.strftime(f'%a %d/%H:00 UTC')} - {end.strftime(f'%a %d/%H:00 UTC')}", fontsize=7, fontweight='bold', loc='right')
 
         ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/SPC", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
         ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
@@ -969,11 +969,11 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
 
         plt.title(f"SPC Outlooks [Day {index}]\nDry Lightning Outlook", fontsize=8, fontweight='bold', loc='left')
         if dt == False:
-            plt.title(f"Valid: {start.strftime(f'%a %d/%H:00 {timezone}')} - {end.strftime(f'%a %d/%H:00 {timezone}')}", fontsize=7, fontweight='bold', loc='right')
+            plt.title(f"Valid: {start.strftime(f'%a %d/%H:00 UTC')} - {end.strftime(f'%a %d/%H:00 UTC')}", fontsize=7, fontweight='bold', loc='right')
         else:
             start_hour = short_start_times[0].hour - hours
             end_hour = short_end_times[0].hour - hours
-            plt.title(f"Valid: {start.strftime(f'%a %d/{start_hour}:00 {timezone}')} - {end.strftime(f'%a %d/{end_hour}:00 {timezone}')}", fontsize=7, fontweight='bold', loc='right')
+            plt.title(f"Valid: {start.strftime(f'%a %d/{start_hour}:00 UTC')} - {end.strftime(f'%a %d/{end_hour}:00 UTC')}", fontsize=7, fontweight='bold', loc='right')
 
         ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/SPC", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
         ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
@@ -1041,7 +1041,7 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
         cbar.ax.set_yticklabels(['Isolated', 'Scattered'])
 
         plt.title(f"SPC Outlooks [Day {index}]\nDry Lightning Outlook", fontsize=8, fontweight='bold', loc='left')
-        plt.title(f"Valid: {start.strftime(f'%a %d/%H:00 {timezone}')} - {end.strftime(f'%a %d/%H:00 {timezone}')}", fontsize=7, fontweight='bold', loc='right')
+        plt.title(f"Valid: {start.strftime(f'%a %d/%H:00 UTC')} - {end.strftime(f'%a %d/%H:00 UTC')}", fontsize=7, fontweight='bold', loc='right')
 
         ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/SPC", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
         ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
@@ -1452,11 +1452,11 @@ def plot_convective_outlook(western_bound=None, eastern_bound=None, southern_bou
 
         plt.title(f"SPC Outlooks [Day {index}]\nConvective Outlook", fontsize=8, fontweight='bold', loc='left')
         if dt == False:
-            plt.title(f"Valid: {start.strftime(f'%a %d/%H:00 {timezone}')} - {end.strftime(f'%a %d/%H:00 {timezone}')}", fontsize=7, fontweight='bold', loc='right')
+            plt.title(f"Valid: {start.strftime(f'%a %d/%H:00 UTC')} - {end.strftime(f'%a %d/%H:00 UTC')}", fontsize=7, fontweight='bold', loc='right')
         else:
             start_hour = short_start_times[0].hour - hours
             end_hour = short_end_times[0].hour - hours
-            plt.title(f"Valid: {start.strftime(f'%a %d/{start_hour}:00 {timezone}')} - {end.strftime(f'%a %d/{end_hour}:00 {timezone}')}", fontsize=7, fontweight='bold', loc='right')
+            plt.title(f"Valid: {start.strftime(f'%a %d/{start_hour}:00 UTC')} - {end.strftime(f'%a %d/{end_hour}:00 UTC')}", fontsize=7, fontweight='bold', loc='right')
 
         ax.text(x1, y1, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/SPC", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props)
         ax.text(x2, y2, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props)
