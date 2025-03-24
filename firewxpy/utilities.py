@@ -801,7 +801,7 @@ class file_functions:
             os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}")
             print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}")
 
-        if interp != None and state != 'AK' and state != 'ak':
+        if interp == True and state != 'AK' and state != 'ak':
             if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{interp_type}"):
                 pass
             else:
@@ -822,7 +822,7 @@ class file_functions:
                 os.mkdir(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}")
                 print(f"Built f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}")                
 
-            if interp != None:
+            if interp == True:
                 if os.path.exists(f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}/{interp_type}"):
                     pass
                 else:
@@ -836,7 +836,7 @@ class file_functions:
                 path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{cwa}"
         
         else:
-            if interp == None:
+            if interp == False:
                 path = f"Weather Data/{folder}/{plot_type}/{state}/{reference_system}"
                 path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}"
             else:
