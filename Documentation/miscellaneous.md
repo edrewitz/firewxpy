@@ -8,451 +8,154 @@
 ## ***Data Access Module***
 
  **Classes**
-1) [RTMA_CONUS](#rtma_conus-class)
-2) [NDFD_CONUS_Hawaii](#ndfd_conus_hawaii-class)
-3) [RTMA_Alaska](#rtma_alaska-class)
-4) [NDFD_Alaska](#ndfd_alaska-class)
-5) [RTMA_Hawaii](#rtma_hawaii-class)
-6) [model_data](#model_data-class)
 
-### RTMA_CONUS Class
+ 1) [model_data](#model_data)
+ 2) [RTMA](#rtma)
+ 3) [NDFD_GRIDS](#ndfd_grids)
+ 4) [obs](#obs)
+ 5) [FEMS](#fems)
 
-This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data. 
+ ### model_data 
 
-This class hosts the functions the users will import and call if the users wish to download the data outside of the 
-plotting function and pass the data into the plotting function.
+This class hosts the functions that return forecast model data from various different sources.
 
-This is the recommended method for users who wish to create a large amount of graphics at one time to limit the number of server requests. 
+ *Functions*
 
-***Functions***
+ 1) [get_nomads_opendap_data()](#get_nomads_opendap_data)
+ 2) [get_hourly_rap_data_point_forecast()](#get_hourly_rap_data_point_forecast)
+ 3) [get_hourly_rap_data_area_forecast()](#get_hourly_rap_data_area_forecast)
+ 4) [get_nomads_opendap_data_point_forecast()](#get_nomads_opendap_data_point_forecast)
+ 5) [get_nomads_model_data_via_https()](#get_nomads_model_data_via_https)
+ 6) [msc_datamart_datasets()](#msc_datamart_datasets)
 
-1) [get_RTMA_dataset(current_time)](#get_rtma_datasetcurrent_time)
-2) [get_RTMA_24_hour_comparison_datasets(current_time)](#get_rtma_24_hour_comparison_datasetscurrent_time)
-3) [RTMA_Relative_Humidity_Synced_With_METAR(current_time, mask)](#rtma_relative_humidity_synced_with_metarcurrent_time-mask)
-4) [RTMA_Synced_With_METAR(parameter, current_time, mask)](#get_current_rtma_datacurrent_time-parameter)
-5) [get_current_rtma_data(current_time, parameter)](#get_current_rtma_datacurrent_time-parameter)
+#### get_nomads_opendap_data()
 
-#### get_RTMA_dataset(current_time)
+This function retrieves the latest forecast model data from NCEP/NOMADS OPENDAP. 
 
-This function retrieves the latest RTMA Dataset for the user. 
+Required Arguments:
 
-Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
+1) model (String) - The forecast model that is being used. 
 
-Required Argument: 1) Current Time in UTC (please see the [standard module](#standard-module) for more information on how to get the current time. 
+2) region (String) - The abbreviation for the region used. 
 
-Returns: 
+3) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+   The default setting is None. If set to None, the user must select a state or gacc_region. 
+   This setting should be changed from None to an integer or float value if the user wishes to
+   have a custom area selected. Negative values denote the western hemisphere and positive 
+   values denote the eastern hemisphere. 
 
-1) The latest 2.5km x 2.5km RTMA Dataset
+4) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+   The default setting is None. If set to None, the user must select a state or gacc_region. 
+   This setting should be changed from None to an integer or float value if the user wishes to
+   have a custom area selected. Negative values denote the western hemisphere and positive 
+   values denote the eastern hemisphere. 
 
-2) The time corresponding to the dataset
+5) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+   The default setting is None. If set to None, the user must select a state or gacc_region. 
+   This setting should be changed from None to an integer or float value if the user wishes to
+   have a custom area selected. Positive values denote the northern hemisphere and negative 
+   values denote the southern hemisphere. 
 
+6) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+   The default setting is None. If set to None, the user must select a state or gacc_region. 
+   This setting should be changed from None to an integer or float value if the user wishes to
+   have a custom area selected. Positive values denote the northern hemisphere and negative 
+   values denote the southern hemisphere.
 
-#### get_RTMA_24_hour_comparison_datasets(current_time)
+Optional Arguments: None
 
-This function retrieves the latest RTMA Dataset and the RTMA Dataset for 24-Hours prior to the current dataset for the user. 
+Returns: An xarray.data_array of the forecast model data. 
 
-Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
+#### get_hourly_rap_data_point_forecast()
 
-Required Argument: 1) Current Time in UTC (please see the [standard module](#standard-module) for more information on how to get the current time. 
+This function downloads and retrieves the latest data for the Rapid Refresh Model from the 
+NCEP/NOMADS OPENDAP server. 
 
-Returns: 
+Required Arguments:
 
-1) The latest 2.5km x 2.5km RTMA Dataset
+1) model (String) - The forecast model that is being used. 
+   Choices 1) RAP 2) RAP 32 (32km Full North America)
 
-2) The 2.5km x 2.5km RTMA Dataset from 24-Hours prior to the current dataset
+2) station_id (String) - The ID for the ASOS station. If the user wishes to pick a custom point
+   that is not an ASOS location, enter 'Custom' or 'custom' for the station_id. 
 
-3) The time corresponding to the dataset
+3) longitude (Integer or Float) - If the user is entering a custom location that is not an ASOS station location,
+   enter the longitude value in this place in decimal degrees. If using an ASOS station location, enter None in this
+   place. 
 
-4) The time corresponding to the dataset from 24-Hours prior to the current dataset 
+4) latitude (Integer or Float) - If the user is entering a custom location that is not an ASOS station location,
+   enter the latitude value in this place in decimal degrees. If using an ASOS station location, enter None in this
+   place. 
 
+Optional Arguments: None
 
-#### RTMA_Relative_Humidity_Synced_With_METAR(current_time, mask)
+Returns: An xarray.data_array of the Rapid Refresh Model for the closest grid point to the specified location. 
 
-This function retrieves the latest RTMA Relative Humidity Dataset and METAR Dataset for the user. 
+#### get_hourly_rap_data_area_forecast()
 
-Data Source: UCAR/THREDDS (https://thredds.ucar.edu/)
+This function retrieves the latest dataset for the hourly RAP model from the NOAA/NCEP/NOMADS server. 
 
-Required Argument: 
+1) model (String) - The forecast model that is being used. 
+   Choices 1) RAP 2) RAP 32 (32km Full North America)
 
-1) Current Time in UTC (please see the [standard module](#standard-module) for more information on how to get the current time. 
+2) region (String) - The abbreviation for the region used. 
 
-2) (Mask) Minimum radius allowed between points. If units are not provided, meters is assumed (please see the [dims module](#dims-module) for more information on how to get the mask. 
+3) western_bound (Integer or Float) - Default = None. Western extent of the plot in decimal degrees. 
+   The default setting is None. If set to None, the user must select a state or gacc_region. 
+   This setting should be changed from None to an integer or float value if the user wishes to
+   have a custom area selected. Negative values denote the western hemisphere and positive 
+   values denote the eastern hemisphere. 
 
-Returns: A list of all the aformentioned data:
+4) eastern_bound (Integer or Float) - Default = None. Eastern extent of the plot in decimal degrees. 
+   The default setting is None. If set to None, the user must select a state or gacc_region. 
+   This setting should be changed from None to an integer or float value if the user wishes to
+   have a custom area selected. Negative values denote the western hemisphere and positive 
+   values denote the eastern hemisphere. 
 
-RTMA RH Data = data[0]
+5) southern_bound (Integer or Float) - Default = None. Southern extent of the plot in decimal degrees. 
+   The default setting is None. If set to None, the user must select a state or gacc_region. 
+   This setting should be changed from None to an integer or float value if the user wishes to
+   have a custom area selected. Positive values denote the northern hemisphere and negative 
+   values denote the southern hemisphere. 
 
-The time corresponding to the dataset = data[1]
+6) northern_bound (Integer or Float) - Default = None. Northern extent of the plot in decimal degrees. 
+   The default setting is None. If set to None, the user must select a state or gacc_region. 
+   This setting should be changed from None to an integer or float value if the user wishes to
+   have a custom area selected. Positive values denote the northern hemisphere and negative 
+   values denote the southern hemisphere.
 
-Surface METAR Data = data[2]
+Optional Arguments: 
 
-METAR u-component of wind (kt) = data[3]
+1) two_point_cross_section (Boolean) - Default = False. When downloading the data and intending to make a cross-section 
+   between two points, set two_point_cross_section=True. 
 
-METAR v-component of wind (kt) = data[4]
+Returns: An xarray.data_array of the forecast model data. 
 
-METAR RH Data = data[5]
+#### get_nomads_opendap_data_point_forecast()
 
-Mask (Minimum radius allowed between points) = data[6]
+This function downloads and retrieves the latest data for the forecast model data from the 
+NCEP/NOMADS OPENDAP server. 
 
-Time of METAR Observations = data[7]
+Required Arguments:
 
-Projection for the data = data[8]  
+1) model (String) - The forecast model that is being used. 
 
-#### RTMA_Synced_With_METAR(parameter, current_time, mask)
+2) station_id (String) - The ID for the ASOS station. If the user wishes to pick a custom point
+   that is not an ASOS location, enter 'Custom' or 'custom' for the station_id. 
 
-This function is the recommended method to download the Real Time Mesoscale Analysis dataset with the METAR dataset as this function syncs the time of the
-latest available Real Time Mesoscale Analysis dataset with the latest available complete METAR dataset. 
+3) longitude (Integer or Float) - If the user is entering a custom location that is not an ASOS station location,
+   enter the longitude value in this place in decimal degrees. If using an ASOS station location, enter None in this
+   place. 
 
-Inputs: 
+4) latitude (Integer or Float) - If the user is entering a custom location that is not an ASOS station location,
+   enter the latitude value in this place in decimal degrees. If using an ASOS station location, enter None in this
+   place. 
 
-1) parameter (String) - The weather parameter the user wishes to download. 
-To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
+Optional Arguments: None
 
-2) current_time (Datetime) - Current date and time in UTC (please see the [standard module](#standard-module) for more information on how to get the current time.  
-3) mask (Integer) - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed
-                     (please see the [dims module](#dims-module) for more information on how to get the mask  
+Returns: An xarray.data_array of the forecast model data for the closest grid point to the specified location. 
 
-Returns: 
-
-1) rtma_data - The latest avaiable Real Time Mesoscale Analysis dataset
-2) rtma_time - The time of the latest avaiable Real Time Mesoscale Analysis dataset
-3) sfc_data - The entire METAR dataset. 
-4) sfc_data_u_kt - The u-component (west-east) of the wind velocity in knots. 
-5) sfc_data_v_kt - The v-component (north-south) of the wind velocity in knots. 
-6) sfc_data_rh - The relative humidity in the METAR dataset. 
-7) sfc_data_mask - Distance in meters to mask METAR stations apart from eachother so stations don't clutter the plot. The higher the value, the less stations are displayed.
-8) metar_time_revised - The corrected time (if needed) for the latest complete METAR dataset. 
-9) plot_projection - The coordinate reference system of the data being plotted. This is usually PlateCarree.
-
-#### get_current_rtma_data(current_time, parameter)
-
-This function retrieves the latest available 2.5km x 2.5km Real Time Mesoscale Analysis for any available parameter. 
-
-Inputs:
-
-1) current_time (Datetime) - Current time in UTC (please see the [standard module](#standard-module) for more information on how to get the current time.  
-2) parameter (String) - The weather parameter the user wishes to download. 
-To find the full list of parameters, visit: https://thredds.ucar.edu/thredds/dodsC/grib/NCEP/RTMA/CONUS_2p5km/Best.html
-
-Returns: 
-
-1) If there are zero errors, the latest dataset and the time of the dataset for the requested parameter will be returned. 
-2) If there is an error, an error message is returned. 
-
-### NDFD_CONUS_Hawaii Class
-
-This class hosts the active function that downloads the NOAA/NWS/NDFD Gridded Data for CONUS and Hawaii. 
-
-This class hosts the function the users will import and call if the users wish to download the data outside of the 
-plotting function and pass the data into the plotting function.
-
-This is the recommended method for users who wish to create a large amount of graphics at one time to limit the number of server requests. 
-
-***Functions***
-
-1) [download_NDFD_grids(directory_name, parameter)](#download_ndfd_gridsdirectory_name-parameter)
-2) [download_short_term_NDFD_grids(directory_name, parameter)](#download_short_term_ndfd_gridsdirectory_name-parameter)
-3) [download_extended_NDFD_grids(directory_name, parameter)](#download_extended_ndfd_gridsdirectory_name-parameter)
-4) [get_NWS_NDFD_7_Day_grid_data(directory_name, parameter)](#get_nws_ndfd_7_day_grid_datadirectory_name-parameter)
-
-#### Directory Paths
-
-ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
-
-CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
-
-CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
-
-CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
-
-CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
-
-CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
-
-EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
-
-GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
-
-HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
-
-MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
-
-NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
-
-NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
-
-NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
-
-NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
-
-NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
-
-OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
-
-PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
-
-PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
-
-PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
-
-SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
-
-SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
-
-SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
-
-SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
-
-UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
-
-
-
-#### download_NDFD_grids(directory_name, parameter)
-
-This function retrieves the latest NWS Forecast (NDFD) files from the NWS FTP Server. 
-
-Scripts that download files from the CONUS directory are recommended to be run between the 48th and 15th 
-minute to avoid the script idiling. The reason is because the files in the CONUS directory update between the 15th
-and 48th minute of the hour (and downloading them during that time makes them extremely hard to work with!!). Due
-to this, if there is an issue with the data, the program will automatically idle until the 48th minute and resume and try again to download the latest data. 
-
-Data Source: NOAA/NWS/NDFD (tgftp.nws.noaa.gov)
-
-Required Arguments: 
-
-1) The name of the directory (see FireWxPy documentation for [directory paths](#directory-paths))
-
-2) The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
-
-Returns: 
-
-1) The files holding the forecast data in a GRIB2 format. 
-
-2) An xarray data-array of the same forecast data. 
-
-3) The count of the number of files in the short-term forecast period. 
-
-4) The count of the number of files in the extended forecast period. 
-
-
-#### download_short_term_NDFD_grids(directory_name, parameter)
-
-This function retrieves the latest NWS Forecast (NDFD) files from the NWS FTP Server. 
-
-Scripts that download files from the CONUS directory are recommended to be run between the 48th and 15th 
-minute to avoid the script idiling. The reason is because the files in the CONUS directory update between the 15th
-and 48th minute of the hour (and downloading them during that time makes them extremely hard to work with!!). Due
-to this, if there is an issue with the data, the program will automatically idle until the 48th minute and resume and try again to download the latest data. 
-
-Data Source: NOAA/NWS/NDFD (tgftp.nws.noaa.gov)
-
-Required Arguments: 
-
-1) The name of the directory (see FireWxPy documentation for [directory paths](#directory-paths))
-
-2) The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
-
-Returns: 
-
-1) The files holding the forecast data in a GRIB2 format. 
-
-2) An xarray data-array of the same forecast data. 
-
-3) The count of the number of files in the short-term forecast period. 
-
-4) The count of the number of files in the extended forecast period. 
-
-#### download_extended_NDFD_grids(directory_name, parameter)
-
-This function retrieves the latest NWS Forecast (NDFD) files from the NWS FTP Server. 
-
-Scripts that download files from the CONUS directory are recommended to be run between the 48th and 15th 
-minute to avoid the script idiling. The reason is because the files in the CONUS directory update between the 15th
-and 48th minute of the hour (and downloading them during that time makes them extremely hard to work with!!). Due
-to this, if there is an issue with the data, the program will automatically idle until the 48th minute and resume and try again to download the latest data. 
-
-Data Source: NOAA/NWS/NDFD (tgftp.nws.noaa.gov)
-
-Required Arguments: 
-
-1) The name of the directory (see FireWxPy documentation for [directory paths](#directory-paths))
-
-2) The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
-
-Returns: 
-
-1) The files holding the forecast data in a GRIB2 format. 
-
-2) An xarray data-array of the same forecast data. 
-
-3) The count of the number of files in the short-term forecast period. 
-
-4) The count of the number of files in the extended forecast period.
-
-
-#### get_NWS_NDFD_7_Day_grid_data(directory_name, parameter)
-
-This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
-This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
-
-Inputs:
-1) directory_name (String) - The directory name is the complete filepath on the National Weather Service FTP server. 
-The directory determines the domain the forecast data is valid for. See [directory paths](#directory-paths) for more information on each proper path. 
-
-2) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-
-Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
-This function may also return an error message for either: 
-
-1) A bad file path (invalid directory_name)
-2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
-
-### RTMA_Alaska Class
-
-This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data for Alaska. 
-
-This class hosts the functions the users will import and call if the users wish to download the data outside of the 
-plotting function and pass the data into the plotting function.
-
-This is the recommended method for users who wish to create a large amount of graphics at one time to limit the number of server requests. 
-
-#### get_RTMA_dataset(current_time)
-
-This function retrieves the latest RTMA Dataset for the user. 
-
-Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
-
-Required Argument: 1) Current Time in UTC
-
-Returns: 
-
-1) The latest 2.5km x 2.5km RTMA Dataset
-
-2) The time corresponding to the dataset
-
-#### get_RTMA_24_hour_comparison_datasets(current_time)
-
-This function retrieves the latest RTMA Dataset and the RTMA Dataset for 24-Hours prior to the current dataset for the user for Alaska. 
-
-Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
-
-Required Argument: 1) Current Time in UTC
-
-Returns: 
-
-1) The latest 2.5km x 2.5km RTMA Dataset
-
-2) 1) The 2.5km x 2.5km RTMA Dataset from 24-Hours prior to the current dataset
-
-3) The time corresponding to the dataset
-
-4) The time corresponding to the dataset from 24-Hours prior to the current dataset
-
-### NDFD_Alaska Class
-
-#### get_short_and_extended_grids(parameter)
-
-This function connects to the National Weather Service FTP Server and returns the forecast data for the parameter of interest in a GRIB2 file.
-This function is specifically for downloading the entire National Weather Service Forecast (Days 1-7) Forecast grids. 
-
-Inputs:
-
-1) parameter (String) - The parameter corresponds to the weather element the user is interested in (i.e. temperature, relative humidity, wind speed etc.)
-                        Here is a link to the spreadsheet that contains all of the proper syntax for each parameter:
-                        https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fwww.weather.gov%2Fmedia%2Fmdl%2Fndfd%2FNDFDelem_fullres.xls&wdOrigin=BROWSELINK
-
-Returns: This function returns the National Weather Service NDFD gridded forecast data in a GRIB2 file for the entire forecast period (Days 1-7). 
-     This function may also return an error message for either: 1) A bad file path (invalid directory_name) or 2) An invalid parameter (if the spelling of the parameter syntax is incorrect)
-
-
-### RTMA_Hawaii Class
-
-This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data for Hawaii. 
-
-This class hosts the functions the users will import and call if the users wish to download the data outside of the 
-plotting function and pass the data into the plotting function.
-
-This is the recommended method for users who wish to create a large amount of graphics at one time to limit the number of server requests. 
-
-#### get_RTMA_dataset(current_time)
-
-This function retrieves the latest RTMA Dataset for the user. 
-
-Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
-
-Required Argument: 1) Current Time in UTC
-
-Returns: 
-
-1) The latest 2.5km x 2.5km RTMA Dataset
-
-2) The time corresponding to the dataset
-
-#### get_RTMA_24_hour_comparison_datasets(current_time)
-
-This function retrieves the latest RTMA Dataset and the RTMA Dataset for 24-Hours prior to the current dataset for the user. 
-
-Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
-
-Required Argument: 1) Current Time in UTC
-
-Returns: 
-
-1) The latest 2.5km x 2.5km RTMA Dataset
-
-2) 1) The 2.5km x 2.5km RTMA Dataset from 24-Hours prior to the current dataset
-
-3) The time corresponding to the dataset
-
-4) The time corresponding to the dataset from 24-Hours prior to the current dataset
-
-### model_data Class
-
-#### get_nomads_opendap_data(model, region, western_bound, eastern_bound, southern_bound, northern_bound)
-
-This function grabs the latest model data from the NOAA/NCEP/NOMADS OpenDAP Server and returns it to the user. 
-
-Required Arguments: 1) model (String) - This is the model the user must select. 
-                       
-     Here are the choices: 
-     1) GFS0p25 - GFS 0.25x0.25 degree
-     2) GFS0p25_1h - GFS 0.25x0.25 degree with 1 hour intervals
-     3) GFS0p50 - GFS 0.5x0.5 degree
-     4) GFS1p00 - GFS 1.0x1.0 degree
-     5) GEFS0p50_all - All ensemble members of the GEFS 0.5x0.5 degree
-     6) CMCENS - Canadian Ensemble
-     7) NAM - North American Model
-     8) NAM 1hr - North American Model with 1 hour intervals 
-
-2) region (String) - This is the region the user wishes to look at. There are a lot of preset regions. 
-                     To look at any state use the 2-letter abbreviation for the state in either all capitals
-                     or all lowercase. For CONUS, use CONUS in all caps or lower case. For a broad view of the
-                     CONUS, Southern Canada and Northern Mexico use: 'CONUS & South Canada & North Mexico'. For 
-                     North America use either: NA, na, North America or north america. If the user wishes to use custom
-                     boundaries, then enter 'Custom' or 'custom'. For Geographic Area Coordination Centers you can use 
-                     the 4-letter abbreviation in all caps or lower case so for example you would use either 'OSCC' or 
-                     'oscc' for South Ops. 
-
-3) western_bound (Integer) - The western boundary of the plot. This is only required when the user wishes to make a plot with
-                             custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
-
-
-4) eastern_bound (Integer) - The eastern boundary of the plot. This is only required when the user wishes to make a plot with
-                             custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
-
-
-5) southern_bound (Integer) - The southern boundary of the plot. This is only required when the user wishes to make a plot with
-                             custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
-                             
-
-6) northern_bound (Integer) - The northern boundary of the plot. This is only required when the user wishes to make a plot with
-                             custom boundaries. This should be set to None if the user wishes to use a pre-defined region. 
-
-Returns: A netCDF4 dataset of the model the user wishes set to the area the user defines. 
-
-#### get_nomads_model_data_via_https(model, region, typeOfLevel, western_bound, eastern_bound, southern_bound, northern_bound, get_u_and_v_wind_components=False, add_wind_gusts=True)
+#### get_nomads_model_data_via_https()
 
 This function grabs the latest model data from the NOAA/NCEP/NOMADS HTTPS Server and returns it to the user. 
 
@@ -515,18 +218,221 @@ Optional Arguments:
                               returned which will have the wind gust dataset. 
 
 Returns: Depending on the values you enter above determines how many lists of datasets are returned. 
+         If the user does not use 'GEFS0p25 ENS MEAN' for the model of choice, a single list of the datasets are returned. 
+         If the user uses 'GEFS0p25 ENS MEAN' and does not have typeOfLevel set to 'heightAboveGround', a single list of the datasets are returned. 
+         If the user uses 'GEFS0p25 ENS MEAN' and does have typeOfLevel set to 'heightAboveGround' while get_u_and_v_wind_components=False, a single list of the datasets are returned. 
+         If the user uses 'GEFS0p25 ENS MEAN' and does have typeOfLevel set to 'heightAboveGround' while get_u_and_v_wind_components=True and get_u_and_v_wind_components=False,
+         a list of the 'heightAboveGround' datasets, u-wind datasets and v-wind datasets will be returned. 
+         If the user uses 'GEFS0p25 ENS MEAN' and does have typeOfLevel set to 'heightAboveGround' while get_u_and_v_wind_components=True and get_u_and_v_wind_components=True,
+         a list of the 'heightAboveGround' datasets, u-wind datasets, v-wind datasets and gust datasets will be returned.
 
-If the user does not use 'GEFS0p25 ENS MEAN' for the model of choice, a single list of the datasets are returned. 
+#### msc_datamart_datasets()
 
-If the user uses 'GEFS0p25 ENS MEAN' and does not have typeOfLevel set to 'heightAboveGround', a single list of the datasets are returned. 
+This function retrieves the latest data from the Canadian RDPA
 
-If the user uses 'GEFS0p25 ENS MEAN' and does have typeOfLevel set to 'heightAboveGround' while get_u_and_v_wind_components=False, a single list of the datasets are returned. 
+Required Arguments:
 
-If the user uses 'GEFS0p25 ENS MEAN' and does have typeOfLevel set to 'heightAboveGround' while get_u_and_v_wind_components=True and get_u_and_v_wind_components=False,
-a list of the 'heightAboveGround' datasets, u-wind datasets and v-wind datasets will be returned. 
+1) product (String) - The type of product: 1) 'RDPA 6hr' 2) 'RDPA 24hr'
 
-If the user uses 'GEFS0p25 ENS MEAN' and does have typeOfLevel set to 'heightAboveGround' while get_u_and_v_wind_components=True and get_u_and_v_wind_components=True,
-a list of the 'heightAboveGround' datasets, u-wind datasets, v-wind datasets and gust datasets will be returned.
+Optional Arguments: None
+
+Returns: An xarray.data_array of the latest RDPA data. 
+
+### RTMA
+
+This class hosts the active functions that download the 2.5km x 2.5km Real Time Mesoscale Analysis (RTMA) Data. 
+
+This class hosts the functions the users will import and call if the users wish to download the data outside of the 
+plotting function and pass the data into the plotting function.
+
+This is the recommended method for users who wish to create a large amount of graphics at one time to limit the number of server requests. 
+
+*Functions*
+
+1) [get_rtma_datasets()](#get_rtma_datasets)
+
+#### get_rtma_datasets()
+
+This function retrieves the latest RTMA Dataset and the RTMA Dataset for 24-Hours prior to the current dataset for the user. 
+
+Data Source: NOAA/NCEP/NOMADS (https://nomads.ncep.noaa.gov/)
+
+Required Arguments:
+
+1) region (String) - The abbreviation for the region (state, GACC Region, CONUS, etc.)
+
+2) Current Time in UTC
+
+Returns: 
+
+1) The latest 2.5km x 2.5km RTMA Dataset
+
+2) 1) The 2.5km x 2.5km RTMA Dataset from 24-Hours prior to the current dataset
+
+3) The time corresponding to the dataset
+
+4) The time corresponding to the dataset from 24-Hours prior to the current dataset
+
+### NDFD_GRIDS
+
+This class hosts the active function that downloads the NOAA/NWS/NDFD Gridded Data. 
+
+This class hosts the function the users will import and call if the users wish to download the data outside of the 
+plotting function and pass the data into the plotting function.
+
+This is the recommended method for users who wish to create a large amount of graphics at one time to limit the number of server requests. 
+
+*Functions*
+
+1) [get_ndfd_grids_xarray()](#get_ndfd_grids_xarray)
+
+#### get_ndfd_grids_xarray()
+
+This function retrieves the latest NWS Forecast (NDFD) files from the NWS FTP Server. 
+
+Data Source: NOAA/NWS/NDFD (tgftp.nws.noaa.gov)
+
+Required Arguments: 
+
+1) directory_name (String) - The name of the directory (see FireWxPy documentation for directory paths)
+
+2) parameter (String) - The parameter that the user wishes to download. (i.e. ds.maxt.bin for max temperature)
+
+3) state (String) - The state or region being used. 
+
+Returns: An xarray.data_array of the latest NWS/SPC Forecast data
+
+*Directory List*
+
+ALASKA: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.alaska/
+
+CONUS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/
+
+CENTRAL GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crgrlake/
+
+CENTRAL MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crmissvy/
+
+CENTRAL PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crplains/
+
+CENTRAL ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.crrocks/
+
+EASTERN GREAT LAKES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.ergrlake/
+
+GUAM: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.guam/
+
+HAWAII: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.hawaii/
+
+MID-ATLANTIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.midatlan/
+
+NORTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.neast/
+
+NORTHERN HEMISPHERE: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nhemi/
+
+NORTH PACIFIC OCEAN: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.npacocn/
+
+NORTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nplains/
+
+NORTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.nrockies/
+
+OCEANIC: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.oceanic/
+
+PACIFIC NORTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacnwest/
+
+PACIFIC SOUTHWEST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.pacswest/
+
+PUERTO RICO: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.puertori/
+
+SOUTHEAST: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.seast/
+
+SOUTHERN MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.smissvly/
+
+SOUTHERN PLAINS: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.splains/
+
+SOUTHERN ROCKIES: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.srockies/
+
+UPPER MISSISSIPPI VALLEY: /SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.umissvly/
+
+### obs
+
+This class hosts functions to access observational data
+
+*Functions*
+
+1) [previous_day_weather_summary()](#previous_day_weather_summary)
+2) [get_metar_data()](#get_metar_data)
+
+#### previous_day_weather_summary()
+
+This function retrieves the 24 hour observations for the previous day and returns the extreme maximum and minimum values as well as the times associated with those values.
+
+Inputs:
+       1) station_id (String) - The 4 letter station identifier for the observational site. 
+
+Returns:
+        1) Maximum Temperature (°F)
+        2) The time the maximum temperature occurred
+        3) Minimum Temperature (°F)
+        4) The time the minimum temperature occurred
+        5) Minimum Relative Humidity (%)
+        6) The time the minimum relative humidity occurred
+        7) Maximum Relative Humidity (%)
+        8) The time the maximum relative humidity occurred
+        9) Maximum Wind Speed (MPH)
+        10) The time the maximum wind speed occurred
+        11) Maximum Wind Gust (MPH)
+        12) The time the maximum wind gust occurred 
+
+#### get_metar_data()
+
+This function downloads and returns the latest METAR data. 
+
+Inputs: None 
+
+Returns: 
+
+1) df (Pandas DataFrame) - DataFrame of the latest METAR data
+
+2) time (datetime) - The time of the latest METAR dataset
+
+### FEMS
+
+This class hosts functions to retrieve the latest fuels data from FEMS
+
+*Functions*
+
+1) [get_single_station_data()](#get_single_station_data)
+
+#### get_single_station_data()
+
+This function retrieves the dataframe for a single RAWS station in FEMS
+
+Required Arguments:
+
+1) station_id (Integer) - The WIMS or RAWS ID of the station. 
+
+2) number_of_days (Integer or String) - How many days the user wants the summary for (90 for 90 days).
+   If the user wants to use a custom date range enter 'Custom' or 'custom' in this field. 
+
+Optional Arguments:
+
+1) start_date (String) - Default = None. The start date if the user wants to define a custom period. Enter as a string
+   in the following format 'YYYY-mm-dd'
+
+2) end_date (String) - Default = None. The end date if the user wants to define a custom period. Enter as a string
+   in the following format 'YYYY-mm-dd'
+
+3) fuel_model (String) - Default = 'Y'. The fuel model being used. 
+   Fuel Models List:
+
+   Y - Timber
+   X - Brush
+   W - Grass/Shrub
+   V - Grass
+   Z - Slash
+
+4) to_csv (Boolean) - Default = True. This will save the data into a CSV file and build a directory to hold the CSV files. 
+
+Returns: A Pandas DataFrame of the NFDRS data from FEMS.            
 
 
 ## ***Standard Module***
