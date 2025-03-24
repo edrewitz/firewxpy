@@ -2,7 +2,7 @@
 
 ### **Classes**
 1) [Time Cross-Sections](#time-cross-sections)
-2) [Cross Sections Between Two Points]()
+2) [Cross Sections Between Two Points](#cross-sections-between-two-points)
 
 
 #### Time Cross-Sections
