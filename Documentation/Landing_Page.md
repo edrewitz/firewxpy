@@ -28,7 +28,12 @@ For video tutorials/demostrations checkout the FireWxPy Tutorial Series on the S
 18) [sawti](https://github.com/edrewitz/firewxpy/blob/main/Documentation/sawti.md)
 19) [plot_daily_solar_information](https://github.com/edrewitz/firewxpy/blob/main/Documentation/solar_information.md#plot_daily_solar_informationlatitude-longitude)
 
-**For Users Who Download The Data Outside Of The Function And Pass It In**
+**Additional Resources For Users Who Download The Data Outside Of The Function And Pass It In**
+
+*This is recommended for users generating a lot of graphics with the same dataset (i.e. a lot of RTMA graphics etc.)*
+
+*This method reduces the amount of data requests on the servers hosting the data*
+
 1) [RTMA (Data Access)](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#rtma)
 2) [NDFD_GRIDS (Data Access)](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#ndfd_grids)
 3) [obs (Data Access)](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#obs)
