@@ -21,12 +21,13 @@ For video tutorials/demostrations checkout the FireWxPy Tutorial Series on the S
 11) [time_cross_sections](https://github.com/edrewitz/firewxpy/blob/main/Documentation/cross_sections.md#time-cross-sections)
 12) [two_point_cross_sections](https://github.com/edrewitz/firewxpy/blob/main/Documentation/cross_sections.md#cross-sections-between-two-points)
 13) [gridded_obs](https://github.com/edrewitz/firewxpy/blob/main/Documentation/observations.md#gridded-observations-class)
-14) [metar_obs](https://github.com/edrewitz/firewxpy/blob/main/Documentation/observations.md#metar-observations-class)
-15) [plot_observed_sounding](https://github.com/edrewitz/firewxpy/blob/main/Documentation/soundings.md#plot_observed_soundingstation_id)
-16) [plot_observed_sounding_custom_date_time](https://github.com/edrewitz/firewxpy/blob/main/Documentation/soundings.md#plot_observed_sounding_custom_date_timestation_id-year-month-day-hour)
-17) [plot_forecast_soundings](https://github.com/edrewitz/firewxpy/blob/main/Documentation/soundings.md#plot_forecast_soundingsmodel-station_id)
-18) [sawti](https://github.com/edrewitz/firewxpy/blob/main/Documentation/sawti.md)
-19) [plot_daily_solar_information](https://github.com/edrewitz/firewxpy/blob/main/Documentation/solar_information.md#plot_daily_solar_informationlatitude-longitude)
+14) [scatter_obs](https://github.com/edrewitz/firewxpy/blob/main/Documentation/observations.md#scatter-plot-observations-class)
+15) [metar_obs](https://github.com/edrewitz/firewxpy/blob/main/Documentation/observations.md#metar-observations-class)
+16) [plot_observed_sounding](https://github.com/edrewitz/firewxpy/blob/main/Documentation/soundings.md#plot_observed_soundingstation_id)
+17) [plot_observed_sounding_custom_date_time](https://github.com/edrewitz/firewxpy/blob/main/Documentation/soundings.md#plot_observed_sounding_custom_date_timestation_id-year-month-day-hour)
+18) [plot_forecast_soundings](https://github.com/edrewitz/firewxpy/blob/main/Documentation/soundings.md#plot_forecast_soundingsmodel-station_id)
+19) [sawti](https://github.com/edrewitz/firewxpy/blob/main/Documentation/sawti.md)
+20) [plot_daily_solar_information](https://github.com/edrewitz/firewxpy/blob/main/Documentation/solar_information.md#plot_daily_solar_informationlatitude-longitude)
 
 **Additional Resources For Users Who Download The Data Outside Of The Function And Pass It In**
 
