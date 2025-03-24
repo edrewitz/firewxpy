@@ -34,7 +34,7 @@ This package is largely inspired by the MetPy package which was developed and is
 
 # FireWxPy Documentation 
 
-# **Table Of Contents**
+**Table Of Contents**
 
 This is the landing page for all of the firewxpy documentation. The links below will direct you to the documentation for each firewxpy module. 
 
