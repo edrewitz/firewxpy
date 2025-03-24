@@ -1,6 +1,6 @@
 # **Observations**
 
-**Gridded Observations Class**
+## Gridded Observations Class
 
 This class hosts all the functions that use interpolation methods to make gridded data from observations. 
 
@@ -8,7 +8,7 @@ This class hosts all the functions that use interpolation methods to make gridde
 
 1) [plot_relative_humidity_observations()](#plot_relative_humidity_observations)
 
-**METAR Observations Class**
+## METAR Observations Class
 
 This class hosts the functions that plot METAR observations and make daily weather summaries for METAR observations
 
