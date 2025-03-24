@@ -13,19 +13,10 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14318635.svg)](https://doi.org/10.5281/zenodo.14318635)
 
 
-Thank you for checking out FireWxPy! A user friendly Python package to create visualizations of data specific to fire weather and fire weather forecasting. 
+Thank you for checking out FireWxPy! An open-source user friendly Python package to create visualizations of data specific to fire weather and fire weather forecasting. 
+There are also graphics in FireWxPy that can be used in the meteorological field universally as well. 
 
-This repository consists of functions to make plots of weather data with an emphasis on fire weather. 
-
-This open source project will help meteorologists download, sort and plot both analysis and forecast data. 
-
-This package focuses on fire weather, however some modules will be universally useful across the entire field of meteorology. 
-
-This package makes it easier for users to access and parse through the 2.5km × 2.5km Real Time Mesoscale Analysis data from the UCAR THREDDS server.
-
-This package makes it easier for users to access and parse through the National Weather Service NDFD gridded forecast data.
-
-This package makes it easier for users to automate their weather graphics since the plotting functions of FireWxPy handle different run times so users will be able to automate their scripts in either the Windows Task Scheduler or a Cron Job.
+This package makes it easy for meteorologists to create analysis & forecast graphics specific to their needs. 
 
 Copyright (C) Meteorologist Eric J. Drewitz 2025
 
@@ -64,7 +55,12 @@ For video tutorials/demostrations checkout the FireWxPy Tutorial Series on the S
 18) [sawti](https://github.com/edrewitz/firewxpy/blob/main/Documentation/sawti.md)
 19) [plot_daily_solar_information](https://github.com/edrewitz/firewxpy/blob/main/Documentation/solar_information.md#plot_daily_solar_informationlatitude-longitude)
 
-**For Users Who Download The Data Outside Of The Function And Pass It In**
+**Additional Resources For Users Who Download The Data Outside Of The Function And Pass It In**
+
+*This is recommended for users generating a lot of graphics with the same dataset (i.e. a lot of RTMA graphics etc.)*
+
+*This method reduces the amount of data requests on the servers hosting the data*
+
 1) [RTMA (Data Access)](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#rtma)
 2) [NDFD_GRIDS (Data Access)](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#ndfd_grids)
 3) [obs (Data Access)](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#obs)
