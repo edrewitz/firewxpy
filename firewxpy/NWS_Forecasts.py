@@ -1763,7 +1763,7 @@ class relative_humidity:
 
 
         r'''
-        This function plots the latest available NOAA/NWS Low Minimum RH Forecast. 
+        This function plots the latest available NOAA/NWS Minimum RH Forecast. 
 
         Required Arguments: None
 
@@ -2338,7 +2338,7 @@ class relative_humidity:
 
 
         r'''
-        This function plots the latest available NOAA/NWS Low Minimum RH Forecast. 
+        This function plots the latest available NOAA/NWS Maximum RH Forecast. 
 
         Required Arguments: None
 
@@ -8276,10 +8276,6 @@ class critical_firewx:
             print(f"Saved extended forecast graphics to {path_print}")
         except Exception as e:
             pass
-
-
-
-
 
 
 
