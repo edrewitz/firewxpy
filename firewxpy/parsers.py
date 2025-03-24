@@ -1,13 +1,8 @@
-# THIS SCRIPT HAS FUNCTIONS THAT PARSE THROUGH GRIB FILES THAT CONTAIN WEATHER DATA TO RETURN SORTED AND ORGANIZED DATA ARRAYS FOR GRAPHICAL CREATION/PLOTTING
-#
-# DEPENDENCIES INCLUDE:
-# 1. PYGRIB
-# 2. DATETIME 
-#
-#  (C) METEOROLOGIST ERIC J. DREWITZ
-#               USDA/USFS
+"""
+This file is written by (C) Meteorologist Eric J. Drewitz
+                                     USDA/USFS
 
-##### IMPORTS NEEDED PYTHON MODULES #######
+"""
 
 import pandas as pd
 import warnings
