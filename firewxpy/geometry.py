@@ -159,6 +159,7 @@ def download_shape_files():
         os.replace('National_PSA_Current.prj', f"PSA Shapefiles/National_PSA_Current.prj")
         os.replace('National_PSA_Current.shp', f"PSA Shapefiles/National_PSA_Current.shp")
         os.replace('National_PSA_Current.shx', f"PSA Shapefiles/National_PSA_Current.shx")
+        print("Set Up Complete! Have Fun!")
 
 
 
