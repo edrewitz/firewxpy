@@ -1,6 +1,6 @@
 # **National Weather Service Forecast Graphics**
 
-**Relative Humidity Class**
+## Relative Humidity Class
 
 *Functions*
 
@@ -12,7 +12,7 @@
 6) [plot_maximum_relative_humidity_forecast_trend()](#plot_maximum_relative_humidity_forecast_trend)
 7) [plot_minimum_relative_humidity_forecast_trend()](#plot_minimum_relative_humidity_forecast_trend)
 
-**Temperature Class**
+## Temperature Class
 
 *Functions*
 
@@ -24,7 +24,7 @@
 6) [plot_minimum_temperature_forecast_trend()](#plot_minimum_temperature_forecast_trend)
 7) [plot_maximum_temperature_forecast_trend()](#plot_maximum_temperature_forecast_trend)
 
-**Critical Fire Weather Class**
+## Critical Fire Weather Class
 
 *Functions*
 
