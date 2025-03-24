@@ -67,6 +67,7 @@ def download_shape_files():
         pass
     else:
         # Makes new folder
+        print("Welcome First Time FireWxPy User!\nLet me set you up automatically by downloading and installing all shapefiles and building the directory.\nMy Motto is: 'Let the FireWxPy functions do the work so you don't have to!'\nSetting Up...")
         os.mkdir("NWS CWA Boundaries")
         # Downloads the CWA Shapefiles
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_CWA_Boundaries/w_05mr24.dbf', 'w_05mr24.dbf')
@@ -102,7 +103,6 @@ def download_shape_files():
     if os.path.exists(pz_path):
         pass
     else:
-        print("NWS Public Zones folder does not exist!\nWill Download the files and create a new folder automatically.\nDownloading...")
         # Makes new folder
         os.mkdir("NWS Public Zones")
         # Downloads files
