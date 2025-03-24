@@ -217,7 +217,7 @@ Optional Arguments:
   Preset values are called from the settings module for each state and/or gacc_region.
 
 Return: Saves individual images to f:Weather Data/Observations/GRIDDED RELATIVE HUMIDITY/{state}/{reference_system}/{interpolation_type}. 
-If the user selects a cwa the path will look like this: f:Weather Data/Observations/METAR MAP/{state}/{reference_system}/{cwa}/{interpolation_type}.
+If the user selects a cwa the path will look like this: f:Weather Data/Observations/GRIDDED RELATIVE HUMIDITY/{state}/{reference_system}/{cwa}/{interpolation_type}.
 
 ### graphical_daily_summary(station_id)
 
