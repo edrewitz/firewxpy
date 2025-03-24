@@ -43,6 +43,32 @@ tzone = standard.get_timezone()
 from_zone = tz.tzutc()
 to_zone = tz.tzlocal()
 
+def get_cwa_coords(cwa):
+
+    r'''
+    This function returns the coordinate bounds for the Alaska NWS CWAs
+
+    Required Arguments:
+
+    1) cwa (String) **For Alaska Only as of the moment** The NWS CWA abbreviation. 
+
+    Returns: Coordinate boundaries in decimal degrees
+
+    '''
+
+    if cwa == None:
+        wb, eb, sb, nb = [-170, -128, 50, 75]
+    if cwa == 'AER' or cwa == 'aer':
+        wb, eb, sb, nb = [-155, -140.75, 55.5, 64.5]
+    if cwa == 'ALU' or cwa == 'alu':
+        wb, eb, sb, nb = [-170, -151, 52, 62.9]
+    if cwa == 'AJK' or cwa == 'ajk':
+        wb, eb, sb, nb = [-145, -129.5, 54, 60.75]
+    if cwa == 'AFG' or cwa == 'afg':
+        wb, eb, sb, nb = [-170, -140.75, 59, 72]
+
+    return wb, eb, sb, nb
+
 def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.5, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=False, ds=None, time=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, low_rh_threshold=15, high_rh_threshold=80, show_low_high_thresholds=False):
 
     r'''
@@ -365,6 +391,10 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
 
     try:
         western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+            western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+        else:
+            pass
     except Exception as e:
         western_bound = western_bound
         eastern_bound = eastern_bound
@@ -397,7 +427,11 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
     time_utc = time.astimezone(from_zone)
 
     decimate = scaling.get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, True)
-
+    if state == 'AK' or state == 'ak':
+        decimate = decimate - 10
+    else:
+        pass
+        
     plot_lon, plot_lat = np.meshgrid(lon[::decimate], lat[::decimate])
         
     fig = plt.figure(figsize=(12,12))
@@ -803,6 +837,10 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
 
     try:
         western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+            western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+        else:
+            pass
     except Exception as e:
         western_bound = western_bound
         eastern_bound = eastern_bound
@@ -830,7 +868,11 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
     time_utc = time.astimezone(from_zone)
 
     decimate = scaling.get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, True)
-
+    if state == 'AK' or state == 'ak':
+        decimate = decimate - 10
+    else:
+        pass
+        
     plot_lon, plot_lat = np.meshgrid(lon[::decimate], lat[::decimate])
         
     fig = plt.figure(figsize=(12,12))
@@ -1232,6 +1274,10 @@ def plot_dewpoint(western_bound=None, eastern_bound=None, southern_bound=None, n
 
     try:
         western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+            western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+        else:
+            pass
     except Exception as e:
         western_bound = western_bound
         eastern_bound = eastern_bound
@@ -1259,7 +1305,11 @@ def plot_dewpoint(western_bound=None, eastern_bound=None, southern_bound=None, n
     time_utc = time.astimezone(from_zone)
 
     decimate = scaling.get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, True)
-
+    if state == 'AK' or state == 'ak':
+        decimate = decimate - 10
+    else:
+        pass
+        
     plot_lon, plot_lat = np.meshgrid(lon[::decimate], lat[::decimate])
         
     fig = plt.figure(figsize=(12,12))
@@ -1661,6 +1711,10 @@ def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_boun
 
     try:
         western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+            western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+        else:
+            pass
     except Exception as e:
         western_bound = western_bound
         eastern_bound = eastern_bound
@@ -1688,7 +1742,11 @@ def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_boun
     time_utc = time.astimezone(from_zone)
 
     decimate = scaling.get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, True)
-
+    if state == 'AK' or state == 'ak':
+        decimate = decimate - 10
+    else:
+        pass
+        
     plot_lon, plot_lat = np.meshgrid(lon[::decimate], lat[::decimate])
         
     fig = plt.figure(figsize=(12,12))
@@ -2080,6 +2138,10 @@ def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None,
 
     try:
         western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+            western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+        else:
+            pass
     except Exception as e:
         western_bound = western_bound
         eastern_bound = eastern_bound
@@ -2109,7 +2171,11 @@ def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None,
     time_utc = time.astimezone(from_zone)
 
     decimate = scaling.get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, True)
-
+    if state == 'AK' or state == 'ak':
+        decimate = decimate - 10
+    else:
+        pass
+        
     plot_lon, plot_lat = np.meshgrid(lon[::decimate], lat[::decimate])
         
     fig = plt.figure(figsize=(12,12))
@@ -2513,6 +2579,10 @@ def plot_critical_firewx(western_bound=None, eastern_bound=None, southern_bound=
 
     try:
         western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+            western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+        else:
+            pass
     except Exception as e:
         western_bound = western_bound
         eastern_bound = eastern_bound
@@ -3000,6 +3070,10 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
 
     try:
         western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+            western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+        else:
+            pass
     except Exception as e:
         western_bound = western_bound
         eastern_bound = eastern_bound
@@ -3048,7 +3122,11 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
     time_24_utc = time_24.astimezone(from_zone)
 
     decimate = scaling.get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, True)
-
+    if state == 'AK' or state == 'ak':
+        decimate = decimate - 10
+    else:
+        pass
+        
     plot_lon, plot_lat = np.meshgrid(lon[::decimate], lat[::decimate])
         
     fig = plt.figure(figsize=(12,12))
@@ -3449,6 +3527,10 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
 
     try:
         western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+            western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+        else:
+            pass
     except Exception as e:
         western_bound = western_bound
         eastern_bound = eastern_bound
@@ -3487,7 +3569,11 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
     time_24_utc = time_24.astimezone(from_zone)
 
     decimate = scaling.get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, True)
-
+    if state == 'AK' or state == 'ak':
+        decimate = decimate - 10
+    else:
+        pass
+        
     plot_lon, plot_lat = np.meshgrid(lon[::decimate], lat[::decimate])
         
     fig = plt.figure(figsize=(12,12))
@@ -3888,6 +3974,10 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
 
     try:
         western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+            western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+        else:
+            pass
     except Exception as e:
         western_bound = western_bound
         eastern_bound = eastern_bound
@@ -3926,7 +4016,11 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
     time_24_utc = time_24.astimezone(from_zone)
 
     decimate = scaling.get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, True)
-
+    if state == 'AK' or state == 'ak':
+        decimate = decimate - 10
+    else:
+        pass
+        
     plot_lon, plot_lat = np.meshgrid(lon[::decimate], lat[::decimate])
         
     fig = plt.figure(figsize=(12,12))
@@ -4326,6 +4420,10 @@ def plot_24_hour_wind_comparison(western_bound=None, eastern_bound=None, souther
 
     try:
         western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+            western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+        else:
+            pass
     except Exception as e:
         western_bound = western_bound
         eastern_bound = eastern_bound
@@ -4369,7 +4467,11 @@ def plot_24_hour_wind_comparison(western_bound=None, eastern_bound=None, souther
     time_24_utc = time_24.astimezone(from_zone)
 
     decimate = scaling.get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, True)
-
+    if state == 'AK' or state == 'ak':
+        decimate = decimate - 10
+    else:
+        pass
+        
     plot_lon, plot_lat = np.meshgrid(lon[::decimate], lat[::decimate])
     plot_lon_24, plot_lat_24 = np.meshgrid(lon_24[::decimate], lat_24[::decimate])
         
@@ -4771,6 +4873,10 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
 
     try:
         western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, de, signature_fontsize, stamp_fontsize = settings.get_region_info('NAM', state)
+        if state == 'AK' or state == 'ak':
+            western_bound, eastern_bound, southern_bound, northern_bound = get_cwa_coords(cwa)
+        else:
+            pass
     except Exception as e:
         western_bound = western_bound
         eastern_bound = eastern_bound
@@ -4809,6 +4915,10 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
     time_24_utc = time_24.astimezone(from_zone)
 
     decimate = scaling.get_nomads_decimation(western_bound, eastern_bound, southern_bound, northern_bound, True)
+    if state == 'AK' or state == 'ak':
+        decimate = decimate - 10
+    else:
+        pass
 
     plot_lon, plot_lat = np.meshgrid(lon[::decimate], lat[::decimate])
         
