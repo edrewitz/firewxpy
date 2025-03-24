@@ -92,7 +92,7 @@ class gridded_observations:
     def plot_relative_humidity_observations(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.5, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, df=None, mask=300000, time=None, state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, interpolation_type='cressman', shrink=0.7):
     
         r'''
-        This function makes a plot of the latest METAR observations. 
+        This function makes a plot of the latest Gridded Relative Humidity Observations. 
     
         Required Arguments: None
     
