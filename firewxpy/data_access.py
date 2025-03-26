@@ -2783,7 +2783,7 @@ class RTMA:
             
         except Exception as a:
             try:
-                print("There is no data for " + times[1].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
+                print("There is no data for " + times[0].strftime('%m/%d/%Y %HZ') + " trying to retrieve data from the previous analysis at " + times[1].strftime('%m/%d/%Y %HZ'))
                 if region == 'AK' or region == 'ak':
                     ds = xr.open_dataset(url_1, engine='netcdf4').sel(lon=slice(360-180, 360-120, 2), lat=slice(50, 72, 2)) 
                     print("Data was successfully retrieved for " + times[1].strftime('%m/%d/%Y %HZ'))
