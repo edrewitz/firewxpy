@@ -18,6 +18,8 @@ import pytz
 from datetime import datetime, timedelta
 from matplotlib import pyplot as plt
 import time as t
+import warnings
+warnings.filterwarnings('ignore')
 
 def get_timezone_abbreviation():
 
