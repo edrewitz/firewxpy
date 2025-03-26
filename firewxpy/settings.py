@@ -11,6 +11,8 @@ This file hosts all the functions that return the settings for each plot for eac
 '''
 
 import cartopy.crs as ccrs
+import warnings
+warnings.filterwarnings('ignore')
 
 
 def get_shrink(region, cwa):
