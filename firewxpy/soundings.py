@@ -16,6 +16,8 @@ import cartopy.feature as cfeature
 import firewxpy.geometry as geometry
 import firewxpy.colormaps as colormaps
 import metpy.plots as mpplots
+import warnings
+warnings.filterwarnings('ignore')
 
 from firewxpy.calc import Thermodynamics, unit_conversion
 from matplotlib import transforms as transform
