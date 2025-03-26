@@ -12,6 +12,8 @@ import time
 from zipfile import ZipFile
 from PIL import Image
 from datetime import datetime
+import warnings
+warnings.filterwarnings('ignore')
 
 class file_functions:
 
