@@ -11,6 +11,8 @@ import urllib.request
 import os
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import warnings
+warnings.filterwarnings('ignore')
 
 from cartopy.io.shapereader import Reader
 from cartopy.feature import ShapelyFeature
