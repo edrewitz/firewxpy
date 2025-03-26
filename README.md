@@ -12,7 +12,8 @@
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/license.svg)](https://anaconda.org/conda-forge/firewxpy)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14318635.svg)](https://doi.org/10.5281/zenodo.14318635)
 [![Conda Recipe](https://img.shields.io/badge/recipe-firewxpy-green.svg)](https://anaconda.org/conda-forge/firewxpy) 
-
+      <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=23735&branchName=main">
+        <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/firewxpy-feedstock?branchName=main">
 
 Anaconda Downloads: 
 
