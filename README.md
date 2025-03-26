@@ -4,7 +4,8 @@
 
 # FireWxPy
 
-[![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/version.svg)](https://anaconda.org/conda-forge/firewxpy)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/firewxpy.svg)](https://anaconda.org/conda-forge/firewxpy)
+![PyPI](https://img.shields.io/pypi/v/firewxpy?label=pypi%20firewxpy)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/latest_release_date.svg)](https://anaconda.org/conda-forge/firewxpy)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/latest_release_relative_date.svg)](https://anaconda.org/conda-forge/firewxpy)
 [![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/platforms.svg)](https://anaconda.org/conda-forge/firewxpy)
@@ -14,7 +15,7 @@
 
 Anaconda Downloads: 
 
-[![Anaconda-Server Badge](https://anaconda.org/conda-forge/firewxpy/badges/downloads.svg)](https://anaconda.org/conda-forge/firewxpy)
+[![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/firewxpy.svg)](https://anaconda.org/conda-forge/firewxpy)
 
 PIP Downloads:
 
