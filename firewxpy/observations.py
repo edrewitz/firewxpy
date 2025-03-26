@@ -24,6 +24,8 @@ import matplotlib.dates as md
 import firewxpy.standard as standard
 import firewxpy.settings as settings
 import metpy.calc as mpcalc
+import warnings
+warnings.filterwarnings('ignore')
 
 from metpy.plots import USCOUNTIES
 from datetime import datetime, timedelta
