@@ -22,6 +22,7 @@ import pandas as pd
 import cartopy.crs as ccrs
 import requests
 import firewxpy.calc as calc
+import firewxpy.raws_sigs as raws
 import numpy as np
 import netCDF4
 import time as t
