@@ -3361,3 +3361,135 @@ class FEMS:
             pass
         
         return df
+
+
+    def get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date):
+
+        r'''
+        This function does the following:
+
+        1) Downloads all the data for the Critical RAWS Stations for each GACC Region
+
+        2) Builds the directory where the RAWS data CSV files will be hosted
+
+        3) Saves the CSV files to the paths which are sorted by Predictive Services Area (PSA)
+
+        Required Arguments:
+
+        1) gacc_region (String) - The 4-letter GACC abbreviation
+
+        2) number_of_years_for_averages (Integer) - Default = 10. The number of years for the average values to be calculated on. 
+
+        3) fuel_model (String) - Default = 'Y'. The fuel model being used. 
+           Fuel Models List:
+
+           Y - Timber
+           X - Brush
+           W - Grass/Shrub
+           V - Grass
+           Z - Slash 
+
+        4) start_date (String) - Default = None. If the user wishes to use a selected start date as the starting point enter the start_date
+           as a string in the following format: YYYY-mm-dd
+
+        Returns: The RAWS CSV data files sorted into the folders which are the different SIGs for each GACC
+        '''
+
+        gacc_region = gacc_region.upper()
+
+        df_station_list = raws.get_sigs(gacc_region)
+
+        try:
+            now = datetime.now(UTC)
+        except Exception as e:
+            now = datetime.utcnow()
+
+        if start_date == None:
+            number_of_days = number_of_years_for_averages * 365
+                
+            start = now - timedelta(days=number_of_days)
+
+        else:
+            start_date = start_date
+            
+            year = f"{start_date[0]}{start_date[1]}{start_date[2]}{start_date[3]}"
+            month = f"{start_date[5]}{start_date[6]}"
+            day = f"{start_date[8]}{start_date[9]}"
+
+            year = int(year)
+            month = int(month)
+            day = int(day)
+
+            start = datetime(year, month, day)
+
+        for station, psa in zip(df_station_list['RAWSID'], df_station_list['PSA Code']):
+            df = pd.read_csv(f"https://fems.fs2c.usda.gov/api/climatology/download-nfdr-daily-summary/?dataset=observation&startDate={start.strftime('%Y-%m-%d')}&endDate={now.strftime('%Y-%m-%d')}&dataFormat=csv&stationIds={station}&fuelModels={fuel_model}")
+                
+            if os.path.exists(f"FEMS Data"):
+                pass
+            else:
+                os.mkdir(f"FEMS Data")   
+
+            if os.path.exists(f"FEMS Data/Stations"):
+                pass
+            else:
+                os.mkdir(f"FEMS Data/Stations") 
+
+            if os.path.exists(f"FEMS Data/Stations/{gacc_region}"):
+                pass
+            else:
+                os.mkdir(f"FEMS Data/Stations/{gacc_region}") 
+
+            if os.path.exists(f"FEMS Data/Stations/{gacc_region}/{psa}"):
+                pass
+            else:
+                os.mkdir(f"FEMS Data/Stations/{gacc_region}/{psa}") 
+
+            fname = f"{station}.csv"
+    
+            file = df.to_csv(fname, index=False)
+            os.replace(f"{fname}", f"FEMS Data/Stations/{gacc_region}/{psa}/{fname}")
+
+
+    def get_nfdrs_forecast_data(gacc_region, fuel_model):
+    
+        gacc_region = gacc_region.upper()
+        
+        df_station_list = raws.get_sigs(gacc_region)
+        
+        try:
+            start = datetime.now(UTC)
+        except Exception as e:
+            start = datetime.utcnow()
+    
+        end = start + timedelta(days=7)
+    
+        for station, psa in zip(df_station_list['RAWSID'], df_station_list['PSA Code']):
+            df = pd.read_csv(f"https://fems.fs2c.usda.gov/api/climatology/download-nfdr-daily-summary/?dataset=forecast&startDate={start.strftime('%Y-%m-%d')}&endDate={end.strftime('%Y-%m-%d')}&dataFormat=csv&stationIds={station}&fuelModels={fuel_model}")
+    
+            if os.path.exists(f"FEMS Data"):
+                pass
+            else:
+                os.mkdir(f"FEMS Data")   
+    
+            if os.path.exists(f"FEMS Data/Forecasts"):
+                pass
+            else:
+                os.mkdir(f"FEMS Data/Forecasts") 
+    
+            if os.path.exists(f"FEMS Data/Forecasts/{gacc_region}"):
+                pass
+            else:
+                os.mkdir(f"FEMS Data/Forecasts/{gacc_region}") 
+    
+            if os.path.exists(f"FEMS Data/Forecasts/{gacc_region}/{psa}"):
+                pass
+            else:
+                os.mkdir(f"FEMS Data/Forecasts/{gacc_region}/{psa}") 
+    
+            fname = f"{station}.csv"
+    
+            file = df.to_csv(fname, index=False)
+            os.replace(f"{fname}", f"FEMS Data/Forecasts/{gacc_region}/{psa}/{fname}")
+
+
