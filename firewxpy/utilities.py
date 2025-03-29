@@ -12,8 +12,6 @@ import time
 from zipfile import ZipFile
 from PIL import Image
 from datetime import datetime
-import warnings
-warnings.filterwarnings('ignore')
 
 class file_functions:
 
@@ -846,3 +844,46 @@ class file_functions:
                 path_print = f"f:Weather Data/{folder}/{plot_type}/{state}/{reference_system}/{interp_type}"                
 
         return path, path_print
+
+
+    def get_fuels_charts_paths(gacc_region, plot_type, spatial=False):
+
+        gacc_region = gacc_region.upper()
+        plot_type = plot_type.upper()
+
+        if spatial == False:
+
+            if os.path.exists(f"Fuels Maps"):
+                pass
+            else:
+                os.mkdir(f"Fuels Maps")
+    
+            if os.path.exists(f"Fuels Maps/{gacc_region}"):
+                pass
+            else:
+                os.mkdir(f"Fuels Maps/{gacc_region}")
+    
+            if os.path.exists(f"Fuels Maps/{gacc_region}/{plot_type}"):
+                pass
+            else:
+                os.mkdir(f"Fuels Maps/{gacc_region}/{plot_type}")
+
+            path = f"Fuels Maps/{gacc_region}/{plot_type}"
+            path_print = f"f:Fuels Maps/{gacc_region}/{plot_type}"
+
+            return path, path_print
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+                               
