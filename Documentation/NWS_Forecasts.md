@@ -1650,7 +1650,12 @@ Optional Arguments:
 
 39) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
 
-40) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
+40) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot.
+
+41) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+    outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+    to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+    from the conversion in the previous function. 
 
 Return: Saves individual images to f:Weather Data/NWS Forecasts/Frost Freeze Forecast/{reference_system}. 
 If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Frost Freeze Forecast/{reference_system}/{cwa}
@@ -1852,7 +1857,12 @@ Optional Arguments:
 
 40) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
 
-41) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
+41) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot.
+
+42) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+    outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+    to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+    from the conversion in the previous function. 
 
 Return: Saves individual images to f:Weather Data/NWS Forecasts/Extremely Warm Low Temperatures/{reference_system}. 
 If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Extremely Warm Low Temperatures/{reference_system}/{cwa}
@@ -2054,7 +2064,12 @@ Optional Arguments:
 
 40) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
 
-41) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
+41) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot.
+
+42) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+    outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+    to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+    from the conversion in the previous function. 
 
 Return: Saves individual images to f:Weather Data/NWS Forecasts/Extreme Heat Forecast/{reference_system}. 
 If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Extreme Heat Forecast/{reference_system}/{cwa}
@@ -2264,7 +2279,12 @@ Optional Arguments:
 
 45) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
 
-46) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
+46) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot.
+
+47) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+    outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+    to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+    from the conversion in the previous function. 
 
 Return: Saves individual images to f:Weather Data/NWS Forecasts/Max T Forecast/{reference_system}. 
 If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Max T Forecast/{reference_system}/{cwa}
@@ -2474,7 +2494,12 @@ Optional Arguments:
 
 45) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
 
-46) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
+46) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot.
+
+47) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+    outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+    to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+    from the conversion in the previous function. 
 
 Return: Saves individual images to f:Weather Data/NWS Forecasts/Min T Forecast/{reference_system}. 
 If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Min T Forecast/{reference_system}/{cwa}
@@ -2672,7 +2697,12 @@ Optional Arguments:
 
 39) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
 
-40) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot.      
+40) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot.
+
+41) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+    outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+    to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+    from the conversion in the previous function.   
 
 Return: Saves individual images to f:Weather Data/NWS Forecasts/Minimum Temperature Trend/{reference_system}. 
 If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Minimum Temperature Trend/{reference_system}/{cwa}
@@ -2870,7 +2900,12 @@ Optional Arguments:
 
 39) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
 
-40) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot.      
+40) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot.
+
+41) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+    outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+    to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+    from the conversion in the previous function. 
 
 Return: Saves individual images to f:Weather Data/NWS Forecasts/Maximum Temperature Trend/{reference_system}. 
 If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Maximum Temperature Trend/{reference_system}/{cwa}
