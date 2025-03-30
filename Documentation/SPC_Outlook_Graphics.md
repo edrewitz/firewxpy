@@ -361,7 +361,7 @@ Optional Arguments:
 
 Return: Saves individual images to f:Weather Data/SPC Outlooks/Dry Lightning Outlook/{reference_system}. 
 
-#### plot_convective_outlook
+#### plot_convective_outlook()
 
 This function plots the latest available NOAA/NWS SPC Convective Outlook. 
 
