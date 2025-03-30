@@ -6972,7 +6972,7 @@ class temperature:
             y3=y3
             directory_name = '/SL.us008001/ST.opnl/DF.gr2/DC.ndfd/AR.conus/'
 
-        path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Minimum Temperature Trend {text}", reference_system, cwa)
+        path, path_print = file_functions.noaa_graphics_paths(state, gacc_region, f"Minimum Temperature Trend", reference_system, cwa)
 
         for file in os.listdir(f"{path}"):
             try:
