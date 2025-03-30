@@ -3863,7 +3863,7 @@ class temperature:
 
     '''
 
-    def plot_frost_freeze_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
+    def plot_frost_freeze_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, convert_to_F=True):
 
 
         r'''
@@ -4059,6 +4059,11 @@ class temperature:
         39) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
     
         40) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
+
+        41) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+            outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+            to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+            from the conversion in the previous function. 
     
         Return: Saves individual images to f:Weather Data/NWS Forecasts/Frost Freeze Forecast/{reference_system}. 
         If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Frost Freeze Forecast/{reference_system}/{cwa}
@@ -4230,8 +4235,8 @@ class temperature:
         if state == 'SWCC' or state == 'swcc':
             decimate = 30
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=True, decimate=decimate)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=True, decimate=decimate)
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=convert_to_F, decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=convert_to_F, decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -4409,7 +4414,7 @@ class temperature:
         print(f"Saved extended forecast graphics to {path_print}")
 
 
-    def plot_extremely_warm_low_temperature_forecast(warm_low_threshold=80, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
+    def plot_extremely_warm_low_temperature_forecast(warm_low_threshold=80, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, convert_to_F=True):
 
 
         r'''
@@ -4609,6 +4614,11 @@ class temperature:
         40) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
     
         41) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
+
+        42) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+            outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+            to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+            from the conversion in the previous function. 
     
         Return: Saves individual images to f:Weather Data/NWS Forecasts/Extremely Warm Low Temperatures/{reference_system}. 
         If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Extremely Warm Low Temperatures/{reference_system}/{cwa}
@@ -4783,8 +4793,8 @@ class temperature:
             decimate = 30
 
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=True, decimate=decimate)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=True, decimate=decimate)
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=convert_to_F, decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=convert_to_F, decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -4961,7 +4971,7 @@ class temperature:
         print(f"Saved extended forecast graphics to {path_print}")
 
 
-    def plot_extreme_heat_forecast(extreme_heat_threshold=110, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
+    def plot_extreme_heat_forecast(extreme_heat_threshold=110, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, convert_to_F=True):
 
 
         r'''
@@ -5160,7 +5170,12 @@ class temperature:
 
         40) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
     
-        41) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
+        41) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot.
+
+        42) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+            outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+            to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+            from the conversion in the previous function. 
     
         Return: Saves individual images to f:Weather Data/NWS Forecasts/Extreme Heat Forecast/{reference_system}. 
         If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Extreme Heat Forecast/{reference_system}/{cwa}
@@ -5335,8 +5350,8 @@ class temperature:
             decimate = 30
 
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmax', temperature_to_F=True, decimate=decimate)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmax', temperature_to_F=True, decimate=decimate)
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmax', temperature_to_F=convert_to_F, decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmax', temperature_to_F=convert_to_F, decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -5514,7 +5529,7 @@ class temperature:
         print(f"Saved extended forecast graphics to {path_print}")
 
 
-    def plot_maximum_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, temp_scale_warm_start=30, temp_scale_warm_stop=90, temp_scale_cool_start=0, temp_scale_cool_stop=70, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
+    def plot_maximum_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, temp_scale_warm_start=30, temp_scale_warm_stop=90, temp_scale_cool_start=0, temp_scale_cool_stop=70, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, convert_to_F=True):
 
 
         r'''
@@ -5722,6 +5737,11 @@ class temperature:
         45) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
     
         46) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
+
+        47) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+            outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+            to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+            from the conversion in the previous function. 
     
         Return: Saves individual images to f:Weather Data/NWS Forecasts/Max T Forecast/{reference_system}. 
         If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Max T Forecast/{reference_system}/{cwa}
@@ -5897,8 +5917,8 @@ class temperature:
         if state == 'SWCC' or state == 'swcc':
             decimate = 30
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmax', temperature_to_F=True, decimate=decimate)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmax', temperature_to_F=True, decimate=decimate)
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmax', temperature_to_F=convert_to_F, decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmax', temperature_to_F=convert_to_F, decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -6076,7 +6096,7 @@ class temperature:
         print(f"Saved extended forecast graphics to {path_print}")
 
 
-    def plot_minimum_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, temp_scale_warm_start=30, temp_scale_warm_stop=90, temp_scale_cool_start=0, temp_scale_cool_stop=70, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
+    def plot_minimum_temperature_forecast(start_of_warm_season_month=4, end_of_warm_season_month=10, temp_scale_warm_start=30, temp_scale_warm_stop=90, temp_scale_cool_start=0, temp_scale_cool_stop=70, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, convert_to_F=True):
 
 
         r'''
@@ -6284,6 +6304,11 @@ class temperature:
         45) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
     
         46) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot. 
+
+        47) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+            outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+            to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+            from the conversion in the previous function. 
     
         Return: Saves individual images to f:Weather Data/NWS Forecasts/Min T Forecast/{reference_system}. 
         If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Min T Forecast/{reference_system}/{cwa}
@@ -6459,8 +6484,8 @@ class temperature:
         if state == 'SWCC' or state == 'swcc':
             decimate = 30
 
-        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=True, decimate=decimate)
-        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=True, decimate=decimate)
+        short_vals = NDFD.ndfd_to_dataframe(ds_short, 'tmin', temperature_to_F=convert_to_F, decimate=decimate)
+        extended_vals = NDFD.ndfd_to_dataframe(ds_extended, 'tmin', temperature_to_F=convert_to_F, decimate=decimate)
 
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
@@ -6638,7 +6663,7 @@ class temperature:
         print(f"Saved extended forecast graphics to {path_print}")
 
 
-    def plot_minimum_temperature_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
+    def plot_minimum_temperature_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, convert_to_F=True):
 
 
         r'''
@@ -6833,7 +6858,12 @@ class temperature:
 
         39) signature_fontsize (Integer) - Default = 6. The fontsize of the signature. This is only to be changed when making a custom plot. 
     
-        40) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot.      
+        40) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot.
+
+        41) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+            outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+            to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+            from the conversion in the previous function. 
 
         Return: Saves individual images to f:Weather Data/NWS Forecasts/Minimum Temperature Trend/{reference_system}. 
         If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Minimum Temperature Trend/{reference_system}/{cwa}
@@ -7013,7 +7043,7 @@ class temperature:
         if state == 'SWCC' or state == 'swcc':
             decimate = 30
 
-        vals = NDFD.ndfd_to_dataframe(ds, 'tmin', diff=True, temperature_to_F=True, decimate=decimate)
+        vals = NDFD.ndfd_to_dataframe(ds, 'tmin', diff=True, temperature_to_F=convert_to_F, decimate=decimate)
 
         diffs = []
         for i in range(1, stop, 1):
@@ -7097,7 +7127,7 @@ class temperature:
         print(f"Saved forecast graphics to {path_print}")
 
 
-    def plot_maximum_temperature_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5):
+    def plot_maximum_temperature_forecast_trend(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', data=False, ds_short=None, ds_extended=None, state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, convert_to_F=True):
 
 
         r'''
@@ -7294,6 +7324,11 @@ class temperature:
     
         40) stamp_fontsize (Integer) - Default = 5. The fontsize of the timestamp and reference system text. This is only to be changed when making a custom plot.      
 
+        41) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+            outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+            to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+            from the conversion in the previous function. 
+
         Return: Saves individual images to f:Weather Data/NWS Forecasts/Maximum Temperature Trend/{reference_system}. 
         If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Maximum Temperature Trend/{reference_system}/{cwa}
         '''
@@ -7471,7 +7506,7 @@ class temperature:
         if state == 'SWCC' or state == 'swcc':
             decimate = 30
 
-        vals = NDFD.ndfd_to_dataframe(ds, 'tmax', diff=True, temperature_to_F=True, decimate=decimate)
+        vals = NDFD.ndfd_to_dataframe(ds, 'tmax', diff=True, temperature_to_F=convert_to_F, decimate=decimate)
 
         diffs = []
         for i in range(1, stop, 1):
@@ -8276,6 +8311,8 @@ class critical_firewx:
             print(f"Saved extended forecast graphics to {path_print}")
         except Exception as e:
             pass
+
+
 
 
 
