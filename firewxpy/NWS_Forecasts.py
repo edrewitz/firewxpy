@@ -5903,7 +5903,7 @@ class temperature:
         short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
         extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
 
-        init_hr = 0
+        init_hr = 12
         hour = short_start_times_utc[0].hour
         dt = False
         if hour == init_hr:
