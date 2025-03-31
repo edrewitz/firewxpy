@@ -5930,7 +5930,7 @@ class temperature:
             start = 0
             skip = False
         else:
-            if local_time.hour >= 18 and local_time.hour <= 2:
+            if local_time.hour <= 14:
                 start = 0
                 skip = False
                 dt = True
