@@ -395,7 +395,7 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
         start = 0
         skip = False
     else:
-        if local_time.hour >= 18 and local_time.hour <= 2:
+        if local_time.hour <= 14:
             start = 0
             skip = False
             dt = True
@@ -894,7 +894,7 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
         start = 0
         skip = False
     else:
-        if local_time.hour >= 18 and local_time.hour <= 2:
+        if local_time.hour <= 14:
             start = 0
             skip = False
             dt = True
@@ -1382,7 +1382,7 @@ def plot_convective_outlook(western_bound=None, eastern_bound=None, southern_bou
         start = 0
         skip = False
     else:
-        if local_time.hour >= 18 and local_time.hour <= 2:
+        if local_time.hour <= 14:
             start = 0
             skip = False
             dt = True
