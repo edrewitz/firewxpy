@@ -7596,7 +7596,7 @@ class critical_firewx:
     
     '''
 
-    def plot_critical_firewx_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa='STATE', signature_fontsize=6, stamp_fontsize=5, x=0.01, y=0.97, use_wind_gust=False, add_temperature_parameter=False, data=False, rh_short=None, ws_short=None, wdir_short=None, wgust_short=None, temp_short=None, rh_extended=None, ws_extended=None, wdir_extended=None, wgust_extended=None, temp_extended=None, low_rh_threshold=15, wind_threshold=25, temperature_threshold=75):
+    def plot_critical_firewx_forecast(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=1, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.5, nws_public_zones_linewidth=0.5, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa='STATE', signature_fontsize=6, stamp_fontsize=5, x=0.01, y=0.97, use_wind_gust=False, add_temperature_parameter=False, data=False, rh_short=None, ws_short=None, wdir_short=None, wgust_short=None, temp_short=None, rh_extended=None, ws_extended=None, wdir_extended=None, wgust_extended=None, temp_extended=None, low_rh_threshold=15, wind_threshold=25, temperature_threshold=75, convert_to_F=True):
 
 
         r'''
@@ -7808,6 +7808,11 @@ class critical_firewx:
         53) wind_threshold (Integer) - Default = 25 MPH. The threshold for what defines high sustained winds and/or gusts. 
 
         54) temperature_threshold (Integer) - Default = 75°F. The threshold for what defines the "hot" in "hot, dry and windy."
+        
+        55) convert_to_F (Boolean) - Default = True. When set to True, the temperature in Kelvin will convert to Fahrenheit. Set to False when downloading the data
+            outside of the function and passing it in when creating several graphics using the same dataset. Have the first function that uses the dataset have convert_to_F=True
+            to convert the dataset to Fahrenheit. However, in all the subsequent functions that use this dataset, set convert_to_F=False since the values are already in Fahrenheit
+            from the conversion in the previous function. 
 
         Return: Saves individual images to f:Weather Data/NWS Forecasts/Critical Fire Weather Forecast/{reference_system}. 
         If the user selects a cwa the path will look like this: f:Weather Data/NWS Forecasts/Critical Fire Weather Forecast/{reference_system}/{cwa}
@@ -8065,8 +8070,8 @@ class critical_firewx:
             parameter = 'i10fg'
 
         if add_temperature_parameter == True:
-            short_vals_temp = NDFD.ndfd_to_dataframe(temp_short, 't2m', temperature_to_F=True, decimate=decimate)
-            extended_vals_temp = NDFD.ndfd_to_dataframe(temp_extended, 't2m', temperature_to_F=True, decimate=decimate) 
+            short_vals_temp = NDFD.ndfd_to_dataframe(temp_short, 't2m', temperature_to_F=convert_to_F, decimate=decimate)
+            extended_vals_temp = NDFD.ndfd_to_dataframe(temp_extended, 't2m', temperature_to_F=convert_to_F, decimate=decimate) 
         else:
             pass
 
