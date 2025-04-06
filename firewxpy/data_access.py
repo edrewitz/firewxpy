@@ -3421,10 +3421,11 @@ class FEMS:
             month = int(month)
             day = int(day)
 
-            start = datetime(year, month, day)
+            start = datetime(year, month, day, 0, 0, 0)
 
         for station, psa in zip(df_station_list['RAWSID'], df_station_list['PSA Code']):
-            df = pd.read_csv(f"https://fems.fs2c.usda.gov/api/climatology/download-nfdr-daily-summary/?dataset=observation&startDate={start.strftime('%Y-%m-%d')}&endDate={now.strftime('%Y-%m-%d')}&dataFormat=csv&stationIds={station}&fuelModels={fuel_model}")
+            
+            df = pd.read_csv(f"https://fems.fs2c.usda.gov/api/climatology/download-nfdr?stationIds={station}&endDate={now.strftime('%Y-%m-%dT%H:%M:%S')}Z&startDate={start.strftime('%Y-%m-%dT%H:%M:%S')}Z&dataFormat=csv&dataset=observation&fuelModels={fuel_model}")
                 
             if os.path.exists(f"FEMS Data"):
                 pass
