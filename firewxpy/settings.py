@@ -1,4 +1,5 @@
 
+
 '''
 This file hosts all the functions that return the settings for each plot for each given state or gacc. 
 
@@ -283,8 +284,8 @@ def get_sp_dims_and_textbox_coords(region):
 
     if region == 'FL' or region == 'fl':
         fontsize=8
-        x=0.7
-        y=0.97
+        x=0.625
+        y=0.975
 
     elif region == 'AZ' or region == 'az':
         fontsize = 8
