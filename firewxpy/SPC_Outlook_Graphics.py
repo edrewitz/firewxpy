@@ -385,8 +385,8 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
     short_times = short_times.to_pandas()
     extended_times = extended_times.to_pandas()
 
-    short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
-    extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
+    short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 24)
+    extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 24)
 
     init_hr = 12
     hour = short_start_times_utc[0].hour
@@ -884,8 +884,8 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
     short_times = short_times.to_pandas()
     extended_times = extended_times.to_pandas()
 
-    short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
-    extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 12)
+    short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 24)
+    extended_start_times, extended_end_times, extended_start_times_utc = NDFD.get_valid_times_xarray(ds_extended, 24)
 
     init_hr = 12
     hour = short_start_times_utc[0].hour
@@ -1373,7 +1373,7 @@ def plot_convective_outlook(western_bound=None, eastern_bound=None, southern_bou
     short_times = ds_short['valid_time']
     short_times = short_times.to_pandas()
 
-    short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 12)
+    short_start_times, short_end_times, short_start_times_utc = NDFD.get_valid_times_xarray(ds_short, 24)
 
     init_hr = 12
     hour = short_start_times_utc[0].hour
