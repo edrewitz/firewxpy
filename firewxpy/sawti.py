@@ -71,88 +71,88 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     
     # Zone 1
 
-    if os.path.exists(f'SAWTI Data/seaspace_zone1_{now.strftime('%m%d%Y')}_12z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone1_{now.strftime('%m%d%Y')}_12z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone1_{now.strftime("%m%d%Y")}_12z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone1_{now.strftime("%m%d%Y")}_12z.csv')
     else:
         pass
         
-    if os.path.exists(f'SAWTI Data/seaspace_zone1_{now.strftime('%m%d%Y')}_00z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone1_{now.strftime('%m%d%Y')}_00z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone1_{now.strftime("%m%d%Y")}_00z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone1_{now.strftime("%m%d%Y")}_00z.csv')
     else:
         pass
 
-    if os.path.exists(f'SAWTI Data/seaspace_zone1_{yday.strftime('%m%d%Y')}_12z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone1_{yday.strftime('%m%d%Y')}_12z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone1_{yday.strftime("%m%d%Y")}_12z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone1_{yday.strftime("%m%d%Y")}_12z.csv')
     else:
         pass
         
-    if os.path.exists(f'SAWTI Data/seaspace_zone1_{yday.strftime('%m%d%Y')}_00z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone1_{yday.strftime('%m%d%Y')}_00z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone1_{yday.strftime("%m%d%Y")}_00z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone1_{yday.strftime("%m%d%Y")}_00z.csv')
     else:
         pass   
 
     
     # Zone 2
-    if os.path.exists(f'SAWTI Data/seaspace_zone2_{now.strftime('%m%d%Y')}_12z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone2_{now.strftime('%m%d%Y')}_12z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone2_{now.strftime("%m%d%Y")}_12z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone2_{now.strftime("%m%d%Y")}_12z.csv')
     else:
         pass
         
-    if os.path.exists(f'SAWTI Data/seaspace_zone2_{now.strftime('%m%d%Y')}_00z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone2_{now.strftime('%m%d%Y')}_00z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone2_{now.strftime("%m%d%Y")}_00z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone2_{now.strftime("%m%d%Y")}_00z.csv')
     else:
         pass
 
-    if os.path.exists(f'SAWTI Data/seaspace_zone2_{yday.strftime('%m%d%Y')}_12z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone2_{yday.strftime('%m%d%Y')}_12z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone2_{yday.strftime("%m%d%Y")}_12z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone2_{yday.strftime("%m%d%Y")}_12z.csv')
     else:
         pass
         
-    if os.path.exists(f'SAWTI Data/seaspace_zone2_{yday.strftime('%m%d%Y')}_00z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone2_{yday.strftime('%m%d%Y')}_00z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone2_{yday.strftime("%m%d%Y")}_00z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone2_{yday.strftime("%m%d%Y")}_00z.csv')
     else:
         pass   
     
     # Zone 3
-    if os.path.exists(f'SAWTI Data/seaspace_zone3_{now.strftime('%m%d%Y')}_12z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone3_{now.strftime('%m%d%Y')}_12z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone3_{now.strftime("%m%d%Y")}_12z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone3_{now.strftime("%m%d%Y")}_12z.csv')
     else:
         pass
         
-    if os.path.exists(f'SAWTI Data/seaspace_zone3_{now.strftime('%m%d%Y')}_00z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone3_{now.strftime('%m%d%Y')}_00z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone3_{now.strftime("%m%d%Y")}_00z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone3_{now.strftime("%m%d%Y")}_00z.csv')
     else:
         pass
 
-    if os.path.exists(f'SAWTI Data/seaspace_zone3_{yday.strftime('%m%d%Y')}_12z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone3_{yday.strftime('%m%d%Y')}_12z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone3_{yday.strftime("%m%d%Y")}_12z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone3_{yday.strftime("%m%d%Y")}_12z.csv')
     else:
         pass
         
-    if os.path.exists(f'SAWTI Data/seaspace_zone3_{yday.strftime('%m%d%Y')}_00z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone2_{yday.strftime('%m%d%Y')}_00z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone3_{yday.strftime("%m%d%Y")}_00z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone2_{yday.strftime("%m%d%Y")}_00z.csv')
     else:
         pass  
 
     # Zone 4
     
-    if os.path.exists(f'SAWTI Data/seaspace_zone4_{now.strftime('%m%d%Y')}_12z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone4_{now.strftime('%m%d%Y')}_12z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone4_{now.strftime("%m%d%Y")}_12z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone4_{now.strftime("%m%d%Y")}_12z.csv')
     else:
         pass
         
-    if os.path.exists(f'SAWTI Data/seaspace_zone4_{now.strftime('%m%d%Y')}_00z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone4_{now.strftime('%m%d%Y')}_00z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone4_{now.strftime("%m%d%Y")}_00z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone4_{now.strftime("%m%d%Y")}_00z.csv')
     else:
         pass
 
-    if os.path.exists(f'SAWTI Data/seaspace_zone4_{yday.strftime('%m%d%Y')}_12z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone4_{yday.strftime('%m%d%Y')}_12z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone4_{yday.strftime("%m%d%Y")}_12z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone4_{yday.strftime("%m%d%Y")}_12z.csv')
     else:
         pass
         
-    if os.path.exists(f'SAWTI Data/seaspace_zone4_{yday.strftime('%m%d%Y')}_00z.csv'):
-        os.remove(f'SAWTI Data/seaspace_zone4_{yday.strftime('%m%d%Y')}_00z.csv')
+    if os.path.exists(f'SAWTI Data/seaspace_zone4_{yday.strftime("%m%d%Y")}_00z.csv'):
+        os.remove(f'SAWTI Data/seaspace_zone4_{yday.strftime("%m%d%Y")}_00z.csv')
     else:
         pass   
         
@@ -163,17 +163,17 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     # Zone 1
     try:
         urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone1-LA-Ventura/seaspace_zone1_'+now.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone1_'+now.strftime('%m%d%Y')+'_12z.csv')
-        os.replace('seaspace_zone1_'+now.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone1_{now.strftime('%m%d%Y')}_12z.csv')
+        os.replace('seaspace_zone1_'+now.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone1_{now.strftime("%m%d%Y")}_12z.csv')
         today = False
     except Exception as e:
         try:
             urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone1-LA-Ventura/seaspace_zone1_'+now.strftime('%m%d%Y')+'_00z.csv', 'seaspace_zone1_'+now.strftime('%m%d%Y')+'_00z.csv')
-            os.replace('seaspace_zone1_'+now.strftime('%m%d%Y')+'_00z.csv', f'SAWTI Data/seaspace_zone1_{now.strftime('%m%d%Y')}_00z.csv')
+            os.replace('seaspace_zone1_'+now.strftime('%m%d%Y')+'_00z.csv', f'SAWTI Data/seaspace_zone1_{now.strftime("%m%d%Y")}_00z.csv')
             today = True
         except Exception as e:
             try:
                 urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone1-LA-Ventura/seaspace_zone1_'+yday.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone1_'+yday.strftime('%m%d%Y')+'_12z.csv')
-                os.replace('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone1_{yday.strftime('%m%d%Y')}_12z.csv')
+                os.replace('seaspace_zone1_'+yday.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone1_{yday.strftime("%m%d%Y")}_12z.csv')
                 today = False
             except Exception as e:
                 pass
@@ -181,17 +181,17 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     # Zone 2
     try:
         urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone2-Orange-InlandEmpire/seaspace_zone2_'+now.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone2_'+now.strftime('%m%d%Y')+'_12z.csv')
-        os.replace('seaspace_zone2_'+now.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone2_{now.strftime('%m%d%Y')}_12z.csv')
+        os.replace('seaspace_zone2_'+now.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone2_{now.strftime("%m%d%Y")}_12z.csv')
         today = False
     except Exception as e:
         try:
             urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone2-Orange-InlandEmpire/seaspace_zone2_'+now.strftime('%m%d%Y')+'_00z.csv', 'seaspace_zone2_'+now.strftime('%m%d%Y')+'_00z.csv')
-            os.replace('seaspace_zone2_'+now.strftime('%m%d%Y')+'_00z.csv', f'SAWTI Data/seaspace_zone2_{now.strftime('%m%d%Y')}_00z.csv')
+            os.replace('seaspace_zone2_'+now.strftime('%m%d%Y')+'_00z.csv', f'SAWTI Data/seaspace_zone2_{now.strftime("%m%d%Y")}_00z.csv')
             today = True
         except Exception as e:
             try:
                 urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone2-Orange-InlandEmpire/seaspace_zone2_'+yday.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone2_'+yday.strftime('%m%d%Y')+'_12z.csv')
-                os.replace('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone2_{yday.strftime('%m%d%Y')}_12z.csv')
+                os.replace('seaspace_zone2_'+yday.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone2_{yday.strftime("%m%d%Y")}_12z.csv')
                 today = False
             except Exception as e:
                 pass
@@ -199,17 +199,17 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     # Zone 3
     try:
         urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone3-SanDiego/seaspace_zone3_'+now.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone3_'+now.strftime('%m%d%Y')+'_12z.csv')
-        os.replace('seaspace_zone3_'+now.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone3_{now.strftime('%m%d%Y')}_12z.csv')
+        os.replace('seaspace_zone3_'+now.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone3_{now.strftime("%m%d%Y")}_12z.csv')
         today = False
     except Exception as e:
         try:
             urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone3-SanDiego/seaspace_zone3_'+now.strftime('%m%d%Y')+'_00z.csv', 'seaspace_zone3_'+now.strftime('%m%d%Y')+'_00z.csv')
-            os.replace('seaspace_zone3_'+now.strftime('%m%d%Y')+'_00z.csv', f'SAWTI Data/seaspace_zone3_{now.strftime('%m%d%Y')}_00z.csv')
+            os.replace('seaspace_zone3_'+now.strftime('%m%d%Y')+'_00z.csv', f'SAWTI Data/seaspace_zone3_{now.strftime("%m%d%Y")}_00z.csv')
             today = True
         except Exception as e:
             try:
                 urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone3-SanDiego/seaspace_zone3_'+yday.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone3_'+yday.strftime('%m%d%Y')+'_12z.csv')
-                os.replace('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone3_{yday.strftime('%m%d%Y')}_12z.csv')
+                os.replace('seaspace_zone3_'+yday.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone3_{yday.strftime("%m%d%Y")}_12z.csv')
                 today = False
             except Exception as e:
                 pass
@@ -217,17 +217,17 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
     # Zone 4
     try:
         urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone4-SantaBarbara/seaspace_zone4_'+now.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone4_'+now.strftime('%m%d%Y')+'_12z.csv')
-        os.replace('seaspace_zone4_'+now.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone4_{now.strftime('%m%d%Y')}_12z.csv')
+        os.replace('seaspace_zone4_'+now.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone4_{now.strftime("%m%d%Y")}_12z.csv')
         today = False
     except Exception as e:
         try:
             urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone4-SantaBarbara/seaspace_zone4_'+now.strftime('%m%d%Y')+'_00z.csv', 'seaspace_zone4_'+now.strftime('%m%d%Y')+'_00z.csv')
-            os.replace('seaspace_zone4_'+now.strftime('%m%d%Y')+'_00z.csv', f'SAWTI Data/seaspace_zone4_{now.strftime('%m%d%Y')}_00z.csv')
+            os.replace('seaspace_zone4_'+now.strftime('%m%d%Y')+'_00z.csv', f'SAWTI Data/seaspace_zone4_{now.strftime("%m%d%Y")}_00z.csv')
             today = True
         except Exception as e:
             try:
                 urllib.request.urlretrieve('https://sdge.sdsc.edu/data/sdge/sawti/Zone4-SantaBarbara/seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv', 'seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv')
-                os.replace('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone4_{yday.strftime('%m%d%Y')}_12z.csv')
+                os.replace('seaspace_zone4_'+yday.strftime('%m%d%Y')+'_12z.csv', f'SAWTI Data/seaspace_zone4_{yday.strftime("%m%d%Y")}_12z.csv')
                 if local_time.day == utc_time.day:
                     today = False
                 else:
@@ -236,57 +236,57 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
                 pass
     
     try:
-        df1 = pd.read_csv(f'SAWTI Data/seaspace_zone1_{now.strftime('%m%d%Y')}_12z.csv')
+        df1 = pd.read_csv(f'SAWTI Data/seaspace_zone1_{now.strftime("%m%d%Y")}_12z.csv')
         df1 = df1.transpose()
     except Exception as e:
         try:
-            df1 = pd.read_csv(f'SAWTI Data/seaspace_zone1_{now.strftime('%m%d%Y')}_00z.csv')
+            df1 = pd.read_csv(f'SAWTI Data/seaspace_zone1_{now.strftime("%m%d%Y")}_00z.csv')
             df1 = df1.transpose()
         except Exception as e:
             try:
-                df1 = pd.read_csv(f'SAWTI Data/seaspace_zone1_{yday.strftime('%m%d%Y')}_12z.csv')
+                df1 = pd.read_csv(f'SAWTI Data/seaspace_zone1_{yday.strftime("%m%d%Y")}_12z.csv')
                 df1 = df1.transpose()
             except Exception as e:
                 pass
     
     try:
-        df2 = pd.read_csv(f'SAWTI Data/seaspace_zone2_{now.strftime('%m%d%Y')}_12z.csv')
+        df2 = pd.read_csv(f'SAWTI Data/seaspace_zone2_{now.strftime("%m%d%Y")}_12z.csv')
         df2 = df2.transpose()
     except Exception as e:
         try:
-            df2 = pd.read_csv(f'SAWTI Data/seaspace_zone2_{now.strftime('%m%d%Y')}_00z.csv')
+            df2 = pd.read_csv(f'SAWTI Data/seaspace_zone2_{now.strftime("%m%d%Y")}_00z.csv')
             df2 = df2.transpose()
         except Exception as e:
             try:
-                df2 = pd.read_csv(f'SAWTI Data/seaspace_zone2_{yday.strftime('%m%d%Y')}_12z.csv')
+                df2 = pd.read_csv(f'SAWTI Data/seaspace_zone2_{yday.strftime("%m%d%Y")}_12z.csv')
                 df2 = df2.transpose()
             except Exception as e:
                 pass
     
     try:
-        df3 = pd.read_csv(f'SAWTI Data/seaspace_zone3_{now.strftime('%m%d%Y')}_12z.csv')
+        df3 = pd.read_csv(f'SAWTI Data/seaspace_zone3_{now.strftime("%m%d%Y")}_12z.csv')
         df3 = df3.transpose()
     except Exception as e:
         try:
-            df3 = pd.read_csv(f'SAWTI Data/seaspace_zone3_{now.strftime('%m%d%Y')}_00z.csv')
+            df3 = pd.read_csv(f'SAWTI Data/seaspace_zone3_{now.strftime("%m%d%Y")}_00z.csv')
             df3 = df3.transpose()
         except Exception as e:
             try:
-                df3 = pd.read_csv(f'SAWTI Data/seaspace_zone3_{yday.strftime('%m%d%Y')}_12z.csv')
+                df3 = pd.read_csv(f'SAWTI Data/seaspace_zone3_{yday.strftime("%m%d%Y")}_12z.csv')
                 df3 = df3.transpose()
             except Exception as e:
                 pass
     
     try:
-        df4 = pd.read_csv(f'SAWTI Data/seaspace_zone4_{now.strftime('%m%d%Y')}_12z.csv')
+        df4 = pd.read_csv(f'SAWTI Data/seaspace_zone4_{now.strftime("%m%d%Y")}_12z.csv')
         df4 = df4.transpose()
     except Exception as e:
         try:
-            df4 = pd.read_csv(f'SAWTI Data/seaspace_zone4_{now.strftime('%m%d%Y')}_00z.csv')
+            df4 = pd.read_csv(f'SAWTI Data/seaspace_zone4_{now.strftime("%m%d%Y")}_00z.csv')
             df4 = df4.transpose()
         except Exception as e:
             try:
-                df4 = pd.read_csv(f'SAWTI Data/seaspace_zone4_{yday.strftime('%m%d%Y')}_12z.csv')
+                df4 = pd.read_csv(f'SAWTI Data/seaspace_zone4_{yday.strftime("%m%d%Y")}_12z.csv')
                 df4 = df4.transpose()
             except Exception as e:
                 pass
