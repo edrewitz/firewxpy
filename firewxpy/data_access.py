@@ -2260,31 +2260,26 @@ class model_data:
                         for fname in fnames_00z:
                             urllib.request.urlretrieve(f"{url_00z_run}/{fname}", f"{fname}")
                             os.replace(f"{fname}", f"{model} Data/{fname}")
-                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                     except Exception as e:
                         try:
                             for fname in fnames_18z:
                                 urllib.request.urlretrieve(f"{yday_18z}/{fname}", f"{fname}")
                                 os.replace(f"{fname}", f"{model} Data/{fname}")
-                                print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                         except Exception as e:
                             try:
                                 for fname in fnames_12z:
                                     urllib.request.urlretrieve(f"{yday_12z}/{fname}", f"{fname}")
                                     os.replace(f"{fname}", f"{model} Data/{fname}")
-                                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                             except Exception as e:
                                 try:
                                     for fname in fnames_06z:
                                         urllib.request.urlretrieve(f"{yday_06z}/{fname}", f"{fname}")
                                         os.replace(f"{fname}", f"{model} Data/{fname}")
-                                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                                 except Exception as e:
                                     try:
                                         for fname in fnames_00z:
                                             urllib.request.urlretrieve(f"{yday_00z}/{fname}", f"geavg.t00z.pgrb2s.0p25.f{hour}")
                                             os.replace(f"{fname}", f"{model} Data/{fname}")
-                                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                                     except Exception as e:
                                         print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 00z - Not even worth downloading at this point!")
         
@@ -2293,31 +2288,26 @@ class model_data:
                         for fname in fnames_06z:
                             urllib.request.urlretrieve(f"{url_06z_run}/{fname}", f"{fname}")
                             os.replace(f"{fname}", f"{model} Data/{fname}")
-                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                     except Exception as e:
                         try:
                             for fname in fnames_00z:
                                 urllib.request.urlretrieve(f"{url_00z_run}/{fname}", f"{fname}")
                                 os.replace(f"{fname}", f"{model} Data/{fname}")
-                                print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                         except Exception as e:
                             try:
                                 for fname in fnames_18z:
                                     urllib.request.urlretrieve(f"{yday_18z}/{fname}", f"{fname}")
                                     os.replace(f"{fname}", f"{model} Data/{fname}")
-                                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                             except Exception as e:
                                 try:
                                     for fname in fnames_12z:
                                         urllib.request.urlretrieve(f"{yday_12z}/{fname}", f"{fname}")
                                         os.replace(f"{fname}", f"{model} Data/{fname}")
-                                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                                 except Exception as e:
                                     try:
                                         for fname in fnames_06z:
                                             urllib.request.urlretrieve(f"{yday_06z}/{fname}", f"{fname}")
                                             os.replace(f"{fname}", f"{model} Data/{fname}")
-                                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                                     except Exception as e:
                                         print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 06z - Not even worth downloading at this point!")
         
@@ -2326,31 +2316,26 @@ class model_data:
                         for fname in fnames_12z:
                             urllib.request.urlretrieve(f"{url_12z_run}/{fname}", f"{fname}")
                             os.replace(f"{fname}", f"{model} Data/{fname}")
-                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                     except Exception as e:
                         try:
                             for fname in fnames_06z:
                                 urllib.request.urlretrieve(f"{url_06z_run}/{fname}", f"{fname}")
                                 os.replace(f"{fname}", f"{model} Data/{fname}")
-                                print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                         except Exception as e:
                             try:
                                 for fname in fnames_00z:
                                     urllib.request.urlretrieve(f"{url_00z_run}/{fname}", f"{fname}")
                                     os.replace(f"{fname}", f"{model} Data/{fname}")
-                                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                             except Exception as e:
                                 try:
                                     for fname in fnames_18z:
                                         urllib.request.urlretrieve(f"{yday_18z}/{fname}", f"{fname}")
                                         os.replace(f"{fname}", f"{model} Data/{fname}")
-                                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                                 except Exception as e:
                                     try:
                                         for fname in fnames_12z:
                                             urllib.request.urlretrieve(f"{yday_12z}/{fname}", f"geavg.t12z.pgrb2s.0p25.f{hour}")
                                             os.replace(f"{fname}", f"{model} Data/{fname}")
-                                            print(f"Downloaded {fname} to f:{model} Data/{fname}")  
                                     except Exception as e:
                                         print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 12z - Not even worth downloading at this point!")
         
@@ -2359,31 +2344,26 @@ class model_data:
                         for fname in fnames_18z:
                             urllib.request.urlretrieve(f"{url_18z_run}/{fname}", f"{fname}")
                             os.replace(f"{fname}", f"{model} Data/{fname}")
-                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                     except Exception as e:
                         try:
                             for fname in fnames_12z:
                                 urllib.request.urlretrieve(f"{url_12z_run}/{fname}", f"{fname}")
                                 os.replace(f"{fname}", f"{model} Data/{fname}")
-                                print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                         except Exception as e:
                             try:
                                 for fname in fnames_06z:
                                     urllib.request.urlretrieve(f"{url_06z_run}/{fname}", f"{fname}")
                                     os.replace(f"{fname}", f"{model} Data/{fname}")
-                                    print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                             except Exception as e:
                                 try:
                                     for fname in fnames_00z:
                                         urllib.request.urlretrieve(f"{url_00z_run}/{fname}", f"{fname}")
                                         os.replace(f"{fname}", f"{model} Data/{fname}")
-                                        print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                                 except Exception as e:
                                     try:
                                         for fname in fnames_18z:
                                             urllib.request.urlretrieve(f"{yday_18z}/{fname}", f"{fname}")
                                             os.replace(f"{fname}", f"{model} Data/{fname}")
-                                            print(f"Downloaded {fname} to f:{model} Data/{fname}") 
                                     except Exception as e:
                                         print(f"Latest dataset is older than {yesterday.strftime('%Y-%m-%d')} 18z - Not even worth downloading at this point!")
         
