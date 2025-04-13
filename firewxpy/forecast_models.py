@@ -583,7 +583,7 @@ class dynamics:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', format="{x:.0e}")
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-        
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -610,6 +610,7 @@ class dynamics:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', format="{x:.0e}")
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                plt.close(fig)
             
                 if mapcrs == datacrs:
                     tim.sleep(10)
@@ -1129,6 +1130,7 @@ class dynamics:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                plt.close(fig)
 
                 if mapcrs == datacrs:
                     tim.sleep(10)
@@ -1143,7 +1145,7 @@ class dynamics:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
         print(f"Saved forecast graphics to {path_print}.")
@@ -1644,7 +1646,7 @@ class dynamics:
                     cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
+                    plt.close(fig)
                     if mapcrs == datacrs:
                         tim.sleep(10)
     
@@ -1668,7 +1670,7 @@ class dynamics:
                     cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                
+                    plt.close(fig)
                     if mapcrs == datacrs:
                         tim.sleep(10)
                 except Exception as e:
@@ -2217,7 +2219,7 @@ class dynamics:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-        
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -2242,7 +2244,7 @@ class dynamics:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
         print(f"Saved forecast graphics to {path_print}.")
@@ -2688,7 +2690,7 @@ class dynamics:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=speed_ticks)
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-        
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -2704,7 +2706,7 @@ class dynamics:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=speed_ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
         print(f"Saved forecast graphics to {path_print}.")
@@ -3224,7 +3226,7 @@ class temperature:
                         cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
         
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
+                    plt.close(fig)
                     if mapcrs == datacrs:
                         tim.sleep(10)
         
@@ -3249,7 +3251,7 @@ class temperature:
                         cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                    plt.close(fig)
                     if mapcrs == datacrs:
                         tim.sleep(10)
         
@@ -3334,7 +3336,7 @@ class temperature:
                         cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
         
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                    plt.close(fig)
                     if mapcrs == datacrs:
                         tim.sleep(10)
         
@@ -3359,7 +3361,7 @@ class temperature:
                         cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                    plt.close(fig)
                     if mapcrs == datacrs:
                         tim.sleep(10)
             print(f"Saved forecast graphics to {path_print}.")
@@ -3457,7 +3459,7 @@ class temperature:
                     cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks_cool)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
             print(f"Saved forecast graphics to {path_print}.")
@@ -3913,7 +3915,7 @@ class temperature:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-        
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -3930,7 +3932,7 @@ class temperature:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -4006,7 +4008,7 @@ class temperature:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -4023,7 +4025,7 @@ class temperature:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
         print(f"Saved forecast graphics to {path_print}.")
@@ -4576,7 +4578,7 @@ class temperature:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -4610,7 +4612,7 @@ class temperature:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
         print(f"Saved forecast graphics to {path_print}.")
@@ -5101,7 +5103,7 @@ class relative_humidity:
                     cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
+                    plt.close(fig)
                     if mapcrs == datacrs:
                         tim.sleep(10)
         
@@ -5121,7 +5123,7 @@ class relative_humidity:
                     cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                
+                    plt.close(fig)
                     if mapcrs == datacrs:
                         tim.sleep(10)
         
@@ -5201,7 +5203,7 @@ class relative_humidity:
                     cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                    plt.close(fig)
                     if mapcrs == datacrs:
                         tim.sleep(10)
         
@@ -5221,7 +5223,7 @@ class relative_humidity:
                     cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                    plt.close(fig)
                     if mapcrs == datacrs:
                         tim.sleep(10)
 
@@ -5311,7 +5313,7 @@ class relative_humidity:
                 ax.clabel(c, levels=[low_rh_threshold], inline=True, fontsize=8, rightside_up=True)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
         print(f"Saved forecast graphics to {path_print}.")
@@ -5857,7 +5859,7 @@ class relative_humidity:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -5890,7 +5892,7 @@ class relative_humidity:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
         print(f"Saved forecast graphics to {path_print}.")
@@ -6469,7 +6471,7 @@ class critical_firewx_conditions:
                             pass
             
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                
+                        plt.close(fig)
                         if mapcrs == datacrs:
                             tim.sleep(10)
             
@@ -6496,7 +6498,7 @@ class critical_firewx_conditions:
                             pass
                 
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                    
+                        plt.close(fig)
                         if mapcrs == datacrs:
                             tim.sleep(10)
             
@@ -6592,7 +6594,7 @@ class critical_firewx_conditions:
                             pass
             
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                
+                        plt.close(fig)
                         if mapcrs == datacrs:
                             tim.sleep(10)
             
@@ -6619,7 +6621,7 @@ class critical_firewx_conditions:
                             pass
                 
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                    
+                        plt.close(fig)
                         if mapcrs == datacrs:
                             tim.sleep(10)
     
@@ -6736,7 +6738,7 @@ class critical_firewx_conditions:
                             pass
             
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                
+                        plt.close(fig)
                         if mapcrs == datacrs:
                             tim.sleep(10)
             
@@ -6769,7 +6771,7 @@ class critical_firewx_conditions:
                             pass
                 
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                    
+                        plt.close(fig)
                         if mapcrs == datacrs:
                             tim.sleep(10)
             
@@ -6872,7 +6874,7 @@ class critical_firewx_conditions:
                             pass
             
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                
+                        plt.close(fig)
                         if mapcrs == datacrs:
                             tim.sleep(10)
             
@@ -6905,7 +6907,7 @@ class critical_firewx_conditions:
                             pass
                 
                         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                    
+                        plt.close(fig)
                         if mapcrs == datacrs:
                             tim.sleep(10)
     
@@ -7019,7 +7021,7 @@ class critical_firewx_conditions:
                         pass
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                
+                    plt.close(fig)
                     if mapcrs == datacrs:
                         tim.sleep(10)
     
@@ -7139,7 +7141,7 @@ class critical_firewx_conditions:
                         pass
             
                     fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-                
+                    plt.close(fig)
                     if mapcrs == datacrs:
                         tim.sleep(10)
 
@@ -7616,7 +7618,7 @@ class precipitation:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-        
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -7633,7 +7635,7 @@ class precipitation:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -7709,7 +7711,7 @@ class precipitation:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
     
@@ -7726,7 +7728,7 @@ class precipitation:
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', ticks=ticks)
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-
+                plt.close(fig)
                 if mapcrs == datacrs:
                     tim.sleep(10)
         print(f"Saved forecast graphics to {path_print}.")
