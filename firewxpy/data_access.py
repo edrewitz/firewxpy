@@ -29,6 +29,7 @@ import time as t
 import urllib.request
 import os
 import sys
+import logging
 import firewxpy.standard as standard
 import warnings
 warnings.filterwarnings('ignore')
@@ -1937,7 +1938,9 @@ class model_data:
                  If the user uses 'GEFS0p25 ENS MEAN' and does have typeOfLevel set to 'heightAboveGround' while get_u_and_v_wind_components=True and get_u_and_v_wind_components=True,
                  a list of the 'heightAboveGround' datasets, u-wind datasets, v-wind datasets and gust datasets will be returned.
                              
-        '''     
+        '''    
+        sys.tracebacklimit = 0
+        logging.disable()
     
         local_time, utc_time = standard.plot_creation_time()
         yesterday = utc_time - timedelta(hours=24)
@@ -2382,7 +2385,6 @@ class model_data:
                     for file in fpaths:
                         ds = xr.open_dataset(file, engine='cfgrib', filter_by_keys={'typeOfLevel': typeOfLevel}).sel(longitude=slice(360-western_bound, 360-eastern_bound, 1), latitude=slice(northern_bound, southern_bound, 1))
                         datasets.append(ds)
-                        print(f"Extrated dataset from {file}")
                         
                     return datasets
         
@@ -2399,9 +2401,7 @@ class model_data:
                             datasets.append(ds)
                             u.append(u_wind)
                             v.append(v_wind)
-                            print(f"Extrated datasets from {file}")
-        
-                            print(f"Ignore the error message regarding u and v winds.")
+                            
                         return datasets, u, v
         
                     if add_wind_gusts == True:
@@ -2417,9 +2417,7 @@ class model_data:
                             datasets.append(ds)
                             u.append(u_wind)
                             v.append(v_wind)
-                            print(f"Extrated datasets from {file}")
-        
-                            print(f"Ignore the error message regarding u and v winds.")
+                            
                         return datasets, u, v, gusts
 
 
