@@ -836,12 +836,14 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
         if os.path.exists(f"Weather Data/SAWTI"):
             print("Already Satisfied: f:Weather Data/SAWTI Exists.")
             plt.savefig(f"Weather Data/SAWTI/{fname}", bbox_inches='tight')
+            plt.close(fig)
             print(f"Image Saved to f:Weather Data/SAWTI/{fname}")
         else:
             print("f:Weather Data/SAWTI does not exist. Building new branch to the existing directory...")
             os.mkdir(f"Weather Data/SAWTI")
             print("Successfully built new branch.")
             plt.savefig(f"Weather Data/SAWTI/{fname}", bbox_inches='tight')
+            plt.close(fig)
             print(f"Image Saved to f:Weather Data/SAWTI/{fname}")
     else:
         print("f:Weather Data does not exist. Building the directory automatically...")
@@ -849,5 +851,6 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
         os.mkdir(f"Weather Data/SAWTI")
         print("Successfully built directory and current branch.")
         plt.savefig(f"Weather Data/SAWTI/{fname}", bbox_inches='tight')
+        plt.close(fig)
         print(f"Image Saved to f:Weather Data/SAWTI/{fname}")           
 
