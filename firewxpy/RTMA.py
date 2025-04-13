@@ -509,6 +509,7 @@ def plot_relative_humidity(western_bound=None, eastern_bound=None, southern_boun
     stn.plot_parameter('C', rh, color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=7)
 
     fig.savefig(f"{path}/RTMA RH.png", bbox_inches='tight')
+    plt.close(fig)
     print(f"Saved RTMA RH graphic to {path_print}")
 
 
@@ -950,6 +951,7 @@ def plot_temperature(western_bound=None, eastern_bound=None, southern_bound=None
     stn.plot_parameter('C', temp, color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=7)
 
     fig.savefig(f"{path}/RTMA Temperature.png", bbox_inches='tight')
+    plt.close(fig)
     print(f"Saved RTMA Temperature graphic to {path_print}")
 
 def plot_dewpoint(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.5, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=False, ds=None, time=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, low_dwpt_threshold=10, high_dwpt_threshold=60, show_low_high_thresholds=False):
@@ -1387,6 +1389,7 @@ def plot_dewpoint(western_bound=None, eastern_bound=None, southern_bound=None, n
     stn.plot_parameter('C', dwpt, color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=7)
 
     fig.savefig(f"{path}/RTMA Dewpoint.png", bbox_inches='tight')
+    plt.close(fig)
     print(f"Saved RTMA Dewpoint graphic to {path_print}")
 
 def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.5, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=False, ds=None, time=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, low_threshold=20, high_threshold=80, show_low_high_thresholds=False):
@@ -1824,6 +1827,7 @@ def plot_total_cloud_cover(western_bound=None, eastern_bound=None, southern_boun
     stn.plot_parameter('C', tccl, color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=7)
 
     fig.savefig(f"{path}/RTMA Total Cloud Cover.png", bbox_inches='tight')
+    plt.close(fig)
     print(f"Saved RTMA Total Cloud Cover graphic to {path_print}")
 
 def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.5, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=False, ds=None, time=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, sample_points='barbs'):
@@ -2248,6 +2252,7 @@ def plot_wind_speed(western_bound=None, eastern_bound=None, southern_bound=None,
         stn.plot_barb(u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='white', length=4.5, alpha=1, zorder=7, linewidth=0.8)        
 
     fig.savefig(f"{path}/RTMA Wind Speed.png", bbox_inches='tight')
+    plt.close(fig)
     print(f"Saved RTMA Wind Speed graphic to {path_print}")
 
 def plot_critical_firewx(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.5, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=False, ds=None, time=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, use_wind_gust=False, add_temperature_threshold=False, low_rh_threshold=15, high_wind_threshold=25, high_temperature_threshold=75):
@@ -2745,6 +2750,7 @@ def plot_critical_firewx(western_bound=None, eastern_bound=None, southern_bound=
     stn.plot_barb(u[0, :, :][::decimate, ::decimate], v[0, :, :][::decimate, ::decimate], color='black', length=4.5, alpha=1, zorder=7, linewidth=0.8)        
 
     fig.savefig(f"{path}/RTMA Critical Fire Weather.png", bbox_inches='tight')
+    plt.close(fig)
     print(f"Saved RTMA Critical Fire Weather graphic to {path_print}")
 
 def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.5, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=False, ds=None, ds_24=None, time=None, time_24=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, show_low_high_thresholds=False):
@@ -3202,6 +3208,7 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
     stn.plot_parameter('C', diff, color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=7)
 
     fig.savefig(f"{path}/24-Hour RTMA RH Comparison.png", bbox_inches='tight')
+    plt.close(fig)
     print(f"Saved 24-Hour RTMA RH Comparison graphic to {path_print}")
 
 def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.5, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=False, ds=None, ds_24=None, time=None, time_24=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, show_low_high_thresholds=False):
@@ -3649,6 +3656,7 @@ def plot_24_hour_temperature_comparison(western_bound=None, eastern_bound=None, 
     stn.plot_parameter('C', diff, color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=7)
 
     fig.savefig(f"{path}/24-Hour RTMA TEMPERATURE Comparison.png", bbox_inches='tight')
+    plt.close(fig)
     print(f"Saved 24-Hour RTMA TEMPERATURE Comparison graphic to {path_print}")
 
 def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.5, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=False, ds=None, ds_24=None, time=None, time_24=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, show_low_high_thresholds=False):
@@ -4096,6 +4104,7 @@ def plot_24_hour_dew_point_comparison(western_bound=None, eastern_bound=None, so
     stn.plot_parameter('C', diff, color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=7)
 
     fig.savefig(f"{path}/24-Hour RTMA DEW POINT Comparison.png", bbox_inches='tight')
+    plt.close(fig)
     print(f"Saved 24-Hour RTMA DEW POINT Comparison graphic to {path_print}")
 
 def plot_24_hour_wind_comparison(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.5, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=False, ds=None, ds_24=None, time=None, time_24=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, sample_points='barbs'):
@@ -4548,6 +4557,7 @@ def plot_24_hour_wind_comparison(western_bound=None, eastern_bound=None, souther
         leg.set_zorder(12)
 
     fig.savefig(f"{path}/24-Hour RTMA WIND Comparison.png", bbox_inches='tight')
+    plt.close(fig)
     print(f"Saved 24-Hour RTMA WIND Comparison graphic to {path_print}")
 
 def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.5, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=False, ds=None, ds_24=None, time=None, time_24=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, show_low_high_thresholds=False):
@@ -4995,6 +5005,7 @@ def plot_24_hour_total_cloud_cover_comparison(western_bound=None, eastern_bound=
     stn.plot_parameter('C', diff, color='black', path_effects=[withStroke(linewidth=1, foreground='white')], zorder=7)
 
     fig.savefig(f"{path}/24-Hour RTMA TOTAL CLOUD COVER Comparison.png", bbox_inches='tight')
+    plt.close(fig)
     print(f"Saved 24-Hour RTMA TOTAL CLOUD COVER Comparison graphic to {path_print}")
 
 
