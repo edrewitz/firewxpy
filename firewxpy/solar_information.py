@@ -211,6 +211,7 @@ def plot_daily_solar_information(latitude, longitude):
         if os.path.exists(f"Weather Data/Solar Information"):
             print("Already Satisfied: f:Weather Data/Solar Information exists.")
             fig.savefig(path)
+            plt.close(fig)
             print(f"Image saved to: {path}")
             
 
@@ -219,6 +220,7 @@ def plot_daily_solar_information(latitude, longitude):
             os.mkdir(f"Weather Data/Solar Information")
             print("Successfully built new branch")
             fig.savefig(path)
+            plt.close(fig)
             print(f"Image saved to: {path}")            
 
     else:
@@ -227,6 +229,7 @@ def plot_daily_solar_information(latitude, longitude):
         os.mkdir(f"Weather Data/Solar Information")
         print("Successfully built directory.")
         fig.savefig(path)
+        plt.close(fig)
         print(f"Image saved to: {path}")        
              
         
