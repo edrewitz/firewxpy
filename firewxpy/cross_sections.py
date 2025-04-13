@@ -461,6 +461,7 @@ class time_cross_sections:
         ax2.text(0.01, 0.01, "Reference System: "+reference_system, transform=ax2.transAxes, fontsize=5, fontweight='bold', bbox=props, zorder=11)
     
         fig.savefig(f"{path}/{save_name}", bbox_inches='tight')
+        plt.close(fig)
         print(f"Saved image of cross-section to {path_print}/{save_name}.")
 
 
@@ -893,6 +894,7 @@ class time_cross_sections:
         ax2.text(0.01, 0.01, "Reference System: "+reference_system, transform=ax2.transAxes, fontsize=5, fontweight='bold', bbox=props, zorder=11)
     
         fig.savefig(f"{path}/{save_name}", bbox_inches='tight')
+        plt.close(fig)
         print(f"Saved image of cross-section to {path_print}/{save_name}.")
 
 
@@ -1336,6 +1338,7 @@ class time_cross_sections:
         ax2.text(0.01, 0.01, "Reference System: "+reference_system, transform=ax2.transAxes, fontsize=5, fontweight='bold', bbox=props, zorder=11)
     
         fig.savefig(f"{path}/{save_name}", bbox_inches='tight')
+        plt.close(fig)
         print(f"Saved image of cross-section to {path_print}/{save_name}.")
 
 
@@ -1763,6 +1766,7 @@ class time_cross_sections:
         ax2.text(0.01, 0.01, "Reference System: "+reference_system, transform=ax2.transAxes, fontsize=5, fontweight='bold', bbox=props, zorder=11)
     
         fig.savefig(f"{path}/{save_name}", bbox_inches='tight')
+        plt.close(fig)
         print(f"Saved image of cross-section to {path_print}/{save_name}.")
 
 
@@ -2170,6 +2174,7 @@ class time_cross_sections:
         ax2.text(0.01, 0.01, "Reference System: "+reference_system, transform=ax2.transAxes, fontsize=5, fontweight='bold', bbox=props, zorder=11)
     
         fig.savefig(f"{path}/{save_name}", bbox_inches='tight')
+        plt.close(fig)
         print(f"Saved image of cross-section to {path_print}/{save_name}.")
 
 
@@ -2590,6 +2595,7 @@ class time_cross_sections:
         ax2.text(0.01, 0.01, "Reference System: "+reference_system, transform=ax2.transAxes, fontsize=5, fontweight='bold', bbox=props, zorder=11)
     
         fig.savefig(f"{path}/{save_name}", bbox_inches='tight')
+        plt.close(fig)
         print(f"Saved image of cross-section to {path_print}/{save_name}.")
         
 
@@ -3040,6 +3046,7 @@ class time_cross_sections:
         ax2.text(0.01, 0.01, "Reference System: "+reference_system, transform=ax2.transAxes, fontsize=5, fontweight='bold', bbox=props, zorder=11)
     
         fig.savefig(f"{path}/{save_name}", bbox_inches='tight')
+        plt.close(fig)
         print(f"Saved image of cross-section to {path_print}/{save_name}.")
 
     def plot_favorable_firewx_forecast(model, station_id, save_name, low_rh_threshold=15, high_wind_threshold=25, high_temperature_threshold=None, longitude=None, latitude=None, data=False, ds=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-'):
@@ -3487,6 +3494,7 @@ class time_cross_sections:
         ax2.text(0.01, 0.01, "Reference System: "+reference_system, transform=ax2.transAxes, fontsize=5, fontweight='bold', bbox=props, zorder=11)
     
         fig.savefig(f"{path}/{save_name}", bbox_inches='tight')
+        plt.close(fig)
         print(f"Saved image of cross-section to {path_print}/{save_name}.")
 
 
@@ -3951,6 +3959,7 @@ class two_point_cross_sections:
             ax2.set_title(f"500 MB GPH", fontweight='bold', fontsize=8)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
             print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
             tim.sleep(10)
 
@@ -4425,6 +4434,7 @@ class two_point_cross_sections:
             ax2.set_title(f"500 MB GPH", fontweight='bold', fontsize=8)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
             print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
             tim.sleep(10)
 
@@ -4917,6 +4927,7 @@ class two_point_cross_sections:
             ax2.set_title(f"500 MB GPH", fontweight='bold', fontsize=8)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
             print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
             tim.sleep(10)
 
@@ -5374,6 +5385,7 @@ class two_point_cross_sections:
             ax2.set_title(f"500 MB GPH", fontweight='bold', fontsize=8)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
             print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
             tim.sleep(10)
 
@@ -5827,6 +5839,7 @@ class two_point_cross_sections:
             ax2.set_title(f"500 MB GPH", fontweight='bold', fontsize=8)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
             print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
             tim.sleep(10)
 
@@ -6285,6 +6298,7 @@ class two_point_cross_sections:
             ax2.set_title(f"500 MB GPH", fontweight='bold', fontsize=8)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
             print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
             tim.sleep(10)
 
@@ -6776,6 +6790,7 @@ class two_point_cross_sections:
             ax2.set_title(f"500 MB GPH", fontweight='bold', fontsize=8)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
             print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
             tim.sleep(10)
 
@@ -7252,6 +7267,7 @@ class two_point_cross_sections:
             ax2.set_title(f"500 MB GPH", fontweight='bold', fontsize=8)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
             print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
             tim.sleep(10)
 
