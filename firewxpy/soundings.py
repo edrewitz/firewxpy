@@ -764,6 +764,7 @@ def plot_forecast_soundings(model, station_id, longitude=None, latitude=None, da
         fig.text(0.76, 0.085, "Plot Created With FireWxPy\n(C) Eric J. Drewitz "+utc_time.strftime('%Y')+"\nData Source: NOAA/NCEP/NOMADS\nImage Created: "+utc_time.strftime('%m/%d/%Y %H:00 UTC'), fontsize=8, bbox=props)
         
         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        plt.close(fig)
         print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
         tim.sleep(10)
 
@@ -1863,4 +1864,5 @@ def plot_observed_sounding_custom_date_time(station_id, year, month, day, hour):
 
     fname = station_id+" VERTICAL PROFILES"
     
-    file_functions.save_daily_sounding_graphic(fig, station_id, date)  
+    file_functions.save_daily_sounding_graphic(fig, station_id, date)
+    plt.close(fig)
