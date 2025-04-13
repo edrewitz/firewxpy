@@ -579,6 +579,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved short-term forecast graphics to {path_print}")
 
 
@@ -652,6 +653,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved extended forecast graphics to {path_print}")
 
 
@@ -1128,6 +1130,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved short-term forecast graphics to {path_print}")
 
 
@@ -1201,6 +1204,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved extended forecast graphics to {path_print}")
 
 
@@ -1683,6 +1687,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved short-term forecast graphics to {path_print}")
 
 
@@ -1756,6 +1761,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved extended forecast graphics to {path_print}")
 
 
@@ -2251,6 +2257,7 @@ class relative_humidity:
             ax.text(x, y, f"Red Contour Line: RH = {low_rh_threshold}% | Blue Contour Line: RH = {high_rh_threshold}%", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved short-term forecast graphics to {path_print}")
 
 
@@ -2331,6 +2338,7 @@ class relative_humidity:
             ax.text(x, y, f"Red Contour Line: RH = {low_rh_threshold}% | Blue Contour Line: RH = {high_rh_threshold}%", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved extended forecast graphics to {path_print}")
 
 
@@ -2822,6 +2830,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved short-term forecast graphics to {path_print}")
 
 
@@ -2901,6 +2910,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved extended forecast graphics to {path_print}")
 
 
@@ -3377,6 +3387,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved forecast graphics to {path_print}")
 
 
@@ -3853,6 +3864,7 @@ class relative_humidity:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved forecast graphics to {path_print}")
 
 
@@ -4338,6 +4350,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved short-term forecast graphics to {path_print}")
 
 
@@ -4411,6 +4424,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved extended forecast graphics to {path_print}")
 
 
@@ -4895,6 +4909,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved short-term forecast graphics to {path_print}")
 
 
@@ -4968,6 +4983,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved extended forecast graphics to {path_print}")
 
 
@@ -5453,6 +5469,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved short-term forecast graphics to {path_print}")
 
 
@@ -5526,6 +5543,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved extended forecast graphics to {path_print}")
 
 
@@ -6020,6 +6038,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved short-term forecast graphics to {path_print}")
 
 
@@ -6093,6 +6112,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved extended forecast graphics to {path_print}")
 
 
@@ -6587,6 +6607,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved short-term forecast graphics to {path_print}")
 
 
@@ -6660,6 +6681,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved extended forecast graphics to {path_print}")
 
 
@@ -7124,6 +7146,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved forecast graphics to {path_print}")
 
 
@@ -7586,6 +7609,7 @@ class temperature:
             ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved forecast graphics to {path_print}")
 
 
@@ -8203,6 +8227,7 @@ class critical_firewx:
                     ax.text(x, y, f"Key: Cyan = Wind Gust | Green = RH", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)                
 
             fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+            plt.close(fig)
         print(f"Saved short-term forecast graphics to {path_print}")
 
         try:
@@ -8313,6 +8338,7 @@ class critical_firewx:
                         ax.text(x, y, f"Key: Cyan = Wind Gust | Green = RH", transform=ax.transAxes, fontsize=signature_fontsize, fontweight='bold', bbox=props, zorder=11)                
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                plt.close(fig)
             print(f"Saved extended forecast graphics to {path_print}")
         except Exception as e:
             pass
