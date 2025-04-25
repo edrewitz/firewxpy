@@ -12,8 +12,44 @@ import urllib.request
 import os
 import pandas as pd
 import numpy as np
+import shutil
 
 from datetime import datetime, timedelta
+from calendar import isleap
+
+def get_number_of_psas_by_gacc(gacc_region):
+
+    gacc_region = gacc_region.upper()
+
+    if gacc_region == 'OSCC':
+        psas = 17
+    if gacc_region == 'ONCC':
+        psas = 9
+    if gacc_region == 'AICC':
+        psas = 19
+    if gacc_region == 'NWCC':
+        psas = 13
+    if gacc_region == 'NRCC':
+        psas = 14
+    if gacc_region == 'GBCC':
+        psas = 36
+    if gacc_region == 'SWCC':
+        psas = 16
+    if gacc_region == 'RMCC':
+        psas = 29
+    if gacc_region == 'SACC':
+        psas = 57
+    if gacc_region == 'EACC':
+        psas = 25
+
+    return psas
+
+def calculate_daily_stats(df):
+    """Calculate daily max, min and average statistics for the selected component."""
+    daily_max = df.groupby('julian_date').max(numeric_only=True).reset_index()
+    daily_min = df.groupby('julian_date').min(numeric_only=True).reset_index()
+    daily_avg = df.groupby('julian_date').mean(numeric_only=True).reset_index()
+    return daily_max, daily_min, daily_avg
 
 def check_folders():
     
@@ -88,6 +124,77 @@ def get_sigs(gacc_region):
 
     return df
 
+def get_stats(gacc_region):
+
+    gacc_region = gacc_region.upper()
+    
+    paths = []
+    
+    if os.path.exists(f"FEMS Data/Station Climo"):
+        pass
+    else:
+        os.mkdir(f"FEMS Data/Station Climo")
+
+    if os.path.exists(f"FEMS Data/Station Climo/{gacc_region}"):
+        pass
+    else:
+        os.mkdir(f"FEMS Data/Station Climo/{gacc_region}")
+    
+    psa = 1
+    for folder in os.listdir(f"FEMS Data/Stations/{gacc_region}"):
+        path = f"FEMS Data/Stations/{gacc_region}/{folder}"
+        paths.append(path) 
+    
+        if os.path.exists(f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}"):
+            pass
+        else:
+            os.mkdir(f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}")
+    
+        if os.path.exists(f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/MAX"):
+            pass
+        else:
+            os.mkdir(f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/MAX")   
+    
+        if os.path.exists(f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/MIN"):
+            pass
+        else:
+            os.mkdir(f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/MIN")   
+    
+        if os.path.exists(f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/AVG"):
+            pass
+        else:
+            os.mkdir(f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/AVG")   
+    
+        max_vals = []
+        mean_vals = []
+        min_vals = []
+    
+        for p in range(0, len(paths)):
+            files = []
+        if os.path.exists(f"{paths[p]}/.ipynb_checkpoints"):
+            shutil.rmtree(f"{paths[p]}/.ipynb_checkpoints")
+        else:
+            pass
+            for file in os.listdir(paths[p]):
+                files.append(file)  
+                
+        for i in range(0, len(files)):
+    
+            df = pd.read_csv(f"{paths[p]}/{files[i]}")
+            daily_max = df.groupby('julian_date').max(numeric_only=True)
+            daily_min = df.groupby('julian_date').min(numeric_only=True)
+            daily_avg = df.groupby('julian_date').mean(numeric_only=True)
+    
+            fname_max = f"{df['stationId'].iloc[0]}_max.csv"
+            fname_min = f"{df['stationId'].iloc[0]}_min.csv"
+            fname_avg = f"{df['stationId'].iloc[0]}_avg.csv"
+            daily_max.to_csv(fname_max, index=False)
+            os.replace(f"{fname_max}", f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/MAX/{fname_max}")
+            daily_min.to_csv(fname_min, index=False)
+            os.replace(f"{fname_min}", f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/MIN/{fname_min}")
+            daily_avg.to_csv(fname_avg, index=False)
+            os.replace(f"{fname_avg}", f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/AVG/{fname_avg}")
+        psa = psa + 1
 
 def get_psa_percentiles(gacc_region):
 
@@ -107,6 +214,8 @@ def get_psa_percentiles(gacc_region):
     gacc_region = gacc_region.upper()
     
     paths = []
+        
+    
     for folder in os.listdir(f"FEMS Data/Stations/{gacc_region}"):
         path = f"FEMS Data/Stations/{gacc_region}/{folder}"
         paths.append(path)
@@ -153,6 +262,7 @@ def get_psa_percentiles(gacc_region):
         for i in range(0, len(files)):
             try:
                 df = pd.read_csv(f"{paths[p]}/{files[i]}")
+                df['observationTime'] = pd.to_datetime(df['observationTime'])
                 
                 p3_100 = np.percentile(df['hundredHR_TL_FuelMoisture'], 3)
                 percent_3_100hr.append(p3_100)
@@ -267,8 +377,7 @@ def get_psa_percentiles(gacc_region):
     main.to_csv(fname, index=False)
     os.replace(f"{fname}", f"FEMS Data/{gacc_region}/PSA Percentiles/{fname}")
 
-
-def sort_data_by_zone(gacc_region):
+def station_stats(gacc_region):
 
     gacc_region = gacc_region.upper()
     
@@ -277,12 +386,7 @@ def sort_data_by_zone(gacc_region):
     except Exception as e:
         now = datetime.utcnow()
 
-    last_year = now.year - 1
-
-    if now.month >= 11:
-        start_date = datetime(now.year, 11, 1)
-    else:
-        start_date = datetime(last_year, 11, 1)
+    start_date = datetime(now.year, 1, 1)
     end_date = datetime(now.year, now.month, now.day)
     
     paths = []
@@ -291,129 +395,228 @@ def sort_data_by_zone(gacc_region):
         paths.append(path)
     
     psa = 1
+    
+    if os.path.exists(f"FEMS Data/Station Stats"):
+        pass
+    else:
+        os.mkdir(f"FEMS Data/Station Stats")
+    
+    if os.path.exists(f"FEMS Data/Station Stats/{gacc_region}"):
+        pass
+    else:
+        os.mkdir(f"FEMS Data/Station Stats/{gacc_region}")
+    
     for p in range(0, len(paths)):
         files = []
+        
+        if os.path.exists(f"{paths[p]}/.ipynb_checkpoints"):
+            shutil.rmtree(f"{paths[p]}/.ipynb_checkpoints")
+        else:
+            pass
+            
         for file in os.listdir(paths[p]):
             files.append(file)
     
+        if os.path.exists(f"FEMS Data/Station Stats/{gacc_region}/PSA {psa}"):
+            pass
+        else:
+            os.mkdir(f"FEMS Data/Station Stats/{gacc_region}/PSA {psa}")
+    
+        days = abs((start_date - end_date).days)
         dates = []
+        for day in range(0, days):
+            date = start_date + timedelta(days=day)
+            dates.append(date)
         
-        dfm_100 = []
-        dfm_100hr_mean = []
-        dfm_100hr_min = []
-        dfm_100hr_max = []
+        for i in range(0, len(files)):
+    
+            df = pd.read_csv(f"{paths[p]}/{files[i]}")
+            df = df[df['observationTime'].between(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))]
+            df['observationTime'] = pd.to_datetime(df['observationTime'])
+            df['julian_date'] = df['observationTime'].dt.dayofyear
+            data = df.groupby(pd.Grouper(key='observationTime', freq='D'))
+            f100 = data['hundredHR_TL_FuelMoisture'].min()
+            f1000 = data['thousandHR_TL_FuelMoisture'].min()
+            erc = data['energyReleaseComponent'].max()
+            bi = data['burningIndex'].max()
+            sc = data['spreadComponent'].max()
+    
+            if len(f100) == days and len(f1000) == days and len(erc) == days and len(bi) == days and len(sc) == days:
+                main = pd.DataFrame()
+                main['f100'] = f100.values
+                main['f1000'] = f1000.values
+                main['erc'] = erc.values
+                main['bi'] = bi.values
+                main['sc'] = sc.values
+                main['dates'] = dates
         
-        dfm_1000 = []
-        dfm_1000hr_mean = []
-        dfm_1000hr_min = []
-        dfm_1000hr_max = []
+                fname = f"{files[i]}"
+                main.to_csv(fname, index=False)
+                os.replace(f"{fname}", f"FEMS Data/Station Stats/{gacc_region}/PSA {psa}/{fname}")
+            else:
+                pass
+    
+        psa = psa + 1
+
+def sort_data_by_psa(gacc_region):
+
+    gacc_region = gacc_region.upper()
+    
+    paths = []
+    for folder in os.listdir(f"FEMS Data/Station Stats/{gacc_region}"):
+        path = f"FEMS Data/Station Stats/{gacc_region}/{folder}"
+        paths.append(path)
+    
+    psa = 1
+    for p in range(0, len(paths)):
+        files = []
+        
+        if os.path.exists(f"{paths[p]}/.ipynb_checkpoints"):
+            shutil.rmtree(f"{paths[p]}/.ipynb_checkpoints")
+        else:
+            pass
+            
+        for file in os.listdir(paths[p]):
+            files.append(file)    
+    
+        dates = []
+    
+        f100 = []
+        f100_max = []
+        f100_min = []
+        f100_mean = []
+    
+        f1000 = []
+        f1000_max = []
+        f1000_min = []
+        f1000_mean = []
     
         erc = []
-        erc_mean = []
-        erc_min = []
         erc_max = []
+        erc_min = []
+        erc_mean = []
+    
+        bi = []
+        bi_max = []
+        bi_min = []
+        bi_mean = []
+    
+        sc = []
+        sc_max = []
+        sc_min = []
+        sc_mean = []
+    
+        d = pd.read_csv(f"{paths[p]}/{files[0]}")
+        dates.append(d['dates'])
         
         for i in range(0, len(files)):
             try:
                 df = pd.read_csv(f"{paths[p]}/{files[i]}")
-                df = df[df['observationTime'].between(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))]
-                dfm_100.append(df['hundredHR_TL_FuelMoisture'])
-                dates.append(df['observationTime'])
-                dfm_1000.append(df['thousandHR_TL_FuelMoisture'])
-                erc.append(df['energyReleaseComponent'])
-                
+                f100.append(df['f100'])
+                f1000.append(df['f1000'])
+                erc.append(df['erc'])
+                bi.append(df['bi'])
+                sc.append(df['sc'])
             except Exception as e:
                 pass
-    
+                         
+            
         try:
             df_dates = pd.DataFrame(dates)
+            df_dates = df_dates.transpose()
         except Exception as e:
-            pass
+            pass    
     
         try:
-            df_100 = pd.DataFrame(dfm_100)
+            df_100 = pd.DataFrame(f100)
             df_100 = df_100.transpose()
             for i in range(0, len(df_100)):
-                mean = np.nanmean(df_100.iloc[i])
-                dfm_100hr_mean.append(mean)
-        except Exception as e:
-            pass
-    
-        try:
-            for i in range(0, len(df_100)):
-                minimum = np.nanmin(df_100.iloc[i])
-                dfm_100hr_min.append(minimum)
-        except Exception as e:
-            pass        
-    
-        try:
-            for i in range(0, len(df_100)):
-                maximum = np.nanmax(df_100.iloc[i])
-                dfm_100hr_max.append(maximum)
+                mean_100 = df_100.iloc[i].mean()
+                maxima_100 = df_100.iloc[i].max()
+                minima_100 = df_100.iloc[i].min()
+                f100_mean.append(mean_100)
+                f100_max.append(maxima_100)
+                f100_min.append(minima_100)
         except Exception as e:
             pass    
     
         try:
-            df_1000 = pd.DataFrame(dfm_1000)
+            df_1000 = pd.DataFrame(f1000)
             df_1000 = df_1000.transpose()
             for i in range(0, len(df_1000)):
-                mean = np.nanmean(df_1000.iloc[i])
-                dfm_1000hr_mean.append(mean)
+                mean_1000 = df_1000.iloc[i].mean()
+                maxima_1000 = df_1000.iloc[i].max()
+                minima_1000 = df_1000.iloc[i].min()
+                f1000_mean.append(mean_1000)
+                f1000_max.append(maxima_1000)
+                f1000_min.append(minima_1000)
         except Exception as e:
-            pass
-    
-        try:
-            for i in range(0, len(df_1000)):
-                minimum = np.nanmin(df_1000.iloc[i])
-                dfm_1000hr_min.append(minimum)
-        except Exception as e:
-            pass        
-    
-        try:
-            for i in range(0, len(df_1000)):
-                maximum = np.nanmax(df_1000.iloc[i])
-                dfm_1000hr_max.append(maximum)
-        except Exception as e:
-            pass    
+            pass  
     
         try:
             df_erc = pd.DataFrame(erc)
             df_erc = df_erc.transpose()
             for i in range(0, len(df_erc)):
-                mean = np.nanmean(df_erc.iloc[i])
-                erc_mean.append(mean)
+                mean_erc = df_erc.iloc[i].mean()
+                maxima_erc = df_erc.iloc[i].max()
+                minima_erc = df_erc.iloc[i].min()
+                erc_mean.append(mean_erc)
+                erc_max.append(maxima_erc)
+                erc_min.append(minima_erc)
         except Exception as e:
-            pass
+            pass  
     
         try:
-            for i in range(0, len(df_erc)):
-                minimum = np.nanmin(df_erc.iloc[i])
-                erc_min.append(minimum)
+            df_bi = pd.DataFrame(bi)
+            df_bi = df_bi.transpose()
+            for i in range(0, len(df_bi)):
+                mean_bi = df_bi.iloc[i].mean()
+                maxima_bi = df_bi.iloc[i].max()
+                minima_bi = df_bi.iloc[i].min()
+                bi_mean.append(mean_bi)
+                bi_max.append(maxima_bi)
+                bi_min.append(minima_bi)
         except Exception as e:
-            pass        
+            pass  
     
         try:
-            for i in range(0, len(df_erc)):
-                maximum = np.nanmax(df_erc.iloc[i])
-                erc_max.append(maximum)
+            df_sc = pd.DataFrame(sc)
+            df_sc = df_sc.transpose()
+            for i in range(0, len(df_sc)):
+                mean_sc = df_sc.iloc[i].mean()
+                maxima_sc = df_sc.iloc[i].max()
+                minima_sc = df_sc.iloc[i].min()
+                sc_mean.append(mean_sc)
+                sc_max.append(maxima_sc)
+                sc_min.append(minima_sc)
         except Exception as e:
-            pass    
+            pass  
     
         main = pd.DataFrame()
         
-        main['date'] = df_dates.iloc[0]
+        main['dates'] = df_dates
+        main['dates'] = pd.to_datetime(main['dates'])
+        main['julian_date'] = main['dates'].dt.dayofyear
         
-        main['100hr_DFM_mean'] = dfm_100hr_mean
-        main['100hr_DFM_min'] = dfm_100hr_min
-        main['100hr_DFM_max'] = dfm_100hr_max
-    
-        main['1000hr_DFM_mean'] = dfm_1000hr_mean
-        main['1000hr_DFM_min'] = dfm_1000hr_min
-        main['1000hr_DFM_max'] = dfm_1000hr_max
-    
-        main['ERC_mean'] = erc_mean
-        main['ERC_min'] = erc_min
-        main['ERC_max'] = erc_max
+        main['f100_mean'] = f100_mean
+        main['f100_max'] = f100_max
+        main['f100_min'] = f100_min
+        
+        main['f1000_mean'] = f1000_mean
+        main['f1000_max'] = f1000_max
+        main['f1000_min'] = f1000_min
+        
+        main['erc_mean'] = erc_mean
+        main['erc_max'] = erc_max
+        main['erc_min'] = erc_min
+        
+        main['bi_mean'] = bi_mean
+        main['bi_max'] = bi_max
+        main['bi_min'] = bi_min
+        
+        main['sc_mean'] = sc_mean
+        main['sc_max'] = sc_max
+        main['sc_min'] = sc_min
     
         if os.path.exists(f"FEMS Data/{gacc_region}/PSA Data"):
             pass
@@ -425,25 +628,113 @@ def sort_data_by_zone(gacc_region):
         os.replace(f"{fname}", f"FEMS Data/{gacc_region}/PSA Data/{fname}")
         psa = psa + 1
 
+def get_psa_climatology(gacc_region):
+    
+    num_psas = get_number_of_psas_by_gacc(gacc_region)
+    
+    gacc_region = gacc_region.upper()
+    
+    for psa in range(1, num_psas):
+        paths = []
+        for folder in os.listdir(f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}"):
+            path = f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/{folder}"
+            paths.append(path)
+    
+        for p in range(0, len(paths)):
+            files = []
+            
+            if os.path.exists(f"{paths[p]}/.ipynb_checkpoints"):
+                shutil.rmtree(f"{paths[p]}/.ipynb_checkpoints")
+            else:
+                pass
+                
+            for file in os.listdir(paths[p]):
+                files.append(file)
+    
+                f100 = []
+                f1000 = []
+                erc = []
+                bi = []
+                sc = []
+    
+                for i in range(0, len(files)):
+                    try:
+                        df = pd.read_csv(f"{paths[p]}/{files[i]}")
+                        f100.append(df['hundredHR_TL_FuelMoisture'])
+                        f1000.append(df['thousandHR_TL_FuelMoisture'])
+                        erc.append(df['energyReleaseComponent'])
+                        bi.append(df['burningIndex'])
+                        sc.append(df['spreadComponent'])
+                    except Exception as e:
+                        pass
+    
+                f100_vals = pd.DataFrame()
+                for i in range(0, len(f100)):
+                    f100_vals[f'col{i}'] = f100[i]
+    
+                f1000_vals = pd.DataFrame()
+                for i in range(0, len(f1000)):
+                    f1000_vals[f'col{i}'] = f1000[i]
+    
+                erc_vals = pd.DataFrame()
+                for i in range(0, len(erc)):
+                    erc_vals[f'col{i}'] = erc[i]
+    
+                bi_vals = pd.DataFrame()
+                for i in range(0, len(bi)):
+                    bi_vals[f'col{i}'] = bi[i]    
+    
+                sc_vals = pd.DataFrame()
+                for i in range(0, len(sc)):
+                    sc_vals[f'col{i}'] = sc[i]    
 
+                f100_vals['min'] = f100_vals.min(axis=1, numeric_only=True, skipna=True)
+                f100_vals['avg'] = f100_vals.mean(axis=1, numeric_only=True, skipna=True)
+                
+                f1000_vals['min'] = f1000_vals.min(axis=1, numeric_only=True, skipna=True)
+                f1000_vals['avg'] = f1000_vals.mean(axis=1, numeric_only=True, skipna=True)
+    
+                erc_vals['max'] = erc_vals.max(axis=1, numeric_only=True, skipna=True)
+                erc_vals['avg'] = erc_vals.mean(axis=1, numeric_only=True, skipna=True)
+    
+                bi_vals['max'] = bi_vals.max(axis=1, numeric_only=True, skipna=True)
+                bi_vals['avg'] = bi_vals.mean(axis=1, numeric_only=True, skipna=True)
+    
+                sc_vals['max'] = sc_vals.max(axis=1, numeric_only=True, skipna=True)
+                sc_vals['avg'] = sc_vals.mean(axis=1, numeric_only=True, skipna=True)
+    
+            main = pd.DataFrame()
+    
+            main['f100_min'] = f100_vals['min']
+            main['f100_avg'] = f100_vals['avg']
+            main['f1000_min'] = f1000_vals['min']
+            main['f1000_avg'] = f1000_vals['avg']
+            main['erc_max'] = erc_vals['max']
+            main['erc_avg'] = erc_vals['avg']
+            main['bi_max'] = bi_vals['max']
+            main['bi_avg'] = bi_vals['avg']
+            main['sc_max'] = sc_vals['max']
+            main['sc_avg'] = sc_vals['avg']
+            jdate = np.arange(1, 367, 1)
+            main['julian_date'] = jdate
 
+            if p == 0:
+                folder_name = 'AVG'
+            if p == 1:
+                folder_name = 'MAX'
+            if p == 2:
+                folder_name = 'MIN'
+    
+            if os.path.exists(f"FEMS Data/{gacc_region}/PSA Climo"):
+                pass
+            else:
+                os.mkdir(f"FEMS Data/{gacc_region}/PSA Climo")
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            if os.path.exists(f"FEMS Data/{gacc_region}/PSA Climo/{folder_name}"):
+                pass
+            else:
+                os.mkdir(f"FEMS Data/{gacc_region}/PSA Climo/{folder_name}")
+            
+            fname = f"zone_{psa}.csv"
+            main.to_csv(fname, index=False)
+            os.replace(f"{fname}", f"FEMS Data/{gacc_region}/PSA Climo/{folder_name}/{fname}")
