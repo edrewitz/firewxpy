@@ -141,9 +141,18 @@ def get_stats(gacc_region):
         os.mkdir(f"FEMS Data/Station Climo/{gacc_region}")
     
     psa = 1
-    for folder in os.listdir(f"FEMS Data/Stations/{gacc_region}"):
-        path = f"FEMS Data/Stations/{gacc_region}/{folder}"
+
+    if gacc_region == 'OSCC':
+        folder_abbrev = f"SC"
+    
+    a = 1
+    for i in range(0, len(os.listdir(f"FEMS Data/Stations/{gacc_region}"))):
+        if a < 10:
+            path = f"FEMS Data/Stations/{gacc_region}/{folder_abbrev}0{a}"
+        else:
+            path = f"FEMS Data/Stations/{gacc_region}/{folder_abbrev}{a}"
         paths.append(path) 
+        a = a + 1
     
         if os.path.exists(f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}"):
             pass
@@ -216,9 +225,17 @@ def get_psa_percentiles(gacc_region):
     paths = []
         
     
-    for folder in os.listdir(f"FEMS Data/Stations/{gacc_region}"):
-        path = f"FEMS Data/Stations/{gacc_region}/{folder}"
-        paths.append(path)
+    if gacc_region == 'OSCC':
+        folder_abbrev = f"SC"
+    
+    a = 1
+    for i in range(0, len(os.listdir(f"FEMS Data/Stations/{gacc_region}"))):
+        if a < 10:
+            path = f"FEMS Data/Stations/{gacc_region}/{folder_abbrev}0{a}"
+        else:
+            path = f"FEMS Data/Stations/{gacc_region}/{folder_abbrev}{a}"
+        paths.append(path) 
+        a = a + 1
     
     dfm_100_p_3 = []
     dfm_100_p_10 = []
@@ -235,6 +252,24 @@ def get_psa_percentiles(gacc_region):
     erc_p_90 = []
     erc_p_97 = []
     erc_p_99 = []
+
+    bi_p_60 = []
+    bi_p_80 = []
+    bi_p_90 = []
+    bi_p_97 = []
+    bi_p_99 = []
+
+    sc_p_60 = []
+    sc_p_80 = []
+    sc_p_90 = []
+    sc_p_97 = []
+    sc_p_99 = []
+
+    ic_p_60 = []
+    ic_p_80 = []
+    ic_p_90 = []
+    ic_p_97 = []
+    ic_p_99 = []
     
     psas = []
     psa = 0
@@ -258,6 +293,24 @@ def get_psa_percentiles(gacc_region):
         percent_90_erc = []
         percent_97_erc = []
         percent_99_erc = []
+
+        percent_60_bi = []
+        percent_80_bi = []
+        percent_90_bi = []
+        percent_97_bi = []
+        percent_99_bi = []
+
+        percent_60_sc = []
+        percent_80_sc = []
+        percent_90_sc = []
+        percent_97_sc = []
+        percent_99_sc = []
+
+        percent_60_ic = []
+        percent_80_ic = []
+        percent_90_ic = []
+        percent_97_ic = []
+        percent_99_ic = []
     
         for i in range(0, len(files)):
             try:
@@ -292,6 +345,39 @@ def get_psa_percentiles(gacc_region):
                 percent_97_erc.append(p97_erc)
                 p99_erc = np.percentile(df['energyReleaseComponent'], 99)
                 percent_99_erc.append(p99_erc)
+
+                p60_bi = np.percentile(df['burningIndex'], 60)
+                percent_60_bi.append(p60_bi)
+                p80_bi = np.percentile(df['burningIndex'], 80)
+                percent_80_bi.append(p80_bi)
+                p90_bi = np.percentile(df['burningIndex'], 90)
+                percent_90_bi.append(p90_bi)
+                p97_bi = np.percentile(df['burningIndex'], 97)
+                percent_97_bi.append(p97_bi)
+                p99_bi = np.percentile(df['burningIndex'], 99)
+                percent_99_bi.append(p99_bi)
+
+                p60_sc = np.percentile(df['spreadComponent'], 60)
+                percent_60_sc.append(p60_sc)
+                p80_sc = np.percentile(df['spreadComponent'], 80)
+                percent_80_sc.append(p80_sc)
+                p90_sc = np.percentile(df['spreadComponent'], 90)
+                percent_90_sc.append(p90_sc)
+                p97_sc = np.percentile(df['spreadComponent'], 97)
+                percent_97_sc.append(p97_sc)
+                p99_sc = np.percentile(df['spreadComponent'], 99)
+                percent_99_sc.append(p99_sc)
+
+                p60_ic = np.percentile(df['ignitionComponent'], 60)
+                percent_60_ic.append(p60_ic)
+                p80_ic = np.percentile(df['ignitionComponent'], 80)
+                percent_80_ic.append(p80_ic)
+                p90_ic = np.percentile(df['ignitionComponent'], 90)
+                percent_90_ic.append(p90_ic)
+                p97_ic = np.percentile(df['ignitionComponent'], 97)
+                percent_97_ic.append(p97_ic)
+                p99_ic = np.percentile(df['ignitionComponent'], 99)
+                percent_99_ic.append(p99_ic)
                 
             except Exception as e:
                 pass
@@ -299,44 +385,89 @@ def get_psa_percentiles(gacc_region):
     
             
         try:
-            mean_3_100 = np.nanmean(percent_3_100hr)
+            mean_3_100 = np.nanmin(percent_3_100hr)
             dfm_100_p_3.append(mean_3_100)
         
-            mean_10_100 = np.nanmean(percent_10_100hr)
+            mean_10_100 = np.nanmin(percent_10_100hr)
             dfm_100_p_10.append(mean_10_100)
     
-            mean_20_100 = np.nanmean(percent_20_100hr)
+            mean_20_100 = np.nanmin(percent_20_100hr)
             dfm_100_p_20.append(mean_20_100)
     
-            mean_40_100 = np.nanmean(percent_40_100hr)
+            mean_40_100 = np.nanmin(percent_40_100hr)
             dfm_100_p_40.append(mean_40_100)
     
-            mean_3_1000 = np.nanmean(percent_3_1000hr)
+            mean_3_1000 = np.nanmin(percent_3_1000hr)
             dfm_1000_p_3.append(mean_3_1000)
         
-            mean_10_1000 = np.nanmean(percent_10_1000hr)
+            mean_10_1000 = np.nanmin(percent_10_1000hr)
             dfm_1000_p_10.append(mean_10_1000)
     
-            mean_20_1000 = np.nanmean(percent_20_1000hr)
+            mean_20_1000 = np.nanmin(percent_20_1000hr)
             dfm_1000_p_20.append(mean_20_1000)
     
-            mean_40_1000 = np.nanmean(percent_40_1000hr)
+            mean_40_1000 = np.nanmin(percent_40_1000hr)
             dfm_1000_p_40.append(mean_40_1000)
     
-            mean_60_erc = np.nanmean(percent_60_erc)
+            mean_60_erc = np.nanmax(percent_60_erc)
             erc_p_60.append(mean_60_erc)
     
-            mean_80_erc = np.nanmean(percent_80_erc)
+            mean_80_erc = np.nanmax(percent_80_erc)
             erc_p_80.append(mean_80_erc)
     
-            mean_90_erc = np.nanmean(percent_90_erc)
+            mean_90_erc = np.nanmax(percent_90_erc)
             erc_p_90.append(mean_90_erc)
     
-            mean_97_erc = np.nanmean(percent_97_erc)
+            mean_97_erc = np.nanmax(percent_97_erc)
             erc_p_97.append(mean_97_erc)
     
-            mean_99_erc = np.nanmean(percent_99_erc)
+            mean_99_erc = np.nanmax(percent_99_erc)
             erc_p_99.append(mean_99_erc)
+
+            mean_60_bi = np.nanmax(percent_60_bi)
+            bi_p_60.append(mean_60_bi)
+    
+            mean_80_bi = np.nanmax(percent_80_bi)
+            bi_p_80.append(mean_80_bi)
+    
+            mean_90_bi = np.nanmax(percent_90_bi)
+            bi_p_90.append(mean_90_bi)
+    
+            mean_97_bi = np.nanmax(percent_97_bi)
+            bi_p_97.append(mean_97_bi)
+    
+            mean_99_bi = np.nanmax(percent_99_bi)
+            bi_p_99.append(mean_99_bi)
+
+            mean_60_sc = np.nanmax(percent_60_sc)
+            sc_p_60.append(mean_60_sc)
+    
+            mean_80_sc = np.nanmax(percent_80_sc)
+            sc_p_80.append(mean_80_sc)
+    
+            mean_90_sc = np.nanmax(percent_90_sc)
+            sc_p_90.append(mean_90_sc)
+    
+            mean_97_sc = np.nanmax(percent_97_sc)
+            sc_p_97.append(mean_97_sc)
+    
+            mean_99_sc = np.nanmax(percent_99_sc)
+            sc_p_99.append(mean_99_sc)
+
+            mean_60_ic = np.nanmax(percent_60_ic)
+            ic_p_60.append(mean_60_ic)
+    
+            mean_80_ic = np.nanmax(percent_80_ic)
+            ic_p_80.append(mean_80_ic)
+    
+            mean_90_ic = np.nanmax(percent_90_ic)
+            ic_p_90.append(mean_90_ic)
+    
+            mean_97_ic = np.nanmax(percent_97_ic)
+            ic_p_97.append(mean_97_ic)
+    
+            mean_99_ic = np.nanmax(percent_99_ic)
+            ic_p_99.append(mean_99_ic)
         
             psa = psa + 1
             psas.append(psa)
@@ -362,6 +493,24 @@ def get_psa_percentiles(gacc_region):
     main['ERC_90th_percentile'] = erc_p_90
     main['ERC_97th_percentile'] = erc_p_97
     main['ERC_99th_percentile'] = erc_p_99
+
+    main['BI_60th_percentile'] = bi_p_60
+    main['BI_80th_percentile'] = bi_p_80
+    main['BI_90th_percentile'] = bi_p_90
+    main['BI_97th_percentile'] = bi_p_97
+    main['BI_99th_percentile'] = bi_p_99
+
+    main['SC_60th_percentile'] = sc_p_60
+    main['SC_80th_percentile'] = sc_p_80
+    main['SC_90th_percentile'] = sc_p_90
+    main['SC_97th_percentile'] = sc_p_97
+    main['SC_99th_percentile'] = sc_p_99
+
+    main['IC_60th_percentile'] = ic_p_60
+    main['IC_80th_percentile'] = ic_p_80
+    main['IC_90th_percentile'] = ic_p_90
+    main['IC_97th_percentile'] = ic_p_97
+    main['IC_99th_percentile'] = ic_p_99
 
     if os.path.exists(f"FEMS Data/{gacc_region}"):
         pass
@@ -390,9 +539,18 @@ def station_stats(gacc_region):
     end_date = datetime(now.year, now.month, now.day)
     
     paths = []
-    for folder in os.listdir(f"FEMS Data/Stations/{gacc_region}"):
-        path = f"FEMS Data/Stations/{gacc_region}/{folder}"
-        paths.append(path)
+    
+    if gacc_region == 'OSCC':
+        folder_abbrev = f"SC"
+    
+    a = 1
+    for i in range(0, len(os.listdir(f"FEMS Data/Stations/{gacc_region}"))):
+        if a < 10:
+            path = f"FEMS Data/Stations/{gacc_region}/{folder_abbrev}0{a}"
+        else:
+            path = f"FEMS Data/Stations/{gacc_region}/{folder_abbrev}{a}"
+        paths.append(path) 
+        a = a + 1
     
     psa = 1
     
@@ -440,6 +598,7 @@ def station_stats(gacc_region):
             erc = data['energyReleaseComponent'].max()
             bi = data['burningIndex'].max()
             sc = data['spreadComponent'].max()
+            ic = data['ignitionComponent'].max()
     
             if len(f100) == days and len(f1000) == days and len(erc) == days and len(bi) == days and len(sc) == days:
                 main = pd.DataFrame()
@@ -448,6 +607,7 @@ def station_stats(gacc_region):
                 main['erc'] = erc.values
                 main['bi'] = bi.values
                 main['sc'] = sc.values
+                main['ic'] = ic.values
                 main['dates'] = dates
         
                 fname = f"{files[i]}"
@@ -461,12 +621,13 @@ def station_stats(gacc_region):
 def sort_data_by_psa(gacc_region):
 
     gacc_region = gacc_region.upper()
-    
+    path_to_sort = f"FEMS Data/Station Stats/{gacc_region}"  
     paths = []
-    for folder in os.listdir(f"FEMS Data/Station Stats/{gacc_region}"):
-        path = f"FEMS Data/Station Stats/{gacc_region}/{folder}"
+    j = 1
+    for i in range(0, len(os.listdir(f"FEMS Data/Station Stats/{gacc_region}"))):
+        path = f"FEMS Data/Station Stats/{gacc_region}/PSA {j}"
         paths.append(path)
-    
+        j = j + 1
     psa = 1
     for p in range(0, len(paths)):
         files = []
@@ -505,6 +666,11 @@ def sort_data_by_psa(gacc_region):
         sc_max = []
         sc_min = []
         sc_mean = []
+
+        ic = []
+        ic_max = []
+        ic_min = []
+        ic_mean = []
     
         d = pd.read_csv(f"{paths[p]}/{files[0]}")
         dates.append(d['dates'])
@@ -517,6 +683,7 @@ def sort_data_by_psa(gacc_region):
                 erc.append(df['erc'])
                 bi.append(df['bi'])
                 sc.append(df['sc'])
+                ic.append(df['ic'])
             except Exception as e:
                 pass
                          
@@ -591,6 +758,19 @@ def sort_data_by_psa(gacc_region):
                 sc_min.append(minima_sc)
         except Exception as e:
             pass  
+
+        try:
+            df_ic = pd.DataFrame(ic)
+            df_ic = df_ic.transpose()
+            for i in range(0, len(df_ic)):
+                mean_ic = df_ic.iloc[i].mean()
+                maxima_ic = df_ic.iloc[i].max()
+                minima_ic = df_ic.iloc[i].min()
+                ic_mean.append(mean_ic)
+                ic_max.append(maxima_ic)
+                ic_min.append(minima_ic)
+        except Exception as e:
+            pass  
     
         main = pd.DataFrame()
         
@@ -617,6 +797,10 @@ def sort_data_by_psa(gacc_region):
         main['sc_mean'] = sc_mean
         main['sc_max'] = sc_max
         main['sc_min'] = sc_min
+
+        main['ic_mean'] = ic_mean
+        main['ic_max'] = ic_max
+        main['ic_min'] = ic_min
     
         if os.path.exists(f"FEMS Data/{gacc_region}/PSA Data"):
             pass
@@ -636,8 +820,13 @@ def get_psa_climatology(gacc_region):
     
     for psa in range(1, num_psas):
         paths = []
-        for folder in os.listdir(f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}"):
-            path = f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/{folder}"
+        for i in range(0, len(os.listdir(f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}"))):
+            if i == 0:
+                path = f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/AVG"
+            if i == 1:
+                path = f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/MAX"
+            if i == 2:
+                path = f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/MIN"
             paths.append(path)
     
         for p in range(0, len(paths)):
@@ -656,6 +845,7 @@ def get_psa_climatology(gacc_region):
                 erc = []
                 bi = []
                 sc = []
+                ic = []
     
                 for i in range(0, len(files)):
                     try:
@@ -665,6 +855,7 @@ def get_psa_climatology(gacc_region):
                         erc.append(df['energyReleaseComponent'])
                         bi.append(df['burningIndex'])
                         sc.append(df['spreadComponent'])
+                        ic.append(df['ignitionComponent'])
                     except Exception as e:
                         pass
     
@@ -688,6 +879,10 @@ def get_psa_climatology(gacc_region):
                 for i in range(0, len(sc)):
                     sc_vals[f'col{i}'] = sc[i]    
 
+                ic_vals = pd.DataFrame()
+                for i in range(0, len(ic)):
+                    ic_vals[f'col{i}'] = ic[i]   
+
                 f100_vals['min'] = f100_vals.min(axis=1, numeric_only=True, skipna=True)
                 f100_vals['avg'] = f100_vals.mean(axis=1, numeric_only=True, skipna=True)
                 
@@ -702,6 +897,9 @@ def get_psa_climatology(gacc_region):
     
                 sc_vals['max'] = sc_vals.max(axis=1, numeric_only=True, skipna=True)
                 sc_vals['avg'] = sc_vals.mean(axis=1, numeric_only=True, skipna=True)
+
+                ic_vals['max'] = ic_vals.max(axis=1, numeric_only=True, skipna=True)
+                ic_vals['avg'] = ic_vals.mean(axis=1, numeric_only=True, skipna=True)
     
             main = pd.DataFrame()
     
@@ -715,6 +913,8 @@ def get_psa_climatology(gacc_region):
             main['bi_avg'] = bi_vals['avg']
             main['sc_max'] = sc_vals['max']
             main['sc_avg'] = sc_vals['avg']
+            main['ic_max'] = ic_vals['max']
+            main['ic_avg'] = ic_vals['avg']
             jdate = np.arange(1, 367, 1)
             main['julian_date'] = jdate
 
