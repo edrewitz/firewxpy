@@ -24,7 +24,7 @@ def get_number_of_psas_by_gacc(gacc_region):
     if gacc_region == 'OSCC':
         psas = 17
     if gacc_region == 'ONCC':
-        psas = 9
+        psas = 10
     if gacc_region == 'AICC':
         psas = 19
     if gacc_region == 'NWCC':
@@ -96,11 +96,17 @@ def get_raws_sig_info():
         urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/OSCC_StationList.csv", f"OSCC_StationList.csv")
         os.replace(f"OSCC_StationList.csv", f"RAWS SIGs/OSCC/OSCC_StationList.csv")
 
-    if os.path.exists(f"RAWS SIGs/OSCC/OSCC_PSA_Percentiles.csv"):
+    if os.path.exists(f"RAWS SIGs/ONCC/ONCC_StationList.csv"):
         pass
     else:
-        urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/OSCC_PSA_Percentiles.csv", f"OSCC_PSA_Percentiles.csv")
-        os.replace(f"OSCC_PSA_Percentiles.csv", f"RAWS SIGs/OSCC/OSCC_PSA_Percentiles.csv")
+        urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/ONCC_StationList.csv", f"ONCC_StationList.csv")
+        os.replace(f"ONCC_StationList.csv", f"RAWS SIGs/ONCC/OSCC_StationList.csv")
+
+    #if os.path.exists(f"RAWS SIGs/OSCC/OSCC_PSA_Percentiles.csv"):
+     #   pass
+    #else:
+     #   urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/OSCC_PSA_Percentiles.csv", f"OSCC_PSA_Percentiles.csv")
+      #  os.replace(f"OSCC_PSA_Percentiles.csv", f"RAWS SIGs/OSCC/OSCC_PSA_Percentiles.csv")
 
 check_folders()
 get_raws_sig_info()
@@ -144,6 +150,9 @@ def get_stats(gacc_region):
 
     if gacc_region == 'OSCC':
         folder_abbrev = f"SC"
+
+    if gacc_region == 'ONCC':
+        folder_abbrev = f"NC"
     
     a = 1
     for i in range(0, len(os.listdir(f"FEMS Data/Stations/{gacc_region}"))):
@@ -227,6 +236,9 @@ def get_psa_percentiles(gacc_region):
     
     if gacc_region == 'OSCC':
         folder_abbrev = f"SC"
+
+    if gacc_region == 'ONCC':
+        folder_abbrev = f"NC"
     
     a = 1
     for i in range(0, len(os.listdir(f"FEMS Data/Stations/{gacc_region}"))):
@@ -542,6 +554,9 @@ def station_stats(gacc_region):
     
     if gacc_region == 'OSCC':
         folder_abbrev = f"SC"
+
+    if gacc_region == 'ONCC':
+        folder_abbrev = f"NC"
     
     a = 1
     for i in range(0, len(os.listdir(f"FEMS Data/Stations/{gacc_region}"))):
