@@ -5,6 +5,7 @@ import matplotlib.dates as md
 import os
 import pandas as pd
 import shutil
+import numpy as np
 
 from data_access import FEMS
 from raws_sigs import get_psa_percentiles, station_stats, sort_data_by_psa, get_stats, get_psa_climatology
@@ -84,11 +85,28 @@ def create_psa_100hr_fuels_charts(gacc_region, number_of_years_for_averages=15, 
     psa = 1
     for i in range(0, len(files)):
 
-        fname = f"PSA {psa}.png"
+        if gacc_region == 'ONCC':
+            if i == 2:
+                fname = f"PSA 3A.png"
+                psaID = "3A"
+            if i == 3:
+                fname = f"PSA 3B.png"
+                psaID = "3B"
+            else:
+                if i < 2:
+                    psaID = psa
+                    fname = f"PSA {psaID}.png"
+                if i > 3:
+                    psaID = psa - 1
+                    fname = f"PSA {psaID}.png"
+            
+        else:
+            fname = f"PSA {psa}.png"
+            psaID = psa
 
-        df_data = pd.read_csv(f"{data_dir}/{files[i]}") 
-        df_climo_avg = pd.read_csv(f"{climo_avg_dir}/{files[i]}") 
-        df_climo_min = pd.read_csv(f"{climo_min_dir}/{files[i]}") 
+        df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
+        df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
+        df_climo_min = pd.read_csv(f"{climo_min_dir}/zone_{psa}.csv") 
 
         dates = pd.to_datetime(df_data['dates'])
 
@@ -97,10 +115,10 @@ def create_psa_100hr_fuels_charts(gacc_region, number_of_years_for_averages=15, 
         ax = fig.add_subplot(1, 1, 1)
 
         ax.xaxis.set_major_formatter(md.DateFormatter('%m-%d'))
-        plt.title(f"{gacc_region} 100-HR Dead Fuel Moisture: PSA {psa}", fontsize=12, fontweight='bold', loc='left')
+        plt.title(f"{gacc_region} 100-HR Dead Fuel Moisture: PSA {psaID}", fontsize=12, fontweight='bold', loc='left')
         plt.title(f"Period Of Record: {start_year} - {utc_time.year}", fontsize=10, fontweight='bold', loc='right')
         ax.text(0.01, -0.05, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: USDA/FEMS", transform=ax.transAxes, fontsize=8, fontweight='bold', bbox=props)
-        ax.text(0.405, 0.98, f"Valid Date: {dates.iloc[-2].strftime("%m/%d/%Y")}", transform=ax.transAxes, fontsize=8, color='white', fontweight='bold', bbox=date_box)
+        ax.text(0.405, 0.98, f"Valid Date: {dates.iloc[-1].strftime("%m/%d/%Y")}", transform=ax.transAxes, fontsize=8, color='white', fontweight='bold', bbox=date_box)
 
         if leap == True:
             jmax = 366
@@ -110,10 +128,10 @@ def create_psa_100hr_fuels_charts(gacc_region, number_of_years_for_averages=15, 
         ax.set_xlim(0, jmax)
         ax.set_ylim(0, 30)
         
-        ax.hlines(percentiles['100hr_DFM_3_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', alpha=0.5, zorder=2, label=f"3rd PERCENTILE")
-        ax.hlines(percentiles['100hr_DFM_10_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='--', alpha=0.5, zorder=2, label=f"10th PERCENTILE")
-        ax.hlines(percentiles['100hr_DFM_20_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-.', alpha=0.5, zorder=2, label=f"20th PERCENTILE")
-        ax.hlines(percentiles['100hr_DFM_40_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle=':', alpha=0.5, zorder=2, label=f"40th PERCENTILE")
+        ax.hlines(percentiles['100hr_DFM_3_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', alpha=0.5, zorder=2, label=f"3RD PERCENTILE")
+        ax.hlines(percentiles['100hr_DFM_10_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='--', alpha=0.5, zorder=2, label=f"10TH PERCENTILE")
+        ax.hlines(percentiles['100hr_DFM_20_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-.', alpha=0.5, zorder=2, label=f"20TH PERCENTILE")
+        ax.hlines(percentiles['100hr_DFM_40_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle=':', alpha=0.5, zorder=2, label=f"40TH PERCENTILE")
 
         ax.axhspan(0, percentiles['100hr_DFM_3_percentile'].iloc[i], color='saddlebrown', alpha=0.2, label=f"0TH-3RD PERCENTILE")
         ax.axhspan(percentiles['100hr_DFM_3_percentile'].iloc[i], percentiles['100hr_DFM_10_percentile'].iloc[i], color='peru', alpha=0.2, label=f"3RD-10TH PERCENTILE")
@@ -195,9 +213,9 @@ def create_psa_1000hr_fuels_charts(gacc_region, number_of_years_for_averages=15,
 
         fname = f"PSA {psa}.png"
 
-        df_data = pd.read_csv(f"{data_dir}/{files[i]}") 
-        df_climo_avg = pd.read_csv(f"{climo_avg_dir}/{files[i]}") 
-        df_climo_min = pd.read_csv(f"{climo_min_dir}/{files[i]}") 
+        df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
+        df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
+        df_climo_min = pd.read_csv(f"{climo_min_dir}/zone_{psa}.csv") 
 
         dates = pd.to_datetime(df_data['dates'])
 
@@ -209,7 +227,7 @@ def create_psa_1000hr_fuels_charts(gacc_region, number_of_years_for_averages=15,
         plt.title(f"{gacc_region} 1000-HR Dead Fuel Moisture: PSA {psa}", fontsize=12, fontweight='bold', loc='left')
         plt.title(f"Period Of Record: {start_year} - {utc_time.year}", fontsize=10, fontweight='bold', loc='right')
         ax.text(0.01, -0.05, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: USDA/FEMS", transform=ax.transAxes, fontsize=8, fontweight='bold', bbox=props)
-        ax.text(0.405, 0.98, f"Valid Date: {dates.iloc[-2].strftime("%m/%d/%Y")}", transform=ax.transAxes, fontsize=8, color='white', fontweight='bold', bbox=date_box)
+        ax.text(0.405, 0.98, f"Valid Date: {dates.iloc[-1].strftime("%m/%d/%Y")}", transform=ax.transAxes, fontsize=8, color='white', fontweight='bold', bbox=date_box)
 
         if leap == True:
             jmax = 366
@@ -219,10 +237,10 @@ def create_psa_1000hr_fuels_charts(gacc_region, number_of_years_for_averages=15,
         ax.set_xlim(0, jmax)
         ax.set_ylim(0, 30)
         
-        ax.hlines(percentiles['1000hr_DFM_3_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', alpha=0.5, zorder=2, label=f"3rd PERCENTILE")
-        ax.hlines(percentiles['1000hr_DFM_10_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='--', alpha=0.5, zorder=2, label=f"10th PERCENTILE")
-        ax.hlines(percentiles['1000hr_DFM_20_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-.', alpha=0.5, zorder=2, label=f"20th PERCENTILE")
-        ax.hlines(percentiles['1000hr_DFM_40_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle=':', alpha=0.5, zorder=2, label=f"40th PERCENTILE")
+        ax.hlines(percentiles['1000hr_DFM_3_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', alpha=0.5, zorder=2, label=f"3RD PERCENTILE")
+        ax.hlines(percentiles['1000hr_DFM_10_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='--', alpha=0.5, zorder=2, label=f"10TH PERCENTILE")
+        ax.hlines(percentiles['1000hr_DFM_20_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-.', alpha=0.5, zorder=2, label=f"20TH PERCENTILE")
+        ax.hlines(percentiles['1000hr_DFM_40_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle=':', alpha=0.5, zorder=2, label=f"40TH PERCENTILE")
 
         ax.axhspan(0, percentiles['1000hr_DFM_3_percentile'].iloc[i], color='saddlebrown', alpha=0.2, label=f"0TH-3RD PERCENTILE")
         ax.axhspan(percentiles['1000hr_DFM_3_percentile'].iloc[i], percentiles['1000hr_DFM_10_percentile'].iloc[i], color='peru', alpha=0.2, label=f"3RD-10TH PERCENTILE")
@@ -240,3 +258,452 @@ def create_psa_1000hr_fuels_charts(gacc_region, number_of_years_for_averages=15,
         psa = psa + 1
 
     print(f"1000-HR Fuels Charts Saved To {path_print}")
+
+
+def create_psa_erc_fuels_charts(gacc_region, number_of_years_for_averages=15, fuel_model='Y', start_date=None, data=False):
+    
+    gacc_region = gacc_region.upper()
+
+    path, path_print = file_functions.get_fuels_charts_paths(gacc_region, 'ERC')
+
+    if data == False:
+        FEMS.get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
+        FEMS.get_nfdrs_forecast_data(gacc_region, fuel_model)
+    else:
+        pass
+        
+    get_psa_percentiles(gacc_region)
+    station_stats(gacc_region)
+    get_stats(gacc_region)
+    get_psa_climatology(gacc_region)
+    sort_data_by_psa(gacc_region)
+
+    data_dir = f"FEMS Data/{gacc_region}/PSA Data"
+    percentiles_dir = f"FEMS Data/{gacc_region}/PSA Percentiles"
+    climo_avg_dir = f"FEMS Data/{gacc_region}/PSA Climo/AVG"
+    climo_max_dir = f"FEMS Data/{gacc_region}/PSA Climo/MAX"
+
+    percentiles = pd.read_csv(f"FEMS Data/{gacc_region}/PSA Percentiles/PSA_Percentiles.csv")
+
+    leap = isleap(utc_time.year)
+    if start_date == None:
+        if leap == False:
+            days = number_of_years_for_averages * 365
+        else:
+            days = number_of_years_for_averages * 366
+        start_date = utc_time - timedelta(days=days)
+        start_year = start_date.year
+        xmin = start_date
+        xmax = utc_time
+
+    else:
+        start_date = start_date
+        start_year = f"{start_date[0]}{start_date[1]}{start_date[2]}{start_date[3]}"
+        start_month = f"{start_date[5]}{start_date[6]}"
+        start_day = f"{start_date[8]}{start_date[9]}"
+        xmin = datetime(int(start_year), int(start_month), int(start_day))
+        xmax = utc_time
+    
+    psa = 1
+
+    if os.path.exists(f"{data_dir}/.ipynb_checkpoints"):
+        shutil.rmtree(f"{data_dir}/.ipynb_checkpoints")
+    else:
+        pass
+
+    if os.path.exists(f"{data_dir}/.ipynb_checkpoints"):
+        shutil.rmtree(f"{data_dir}/.ipynb_checkpoints")
+    else:
+        pass
+
+    files = os.listdir(f"{data_dir}")
+    psa = 1
+    for i in range(0, len(files)):
+
+        fname = f"PSA {psa}.png"
+
+        df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
+        df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
+        df_climo_max = pd.read_csv(f"{climo_max_dir}/zone_{psa}.csv") 
+
+        dates = pd.to_datetime(df_data['dates'])
+
+        fig = plt.figure(figsize=(12,12))
+
+        ax = fig.add_subplot(1, 1, 1)
+
+        ax.xaxis.set_major_formatter(md.DateFormatter('%m-%d'))
+        plt.title(f"{gacc_region} ENERGY RELEASE COMPONENTS: PSA {psa}", fontsize=12, fontweight='bold', loc='left')
+        plt.title(f"Period Of Record: {start_year} - {utc_time.year}", fontsize=10, fontweight='bold', loc='right')
+        ax.text(0.01, -0.05, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: USDA/FEMS", transform=ax.transAxes, fontsize=8, fontweight='bold', bbox=props)
+        ax.text(0.405, 0.98, f"Valid Date: {dates.iloc[-1].strftime("%m/%d/%Y")}", transform=ax.transAxes, fontsize=8, color='white', fontweight='bold', bbox=date_box)
+
+        if leap == True:
+            jmax = 366
+        else:
+            jmax = 365
+        
+        ax.set_xlim(0, jmax)
+
+        ymax = np.nanmax(df_climo_max['erc_max']) + 10
+        ax.set_ylim(0, ymax)
+        
+        ax.hlines(percentiles['ERC_60th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', alpha=0.5, zorder=2, label=f"60TH PERCENTILE")
+        ax.hlines(percentiles['ERC_80th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='--', alpha=0.5, zorder=2, label=f"80TH PERCENTILE")
+        ax.hlines(percentiles['ERC_90th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-.', alpha=0.5, zorder=2, label=f"90TH PERCENTILE")
+        ax.hlines(percentiles['ERC_97th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle=':', alpha=0.5, zorder=2, label=f"97TH PERCENTILE")
+        ax.hlines(percentiles['ERC_99th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', linewidth=2, alpha=0.5, zorder=2, label=f"99TH PERCENTILE")
+
+        ax.axhspan(0, percentiles['ERC_60th_percentile'].iloc[i], color='lime', alpha=0.2, label=f"0TH-60TH PERCENTILE")
+        ax.axhspan(percentiles['ERC_60th_percentile'].iloc[i], percentiles['ERC_80th_percentile'].iloc[i], color='lightgreen', alpha=0.2, label=f"60TH-80TH PERCENTILE")
+        ax.axhspan(percentiles['ERC_80th_percentile'].iloc[i], percentiles['ERC_90th_percentile'].iloc[i], color='gold', alpha=0.2, label=f"80TH-90TH PERCENTILE")
+        ax.axhspan(percentiles['ERC_90th_percentile'].iloc[i], percentiles['ERC_97th_percentile'].iloc[i], color='orange', alpha=0.2, label=f"90TH-97TH PERCENTILE")
+        ax.axhspan(percentiles['ERC_97th_percentile'].iloc[i], percentiles['ERC_99th_percentile'].iloc[i], color='red', alpha=0.2, label=f"97TH-99TH PERCENTILE")
+        ax.axhspan(percentiles['ERC_99th_percentile'].iloc[i], ymax, color='darkred', alpha=0.2, label=f"ERC>99TH PERCENTILE")
+
+        ax.plot(df_data['julian_date'], df_data['erc_mean'], color='blue', alpha=1, label=f"OBSERVED")
+        ax.plot(df_climo_avg['julian_date'], df_climo_avg['erc_avg'], color='gray', alpha=1, label=f"AVERAGE")
+        ax.plot(df_climo_max['julian_date'], df_climo_max['erc_max'], color='red', alpha=1, label=f"MAX")
+        
+        plt.legend(loc="upper left", fontsize="xx-small")
+
+        fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        psa = psa + 1
+
+    print(f"ERC Fuels Charts Saved To {path_print}")
+
+def create_psa_bi_fuels_charts(gacc_region, number_of_years_for_averages=15, fuel_model='Y', start_date=None, data=False):
+    
+    gacc_region = gacc_region.upper()
+
+    path, path_print = file_functions.get_fuels_charts_paths(gacc_region, 'BI')
+
+    if data == False:
+        FEMS.get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
+        FEMS.get_nfdrs_forecast_data(gacc_region, fuel_model)
+    else:
+        pass
+        
+    get_psa_percentiles(gacc_region)
+    station_stats(gacc_region)
+    get_stats(gacc_region)
+    get_psa_climatology(gacc_region)
+    sort_data_by_psa(gacc_region)
+
+    data_dir = f"FEMS Data/{gacc_region}/PSA Data"
+    percentiles_dir = f"FEMS Data/{gacc_region}/PSA Percentiles"
+    climo_avg_dir = f"FEMS Data/{gacc_region}/PSA Climo/AVG"
+    climo_max_dir = f"FEMS Data/{gacc_region}/PSA Climo/MAX"
+
+    percentiles = pd.read_csv(f"FEMS Data/{gacc_region}/PSA Percentiles/PSA_Percentiles.csv")
+
+    leap = isleap(utc_time.year)
+    if start_date == None:
+        if leap == False:
+            days = number_of_years_for_averages * 365
+        else:
+            days = number_of_years_for_averages * 366
+        start_date = utc_time - timedelta(days=days)
+        start_year = start_date.year
+        xmin = start_date
+        xmax = utc_time
+
+    else:
+        start_date = start_date
+        start_year = f"{start_date[0]}{start_date[1]}{start_date[2]}{start_date[3]}"
+        start_month = f"{start_date[5]}{start_date[6]}"
+        start_day = f"{start_date[8]}{start_date[9]}"
+        xmin = datetime(int(start_year), int(start_month), int(start_day))
+        xmax = utc_time
+    
+    psa = 1
+
+    if os.path.exists(f"{data_dir}/.ipynb_checkpoints"):
+        shutil.rmtree(f"{data_dir}/.ipynb_checkpoints")
+    else:
+        pass
+
+    if os.path.exists(f"{data_dir}/.ipynb_checkpoints"):
+        shutil.rmtree(f"{data_dir}/.ipynb_checkpoints")
+    else:
+        pass
+
+    files = os.listdir(f"{data_dir}")
+    psa = 1
+    for i in range(0, len(files)):
+
+        fname = f"PSA {psa}.png"
+
+        df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
+        df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
+        df_climo_max = pd.read_csv(f"{climo_max_dir}/zone_{psa}.csv") 
+
+        dates = pd.to_datetime(df_data['dates'])
+
+        fig = plt.figure(figsize=(12,12))
+
+        ax = fig.add_subplot(1, 1, 1)
+
+        ax.xaxis.set_major_formatter(md.DateFormatter('%m-%d'))
+        plt.title(f"{gacc_region} BURNING INDEX: PSA {psa}", fontsize=12, fontweight='bold', loc='left')
+        plt.title(f"Period Of Record: {start_year} - {utc_time.year}", fontsize=10, fontweight='bold', loc='right')
+        ax.text(0.01, -0.05, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: USDA/FEMS", transform=ax.transAxes, fontsize=8, fontweight='bold', bbox=props)
+        ax.text(0.405, 0.98, f"Valid Date: {dates.iloc[-1].strftime("%m/%d/%Y")}", transform=ax.transAxes, fontsize=8, color='white', fontweight='bold', bbox=date_box)
+
+        if leap == True:
+            jmax = 366
+        else:
+            jmax = 365
+        
+        ax.set_xlim(0, jmax)
+
+        ymax = np.nanmax(df_climo_max['bi_max']) + 10
+        ax.set_ylim(0, ymax)
+        
+        ax.hlines(percentiles['BI_60th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', alpha=0.5, zorder=2, label=f"60TH PERCENTILE")
+        ax.hlines(percentiles['BI_80th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='--', alpha=0.5, zorder=2, label=f"80TH PERCENTILE")
+        ax.hlines(percentiles['BI_90th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-.', alpha=0.5, zorder=2, label=f"90TH PERCENTILE")
+        ax.hlines(percentiles['BI_97th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle=':', alpha=0.5, zorder=2, label=f"97TH PERCENTILE")
+        ax.hlines(percentiles['BI_99th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', linewidth=2, alpha=0.5, zorder=2, label=f"99TH PERCENTILE")
+
+        ax.axhspan(0, percentiles['BI_60th_percentile'].iloc[i], color='lime', alpha=0.2, label=f"0TH-60TH PERCENTILE")
+        ax.axhspan(percentiles['BI_60th_percentile'].iloc[i], percentiles['BI_80th_percentile'].iloc[i], color='lightgreen', alpha=0.2, label=f"60TH-80TH PERCENTILE")
+        ax.axhspan(percentiles['BI_80th_percentile'].iloc[i], percentiles['BI_90th_percentile'].iloc[i], color='gold', alpha=0.2, label=f"80TH-90TH PERCENTILE")
+        ax.axhspan(percentiles['BI_90th_percentile'].iloc[i], percentiles['BI_97th_percentile'].iloc[i], color='orange', alpha=0.2, label=f"90TH-97TH PERCENTILE")
+        ax.axhspan(percentiles['BI_97th_percentile'].iloc[i], percentiles['BI_99th_percentile'].iloc[i], color='red', alpha=0.2, label=f"97TH-99TH PERCENTILE")
+        ax.axhspan(percentiles['BI_99th_percentile'].iloc[i], ymax, color='darkred', alpha=0.2, label=f"BI>99TH PERCENTILE")
+
+        ax.plot(df_data['julian_date'], df_data['bi_mean'], color='blue', alpha=1, label=f"OBSERVED")
+        ax.plot(df_climo_avg['julian_date'], df_climo_avg['bi_avg'], color='gray', alpha=1, label=f"AVERAGE")
+        ax.plot(df_climo_max['julian_date'], df_climo_max['bi_max'], color='red', alpha=1, label=f"MAX")
+        
+        plt.legend(loc="upper left", fontsize="xx-small")
+
+        fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        psa = psa + 1
+
+    print(f"BI Fuels Charts Saved To {path_print}")
+
+def create_psa_sc_fuels_charts(gacc_region, number_of_years_for_averages=15, fuel_model='Y', start_date=None, data=False):
+    
+    gacc_region = gacc_region.upper()
+
+    path, path_print = file_functions.get_fuels_charts_paths(gacc_region, 'SC')
+
+    if data == False:
+        FEMS.get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
+        FEMS.get_nfdrs_forecast_data(gacc_region, fuel_model)
+    else:
+        pass
+        
+    get_psa_percentiles(gacc_region)
+    station_stats(gacc_region)
+    get_stats(gacc_region)
+    get_psa_climatology(gacc_region)
+    sort_data_by_psa(gacc_region)
+
+    data_dir = f"FEMS Data/{gacc_region}/PSA Data"
+    percentiles_dir = f"FEMS Data/{gacc_region}/PSA Percentiles"
+    climo_avg_dir = f"FEMS Data/{gacc_region}/PSA Climo/AVG"
+    climo_max_dir = f"FEMS Data/{gacc_region}/PSA Climo/MAX"
+
+    percentiles = pd.read_csv(f"FEMS Data/{gacc_region}/PSA Percentiles/PSA_Percentiles.csv")
+
+    leap = isleap(utc_time.year)
+    if start_date == None:
+        if leap == False:
+            days = number_of_years_for_averages * 365
+        else:
+            days = number_of_years_for_averages * 366
+        start_date = utc_time - timedelta(days=days)
+        start_year = start_date.year
+        xmin = start_date
+        xmax = utc_time
+
+    else:
+        start_date = start_date
+        start_year = f"{start_date[0]}{start_date[1]}{start_date[2]}{start_date[3]}"
+        start_month = f"{start_date[5]}{start_date[6]}"
+        start_day = f"{start_date[8]}{start_date[9]}"
+        xmin = datetime(int(start_year), int(start_month), int(start_day))
+        xmax = utc_time
+    
+    psa = 1
+
+    if os.path.exists(f"{data_dir}/.ipynb_checkpoints"):
+        shutil.rmtree(f"{data_dir}/.ipynb_checkpoints")
+    else:
+        pass
+
+    if os.path.exists(f"{data_dir}/.ipynb_checkpoints"):
+        shutil.rmtree(f"{data_dir}/.ipynb_checkpoints")
+    else:
+        pass
+
+    files = os.listdir(f"{data_dir}")
+    psa = 1
+    for i in range(0, len(files)):
+
+        fname = f"PSA {psa}.png"
+
+        df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
+        df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
+        df_climo_max = pd.read_csv(f"{climo_max_dir}/zone_{psa}.csv") 
+
+        dates = pd.to_datetime(df_data['dates'])
+
+        fig = plt.figure(figsize=(12,12))
+
+        ax = fig.add_subplot(1, 1, 1)
+
+        ax.xaxis.set_major_formatter(md.DateFormatter('%m-%d'))
+        plt.title(f"{gacc_region} SPREAD COMPONENT: PSA {psa}", fontsize=12, fontweight='bold', loc='left')
+        plt.title(f"Period Of Record: {start_year} - {utc_time.year}", fontsize=10, fontweight='bold', loc='right')
+        ax.text(0.01, -0.05, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: USDA/FEMS", transform=ax.transAxes, fontsize=8, fontweight='bold', bbox=props)
+        ax.text(0.405, 0.98, f"Valid Date: {dates.iloc[-1].strftime("%m/%d/%Y")}", transform=ax.transAxes, fontsize=8, color='white', fontweight='bold', bbox=date_box)
+
+        if leap == True:
+            jmax = 366
+        else:
+            jmax = 365
+        
+        ax.set_xlim(0, jmax)
+
+        ymax = np.nanmax(df_climo_max['sc_max']) + 10
+        ax.set_ylim(0, ymax)
+        
+        ax.hlines(percentiles['SC_60th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', alpha=0.5, zorder=2, label=f"60TH PERCENTILE")
+        ax.hlines(percentiles['SC_80th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='--', alpha=0.5, zorder=2, label=f"80TH PERCENTILE")
+        ax.hlines(percentiles['SC_90th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-.', alpha=0.5, zorder=2, label=f"90TH PERCENTILE")
+        ax.hlines(percentiles['SC_97th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle=':', alpha=0.5, zorder=2, label=f"97TH PERCENTILE")
+        ax.hlines(percentiles['SC_99th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', linewidth=2, alpha=0.5, zorder=2, label=f"99TH PERCENTILE")
+
+        ax.axhspan(0, percentiles['SC_60th_percentile'].iloc[i], color='lime', alpha=0.2, label=f"0TH-60TH PERCENTILE")
+        ax.axhspan(percentiles['SC_60th_percentile'].iloc[i], percentiles['SC_80th_percentile'].iloc[i], color='lightgreen', alpha=0.2, label=f"60TH-80TH PERCENTILE")
+        ax.axhspan(percentiles['SC_80th_percentile'].iloc[i], percentiles['SC_90th_percentile'].iloc[i], color='gold', alpha=0.2, label=f"80TH-90TH PERCENTILE")
+        ax.axhspan(percentiles['SC_90th_percentile'].iloc[i], percentiles['SC_97th_percentile'].iloc[i], color='orange', alpha=0.2, label=f"90TH-97TH PERCENTILE")
+        ax.axhspan(percentiles['SC_97th_percentile'].iloc[i], percentiles['SC_99th_percentile'].iloc[i], color='red', alpha=0.2, label=f"97TH-99TH PERCENTILE")
+        ax.axhspan(percentiles['SC_99th_percentile'].iloc[i], ymax, color='darkred', alpha=0.2, label=f"SC>99TH PERCENTILE")
+
+        ax.plot(df_data['julian_date'], df_data['sc_mean'], color='blue', alpha=1, label=f"OBSERVED")
+        ax.plot(df_climo_avg['julian_date'], df_climo_avg['sc_avg'], color='gray', alpha=1, label=f"AVERAGE")
+        ax.plot(df_climo_max['julian_date'], df_climo_max['sc_max'], color='red', alpha=1, label=f"MAX")
+        
+        plt.legend(loc="upper left", fontsize="xx-small")
+
+        fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        psa = psa + 1
+
+    print(f"SC Fuels Charts Saved To {path_print}")
+
+def create_psa_ic_fuels_charts(gacc_region, number_of_years_for_averages=15, fuel_model='Y', start_date=None, data=False):
+    
+    gacc_region = gacc_region.upper()
+
+    path, path_print = file_functions.get_fuels_charts_paths(gacc_region, 'IC')
+
+    if data == False:
+        FEMS.get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
+        FEMS.get_nfdrs_forecast_data(gacc_region, fuel_model)
+    else:
+        pass
+        
+    get_psa_percentiles(gacc_region)
+    station_stats(gacc_region)
+    get_stats(gacc_region)
+    get_psa_climatology(gacc_region)
+    sort_data_by_psa(gacc_region)
+
+    data_dir = f"FEMS Data/{gacc_region}/PSA Data"
+    percentiles_dir = f"FEMS Data/{gacc_region}/PSA Percentiles"
+    climo_avg_dir = f"FEMS Data/{gacc_region}/PSA Climo/AVG"
+    climo_max_dir = f"FEMS Data/{gacc_region}/PSA Climo/MAX"
+
+    percentiles = pd.read_csv(f"FEMS Data/{gacc_region}/PSA Percentiles/PSA_Percentiles.csv")
+
+    leap = isleap(utc_time.year)
+    if start_date == None:
+        if leap == False:
+            days = number_of_years_for_averages * 365
+        else:
+            days = number_of_years_for_averages * 366
+        start_date = utc_time - timedelta(days=days)
+        start_year = start_date.year
+        xmin = start_date
+        xmax = utc_time
+
+    else:
+        start_date = start_date
+        start_year = f"{start_date[0]}{start_date[1]}{start_date[2]}{start_date[3]}"
+        start_month = f"{start_date[5]}{start_date[6]}"
+        start_day = f"{start_date[8]}{start_date[9]}"
+        xmin = datetime(int(start_year), int(start_month), int(start_day))
+        xmax = utc_time
+    
+    psa = 1
+
+    if os.path.exists(f"{data_dir}/.ipynb_checkpoints"):
+        shutil.rmtree(f"{data_dir}/.ipynb_checkpoints")
+    else:
+        pass
+
+    if os.path.exists(f"{data_dir}/.ipynb_checkpoints"):
+        shutil.rmtree(f"{data_dir}/.ipynb_checkpoints")
+    else:
+        pass
+
+    files = os.listdir(f"{data_dir}")
+    psa = 1
+    for i in range(0, len(files)):
+
+        fname = f"PSA {psa}.png"
+
+        df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
+        df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
+        df_climo_max = pd.read_csv(f"{climo_max_dir}/zone_{psa}.csv") 
+
+        dates = pd.to_datetime(df_data['dates'])
+
+        fig = plt.figure(figsize=(12,12))
+
+        ax = fig.add_subplot(1, 1, 1)
+
+        ax.xaxis.set_major_formatter(md.DateFormatter('%m-%d'))
+        plt.title(f"{gacc_region} IGNITION COMPONENT: PSA {psa}", fontsize=12, fontweight='bold', loc='left')
+        plt.title(f"Period Of Record: {start_year} - {utc_time.year}", fontsize=10, fontweight='bold', loc='right')
+        ax.text(0.01, -0.05, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: USDA/FEMS", transform=ax.transAxes, fontsize=8, fontweight='bold', bbox=props)
+        ax.text(0.405, 0.98, f"Valid Date: {dates.iloc[-1].strftime("%m/%d/%Y")}", transform=ax.transAxes, fontsize=8, color='white', fontweight='bold', bbox=date_box)
+
+        if leap == True:
+            jmax = 366
+        else:
+            jmax = 365
+        
+        ax.set_xlim(0, jmax)
+
+        ymax = np.nanmax(df_climo_max['ic_max']) + 10
+        ax.set_ylim(0, ymax)
+        
+        ax.hlines(percentiles['IC_60th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', alpha=0.5, zorder=2, label=f"60TH PERCENTILE")
+        ax.hlines(percentiles['IC_80th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='--', alpha=0.5, zorder=2, label=f"80TH PERCENTILE")
+        ax.hlines(percentiles['IC_90th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-.', alpha=0.5, zorder=2, label=f"90TH PERCENTILE")
+        ax.hlines(percentiles['IC_97th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle=':', alpha=0.5, zorder=2, label=f"97TH PERCENTILE")
+        ax.hlines(percentiles['IC_99th_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', linewidth=2, alpha=0.5, zorder=2, label=f"99TH PERCENTILE")
+
+        ax.axhspan(0, percentiles['IC_60th_percentile'].iloc[i], color='lime', alpha=0.2, label=f"0TH-60TH PERCENTILE")
+        ax.axhspan(percentiles['IC_60th_percentile'].iloc[i], percentiles['IC_80th_percentile'].iloc[i], color='lightgreen', alpha=0.2, label=f"60TH-80TH PERCENTILE")
+        ax.axhspan(percentiles['IC_80th_percentile'].iloc[i], percentiles['IC_90th_percentile'].iloc[i], color='gold', alpha=0.2, label=f"80TH-90TH PERCENTILE")
+        ax.axhspan(percentiles['IC_90th_percentile'].iloc[i], percentiles['IC_97th_percentile'].iloc[i], color='orange', alpha=0.2, label=f"90TH-97TH PERCENTILE")
+        ax.axhspan(percentiles['IC_97th_percentile'].iloc[i], percentiles['IC_99th_percentile'].iloc[i], color='red', alpha=0.2, label=f"97TH-99TH PERCENTILE")
+        ax.axhspan(percentiles['IC_99th_percentile'].iloc[i], ymax, color='darkred', alpha=0.2, label=f"IC>99TH PERCENTILE")
+
+        ax.plot(df_data['julian_date'], df_data['ic_mean'], color='blue', alpha=1, label=f"OBSERVED")
+        ax.plot(df_climo_avg['julian_date'], df_climo_avg['ic_avg'], color='gray', alpha=1, label=f"AVERAGE")
+        ax.plot(df_climo_max['julian_date'], df_climo_max['ic_max'], color='red', alpha=1, label=f"MAX")
+        
+        plt.legend(loc="upper left", fontsize="xx-small")
+
+        fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        psa = psa + 1
+
+    print(f"IC Fuels Charts Saved To {path_print}")
