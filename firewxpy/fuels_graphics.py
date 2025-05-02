@@ -8,7 +8,7 @@ import shutil
 import numpy as np
 
 from data_access import FEMS
-from raws_sigs import get_psa_percentiles, station_stats, sort_data_by_psa, get_stats, get_psa_climatology
+from raws_sigs import get_psa_percentiles, station_stats, sort_data_by_psa, get_stats, get_psa_climatology, station_forecast, sort_forecasts_by_psa
 from standard import plot_creation_time
 from datetime import datetime, timedelta, UTC
 from utilities import file_functions
@@ -42,11 +42,14 @@ def create_psa_100hr_fuels_charts(gacc_region, number_of_years_for_averages=15, 
     get_stats(gacc_region)
     get_psa_climatology(gacc_region)
     sort_data_by_psa(gacc_region)
+    station_forecast(gacc_region)
+    sort_forecasts_by_psa(gacc_region)
 
     data_dir = f"FEMS Data/{gacc_region}/PSA Data"
     percentiles_dir = f"FEMS Data/{gacc_region}/PSA Percentiles"
     climo_avg_dir = f"FEMS Data/{gacc_region}/PSA Climo/AVG"
     climo_min_dir = f"FEMS Data/{gacc_region}/PSA Climo/MIN"
+    forecast_dir = f"FEMS Data/{gacc_region}/PSA Forecast"
 
     percentiles = pd.read_csv(f"FEMS Data/{gacc_region}/PSA Percentiles/PSA_Percentiles.csv")
 
@@ -105,6 +108,7 @@ def create_psa_100hr_fuels_charts(gacc_region, number_of_years_for_averages=15, 
             psaID = psa
 
         df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
+        df_forecast = pd.read_csv(f"{forecast_dir}/zone_{psa}.csv") 
         df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
         df_climo_min = pd.read_csv(f"{climo_min_dir}/zone_{psa}.csv") 
 
@@ -118,7 +122,7 @@ def create_psa_100hr_fuels_charts(gacc_region, number_of_years_for_averages=15, 
         plt.title(f"{gacc_region} 100-HR Dead Fuel Moisture: PSA {psaID}", fontsize=12, fontweight='bold', loc='left')
         plt.title(f"Period Of Record: {start_year} - {utc_time.year}", fontsize=10, fontweight='bold', loc='right')
         ax.text(0.01, -0.05, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: USDA/FEMS", transform=ax.transAxes, fontsize=8, fontweight='bold', bbox=props)
-        ax.text(0.405, 0.98, f"Valid Date: {dates.iloc[-1].strftime("%m/%d/%Y")}", transform=ax.transAxes, fontsize=8, color='white', fontweight='bold', bbox=date_box)
+        ax.text(0.405, 0.98, f"Valid Date: {dates.iloc[-1].strftime(f"%m/%d/%Y")}", transform=ax.transAxes, fontsize=8, color='white', fontweight='bold', bbox=date_box)
 
         if leap == True:
             jmax = 366
@@ -142,6 +146,13 @@ def create_psa_100hr_fuels_charts(gacc_region, number_of_years_for_averages=15, 
         ax.plot(df_data['julian_date'], df_data['f100_mean'], color='blue', alpha=1, label=f"OBSERVED")
         ax.plot(df_climo_avg['julian_date'], df_climo_avg['f100_avg'], color='gray', alpha=1, label=f"AVERAGE")
         ax.plot(df_climo_min['julian_date'], df_climo_min['f100_min'], color='red', alpha=1, label=f"MAX")
+
+        try:
+           ax.plot([df_data['julian_date'].iloc[-1], df_forecast['julian_date'].iloc[0]], [df_data['f100_mean'].iloc[-1], df_forecast['f100_mean'].iloc[0]], color='green', alpha=1)  
+           ax.plot(df_forecast['julian_date'], df_forecast['f100_mean'], color='green', alpha=1, label=f"FORECAST") 
+        except Exception as e:
+            pass
+
         
         plt.legend(loc="upper left", fontsize="xx-small")
 
@@ -168,11 +179,14 @@ def create_psa_1000hr_fuels_charts(gacc_region, number_of_years_for_averages=15,
     get_stats(gacc_region)
     get_psa_climatology(gacc_region)
     sort_data_by_psa(gacc_region)
+    station_forecast(gacc_region)
+    sort_forecasts_by_psa(gacc_region)
 
     data_dir = f"FEMS Data/{gacc_region}/PSA Data"
     percentiles_dir = f"FEMS Data/{gacc_region}/PSA Percentiles"
     climo_avg_dir = f"FEMS Data/{gacc_region}/PSA Climo/AVG"
     climo_min_dir = f"FEMS Data/{gacc_region}/PSA Climo/MIN"
+    forecast_dir = f"FEMS Data/{gacc_region}/PSA Forecast"
 
     percentiles = pd.read_csv(f"FEMS Data/{gacc_region}/PSA Percentiles/PSA_Percentiles.csv")
 
@@ -214,6 +228,7 @@ def create_psa_1000hr_fuels_charts(gacc_region, number_of_years_for_averages=15,
         fname = f"PSA {psa}.png"
 
         df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
+        df_forecast = pd.read_csv(f"{forecast_dir}/zone_{psa}.csv") 
         df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
         df_climo_min = pd.read_csv(f"{climo_min_dir}/zone_{psa}.csv") 
 
@@ -251,6 +266,11 @@ def create_psa_1000hr_fuels_charts(gacc_region, number_of_years_for_averages=15,
         ax.plot(df_data['julian_date'], df_data['f1000_mean'], color='blue', alpha=1, label=f"OBSERVED")
         ax.plot(df_climo_avg['julian_date'], df_climo_avg['f1000_avg'], color='gray', alpha=1, label=f"AVERAGE")
         ax.plot(df_climo_min['julian_date'], df_climo_min['f1000_min'], color='red', alpha=1, label=f"MAX")
+        try:
+           ax.plot([df_data['julian_date'].iloc[-1], df_forecast['julian_date'].iloc[0]], [df_data['f1000_mean'].iloc[-1], df_forecast['f1000_mean'].iloc[0]], color='green', alpha=1)  
+           ax.plot(df_forecast['julian_date'], df_forecast['f1000_mean'], color='green', alpha=1, label=f"FORECAST") 
+        except Exception as e:
+            pass
         
         plt.legend(loc="upper left", fontsize="xx-small")
 
