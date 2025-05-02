@@ -14,7 +14,7 @@ import pandas as pd
 import numpy as np
 import shutil
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC
 from calendar import isleap
 
 def get_number_of_psas_by_gacc(gacc_region):
@@ -101,12 +101,6 @@ def get_raws_sig_info():
     else:
         urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/ONCC_StationList.csv", f"ONCC_StationList.csv")
         os.replace(f"ONCC_StationList.csv", f"RAWS SIGs/ONCC/OSCC_StationList.csv")
-
-    #if os.path.exists(f"RAWS SIGs/OSCC/OSCC_PSA_Percentiles.csv"):
-     #   pass
-    #else:
-     #   urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/OSCC_PSA_Percentiles.csv", f"OSCC_PSA_Percentiles.csv")
-      #  os.replace(f"OSCC_PSA_Percentiles.csv", f"RAWS SIGs/OSCC/OSCC_PSA_Percentiles.csv")
 
 check_folders()
 get_raws_sig_info()
@@ -633,6 +627,107 @@ def station_stats(gacc_region):
     
         psa = psa + 1
 
+def station_forecast(gacc_region):
+
+    gacc_region = gacc_region.upper()
+    
+    try:
+        now = datetime.now(UTC)
+    except Exception as e:
+        now = datetime.utcnow()
+
+    local = datetime.now()
+
+    start_date = now
+
+    if local.day == start_date.day and local.hour <= 12:
+        end_date = start_date + timedelta(days=7)
+    else:
+        end_date = start_date + timedelta(days=6)
+    
+    paths = []
+    
+    if gacc_region == 'OSCC':
+        folder_abbrev = f"SC"
+
+    if gacc_region == 'ONCC':
+        folder_abbrev = f"NC"
+    
+    a = 1
+    for i in range(0, len(os.listdir(f"FEMS Data/Forecasts/{gacc_region}"))):
+        if a < 10:
+            path = f"FEMS Data/Forecasts/{gacc_region}/{folder_abbrev}0{a}"
+        else:
+            path = f"FEMS Data/Forecasts/{gacc_region}/{folder_abbrev}{a}"
+        paths.append(path) 
+        a = a + 1
+        
+    psa = 1
+    
+    if os.path.exists(f"FEMS Data/Station Forecasts"):
+        pass
+    else:
+        os.mkdir(f"FEMS Data/Station Forecasts")
+    
+    if os.path.exists(f"FEMS Data/Station Forecasts/{gacc_region}"):
+        pass
+    else:
+        os.mkdir(f"FEMS Data/Station Forecasts/{gacc_region}")
+    
+    for p in range(0, len(paths)):
+        files = []
+        
+        if os.path.exists(f"{paths[p]}/.ipynb_checkpoints"):
+            shutil.rmtree(f"{paths[p]}/.ipynb_checkpoints")
+        else:
+            pass
+            
+        for file in os.listdir(paths[p]):
+            files.append(file)
+    
+        if os.path.exists(f"FEMS Data/Station Forecasts/{gacc_region}/PSA {psa}"):
+            pass
+        else:
+            os.mkdir(f"FEMS Data/Station Forecasts/{gacc_region}/PSA {psa}")
+    
+        days = abs((start_date - end_date).days)
+        dates = []
+        for day in range(0, days):
+            date = start_date + timedelta(days=day)
+            dates.append(date)
+        
+        for i in range(0, len(files)):
+    
+            df = pd.read_csv(f"{paths[p]}/{files[i]}")
+            df = df[df['observationTime'].between(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))]
+            df['observationTime'] = pd.to_datetime(df['observationTime'])
+            df['julian_date'] = df['observationTime'].dt.dayofyear
+            data = df.groupby(pd.Grouper(key='observationTime', freq='D'))
+            f100 = data['hundredHR_TL_FuelMoisture'].min()
+            f1000 = data['thousandHR_TL_FuelMoisture'].min()
+            erc = data['energyReleaseComponent'].max()
+            bi = data['burningIndex'].max()
+            sc = data['spreadComponent'].max()
+            ic = data['ignitionComponent'].max()
+    
+            if len(f100) == days and len(f1000) == days and len(erc) == days and len(bi) == days and len(sc) == days:
+                main = pd.DataFrame()
+                main['f100'] = f100.values
+                main['f1000'] = f1000.values
+                main['erc'] = erc.values
+                main['bi'] = bi.values
+                main['sc'] = sc.values
+                main['ic'] = ic.values
+                main['dates'] = dates
+        
+                fname = f"{files[i]}"
+                main.to_csv(fname, index=False)
+                os.replace(f"{fname}", f"FEMS Data/Station Forecasts/{gacc_region}/PSA {psa}/{fname}")
+            else:
+                pass
+    
+        psa = psa + 1
+
 def sort_data_by_psa(gacc_region):
 
     gacc_region = gacc_region.upper()
@@ -825,6 +920,201 @@ def sort_data_by_psa(gacc_region):
         fname = f"zone_{psa}.csv"
         main.to_csv(fname, index=False)
         os.replace(f"{fname}", f"FEMS Data/{gacc_region}/PSA Data/{fname}")
+        psa = psa + 1
+
+
+def sort_forecasts_by_psa(gacc_region):
+
+    gacc_region = gacc_region.upper()
+    path_to_sort = f"FEMS Data/Station Forecasts/{gacc_region}"  
+    paths = []
+    j = 1
+    for i in range(0, len(os.listdir(f"FEMS Data/Station Forecasts/{gacc_region}"))):
+        path = f"FEMS Data/Station Forecasts/{gacc_region}/PSA {j}"
+        paths.append(path)
+        j = j + 1
+    psa = 1
+    for p in range(0, len(paths)):
+        files = []
+        
+        if os.path.exists(f"{paths[p]}/.ipynb_checkpoints"):
+            shutil.rmtree(f"{paths[p]}/.ipynb_checkpoints")
+        else:
+            pass
+            
+        for file in os.listdir(paths[p]):
+            files.append(file)    
+    
+        dates = []
+    
+        f100 = []
+        f100_max = []
+        f100_min = []
+        f100_mean = []
+    
+        f1000 = []
+        f1000_max = []
+        f1000_min = []
+        f1000_mean = []
+    
+        erc = []
+        erc_max = []
+        erc_min = []
+        erc_mean = []
+    
+        bi = []
+        bi_max = []
+        bi_min = []
+        bi_mean = []
+    
+        sc = []
+        sc_max = []
+        sc_min = []
+        sc_mean = []
+
+        ic = []
+        ic_max = []
+        ic_min = []
+        ic_mean = []
+    
+        d = pd.read_csv(f"{paths[p]}/{files[0]}")
+        dates.append(d['dates'])
+        
+        for i in range(0, len(files)):
+            try:
+                df = pd.read_csv(f"{paths[p]}/{files[i]}")
+                f100.append(df['f100'])
+                f1000.append(df['f1000'])
+                erc.append(df['erc'])
+                bi.append(df['bi'])
+                sc.append(df['sc'])
+                ic.append(df['ic'])
+            except Exception as e:
+                pass
+                         
+            
+        try:
+            df_dates = pd.DataFrame(dates)
+            df_dates = df_dates.transpose()
+        except Exception as e:
+            pass    
+    
+        try:
+            df_100 = pd.DataFrame(f100)
+            df_100 = df_100.transpose()
+            for i in range(0, len(df_100)):
+                mean_100 = df_100.iloc[i].mean()
+                maxima_100 = df_100.iloc[i].max()
+                minima_100 = df_100.iloc[i].min()
+                f100_mean.append(mean_100)
+                f100_max.append(maxima_100)
+                f100_min.append(minima_100)
+        except Exception as e:
+            pass    
+    
+        try:
+            df_1000 = pd.DataFrame(f1000)
+            df_1000 = df_1000.transpose()
+            for i in range(0, len(df_1000)):
+                mean_1000 = df_1000.iloc[i].mean()
+                maxima_1000 = df_1000.iloc[i].max()
+                minima_1000 = df_1000.iloc[i].min()
+                f1000_mean.append(mean_1000)
+                f1000_max.append(maxima_1000)
+                f1000_min.append(minima_1000)
+        except Exception as e:
+            pass  
+    
+        try:
+            df_erc = pd.DataFrame(erc)
+            df_erc = df_erc.transpose()
+            for i in range(0, len(df_erc)):
+                mean_erc = df_erc.iloc[i].mean()
+                maxima_erc = df_erc.iloc[i].max()
+                minima_erc = df_erc.iloc[i].min()
+                erc_mean.append(mean_erc)
+                erc_max.append(maxima_erc)
+                erc_min.append(minima_erc)
+        except Exception as e:
+            pass  
+    
+        try:
+            df_bi = pd.DataFrame(bi)
+            df_bi = df_bi.transpose()
+            for i in range(0, len(df_bi)):
+                mean_bi = df_bi.iloc[i].mean()
+                maxima_bi = df_bi.iloc[i].max()
+                minima_bi = df_bi.iloc[i].min()
+                bi_mean.append(mean_bi)
+                bi_max.append(maxima_bi)
+                bi_min.append(minima_bi)
+        except Exception as e:
+            pass  
+    
+        try:
+            df_sc = pd.DataFrame(sc)
+            df_sc = df_sc.transpose()
+            for i in range(0, len(df_sc)):
+                mean_sc = df_sc.iloc[i].mean()
+                maxima_sc = df_sc.iloc[i].max()
+                minima_sc = df_sc.iloc[i].min()
+                sc_mean.append(mean_sc)
+                sc_max.append(maxima_sc)
+                sc_min.append(minima_sc)
+        except Exception as e:
+            pass  
+
+        try:
+            df_ic = pd.DataFrame(ic)
+            df_ic = df_ic.transpose()
+            for i in range(0, len(df_ic)):
+                mean_ic = df_ic.iloc[i].mean()
+                maxima_ic = df_ic.iloc[i].max()
+                minima_ic = df_ic.iloc[i].min()
+                ic_mean.append(mean_ic)
+                ic_max.append(maxima_ic)
+                ic_min.append(minima_ic)
+        except Exception as e:
+            pass  
+    
+        main = pd.DataFrame()
+        
+        main['dates'] = df_dates
+        main['dates'] = pd.to_datetime(main['dates'])
+        main['julian_date'] = main['dates'].dt.dayofyear
+        
+        main['f100_mean'] = f100_mean
+        main['f100_max'] = f100_max
+        main['f100_min'] = f100_min
+        
+        main['f1000_mean'] = f1000_mean
+        main['f1000_max'] = f1000_max
+        main['f1000_min'] = f1000_min
+        
+        main['erc_mean'] = erc_mean
+        main['erc_max'] = erc_max
+        main['erc_min'] = erc_min
+        
+        main['bi_mean'] = bi_mean
+        main['bi_max'] = bi_max
+        main['bi_min'] = bi_min
+        
+        main['sc_mean'] = sc_mean
+        main['sc_max'] = sc_max
+        main['sc_min'] = sc_min
+
+        main['ic_mean'] = ic_mean
+        main['ic_max'] = ic_max
+        main['ic_min'] = ic_min
+    
+        if os.path.exists(f"FEMS Data/{gacc_region}/PSA Forecast"):
+            pass
+        else:
+            os.mkdir(f"FEMS Data/{gacc_region}/PSA Forecast")
+        
+        fname = f"zone_{psa}.csv"
+        main.to_csv(fname, index=False)
+        os.replace(f"{fname}", f"FEMS Data/{gacc_region}/PSA Forecast/{fname}")
         psa = psa + 1
 
 def get_psa_climatology(gacc_region):
