@@ -100,7 +100,25 @@ def get_raws_sig_info():
         pass
     else:
         urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/ONCC_StationList.csv", f"ONCC_StationList.csv")
-        os.replace(f"ONCC_StationList.csv", f"RAWS SIGs/ONCC/OSCC_StationList.csv")
+        os.replace(f"ONCC_StationList.csv", f"RAWS SIGs/ONCC/ONCC_StationList.csv")
+
+    if os.path.exists(f"RAWS SIGs/SACC/SACC_StationList.csv"):
+        pass
+    else:
+        urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/SACC_StationList.csv", f"SACC_StationList.csv")
+        os.replace(f"SACC_StationList.csv", f"RAWS SIGs/SACC/SACC_StationList.csv")
+
+    if os.path.exists(f"RAWS SIGs/EACC/EACC_StationList.csv"):
+        pass
+    else:
+        urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/EACC_StationList.csv", f"EACC_StationList.csv")
+        os.replace(f"EACC_StationList.csv", f"RAWS SIGs/EACC/EACC_StationList.csv")
+
+    if os.path.exists(f"RAWS SIGs/GBCC/GBCC_StationList.csv"):
+        pass
+    else:
+        urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/GBCC_StationList.csv", f"GBCC_StationList.csv")
+        os.replace(f"GBCC_StationList.csv", f"RAWS SIGs/GBCC/GBCC_StationList.csv")
 
 check_folders()
 get_raws_sig_info()
@@ -147,6 +165,15 @@ def get_stats(gacc_region):
 
     if gacc_region == 'ONCC':
         folder_abbrev = f"NC"
+
+    if gacc_region == 'SACC':
+        folder_abbrev = f"SA"
+
+    if gacc_region == 'EACC':
+        folder_abbrev = f"EA"
+
+    if gacc_region == 'GBCC':
+        folder_abbrev = f"GB"
     
     a = 1
     for i in range(0, len(os.listdir(f"FEMS Data/Stations/{gacc_region}"))):
@@ -233,6 +260,15 @@ def get_psa_percentiles(gacc_region):
 
     if gacc_region == 'ONCC':
         folder_abbrev = f"NC"
+
+    if gacc_region == 'SACC':
+        folder_abbrev = f"SA"
+
+    if gacc_region == 'EACC':
+        folder_abbrev = f"EA"
+
+    if gacc_region == 'GBCC':
+        folder_abbrev = f"GB"
     
     a = 1
     for i in range(0, len(os.listdir(f"FEMS Data/Stations/{gacc_region}"))):
@@ -551,6 +587,15 @@ def station_stats(gacc_region):
 
     if gacc_region == 'ONCC':
         folder_abbrev = f"NC"
+
+    if gacc_region == 'SACC':
+        folder_abbrev = f"SA"
+
+    if gacc_region == 'EACC':
+        folder_abbrev = f"EA"
+
+    if gacc_region == 'GBCC':
+        folder_abbrev = f"GB"
     
     a = 1
     for i in range(0, len(os.listdir(f"FEMS Data/Stations/{gacc_region}"))):
@@ -652,6 +697,15 @@ def station_forecast(gacc_region):
 
     if gacc_region == 'ONCC':
         folder_abbrev = f"NC"
+
+    if gacc_region == 'SACC':
+        folder_abbrev = f"SA"
+
+    if gacc_region == 'EACC':
+        folder_abbrev = f"EA"
+
+    if gacc_region == 'GBCC':
+        folder_abbrev = f"GB"
     
     a = 1
     for i in range(0, len(os.listdir(f"FEMS Data/Forecasts/{gacc_region}"))):
@@ -781,147 +835,153 @@ def sort_data_by_psa(gacc_region):
         ic_max = []
         ic_min = []
         ic_mean = []
-    
-        d = pd.read_csv(f"{paths[p]}/{files[0]}")
-        dates.append(d['dates'])
-        
-        for i in range(0, len(files)):
-            try:
-                df = pd.read_csv(f"{paths[p]}/{files[i]}")
-                f100.append(df['f100'])
-                f1000.append(df['f1000'])
-                erc.append(df['erc'])
-                bi.append(df['bi'])
-                sc.append(df['sc'])
-                ic.append(df['ic'])
-            except Exception as e:
-                pass
-                         
+
+        try:
+            d = pd.read_csv(f"{paths[p]}/{files[0]}")
+            dates.append(d['dates'])
             
-        try:
-            df_dates = pd.DataFrame(dates)
-            df_dates = df_dates.transpose()
-        except Exception as e:
-            pass    
-    
-        try:
-            df_100 = pd.DataFrame(f100)
-            df_100 = df_100.transpose()
-            for i in range(0, len(df_100)):
-                mean_100 = df_100.iloc[i].mean()
-                maxima_100 = df_100.iloc[i].max()
-                minima_100 = df_100.iloc[i].min()
-                f100_mean.append(mean_100)
-                f100_max.append(maxima_100)
-                f100_min.append(minima_100)
-        except Exception as e:
-            pass    
-    
-        try:
-            df_1000 = pd.DataFrame(f1000)
-            df_1000 = df_1000.transpose()
-            for i in range(0, len(df_1000)):
-                mean_1000 = df_1000.iloc[i].mean()
-                maxima_1000 = df_1000.iloc[i].max()
-                minima_1000 = df_1000.iloc[i].min()
-                f1000_mean.append(mean_1000)
-                f1000_max.append(maxima_1000)
-                f1000_min.append(minima_1000)
-        except Exception as e:
-            pass  
-    
-        try:
-            df_erc = pd.DataFrame(erc)
-            df_erc = df_erc.transpose()
-            for i in range(0, len(df_erc)):
-                mean_erc = df_erc.iloc[i].mean()
-                maxima_erc = df_erc.iloc[i].max()
-                minima_erc = df_erc.iloc[i].min()
-                erc_mean.append(mean_erc)
-                erc_max.append(maxima_erc)
-                erc_min.append(minima_erc)
-        except Exception as e:
-            pass  
-    
-        try:
-            df_bi = pd.DataFrame(bi)
-            df_bi = df_bi.transpose()
-            for i in range(0, len(df_bi)):
-                mean_bi = df_bi.iloc[i].mean()
-                maxima_bi = df_bi.iloc[i].max()
-                minima_bi = df_bi.iloc[i].min()
-                bi_mean.append(mean_bi)
-                bi_max.append(maxima_bi)
-                bi_min.append(minima_bi)
-        except Exception as e:
-            pass  
-    
-        try:
-            df_sc = pd.DataFrame(sc)
-            df_sc = df_sc.transpose()
-            for i in range(0, len(df_sc)):
-                mean_sc = df_sc.iloc[i].mean()
-                maxima_sc = df_sc.iloc[i].max()
-                minima_sc = df_sc.iloc[i].min()
-                sc_mean.append(mean_sc)
-                sc_max.append(maxima_sc)
-                sc_min.append(minima_sc)
-        except Exception as e:
-            pass  
-
-        try:
-            df_ic = pd.DataFrame(ic)
-            df_ic = df_ic.transpose()
-            for i in range(0, len(df_ic)):
-                mean_ic = df_ic.iloc[i].mean()
-                maxima_ic = df_ic.iloc[i].max()
-                minima_ic = df_ic.iloc[i].min()
-                ic_mean.append(mean_ic)
-                ic_max.append(maxima_ic)
-                ic_min.append(minima_ic)
-        except Exception as e:
-            pass  
-    
-        main = pd.DataFrame()
+            for i in range(0, len(files)):
+                try:
+                    df = pd.read_csv(f"{paths[p]}/{files[i]}")
+                    f100.append(df['f100'])
+                    f1000.append(df['f1000'])
+                    erc.append(df['erc'])
+                    bi.append(df['bi'])
+                    sc.append(df['sc'])
+                    ic.append(df['ic'])
+                except Exception as e:
+                    pass
+                             
+                
+            try:
+                df_dates = pd.DataFrame(dates)
+                df_dates = df_dates.transpose()
+            except Exception as e:
+                pass    
         
-        main['dates'] = df_dates
-        main['dates'] = pd.to_datetime(main['dates'])
-        main['julian_date'] = main['dates'].dt.dayofyear
+            try:
+                df_100 = pd.DataFrame(f100)
+                df_100 = df_100.transpose()
+                for i in range(0, len(df_100)):
+                    mean_100 = df_100.iloc[i].mean()
+                    maxima_100 = df_100.iloc[i].max()
+                    minima_100 = df_100.iloc[i].min()
+                    f100_mean.append(mean_100)
+                    f100_max.append(maxima_100)
+                    f100_min.append(minima_100)
+            except Exception as e:
+                pass    
         
-        main['f100_mean'] = f100_mean
-        main['f100_max'] = f100_max
-        main['f100_min'] = f100_min
+            try:
+                df_1000 = pd.DataFrame(f1000)
+                df_1000 = df_1000.transpose()
+                for i in range(0, len(df_1000)):
+                    mean_1000 = df_1000.iloc[i].mean()
+                    maxima_1000 = df_1000.iloc[i].max()
+                    minima_1000 = df_1000.iloc[i].min()
+                    f1000_mean.append(mean_1000)
+                    f1000_max.append(maxima_1000)
+                    f1000_min.append(minima_1000)
+            except Exception as e:
+                pass  
         
-        main['f1000_mean'] = f1000_mean
-        main['f1000_max'] = f1000_max
-        main['f1000_min'] = f1000_min
+            try:
+                df_erc = pd.DataFrame(erc)
+                df_erc = df_erc.transpose()
+                for i in range(0, len(df_erc)):
+                    mean_erc = df_erc.iloc[i].mean()
+                    maxima_erc = df_erc.iloc[i].max()
+                    minima_erc = df_erc.iloc[i].min()
+                    erc_mean.append(mean_erc)
+                    erc_max.append(maxima_erc)
+                    erc_min.append(minima_erc)
+            except Exception as e:
+                pass  
         
-        main['erc_mean'] = erc_mean
-        main['erc_max'] = erc_max
-        main['erc_min'] = erc_min
+            try:
+                df_bi = pd.DataFrame(bi)
+                df_bi = df_bi.transpose()
+                for i in range(0, len(df_bi)):
+                    mean_bi = df_bi.iloc[i].mean()
+                    maxima_bi = df_bi.iloc[i].max()
+                    minima_bi = df_bi.iloc[i].min()
+                    bi_mean.append(mean_bi)
+                    bi_max.append(maxima_bi)
+                    bi_min.append(minima_bi)
+            except Exception as e:
+                pass  
         
-        main['bi_mean'] = bi_mean
-        main['bi_max'] = bi_max
-        main['bi_min'] = bi_min
-        
-        main['sc_mean'] = sc_mean
-        main['sc_max'] = sc_max
-        main['sc_min'] = sc_min
-
-        main['ic_mean'] = ic_mean
-        main['ic_max'] = ic_max
-        main['ic_min'] = ic_min
+            try:
+                df_sc = pd.DataFrame(sc)
+                df_sc = df_sc.transpose()
+                for i in range(0, len(df_sc)):
+                    mean_sc = df_sc.iloc[i].mean()
+                    maxima_sc = df_sc.iloc[i].max()
+                    minima_sc = df_sc.iloc[i].min()
+                    sc_mean.append(mean_sc)
+                    sc_max.append(maxima_sc)
+                    sc_min.append(minima_sc)
+            except Exception as e:
+                pass  
     
-        if os.path.exists(f"FEMS Data/{gacc_region}/PSA Data"):
-            pass
-        else:
-            os.mkdir(f"FEMS Data/{gacc_region}/PSA Data")
+            try:
+                df_ic = pd.DataFrame(ic)
+                df_ic = df_ic.transpose()
+                for i in range(0, len(df_ic)):
+                    mean_ic = df_ic.iloc[i].mean()
+                    maxima_ic = df_ic.iloc[i].max()
+                    minima_ic = df_ic.iloc[i].min()
+                    ic_mean.append(mean_ic)
+                    ic_max.append(maxima_ic)
+                    ic_min.append(minima_ic)
+            except Exception as e:
+                pass  
         
-        fname = f"zone_{psa}.csv"
-        main.to_csv(fname, index=False)
-        os.replace(f"{fname}", f"FEMS Data/{gacc_region}/PSA Data/{fname}")
-        psa = psa + 1
-
+            main = pd.DataFrame()
+            
+            main['dates'] = df_dates
+            main['dates'] = pd.to_datetime(main['dates'])
+            main['julian_date'] = main['dates'].dt.dayofyear
+            
+            main['f100_mean'] = f100_mean
+            main['f100_max'] = f100_max
+            main['f100_min'] = f100_min
+            
+            main['f1000_mean'] = f1000_mean
+            main['f1000_max'] = f1000_max
+            main['f1000_min'] = f1000_min
+            
+            main['erc_mean'] = erc_mean
+            main['erc_max'] = erc_max
+            main['erc_min'] = erc_min
+            
+            main['bi_mean'] = bi_mean
+            main['bi_max'] = bi_max
+            main['bi_min'] = bi_min
+            
+            main['sc_mean'] = sc_mean
+            main['sc_max'] = sc_max
+            main['sc_min'] = sc_min
+    
+            main['ic_mean'] = ic_mean
+            main['ic_max'] = ic_max
+            main['ic_min'] = ic_min
+        
+            if os.path.exists(f"FEMS Data/{gacc_region}/PSA Data"):
+                pass
+            else:
+                os.mkdir(f"FEMS Data/{gacc_region}/PSA Data")
+            
+            fname = f"zone_{psa}.csv"
+            main.to_csv(fname, index=False)
+            os.replace(f"{fname}", f"FEMS Data/{gacc_region}/PSA Data/{fname}")
+            psa = psa + 1
+        except Exception as e:
+            main = pd.DataFrame()
+            fname = f"zone_{psa}.csv"
+            main.to_csv(fname, index=False)
+            os.replace(f"{fname}", f"FEMS Data/{gacc_region}/PSA Data/{fname}")
+            psa = psa + 1
 
 def sort_forecasts_by_psa(gacc_region):
 
@@ -976,146 +1036,161 @@ def sort_forecasts_by_psa(gacc_region):
         ic_max = []
         ic_min = []
         ic_mean = []
-    
-        d = pd.read_csv(f"{paths[p]}/{files[0]}")
-        dates.append(d['dates'])
-        
-        for i in range(0, len(files)):
+
+        try:
+            d = pd.read_csv(f"{paths[p]}/{files[0]}")
+            dates.append(d['dates'])
+            no_data = False
+        except Exception as e:
+            no_data = True
+
+        if no_data == False:    
+            for i in range(0, len(files)):
+                try:
+                    df = pd.read_csv(f"{paths[p]}/{files[i]}")
+                    f100.append(df['f100'])
+                    f1000.append(df['f1000'])
+                    erc.append(df['erc'])
+                    bi.append(df['bi'])
+                    sc.append(df['sc'])
+                    ic.append(df['ic'])
+                except Exception as e:
+                    pass
+                             
+                
             try:
-                df = pd.read_csv(f"{paths[p]}/{files[i]}")
-                f100.append(df['f100'])
-                f1000.append(df['f1000'])
-                erc.append(df['erc'])
-                bi.append(df['bi'])
-                sc.append(df['sc'])
-                ic.append(df['ic'])
+                df_dates = pd.DataFrame(dates)
+                df_dates = df_dates.transpose()
             except Exception as e:
-                pass
-                         
+                pass    
+        
+            try:
+                df_100 = pd.DataFrame(f100)
+                df_100 = df_100.transpose()
+                for i in range(0, len(df_100)):
+                    mean_100 = df_100.iloc[i].mean()
+                    maxima_100 = df_100.iloc[i].max()
+                    minima_100 = df_100.iloc[i].min()
+                    f100_mean.append(mean_100)
+                    f100_max.append(maxima_100)
+                    f100_min.append(minima_100)
+            except Exception as e:
+                pass    
+        
+            try:
+                df_1000 = pd.DataFrame(f1000)
+                df_1000 = df_1000.transpose()
+                for i in range(0, len(df_1000)):
+                    mean_1000 = df_1000.iloc[i].mean()
+                    maxima_1000 = df_1000.iloc[i].max()
+                    minima_1000 = df_1000.iloc[i].min()
+                    f1000_mean.append(mean_1000)
+                    f1000_max.append(maxima_1000)
+                    f1000_min.append(minima_1000)
+            except Exception as e:
+                pass  
+        
+            try:
+                df_erc = pd.DataFrame(erc)
+                df_erc = df_erc.transpose()
+                for i in range(0, len(df_erc)):
+                    mean_erc = df_erc.iloc[i].mean()
+                    maxima_erc = df_erc.iloc[i].max()
+                    minima_erc = df_erc.iloc[i].min()
+                    erc_mean.append(mean_erc)
+                    erc_max.append(maxima_erc)
+                    erc_min.append(minima_erc)
+            except Exception as e:
+                pass  
+        
+            try:
+                df_bi = pd.DataFrame(bi)
+                df_bi = df_bi.transpose()
+                for i in range(0, len(df_bi)):
+                    mean_bi = df_bi.iloc[i].mean()
+                    maxima_bi = df_bi.iloc[i].max()
+                    minima_bi = df_bi.iloc[i].min()
+                    bi_mean.append(mean_bi)
+                    bi_max.append(maxima_bi)
+                    bi_min.append(minima_bi)
+            except Exception as e:
+                pass  
+        
+            try:
+                df_sc = pd.DataFrame(sc)
+                df_sc = df_sc.transpose()
+                for i in range(0, len(df_sc)):
+                    mean_sc = df_sc.iloc[i].mean()
+                    maxima_sc = df_sc.iloc[i].max()
+                    minima_sc = df_sc.iloc[i].min()
+                    sc_mean.append(mean_sc)
+                    sc_max.append(maxima_sc)
+                    sc_min.append(minima_sc)
+            except Exception as e:
+                pass  
+    
+            try:
+                df_ic = pd.DataFrame(ic)
+                df_ic = df_ic.transpose()
+                for i in range(0, len(df_ic)):
+                    mean_ic = df_ic.iloc[i].mean()
+                    maxima_ic = df_ic.iloc[i].max()
+                    minima_ic = df_ic.iloc[i].min()
+                    ic_mean.append(mean_ic)
+                    ic_max.append(maxima_ic)
+                    ic_min.append(minima_ic)
+            except Exception as e:
+                pass  
+        
+            main = pd.DataFrame()
             
-        try:
-            df_dates = pd.DataFrame(dates)
-            df_dates = df_dates.transpose()
-        except Exception as e:
-            pass    
+            main['dates'] = df_dates
+            main['dates'] = pd.to_datetime(main['dates'])
+            main['julian_date'] = main['dates'].dt.dayofyear
+            
+            main['f100_mean'] = f100_mean
+            main['f100_max'] = f100_max
+            main['f100_min'] = f100_min
+            
+            main['f1000_mean'] = f1000_mean
+            main['f1000_max'] = f1000_max
+            main['f1000_min'] = f1000_min
+            
+            main['erc_mean'] = erc_mean
+            main['erc_max'] = erc_max
+            main['erc_min'] = erc_min
+            
+            main['bi_mean'] = bi_mean
+            main['bi_max'] = bi_max
+            main['bi_min'] = bi_min
+            
+            main['sc_mean'] = sc_mean
+            main['sc_max'] = sc_max
+            main['sc_min'] = sc_min
     
-        try:
-            df_100 = pd.DataFrame(f100)
-            df_100 = df_100.transpose()
-            for i in range(0, len(df_100)):
-                mean_100 = df_100.iloc[i].mean()
-                maxima_100 = df_100.iloc[i].max()
-                minima_100 = df_100.iloc[i].min()
-                f100_mean.append(mean_100)
-                f100_max.append(maxima_100)
-                f100_min.append(minima_100)
-        except Exception as e:
-            pass    
-    
-        try:
-            df_1000 = pd.DataFrame(f1000)
-            df_1000 = df_1000.transpose()
-            for i in range(0, len(df_1000)):
-                mean_1000 = df_1000.iloc[i].mean()
-                maxima_1000 = df_1000.iloc[i].max()
-                minima_1000 = df_1000.iloc[i].min()
-                f1000_mean.append(mean_1000)
-                f1000_max.append(maxima_1000)
-                f1000_min.append(minima_1000)
-        except Exception as e:
-            pass  
-    
-        try:
-            df_erc = pd.DataFrame(erc)
-            df_erc = df_erc.transpose()
-            for i in range(0, len(df_erc)):
-                mean_erc = df_erc.iloc[i].mean()
-                maxima_erc = df_erc.iloc[i].max()
-                minima_erc = df_erc.iloc[i].min()
-                erc_mean.append(mean_erc)
-                erc_max.append(maxima_erc)
-                erc_min.append(minima_erc)
-        except Exception as e:
-            pass  
-    
-        try:
-            df_bi = pd.DataFrame(bi)
-            df_bi = df_bi.transpose()
-            for i in range(0, len(df_bi)):
-                mean_bi = df_bi.iloc[i].mean()
-                maxima_bi = df_bi.iloc[i].max()
-                minima_bi = df_bi.iloc[i].min()
-                bi_mean.append(mean_bi)
-                bi_max.append(maxima_bi)
-                bi_min.append(minima_bi)
-        except Exception as e:
-            pass  
-    
-        try:
-            df_sc = pd.DataFrame(sc)
-            df_sc = df_sc.transpose()
-            for i in range(0, len(df_sc)):
-                mean_sc = df_sc.iloc[i].mean()
-                maxima_sc = df_sc.iloc[i].max()
-                minima_sc = df_sc.iloc[i].min()
-                sc_mean.append(mean_sc)
-                sc_max.append(maxima_sc)
-                sc_min.append(minima_sc)
-        except Exception as e:
-            pass  
-
-        try:
-            df_ic = pd.DataFrame(ic)
-            df_ic = df_ic.transpose()
-            for i in range(0, len(df_ic)):
-                mean_ic = df_ic.iloc[i].mean()
-                maxima_ic = df_ic.iloc[i].max()
-                minima_ic = df_ic.iloc[i].min()
-                ic_mean.append(mean_ic)
-                ic_max.append(maxima_ic)
-                ic_min.append(minima_ic)
-        except Exception as e:
-            pass  
-    
-        main = pd.DataFrame()
+            main['ic_mean'] = ic_mean
+            main['ic_max'] = ic_max
+            main['ic_min'] = ic_min
         
-        main['dates'] = df_dates
-        main['dates'] = pd.to_datetime(main['dates'])
-        main['julian_date'] = main['dates'].dt.dayofyear
-        
-        main['f100_mean'] = f100_mean
-        main['f100_max'] = f100_max
-        main['f100_min'] = f100_min
-        
-        main['f1000_mean'] = f1000_mean
-        main['f1000_max'] = f1000_max
-        main['f1000_min'] = f1000_min
-        
-        main['erc_mean'] = erc_mean
-        main['erc_max'] = erc_max
-        main['erc_min'] = erc_min
-        
-        main['bi_mean'] = bi_mean
-        main['bi_max'] = bi_max
-        main['bi_min'] = bi_min
-        
-        main['sc_mean'] = sc_mean
-        main['sc_max'] = sc_max
-        main['sc_min'] = sc_min
-
-        main['ic_mean'] = ic_mean
-        main['ic_max'] = ic_max
-        main['ic_min'] = ic_min
-    
-        if os.path.exists(f"FEMS Data/{gacc_region}/PSA Forecast"):
-            pass
+            if os.path.exists(f"FEMS Data/{gacc_region}/PSA Forecast"):
+                pass
+            else:
+                os.mkdir(f"FEMS Data/{gacc_region}/PSA Forecast")
+            
+            fname = f"zone_{psa}.csv"
+            main.to_csv(fname, index=False)
+            os.replace(f"{fname}", f"FEMS Data/{gacc_region}/PSA Forecast/{fname}")
+            psa = psa + 1
         else:
-            os.mkdir(f"FEMS Data/{gacc_region}/PSA Forecast")
-        
-        fname = f"zone_{psa}.csv"
-        main.to_csv(fname, index=False)
-        os.replace(f"{fname}", f"FEMS Data/{gacc_region}/PSA Forecast/{fname}")
-        psa = psa + 1
+            if os.path.exists(f"FEMS Data/{gacc_region}/PSA Forecast"):
+                pass
+            else:
+                os.mkdir(f"FEMS Data/{gacc_region}/PSA Forecast")
+            main = pd.DataFrame()
+            fname = f"zone_{psa}.csv"
+            main.to_csv(fname, index=False)
+            os.replace(f"{fname}", f"FEMS Data/{gacc_region}/PSA Forecast/{fname}")
+            psa = psa + 1
 
 def get_psa_climatology(gacc_region):
     
