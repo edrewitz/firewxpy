@@ -25,6 +25,254 @@ mpl.rcParams['ytick.labelsize'] = 9
 
 plt.style.use("ggplot")
 
+def get_psa_ids(gacc_region):
+
+    gacc_region = gacc_region.upper()
+
+    if gacc_region == "SACC":
+        psaIDs = ["1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9",
+                  "10",
+                  "11",
+                  "12",
+                  "13",
+                  "14",
+                  "15",
+                  "16",
+                  "17A",
+                  "17B",
+                  "18",
+                  "19",
+                  "20",
+                  "21A",
+                  "21B",
+                  "21C",
+                  "22A",
+                  "22B",
+                  "23",
+                  "24",
+                  "25",
+                  "25B",
+                  "26",
+                  "27",
+                  "28A",
+                  "28B",
+                  "29",
+                  "30",
+                  "31A",
+                  "31B",
+                  "31C",
+                  "32",
+                  "33",
+                  "34",
+                  "35",
+                  "36",
+                  "37",
+                  "38",
+                  "39",
+                  "40",
+                  "41",
+                  "42",
+                  "46",
+                  "47",
+                  "48",
+                  "49",
+                  "50",
+                  "52"
+                 ]
+
+    if gacc_region == 'ONCC':
+        psaIDs = ["1",
+                  "2",
+                  "3A",
+                  "3B",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8"
+                 ]
+
+    if gacc_region == "OSCC":
+        psaIDs = ["1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9",
+                  "10",
+                  "11",
+                  "12",
+                  "13",
+                  "14",
+                  "15",
+                  "16"
+                 ]
+
+    if gacc_region == "GBCC":
+        psaIDs = ["1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9",
+                  "10",
+                  "11",
+                  "12",
+                  "13",
+                  "14",
+                  "15",
+                  "16",
+                  "17",
+                  "18",
+                  "19",
+                  "20",
+                  "21",
+                  "22",
+                  "23",
+                  "24",
+                  "25",
+                  "26",
+                  "27",
+                  "28",
+                  "29",
+                  "30",
+                  "31",
+                  "32",
+                  "33",
+                  "34",
+                  "35"                  
+                 ]
+
+    if gacc_region == "EACC":
+        psaIDs = ["1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9",
+                  "10",
+                  "11",
+                  "12",
+                  "13",
+                  "14",
+                  "15",
+                  "16",
+                  "17",
+                  "18",
+                  "19",
+                  "20",
+                  "21",
+                  "22",
+                  "23",
+                  "24"
+                 ]
+
+
+    if gacc_region == "NRCC":
+        psaIDs = ["1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9",
+                  "10",
+                  "11",
+                  "12",
+                  "13",
+                  "14",
+                  "15",
+                  "16",
+                  "17",
+                  "18"
+                 ]
+
+    if gacc_region == "NWCC":
+        psaIDs = ["1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9",
+                  "10",
+                  "11",
+                  "12"
+                 ]
+
+    if gacc_region == "RMCC":
+        psaIDs = ["1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6",
+                  "7",
+                  "8",
+                  "9",
+                  "10",
+                  "11",
+                  "12",
+                  "13",
+                  "14",
+                  "15",
+                  "16",
+                  "17",
+                  "18",
+                  "19",
+                  "20",
+                  "21",
+                  "22",
+                  "23",
+                  "24",
+                  "25",
+                  "26",
+                  "27",
+                  "28"
+                 ]
+
+    if gacc_region == "SWCC":
+        psaIDs = ["1",
+                  "2",
+                  "3",
+                  "4",
+                  "5",
+                  "6N",
+                  "6S",
+                  "7",
+                  "8",
+                  "9",
+                  "10",
+                  "11",
+                  "12",
+                  "13",
+                  "14N"
+                 ]
+                  
+    return psaIDs                 
+    
+
 def create_psa_100hr_fuels_charts(gacc_region, number_of_years_for_averages=15, fuel_model='Y', start_date=None, data=False):
     
     gacc_region = gacc_region.upper()
@@ -86,33 +334,30 @@ def create_psa_100hr_fuels_charts(gacc_region, number_of_years_for_averages=15, 
 
     files = os.listdir(f"{data_dir}")
     psa = 1
+
+    psa_IDs = get_psa_ids(gacc_region)              
+              
+              
     for i in range(0, len(files)):
 
-        if gacc_region == 'ONCC':
-            if i == 2:
-                fname = f"PSA 3A.png"
-                psaID = "3A"
-            if i == 3:
-                fname = f"PSA 3B.png"
-                psaID = "3B"
-            else:
-                if i < 2:
-                    psaID = psa
-                    fname = f"PSA {psaID}.png"
-                if i > 3:
-                    psaID = psa - 1
-                    fname = f"PSA {psaID}.png"
-            
-        else:
-            fname = f"PSA {psa}.png"
-            psaID = psa
+        fname = f"{psa_IDs[i]}.png"
+        psaID = psa_IDs[i]
 
-        df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
-        df_forecast = pd.read_csv(f"{forecast_dir}/zone_{psa}.csv") 
-        df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
-        df_climo_min = pd.read_csv(f"{climo_min_dir}/zone_{psa}.csv") 
+        try:
+            df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
+            try:
+                df_forecast = pd.read_csv(f"{forecast_dir}/zone_{psa}.csv") 
+            except Exception as e:
+                pass
+            df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
+            df_climo_min = pd.read_csv(f"{climo_min_dir}/zone_{psa}.csv") 
+        except Exception as e:
+            pass
 
-        dates = pd.to_datetime(df_data['dates'])
+        try:
+            dates = pd.to_datetime(df_data['dates'])
+        except Exception as e:
+            pass
 
         fig = plt.figure(figsize=(12,12))
 
@@ -130,31 +375,50 @@ def create_psa_100hr_fuels_charts(gacc_region, number_of_years_for_averages=15, 
             jmax = 365
         
         ax.set_xlim(0, jmax)
-        ax.set_ylim(0, 30)
-        
-        ax.hlines(percentiles['100hr_DFM_3_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', alpha=0.5, zorder=2, label=f"3RD PERCENTILE")
-        ax.hlines(percentiles['100hr_DFM_10_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='--', alpha=0.5, zorder=2, label=f"10TH PERCENTILE")
-        ax.hlines(percentiles['100hr_DFM_20_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-.', alpha=0.5, zorder=2, label=f"20TH PERCENTILE")
-        ax.hlines(percentiles['100hr_DFM_40_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle=':', alpha=0.5, zorder=2, label=f"40TH PERCENTILE")
-
-        ax.axhspan(0, percentiles['100hr_DFM_3_percentile'].iloc[i], color='saddlebrown', alpha=0.2, label=f"0TH-3RD PERCENTILE")
-        ax.axhspan(percentiles['100hr_DFM_3_percentile'].iloc[i], percentiles['100hr_DFM_10_percentile'].iloc[i], color='peru', alpha=0.2, label=f"3RD-10TH PERCENTILE")
-        ax.axhspan(percentiles['100hr_DFM_10_percentile'].iloc[i], percentiles['100hr_DFM_20_percentile'].iloc[i], color='orange', alpha=0.2, label=f"10TH-20TH PERCENTILE")
-        ax.axhspan(percentiles['100hr_DFM_20_percentile'].iloc[i], percentiles['100hr_DFM_40_percentile'].iloc[i], color='gold', alpha=0.2, label=f"20TH-40TH PERCENTILE")
-        ax.axhspan(percentiles['100hr_DFM_40_percentile'].iloc[i], 30, color='lime', alpha=0.2, label=f"40TH-100TH PERCENTILE")
-
-        ax.plot(df_data['julian_date'], df_data['f100_mean'], color='blue', alpha=1, label=f"OBSERVED")
-        ax.plot(df_climo_avg['julian_date'], df_climo_avg['f100_avg'], color='gray', alpha=1, label=f"AVERAGE")
-        ax.plot(df_climo_min['julian_date'], df_climo_min['f100_min'], color='red', alpha=1, label=f"MAX")
 
         try:
-           ax.plot([df_data['julian_date'].iloc[-1], df_forecast['julian_date'].iloc[0]], [df_data['f100_mean'].iloc[-1], df_forecast['f100_mean'].iloc[0]], color='green', alpha=1)  
-           ax.plot(df_forecast['julian_date'], df_forecast['f100_mean'], color='green', alpha=1, label=f"FORECAST") 
+            data_max = np.nanmax(df_data['f100_mean'])
+            try:
+                forecast_max = np.nanmax(df_forecast['f100_mean'])
+                if data_max >= forecast_max:
+                    max_bound = data_max
+                else:
+                    max_bound = forecast_max
+            except Exception as e:
+                max_bound = data_max
+    
+            max_bound = max_bound + 10
+        except Exception as e:
+            max_bound = 30
+            
+        ax.set_ylim(0, max_bound)
+
+        try:
+            ax.hlines(percentiles['100hr_DFM_3_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', alpha=0.5, zorder=2, label=f"3RD PERCENTILE")
+            ax.hlines(percentiles['100hr_DFM_10_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='--', alpha=0.5, zorder=2, label=f"10TH PERCENTILE")
+            ax.hlines(percentiles['100hr_DFM_20_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-.', alpha=0.5, zorder=2, label=f"20TH PERCENTILE")
+            ax.hlines(percentiles['100hr_DFM_40_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle=':', alpha=0.5, zorder=2, label=f"40TH PERCENTILE")
+    
+            ax.axhspan(0, percentiles['100hr_DFM_3_percentile'].iloc[i], color='saddlebrown', alpha=0.2, label=f"0TH-3RD PERCENTILE")
+            ax.axhspan(percentiles['100hr_DFM_3_percentile'].iloc[i], percentiles['100hr_DFM_10_percentile'].iloc[i], color='peru', alpha=0.2, label=f"3RD-10TH PERCENTILE")
+            ax.axhspan(percentiles['100hr_DFM_10_percentile'].iloc[i], percentiles['100hr_DFM_20_percentile'].iloc[i], color='orange', alpha=0.2, label=f"10TH-20TH PERCENTILE")
+            ax.axhspan(percentiles['100hr_DFM_20_percentile'].iloc[i], percentiles['100hr_DFM_40_percentile'].iloc[i], color='gold', alpha=0.2, label=f"20TH-40TH PERCENTILE")
+            ax.axhspan(percentiles['100hr_DFM_40_percentile'].iloc[i], max_bound, color='lime', alpha=0.2, label=f"40TH-100TH PERCENTILE")
+    
+            ax.plot(df_data['julian_date'], df_data['f100_mean'], color='blue', alpha=1, label=f"OBSERVED")
+            ax.plot(df_climo_avg['julian_date'], df_climo_avg['f100_avg'], color='gray', alpha=1, label=f"AVERAGE")
+            ax.plot(df_climo_min['julian_date'], df_climo_min['f100_min'], color='red', alpha=1, label=f"MAX")
+    
+            try:
+               ax.plot([df_data['julian_date'].iloc[-1], df_forecast['julian_date'].iloc[0]], [df_data['f100_mean'].iloc[-1], df_forecast['f100_mean'].iloc[0]], color='green', alpha=1)  
+               ax.plot(df_forecast['julian_date'], df_forecast['f100_mean'], color='green', alpha=1, label=f"FORECAST") 
+            except Exception as e:
+                pass
+    
+            
+            plt.legend(loc="upper left", fontsize="xx-small")
         except Exception as e:
             pass
-
-        
-        plt.legend(loc="upper left", fontsize="xx-small")
 
         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
         psa = psa + 1
@@ -186,7 +450,10 @@ def create_psa_1000hr_fuels_charts(gacc_region, number_of_years_for_averages=15,
     percentiles_dir = f"FEMS Data/{gacc_region}/PSA Percentiles"
     climo_avg_dir = f"FEMS Data/{gacc_region}/PSA Climo/AVG"
     climo_min_dir = f"FEMS Data/{gacc_region}/PSA Climo/MIN"
-    forecast_dir = f"FEMS Data/{gacc_region}/PSA Forecast"
+    try:
+        df_forecast = pd.read_csv(f"{forecast_dir}/zone_{psa}.csv") 
+    except Exception as e:
+        pass
 
     percentiles = pd.read_csv(f"FEMS Data/{gacc_region}/PSA Percentiles/PSA_Percentiles.csv")
 
@@ -225,10 +492,96 @@ def create_psa_1000hr_fuels_charts(gacc_region, number_of_years_for_averages=15,
     psa = 1
     for i in range(0, len(files)):
 
-        fname = f"PSA {psa}.png"
+        if gacc_region == 'SACC':
+            if i < 16:
+                psaID = psa
+                fname = f"PSA {psaID}.png"
+            if i == 16:
+                fname = f"PSA 17A.png"
+                psaID = "17A"
+            if i == 17:
+                fname = f"PSA 17B.png"
+                psaID = "17B"
+            if i > 17 and i < 21:
+                psaID = psa - 1
+                fname = f"PSA {psaID}.png"
+            if i == 21:
+                fname = f"PSA 21A.png"
+                psaID = "21A"
+            if i == 22:
+                fname = f"PSA 21B.png"
+                psaID = "21B"      
+            if i == 23:
+                fname = f"PSA 21C.png"
+                psaID = "21C"  
+            if i == 24:
+                fname = f"PSA 22A.png"
+                psaID = "22A" 
+            if i == 25:
+                fname = f"PSA 22B.png"
+                psaID = "22B"  
+            if i > 25 and i < 29:
+                psaID = psa - 4
+                fname = f"PSA {psaID}.png"
+            if i == 29:
+                fname = f"PSA 25B.png"
+                psaID = "25B"
+            if i > 29 and i < 32:
+                psaID = psa - 5
+                fname = f"PSA {psaID}.png"
+            if i == 32:
+                fname = f"PSA 28A.png"
+                psaID = "28A"
+            if i == 33:
+                fname = f"PSA 28B.png"
+                psaID = "28B"
+            if i > 33 and i < 36:
+                psaID = psa - 6
+                fname = f"PSA {psaID}.png"
+            if i == 36:
+                fname = f"PSA 31A.png"
+                psaID = "31A"
+            if i == 37:
+                fname = f"PSA 31B.png"
+                psaID = "31B"
+            if i == 38:
+                fname = f"PSA 31C.png"
+                psaID = "31C"
+            if i > 38 and i < 50:
+                psaID = psa - 8
+                fname = f"PSA {psaID}.png"
+            if i >= 50 and i < 55:
+                psaID = psa - 5
+                fname = f"PSA {psaID}.png"
+            if i == 55:
+                psaID = psa - 4
+                fname = f"PSA {psaID}.png"
+                
+
+        if gacc_region == 'ONCC':
+            if i == 2:
+                fname = f"PSA 3A.png"
+                psaID = "3A"
+            if i == 3:
+                fname = f"PSA 3B.png"
+                psaID = "3B"
+            else:
+                if i < 2:
+                    psaID = psa
+                    fname = f"PSA {psaID}.png"
+                if i > 3:
+                    psaID = psa - 1
+                    fname = f"PSA {psaID}.png"
+            
+        else:
+            fname = f"PSA {psa}.png"
+            psaID = psa
 
         df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
-        df_forecast = pd.read_csv(f"{forecast_dir}/zone_{psa}.csv") 
+        try:
+            df_forecast = pd.read_csv(f"{forecast_dir}/zone_{psa}.csv") 
+        except Exception as e:
+            pass
         df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
         df_climo_min = pd.read_csv(f"{climo_min_dir}/zone_{psa}.csv") 
 
@@ -239,7 +592,7 @@ def create_psa_1000hr_fuels_charts(gacc_region, number_of_years_for_averages=15,
         ax = fig.add_subplot(1, 1, 1)
 
         ax.xaxis.set_major_formatter(md.DateFormatter('%m-%d'))
-        plt.title(f"{gacc_region} 1000-HR Dead Fuel Moisture: PSA {psa}", fontsize=12, fontweight='bold', loc='left')
+        plt.title(f"{gacc_region} 1000-HR Dead Fuel Moisture: PSA {psaID}", fontsize=12, fontweight='bold', loc='left')
         plt.title(f"Period Of Record: {start_year} - {utc_time.year}", fontsize=10, fontweight='bold', loc='right')
         ax.text(0.01, -0.05, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: USDA/FEMS", transform=ax.transAxes, fontsize=8, fontweight='bold', bbox=props)
         ax.text(0.405, 0.98, f"Valid Date: {dates.iloc[-1].strftime("%m/%d/%Y")}", transform=ax.transAxes, fontsize=8, color='white', fontweight='bold', bbox=date_box)
@@ -250,7 +603,20 @@ def create_psa_1000hr_fuels_charts(gacc_region, number_of_years_for_averages=15,
             jmax = 365
         
         ax.set_xlim(0, jmax)
-        ax.set_ylim(0, 30)
+        
+        data_max = np.nanmax(df_data['f1000_mean'])
+        try:
+            forecast_max = np.nanmax(df_forecast['f1000_mean'])
+            if data_max >= forecast_max:
+                max_bound = data_max
+            else:
+                max_bound = forecast_max
+        except Exception as e:
+            max_bound = data_max
+
+        max_bound = max_bound + 10
+            
+        ax.set_ylim(0, max_bound)
         
         ax.hlines(percentiles['1000hr_DFM_3_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='-', alpha=0.5, zorder=2, label=f"3RD PERCENTILE")
         ax.hlines(percentiles['1000hr_DFM_10_percentile'].iloc[i], xmin=0, xmax=jmax, color='black', linestyle='--', alpha=0.5, zorder=2, label=f"10TH PERCENTILE")
@@ -297,11 +663,14 @@ def create_psa_erc_fuels_charts(gacc_region, number_of_years_for_averages=15, fu
     get_stats(gacc_region)
     get_psa_climatology(gacc_region)
     sort_data_by_psa(gacc_region)
+    station_forecast(gacc_region)
+    sort_forecasts_by_psa(gacc_region)
 
     data_dir = f"FEMS Data/{gacc_region}/PSA Data"
     percentiles_dir = f"FEMS Data/{gacc_region}/PSA Percentiles"
     climo_avg_dir = f"FEMS Data/{gacc_region}/PSA Climo/AVG"
     climo_max_dir = f"FEMS Data/{gacc_region}/PSA Climo/MAX"
+    forecast_dir = f"FEMS Data/{gacc_region}/PSA Forecast"
 
     percentiles = pd.read_csv(f"FEMS Data/{gacc_region}/PSA Percentiles/PSA_Percentiles.csv")
 
@@ -343,6 +712,7 @@ def create_psa_erc_fuels_charts(gacc_region, number_of_years_for_averages=15, fu
         fname = f"PSA {psa}.png"
 
         df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
+        df_forecast = pd.read_csv(f"{forecast_dir}/zone_{psa}.csv") 
         df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
         df_climo_max = pd.read_csv(f"{climo_max_dir}/zone_{psa}.csv") 
 
@@ -384,6 +754,11 @@ def create_psa_erc_fuels_charts(gacc_region, number_of_years_for_averages=15, fu
         ax.plot(df_data['julian_date'], df_data['erc_mean'], color='blue', alpha=1, label=f"OBSERVED")
         ax.plot(df_climo_avg['julian_date'], df_climo_avg['erc_avg'], color='gray', alpha=1, label=f"AVERAGE")
         ax.plot(df_climo_max['julian_date'], df_climo_max['erc_max'], color='red', alpha=1, label=f"MAX")
+        try:
+           ax.plot([df_data['julian_date'].iloc[-1], df_forecast['julian_date'].iloc[0]], [df_data['erc_mean'].iloc[-1], df_forecast['erc_mean'].iloc[0]], color='green', alpha=1)  
+           ax.plot(df_forecast['julian_date'], df_forecast['erc_mean'], color='green', alpha=1, label=f"FORECAST") 
+        except Exception as e:
+            pass
         
         plt.legend(loc="upper left", fontsize="xx-small")
 
@@ -409,11 +784,14 @@ def create_psa_bi_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
     get_stats(gacc_region)
     get_psa_climatology(gacc_region)
     sort_data_by_psa(gacc_region)
+    station_forecast(gacc_region)
+    sort_forecasts_by_psa(gacc_region)
 
     data_dir = f"FEMS Data/{gacc_region}/PSA Data"
     percentiles_dir = f"FEMS Data/{gacc_region}/PSA Percentiles"
     climo_avg_dir = f"FEMS Data/{gacc_region}/PSA Climo/AVG"
     climo_max_dir = f"FEMS Data/{gacc_region}/PSA Climo/MAX"
+    forecast_dir = f"FEMS Data/{gacc_region}/PSA Forecast"
 
     percentiles = pd.read_csv(f"FEMS Data/{gacc_region}/PSA Percentiles/PSA_Percentiles.csv")
 
@@ -455,6 +833,7 @@ def create_psa_bi_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
         fname = f"PSA {psa}.png"
 
         df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
+        df_forecast = pd.read_csv(f"{forecast_dir}/zone_{psa}.csv") 
         df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
         df_climo_max = pd.read_csv(f"{climo_max_dir}/zone_{psa}.csv") 
 
@@ -496,6 +875,11 @@ def create_psa_bi_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
         ax.plot(df_data['julian_date'], df_data['bi_mean'], color='blue', alpha=1, label=f"OBSERVED")
         ax.plot(df_climo_avg['julian_date'], df_climo_avg['bi_avg'], color='gray', alpha=1, label=f"AVERAGE")
         ax.plot(df_climo_max['julian_date'], df_climo_max['bi_max'], color='red', alpha=1, label=f"MAX")
+        try:
+           ax.plot([df_data['julian_date'].iloc[-1], df_forecast['julian_date'].iloc[0]], [df_data['bi_mean'].iloc[-1], df_forecast['bi_mean'].iloc[0]], color='green', alpha=1)  
+           ax.plot(df_forecast['julian_date'], df_forecast['bi_mean'], color='green', alpha=1, label=f"FORECAST") 
+        except Exception as e:
+            pass
         
         plt.legend(loc="upper left", fontsize="xx-small")
 
@@ -521,11 +905,14 @@ def create_psa_sc_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
     get_stats(gacc_region)
     get_psa_climatology(gacc_region)
     sort_data_by_psa(gacc_region)
+    station_forecast(gacc_region)
+    sort_forecasts_by_psa(gacc_region)
 
     data_dir = f"FEMS Data/{gacc_region}/PSA Data"
     percentiles_dir = f"FEMS Data/{gacc_region}/PSA Percentiles"
     climo_avg_dir = f"FEMS Data/{gacc_region}/PSA Climo/AVG"
     climo_max_dir = f"FEMS Data/{gacc_region}/PSA Climo/MAX"
+    forecast_dir = f"FEMS Data/{gacc_region}/PSA Forecast"
 
     percentiles = pd.read_csv(f"FEMS Data/{gacc_region}/PSA Percentiles/PSA_Percentiles.csv")
 
@@ -567,6 +954,7 @@ def create_psa_sc_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
         fname = f"PSA {psa}.png"
 
         df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
+        df_forecast = pd.read_csv(f"{forecast_dir}/zone_{psa}.csv") 
         df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
         df_climo_max = pd.read_csv(f"{climo_max_dir}/zone_{psa}.csv") 
 
@@ -608,6 +996,11 @@ def create_psa_sc_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
         ax.plot(df_data['julian_date'], df_data['sc_mean'], color='blue', alpha=1, label=f"OBSERVED")
         ax.plot(df_climo_avg['julian_date'], df_climo_avg['sc_avg'], color='gray', alpha=1, label=f"AVERAGE")
         ax.plot(df_climo_max['julian_date'], df_climo_max['sc_max'], color='red', alpha=1, label=f"MAX")
+        try:
+           ax.plot([df_data['julian_date'].iloc[-1], df_forecast['julian_date'].iloc[0]], [df_data['sc_mean'].iloc[-1], df_forecast['sc_mean'].iloc[0]], color='green', alpha=1)  
+           ax.plot(df_forecast['julian_date'], df_forecast['sc_mean'], color='green', alpha=1, label=f"FORECAST") 
+        except Exception as e:
+            pass
         
         plt.legend(loc="upper left", fontsize="xx-small")
 
@@ -633,11 +1026,14 @@ def create_psa_ic_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
     get_stats(gacc_region)
     get_psa_climatology(gacc_region)
     sort_data_by_psa(gacc_region)
+    station_forecast(gacc_region)
+    sort_forecasts_by_psa(gacc_region)
 
     data_dir = f"FEMS Data/{gacc_region}/PSA Data"
     percentiles_dir = f"FEMS Data/{gacc_region}/PSA Percentiles"
     climo_avg_dir = f"FEMS Data/{gacc_region}/PSA Climo/AVG"
     climo_max_dir = f"FEMS Data/{gacc_region}/PSA Climo/MAX"
+    forecast_dir = f"FEMS Data/{gacc_region}/PSA Forecast"
 
     percentiles = pd.read_csv(f"FEMS Data/{gacc_region}/PSA Percentiles/PSA_Percentiles.csv")
 
@@ -679,6 +1075,7 @@ def create_psa_ic_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
         fname = f"PSA {psa}.png"
 
         df_data = pd.read_csv(f"{data_dir}/zone_{psa}.csv") 
+        df_forecast = pd.read_csv(f"{forecast_dir}/zone_{psa}.csv") 
         df_climo_avg = pd.read_csv(f"{climo_avg_dir}/zone_{psa}.csv") 
         df_climo_max = pd.read_csv(f"{climo_max_dir}/zone_{psa}.csv") 
 
@@ -720,6 +1117,11 @@ def create_psa_ic_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
         ax.plot(df_data['julian_date'], df_data['ic_mean'], color='blue', alpha=1, label=f"OBSERVED")
         ax.plot(df_climo_avg['julian_date'], df_climo_avg['ic_avg'], color='gray', alpha=1, label=f"AVERAGE")
         ax.plot(df_climo_max['julian_date'], df_climo_max['ic_max'], color='red', alpha=1, label=f"MAX")
+        try:
+           ax.plot([df_data['julian_date'].iloc[-1], df_forecast['julian_date'].iloc[0]], [df_data['ic_mean'].iloc[-1], df_forecast['ic_mean'].iloc[0]], color='green', alpha=1)  
+           ax.plot(df_forecast['julian_date'], df_forecast['ic_mean'], color='green', alpha=1, label=f"FORECAST") 
+        except Exception as e:
+            pass
         
         plt.legend(loc="upper left", fontsize="xx-small")
 
