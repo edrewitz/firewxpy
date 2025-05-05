@@ -369,7 +369,7 @@ def create_psa_100hr_fuels_charts(gacc_region, number_of_years_for_averages=15, 
         plt.title(f"{gacc_region} 100-HR Dead Fuel Moisture: PSA {psaID}", fontsize=12, fontweight='bold', loc='left')
         plt.title(f"Period Of Record: {start_year} - {utc_time.year}", fontsize=10, fontweight='bold', loc='right')
         ax.text(0.01, -0.05, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: USDA/FEMS", transform=ax.transAxes, fontsize=8, fontweight='bold', bbox=props)
-        ax.text(0.8, -0.05, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=7, fontweight='bold', bbox=props)
+        ax.text(0.65, -0.05, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=7, fontweight='bold', bbox=props)
         ax.text(0.405, 0.98, f"Valid Date: {dates.iloc[-1].strftime(f"%m/%d/%Y")}", transform=ax.transAxes, fontsize=8, color='white', fontweight='bold', bbox=date_box)
 
         if leap == True:
