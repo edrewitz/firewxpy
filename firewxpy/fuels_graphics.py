@@ -9,12 +9,14 @@ import numpy as np
 
 from data_access import FEMS
 from raws_sigs import get_psa_percentiles, station_stats, sort_data_by_psa, get_stats, get_psa_climatology, station_forecast, sort_forecasts_by_psa
-from standard import plot_creation_time
+from standard import plot_creation_time, get_timezone_abbreviation, get_timezone
 from datetime import datetime, timedelta, UTC
 from utilities import file_functions
 from calendar import isleap
 
 local_time, utc_time = plot_creation_time()
+timezone = get_timezone_abbreviation()
+tzone = get_timezone()
 
 mpl.rcParams['font.weight'] = 'bold'
 props = dict(boxstyle='round', facecolor='wheat', alpha=1)
@@ -367,6 +369,7 @@ def create_psa_100hr_fuels_charts(gacc_region, number_of_years_for_averages=15, 
         plt.title(f"{gacc_region} 100-HR Dead Fuel Moisture: PSA {psaID}", fontsize=12, fontweight='bold', loc='left')
         plt.title(f"Period Of Record: {start_year} - {utc_time.year}", fontsize=10, fontweight='bold', loc='right')
         ax.text(0.01, -0.05, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: USDA/FEMS", transform=ax.transAxes, fontsize=8, fontweight='bold', bbox=props)
+        ax.text(0.8, -0.05, "Image Created: " + local_time.strftime(f'%m/%d/%Y %H:%M {timezone}') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax.transAxes, fontsize=7, fontweight='bold', bbox=props)
         ax.text(0.405, 0.98, f"Valid Date: {dates.iloc[-1].strftime(f"%m/%d/%Y")}", transform=ax.transAxes, fontsize=8, color='white', fontweight='bold', bbox=date_box)
 
         if leap == True:
