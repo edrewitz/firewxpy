@@ -120,6 +120,30 @@ def get_raws_sig_info():
         urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/GBCC_StationList.csv", f"GBCC_StationList.csv")
         os.replace(f"GBCC_StationList.csv", f"RAWS SIGs/GBCC/GBCC_StationList.csv")
 
+    if os.path.exists(f"RAWS SIGs/NRCC/NRCC_StationList.csv"):
+        pass
+    else:
+        urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/NRCC_StationList.csv", f"NRCC_StationList.csv")
+        os.replace(f"NRCC_StationList.csv", f"RAWS SIGs/NRCC/NRCC_StationList.csv")
+
+    if os.path.exists(f"RAWS SIGs/NWCC/NWCC_StationList.csv"):
+        pass
+    else:
+        urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/NWCC_StationList.csv", f"NWCC_StationList.csv")
+        os.replace(f"NWCC_StationList.csv", f"RAWS SIGs/NWCC/NWCC_StationList.csv")
+
+    if os.path.exists(f"RAWS SIGs/RMCC/RMCC_StationList.csv"):
+        pass
+    else:
+        urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/RMCC_StationList.csv", f"RMCC_StationList.csv")
+        os.replace(f"RMCC_StationList.csv", f"RAWS SIGs/RMCC/RMCC_StationList.csv")
+
+    if os.path.exists(f"RAWS SIGs/SWCC/SWCC_StationList.csv"):
+        pass
+    else:
+        urllib.request.urlretrieve(f"https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/RAWS%20SIGs/SWCC_StationList.csv", f"SWCC_StationList.csv")
+        os.replace(f"SWCC_StationList.csv", f"RAWS SIGs/SWCC/SWCC_StationList.csv")
+
 check_folders()
 get_raws_sig_info()
 
@@ -174,6 +198,18 @@ def get_stats(gacc_region):
 
     if gacc_region == 'GBCC':
         folder_abbrev = f"GB"
+
+    if gacc_region == 'NWCC':
+        folder_abbrev = f"NW"
+
+    if gacc_region == 'RMCC':
+        folder_abbrev = f"RM"
+
+    if gacc_region == 'SWCC':
+        folder_abbrev = f"SW"
+
+    if gacc_region == 'NRCC':
+        folder_abbrev = f"NR"
     
     a = 1
     for i in range(0, len(os.listdir(f"FEMS Data/Stations/{gacc_region}"))):
@@ -269,6 +305,18 @@ def get_psa_percentiles(gacc_region):
 
     if gacc_region == 'GBCC':
         folder_abbrev = f"GB"
+
+    if gacc_region == 'NWCC':
+        folder_abbrev = f"NW"
+
+    if gacc_region == 'RMCC':
+        folder_abbrev = f"RM"
+
+    if gacc_region == 'SWCC':
+        folder_abbrev = f"SW"
+
+    if gacc_region == 'NRCC':
+        folder_abbrev = f"NR"
     
     a = 1
     for i in range(0, len(os.listdir(f"FEMS Data/Stations/{gacc_region}"))):
@@ -596,6 +644,18 @@ def station_stats(gacc_region):
 
     if gacc_region == 'GBCC':
         folder_abbrev = f"GB"
+
+    if gacc_region == 'NWCC':
+        folder_abbrev = f"NW"
+
+    if gacc_region == 'RMCC':
+        folder_abbrev = f"RM"
+
+    if gacc_region == 'SWCC':
+        folder_abbrev = f"SW"
+
+    if gacc_region == 'NRCC':
+        folder_abbrev = f"NR"
     
     a = 1
     for i in range(0, len(os.listdir(f"FEMS Data/Stations/{gacc_region}"))):
@@ -706,6 +766,18 @@ def station_forecast(gacc_region):
 
     if gacc_region == 'GBCC':
         folder_abbrev = f"GB"
+
+    if gacc_region == 'NWCC':
+        folder_abbrev = f"NW"
+
+    if gacc_region == 'RMCC':
+        folder_abbrev = f"RM"
+
+    if gacc_region == 'SWCC':
+        folder_abbrev = f"SW"
+
+    if gacc_region == 'NRCC':
+        folder_abbrev = f"NR"
     
     a = 1
     for i in range(0, len(os.listdir(f"FEMS Data/Forecasts/{gacc_region}"))):
