@@ -113,14 +113,6 @@ Southern California Geographic Area Coordination Center
 
 **PySolar**: Stafford, B. et. al, PySolar (2007), [https://pysolar.readthedocs.io/en/latest/#contributors] 
 
-**Pandas**: 
-    author       = {The pandas development team},
-    title        = {pandas-dev/pandas: Pandas},
-    publisher    = {Zenodo},
-    version      = {latest},
-    doi          = {10.5281/zenodo.3509134},
-    url          = {https://doi.org/10.5281/zenodo.3509134}
-}
-
+**Pandas**: Pandas: McKinney, W., & others. (2010). Data structures for statistical computing in python. In Proceedings of the 9th Python in Science Conference (Vol. 445, pp. 51–56).
 
 
