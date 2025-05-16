@@ -514,6 +514,7 @@ class dynamics:
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
             ax.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+            ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
             ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
             ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
             if show_rivers == True:
@@ -579,7 +580,7 @@ class dynamics:
                     c = ax.contour(ds['lon'], ds['lat'], (ds['hgtprs'][0, t, level_idx, :, :]/10), levels=levels, colors='black', zorder=2, transform=datacrs, linewidths=1)
                     ax.clabel(c, levels=levels, inline=True, fontsize=8, rightside_up=True)
                     
-                cs = ax.contourf(ds['lon'], ds['lat'], ds['absvprs'][t, :, :], cmap=cmap, transform=datacrs, levels=np.arange(0, 55e-5, 50e-6), alpha=0.35, extend='max')
+                cs = ax.contourf(ds['lon'], ds['lat'], abs(ds['absvprs'][t, :, :]), cmap=cmap, transform=datacrs, levels=np.arange(0, 55e-5, 50e-6), alpha=0.35, extend='max')
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', format="{x:.0e}")
     
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
@@ -604,9 +605,9 @@ class dynamics:
                     c = ax.contour(ds['lon'], ds['lat'], (ds['hgtprs'][t, level_idx, :, :]/10), levels=levels, colors='black', zorder=2, transform=datacrs, linewidths=1)
                     ax.clabel(c, levels=levels, inline=True, fontsize=8, rightside_up=True)
                 try:
-                    cs = ax.contourf(ds['lon'], ds['lat'], ds['absvprs'][t, level_idx, :, :], cmap=cmap, transform=datacrs, levels=np.arange(0, 55e-5, 50e-6), alpha=0.35, extend='max')
+                    cs = ax.contourf(ds['lon'], ds['lat'], abs(ds['absvprs'][t, level_idx, :, :]), cmap=cmap, transform=datacrs, levels=np.arange(0, 55e-5, 50e-6), alpha=0.35, extend='max')
                 except Exception as e:
-                    cs = ax.contourf(ds['lon'], ds['lat'], ds['absvprs'][t, :, :], cmap=cmap, transform=datacrs, levels=np.arange(0, 55e-5, 50e-6), alpha=0.35, extend='max')
+                    cs = ax.contourf(ds['lon'], ds['lat'], abs(ds['absvprs'][t, :, :]), cmap=cmap, transform=datacrs, levels=np.arange(0, 55e-5, 50e-6), alpha=0.35, extend='max')
                 cbar = fig.colorbar(cs, shrink=shrink, pad=0.01, location='right', format="{x:.0e}")
         
                 fig.savefig(f"{path}/{fname}", bbox_inches='tight')
