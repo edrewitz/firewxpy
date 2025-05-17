@@ -1077,6 +1077,7 @@ class dynamics:
             ax.set_extent([wb, eb, sb, nb], datacrs)
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
             ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
             ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
             ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
             ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
@@ -1583,6 +1584,7 @@ class dynamics:
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
             ax.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+            ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
             ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
             ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
             if show_rivers == True:
@@ -2151,6 +2153,7 @@ class dynamics:
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
             ax.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+            ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
             ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
             ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
             if show_rivers == True:
@@ -2630,6 +2633,7 @@ class dynamics:
             ax.set_extent([wb, eb, sb, nb], datacrs)
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
             ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+            ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
             ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
             ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
             ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
@@ -3158,6 +3162,7 @@ class temperature:
                 ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
                 ax.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
                 ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
                 ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
                 if show_rivers == True:
@@ -3268,6 +3273,7 @@ class temperature:
                 ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
                 ax.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
                 ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
                 ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
                 if show_rivers == True:
@@ -3392,6 +3398,7 @@ class temperature:
                 ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
                 ax.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
                 ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
                 ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
                 if show_rivers == True:
@@ -3857,6 +3864,7 @@ class temperature:
             ax.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
             ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+            ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
             ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
             if show_rivers == True:
                 ax.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
@@ -3949,6 +3957,7 @@ class temperature:
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
             ax.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+            ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
             ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
             ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
             if show_rivers == True:
@@ -4501,6 +4510,7 @@ class temperature:
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
             ax.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+            ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
             ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
             ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
             if show_rivers == True:
@@ -5040,6 +5050,7 @@ class relative_humidity:
                 ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
                 ax.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
                 ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
                 ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
                 if show_rivers == True:
@@ -5140,6 +5151,7 @@ class relative_humidity:
                 ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
                 ax.add_feature(cfeature.LAND, color='beige', zorder=1)
                 ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
                 ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
                 ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
                 if show_rivers == True:
@@ -5250,6 +5262,7 @@ class relative_humidity:
                 ax.set_extent([wb, eb, sb, nb], datacrs)
                 ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
                 ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+                ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
                 ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
                 ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
                 ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
@@ -5782,6 +5795,7 @@ class relative_humidity:
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
             ax.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+            ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
             ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
             ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
             if show_rivers == True:
@@ -6391,6 +6405,7 @@ class critical_firewx_conditions:
                     ax.set_extent([wb, eb, sb, nb], datacrs)
                     ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
                     ax.add_feature(cfeature.LAND, color='beige', zorder=1)
+                    ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
                     ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
                     ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
                     ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
@@ -6515,6 +6530,7 @@ class critical_firewx_conditions:
                     ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
                     ax.add_feature(cfeature.LAND, color='beige', zorder=1)
                     ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                    ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
                     ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
                     ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
                     if show_rivers == True:
@@ -6652,6 +6668,7 @@ class critical_firewx_conditions:
                     ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
                     ax.add_feature(cfeature.LAND, color='beige', zorder=1)
                     ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                    ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
                     ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
                     ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
                     if show_rivers == True:
@@ -6788,6 +6805,7 @@ class critical_firewx_conditions:
                     ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
                     ax.add_feature(cfeature.LAND, color='beige', zorder=1)
                     ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                    ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
                     ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
                     ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
                     if show_rivers == True:
@@ -6946,6 +6964,7 @@ class critical_firewx_conditions:
                     ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
                     ax.add_feature(cfeature.LAND, color='beige', zorder=1)
                     ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                    ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
                     ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
                     ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
                     if show_rivers == True:
@@ -7061,6 +7080,7 @@ class critical_firewx_conditions:
                     ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
                     ax.add_feature(cfeature.LAND, color='beige', zorder=1)
                     ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                    ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
                     ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
                     ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
                     if show_rivers == True:
@@ -7559,6 +7579,7 @@ class precipitation:
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
             ax.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+            ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
             ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
             ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
             if show_rivers == True:
@@ -7652,6 +7673,7 @@ class precipitation:
             ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
             ax.add_feature(cfeature.LAND, color='beige', zorder=1)
             ax.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+            ax.add_feature(cfeature.BORDERS, linewidth=1, zorder=1)
             ax.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
             ax.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
             if show_rivers == True:
