@@ -7,11 +7,14 @@ import pandas as pd
 import shutil
 import numpy as np
 
-from data_access import FEMS
-from raws_sigs import get_psa_percentiles, station_stats, sort_data_by_psa, get_stats, get_psa_climatology, station_forecast, sort_forecasts_by_psa
-from standard import plot_creation_time, get_timezone_abbreviation, get_timezone
-from datetime import datetime, timedelta, UTC
-from utilities import file_functions
+from firewxpy.data_access import FEMS
+from firewxpy.raws_sigs import get_psa_percentiles, station_stats, sort_data_by_psa, get_stats, get_psa_climatology, station_forecast, sort_forecasts_by_psa
+from firewxpy.standard import plot_creation_time, get_timezone_abbreviation, get_timezone
+try:
+    from datetime import datetime, timedelta, UTC
+except Exception as e:
+    from datetime import datetime, timedelta
+from firewxpy.utilities import file_functions
 from calendar import isleap
 
 local_time, utc_time = plot_creation_time()
