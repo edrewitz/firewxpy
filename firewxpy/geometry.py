@@ -73,7 +73,7 @@ def download_shape_files():
         os.mkdir("NWS CWA Boundaries")
         # Downloads the CWA Shapefiles
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_CWA_Boundaries/w_05mr24.dbf', 'w_05mr24.dbf')
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_CWA_Boundaries/w_05mr24.prj', 'w_05mr24.prj')
+        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/shapefiles/NWS_CWA_Boundaries/w_05mr24.prj', 'w_05mr24.prj')
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_CWA_Boundaries/w_05mr24.shx', 'w_05mr24.shx')
         urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/FireWxPy/main/shapefiles/NWS_CWA_Boundaries/w_05mr24.zip', 'w_05mr24.zip')
         # Moves files to new folder
