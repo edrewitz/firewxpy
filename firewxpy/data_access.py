@@ -3357,9 +3357,9 @@ class FEMS:
 
         1) gacc_region (String) - The 4-letter GACC abbreviation
 
-        2) number_of_years_for_averages (Integer) - Default = 10. The number of years for the average values to be calculated on. 
+        2) number_of_years_for_averages (Integer) - The number of years for the average values to be calculated on. 
 
-        3) fuel_model (String) - Default = 'Y'. The fuel model being used. 
+        3) fuel_model (String) - The fuel model being used. 
            Fuel Models List:
 
            Y - Timber
@@ -3368,7 +3368,7 @@ class FEMS:
            V - Grass
            Z - Slash 
 
-        4) start_date (String) - Default = None. If the user wishes to use a selected start date as the starting point enter the start_date
+        4) start_date (String) - If the user wishes to use a selected start date as the starting point enter the start_date
            as a string in the following format: YYYY-mm-dd
 
         Returns: The RAWS CSV data files sorted into the folders which are the different SIGs for each GACC
@@ -3432,6 +3432,25 @@ class FEMS:
 
 
     def get_nfdrs_forecast_data(gacc_region, fuel_model):
+
+        """
+        This function retrieves the latest fuels forecast data from FEMS.
+
+        Required Arguments:
+
+        1) gacc_region (String) - The 4-letter GACC abbreviation
+
+        2) fuel_model (String) - The fuel model being used. 
+           Fuel Models List:
+
+           Y - Timber
+           X - Brush
+           W - Grass/Shrub
+           V - Grass
+           Z - Slash 
+
+        Returns: The RAWS CSV files with the fuels forecast data from FEMS.
+        """
     
         gacc_region = gacc_region.upper()
         
