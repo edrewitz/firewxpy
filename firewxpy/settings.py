@@ -1,5 +1,4 @@
 
-
 '''
 This file hosts all the functions that return the settings for each plot for each given state or gacc. 
 
@@ -12,8 +11,6 @@ This file hosts all the functions that return the settings for each plot for eac
 '''
 
 import cartopy.crs as ccrs
-import warnings
-warnings.filterwarnings('ignore')
 
 
 def get_shrink(region, cwa):
@@ -84,6 +81,9 @@ def get_shrink(region, cwa):
 
     if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
         shrink = 0.5
+
+    if region == 'CA' or region == 'ca':
+        shrink = 1
 
     if region == 'ME' or region == 'me':
         shrink = 1
@@ -284,8 +284,8 @@ def get_sp_dims_and_textbox_coords(region):
 
     if region == 'FL' or region == 'fl':
         fontsize=8
-        x=0.625
-        y=0.975
+        x=0.7
+        y=0.97
 
     elif region == 'AZ' or region == 'az':
         fontsize = 8
@@ -309,6 +309,50 @@ def get_region_info(model, region):
 
     model = model
     region = region
+
+    if region == 'Central & Eastern Europe' or region == 'central & eastern europe':
+        western_bound = 0
+        eastern_bound = 40
+        southern_bound = 33
+        northern_bound = 72  
+        shrink = 0.8
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
+
+    if region == 'West Africa' or region == 'west africa':
+        western_bound = -40
+        eastern_bound = 0
+        southern_bound = 2
+        northern_bound = 39  
+        shrink = 0.8
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
 
     if region == 'CONUS' or region == 'conus':
         western_bound = -126
@@ -1774,6 +1818,182 @@ def get_region_info(model, region):
             decimate = 12
         if model == 'GFS1p00':
             decimate = 10
+
+    if region == 'Western Europe & Iceland' or region == 'western europe & iceland':
+        western_bound = -40
+        eastern_bound = 0
+        southern_bound = 35
+        northern_bound = 68  
+        shrink = 0.73
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
+
+    if region == 'Asia' or region == 'asia':
+        western_bound = 40
+        eastern_bound = 180
+        southern_bound = 0
+        northern_bound = 81  
+        shrink = 0.5
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 14 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
+
+    if region == 'Saharan Africa' or region == 'saharan africa':
+        western_bound = 0
+        eastern_bound = 45
+        southern_bound = 7
+        northern_bound = 39  
+        shrink = 0.65
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
+
+    if region == 'Sub Saharan Africa' or region == 'sub saharan africa':
+        western_bound = 0
+        eastern_bound = 56
+        southern_bound = -37
+        northern_bound = 7  
+        shrink = 0.65
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
+
+    if region == 'South America' or region == 'south america':
+        western_bound = -96
+        eastern_bound = -31
+        southern_bound = -58
+        northern_bound = 14  
+        shrink = 0.95
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
+
+    if region == 'Australia New Zealand' or region == 'australia new zealand':
+        western_bound = 108
+        eastern_bound = 180
+        southern_bound = -48
+        northern_bound = -9  
+        shrink = 0.45
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
+
+    if region == 'East Asia' or region == 'east asia':
+        western_bound = 63
+        eastern_bound = 150
+        southern_bound = 4.5
+        northern_bound = 56  
+        shrink = 0.5
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
+
+    if region == 'Southeast Asia' or region == 'southeast asia':
+        western_bound = 87
+        eastern_bound = 163
+        southern_bound = -13
+        northern_bound = 31  
+        shrink = 0.5
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
         
     return western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, decimate, signature_fontsize, stamp_fontsize
 
@@ -1801,6 +2021,66 @@ def coords_for_forecast_model_data(region, western_bound, eastern_bound, souther
         eastern_bound = 40
         southern_bound = 13
         northern_bound = 65 
+
+    if region == 'Australia New Zealand' or region == 'australia new zealand':
+        western_bound = 252
+        eastern_bound = 180
+        southern_bound = -48
+        northern_bound = -9 
+
+    if region == 'South America' or region == 'south america':
+        western_bound = 96
+        eastern_bound = 31
+        southern_bound = -58
+        northern_bound = 14 
+
+    if region == 'Central & Eastern Europe' or region == 'central & eastern europe':
+        western_bound = 360
+        eastern_bound = 320
+        southern_bound = 33
+        northern_bound = 72 
+
+    if region == 'Southeast Asia' or region == 'southeast asia':
+        western_bound = 273
+        eastern_bound = 197
+        southern_bound = -13
+        northern_bound = 31  
+
+    if region == 'East Asia' or region == 'east asia':
+        western_bound = 297
+        eastern_bound = 210
+        southern_bound = 4.5
+        northern_bound = 56  
+
+    if region == 'Asia' or region == 'asia':
+        western_bound = 320
+        eastern_bound = 180
+        southern_bound = 0
+        northern_bound = 81  
+
+    if region == 'Saharan Africa' or region == 'saharan africa':
+        western_bound = 360
+        eastern_bound = 315
+        southern_bound = 7
+        northern_bound = 39  
+
+    if region == 'Sub Saharan Africa' or region == 'sub saharan africa':
+        western_bound = 360
+        eastern_bound = 304
+        southern_bound = -37
+        northern_bound = 7  
+
+    if region == 'West Africa' or region == 'west africa':
+        western_bound = 40
+        eastern_bound = 0
+        southern_bound = 2
+        northern_bound = 39  
+
+    if region == 'Western Europe & Iceland' or region == 'western europe & iceland':
+        western_bound = 40
+        eastern_bound = 0
+        southern_bound = 35
+        northern_bound = 68
 
     if region == 'Canada' or region == 'canada':
         western_bound = 142
