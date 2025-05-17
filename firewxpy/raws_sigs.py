@@ -14,7 +14,10 @@ import pandas as pd
 import numpy as np
 import shutil
 
-from datetime import datetime, timedelta, UTC
+try:
+    from datetime import datetime, timedelta, UTC
+except Exception as e:
+    from datetime import datetime, timedelta
 from calendar import isleap
 
 def get_number_of_psas_by_gacc(gacc_region):
