@@ -259,10 +259,17 @@ def get_stats(gacc_region):
         for i in range(0, len(files)):
     
             df = pd.read_csv(f"{paths[p]}/{files[i]}")
-            daily_max = df.groupby('julian_date').max(numeric_only=True)
-            daily_min = df.groupby('julian_date').min(numeric_only=True)
-            daily_avg = df.groupby('julian_date').mean(numeric_only=True)
-    
+            try:
+                daily_max = df.groupby('julian_date').max(numeric_only=True)
+                daily_min = df.groupby('julian_date').min(numeric_only=True)
+                daily_avg = df.groupby('julian_date').mean(numeric_only=True)
+            except Exception as e:
+                end = len(df['dates']) 
+                df['julian_date'] = np.arange(1, end, 1)
+                daily_max = df.groupby('julian_date').max(numeric_only=True)
+                daily_min = df.groupby('julian_date').min(numeric_only=True)
+                daily_avg = df.groupby('julian_date').mean(numeric_only=True)
+                
             fname_max = f"{df['stationId'].iloc[0]}_max.csv"
             fname_min = f"{df['stationId'].iloc[0]}_min.csv"
             fname_avg = f"{df['stationId'].iloc[0]}_avg.csv"
