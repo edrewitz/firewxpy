@@ -18,6 +18,8 @@ from firewxpy.forecast_models import precipitation as model_precipitation
 
 from firewxpy.cross_sections import time_cross_sections, two_point_cross_sections
 
+from firewxpy.fuels_graphics import create_psa_100hr_fuels_charts, create_psa_1000hr_fuels_charts, create_psa_erc_fuels_charts, create_psa_bi_fuels_charts, create_psa_sc_fuels_charts, create_psa_ic_fuels_charts
+
 from firewxpy.observations import gridded_observations as gridded_obs
 from firewxpy.observations import METAR_Observations as metar_obs
 from firewxpy.observations import scatter_observations as scatter_obs
