@@ -481,6 +481,7 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
         ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        plt.close(fig)
     print(f"Saved short-term forecast graphics to {path_print}")
 
 
@@ -549,6 +550,7 @@ def plot_critical_fire_weather_risk_outlook(western_bound=None, eastern_bound=No
         ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        plt.close(fig)
     print(f"Saved extended forecast graphics to {path_print}")
 
 
@@ -980,6 +982,7 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
         ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        plt.close(fig)
     print(f"Saved short-term forecast graphics to {path_print}")
 
 
@@ -1048,6 +1051,7 @@ def plot_dry_lightning_outlook(western_bound=None, eastern_bound=None, southern_
         ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)   
 
         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        plt.close(fig)
     print(f"Saved extended forecast graphics to {path_print}")
 
 
@@ -1463,6 +1467,7 @@ def plot_convective_outlook(western_bound=None, eastern_bound=None, southern_bou
         ax.text(x3, y3, "Reference System: "+reference_system, transform=ax.transAxes, fontsize=stamp_fontsize, fontweight='bold', bbox=props, zorder=11)  
 
         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        plt.close(fig)
     print(f"Saved forecast graphics to {path_print}")
 
 
