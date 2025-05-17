@@ -66,6 +66,7 @@ For video tutorials/demostrations checkout the FireWxPy Tutorial Series on the S
 18) [plot_forecast_soundings](https://github.com/edrewitz/firewxpy/blob/main/Documentation/soundings.md#plot_forecast_soundingsmodel-station_id)
 19) [sawti](https://github.com/edrewitz/firewxpy/blob/main/Documentation/sawti.md)
 20) [plot_daily_solar_information](https://github.com/edrewitz/firewxpy/blob/main/Documentation/solar_information.md#plot_daily_solar_informationlatitude-longitude)
+21) [fuels charts](https://github.com/edrewitz/firewxpy/blob/main/Documentation/fuels_charts.md)
 
 **Additional Resources For Users Who Download The Data Outside Of The Function And Pass It In**
 
