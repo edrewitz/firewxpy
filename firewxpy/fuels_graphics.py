@@ -427,6 +427,7 @@ def create_psa_100hr_fuels_charts(gacc_region, number_of_years_for_averages=15, 
             pass
 
         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        plt.close(fig)
         psa = psa + 1
 
     print(f"100-HR Fuels Charts Saved To {path_print}")
@@ -580,6 +581,7 @@ def create_psa_1000hr_fuels_charts(gacc_region, number_of_years_for_averages=15,
             pass
 
         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        plt.close(fig)
         psa = psa + 1
 
     print(f"1000-HR Fuels Charts Saved To {path_print}")
@@ -716,6 +718,7 @@ def create_psa_erc_fuels_charts(gacc_region, number_of_years_for_averages=15, fu
         plt.legend(loc="upper left", fontsize="xx-small")
 
         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        plt.close(fig)
         psa = psa + 1
 
     print(f"ERC Fuels Charts Saved To {path_print}")
@@ -850,6 +853,7 @@ def create_psa_bi_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
         plt.legend(loc="upper left", fontsize="xx-small")
 
         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        plt.close(fig)
         psa = psa + 1
 
     print(f"BI Fuels Charts Saved To {path_print}")
@@ -984,6 +988,7 @@ def create_psa_sc_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
         plt.legend(loc="upper left", fontsize="xx-small")
 
         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        plt.close(fig)
         psa = psa + 1
 
     print(f"SC Fuels Charts Saved To {path_print}")
@@ -1118,6 +1123,7 @@ def create_psa_ic_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
         plt.legend(loc="upper left", fontsize="xx-small")
 
         fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+        plt.close(fig)
         psa = psa + 1
 
     print(f"IC Fuels Charts Saved To {path_print}")
