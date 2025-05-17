@@ -81,6 +81,38 @@ For video tutorials/demostrations checkout the FireWxPy Tutorial Series on the S
 6) [plot_creation_time](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#plot_creation_time)
 7) [get_metar_mask](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#get_metar_maskstate-gacc_region-rtma_wsfalse)
 
+**Regional Abbreviations for Model Data**
+
+If the user wants to analyze model data in the U.S. the regional abbreviations consist of the following:
+
+- CONUS & South Canada & North Mexico
+- CONUS
+- NA
+- 2-letter state abbreviation
+- 4-letter Geographic Area Coordination Center abbreviation
+
+If the user wants to analyze model data for an area outside of the U.S:
+
+*One important thing to note is only global models (GFS, GEFS etc.) are available here*
+
+International Regional Selections:
+
+- Canada
+- Mexico & Central America
+- Caribbean
+- South America
+- Western Europe & Iceland
+- Central & Eastern Europe
+- West Africa
+- Saharan Africa
+- Sub Saharan Africa
+- Middle East
+- Asia
+- East Asia
+- Southeast Asia
+- India
+- Australia New Zealand
+
 # Author
 Eric J. Drewitz
 
