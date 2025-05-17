@@ -264,6 +264,7 @@ def get_stats(gacc_region):
                 daily_min = df.groupby('julian_date').min(numeric_only=True)
                 daily_avg = df.groupby('julian_date').mean(numeric_only=True)
             except Exception as e:
+                df['observationTime'] = pd.to_datetime(df['observationTime'])
                 df['julian_date'] = df['observationTime'].dt.dayofyear
                 daily_max = df.groupby('julian_date').max(numeric_only=True)
                 daily_min = df.groupby('julian_date').min(numeric_only=True)
