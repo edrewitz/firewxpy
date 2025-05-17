@@ -1994,6 +1994,94 @@ def get_region_info(model, region):
             decimate = 7
         if model == 'GFS1p00':
             decimate = 7
+
+    if region == 'Middle East' or region == 'middle east':
+        western_bound = 22
+        eastern_bound = 65
+        southern_bound = 10
+        northern_bound = 45 
+        shrink = 0.75
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
+
+    if region == 'Mexico & Central America' or region == 'mexico & central america':
+        western_bound = -118
+        eastern_bound = -75
+        southern_bound = 6
+        northern_bound = 33 
+        shrink = 0.5
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
+
+    if region == 'Caribbean' or region == 'caribbean':
+        western_bound = -86
+        eastern_bound = -58
+        southern_bound = 9
+        northern_bound = 28
+        shrink = 0.62
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
+
+    if region == 'India' or region == 'india':
+        western_bound = 67
+        eastern_bound = 90
+        southern_bound = 5
+        northern_bound = 36.5
+        shrink = 1
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.725, -0.025
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 7
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 7 
+        if model == 'GFS0p50':
+            decimate = 7
+        if model == 'GFS1p00':
+            decimate = 7
         
     return western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, decimate, signature_fontsize, stamp_fontsize
 
@@ -2027,6 +2115,30 @@ def coords_for_forecast_model_data(region, western_bound, eastern_bound, souther
         eastern_bound = 180
         southern_bound = -48
         northern_bound = -9 
+
+    if region == 'India' or region == 'india':
+        western_bound = 293
+        eastern_bound = 270
+        southern_bound = 5
+        northern_bound = 36.5
+
+    if region == 'Middle East' or region == 'middle east':
+        western_bound = 338
+        eastern_bound = 295
+        southern_bound = 10
+        northern_bound = 45
+
+    if region == 'Caribbean' or region == 'caribbean':
+        western_bound = 86
+        eastern_bound = 58
+        southern_bound = 9
+        northern_bound = 28 
+
+    if region == 'Mexico & Central America' or region == 'mexico & central america':
+        western_bound = 118
+        eastern_bound = 75
+        southern_bound = 6
+        northern_bound = 33 
 
     if region == 'South America' or region == 'south america':
         western_bound = 96
