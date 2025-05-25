@@ -25,7 +25,6 @@ import firewxpy.calc as calc
 import firewxpy.raws_sigs as raws
 import numpy as np
 import netCDF4
-import cfgrib
 import time as t
 import urllib.request
 import os
