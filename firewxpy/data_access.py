@@ -25,6 +25,7 @@ import firewxpy.calc as calc
 import firewxpy.raws_sigs as raws
 import numpy as np
 import netCDF4
+import cfgrib
 import time as t
 import urllib.request
 import os
@@ -2975,7 +2976,7 @@ class NDFD_GRIDS:
             pass
 
         if state != 'AK' or state != 'ak' or state == None:
-            ds1 = xr.load_dataset(short_path, engine='cfgrib')
+            ds1 = xr.open_dataset(short_path, engine='cfgrib')
         else:
             ds1 = xr.open_dataset(short_path, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
         try:
@@ -2993,7 +2994,7 @@ class NDFD_GRIDS:
             try:
     
                 if state != 'AK' or state != 'ak' or state == None:
-                    ds2 = xr.load_dataset(extended_path, engine='cfgrib')
+                    ds2 = xr.open_dataset(extended_path, engine='cfgrib')
                 else:
                     ds2 = xr.open_dataset(extended_path, engine='cfgrib').sel(x=slice(20, 1400, 2), y=slice(100, 1400, 2)) 
         
