@@ -5,7 +5,7 @@ This file has all the regular forecast model graphics on maps.
         USDA/USFS
 
 """
-
+import xeofs as xe
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import cartopy.crs as ccrs
