@@ -20,7 +20,8 @@ setup(
         "pysolar>=0.11",
         "cfgrib>=0.9.10.4",
         "cartopy>=0.21.0",
-        "pytz>=2024.1"
+        "pytz>=2024.1",
+        "xeofs>=3.0.4"
       
     ],
     author="Eric J. Drewitz",
