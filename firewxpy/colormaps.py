@@ -21,6 +21,11 @@ def precipitation_colormap():
 
     return precipitation_colormap
 
+def eof_colormap():
+    eof_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("eof", ["darkblue", "blue", "deepskyblue", "white", "white", "orangered", "red", "darkred"])
+
+    return eof_colormap
+
 def gph_colormap():
     gph_colormap = matplotlib.colors.LinearSegmentedColormap.from_list("gph", [ "indigo", "purple", "darkblue", "blue", "dodgerblue", "cyan", "orange", "darkorange", "orangered", "red", "darkred", "maroon"])
 
