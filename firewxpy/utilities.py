@@ -342,6 +342,175 @@ class file_functions:
         return path, path_print
 
 
+    def forecast_model_eofs_paths(model, region, reference_system, parameter, str_level):
+
+        r'''
+        This function builds the paths in the directory for various forecast model graphics. 
+
+        Required Arguments:
+
+        1) model (String) - The computer model that is being used. 
+
+        2) region (String) - The region abbreviation. 
+
+        3) reference_system (String) - The type of reference system used (i.e. States & Counties). 
+
+        4) parameter (String) - The parameter being analyzed. 
+
+        5) str_level (String) - The value of the pressure level as a string. 
+
+        Optional Arguments: None
+
+        Returns: The path that is the branch for the forecast model graphics to the Weather Data directory. 
+
+        '''
+
+        model = model.upper()
+        region = region.upper()
+        parameter = parameter.upper()
+        reference_system = reference_system.upper()
+        str_level = str_level.upper()
+
+        if os.path.exists(f"Weather Data"):
+            pass
+        else:
+            print(f"Weather Data Directory does not exist. Building Directory...")
+            os.mkdir(f"Weather Data")
+            print(f"Successfully built f:Weather Data Directory.")
+
+        if os.path.exists(f"Weather Data/Forecast Model Data"):
+            pass
+
+            if os.path.exists(f"Weather Data/Forecast Model Data/{model}"):
+                pass
+
+                if os.path.exists(f"Weather Data/Forecast Model Data/{model}/{region}"):
+                    pass
+
+                    if os.path.exists(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}"):
+                        pass
+
+                        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}"):
+                            pass 
+
+                            if os.path.exists(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}"):
+                                pass
+
+                                if os.path.exists(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/AVG"):
+                                    pass
+
+                                    if os.path.exists(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1"):
+                                        pass
+
+
+                                        if os.path.exists(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2"):
+                                            pass
+
+                                            if os.path.exists(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1 SCORES"):
+                                                pass
+
+                                                if os.path.exists(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2 SCORES"):
+                                                    pass
+                                                    
+                                                else:
+                                                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2 SCORES")
+                                                    
+                                            else:
+                                                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1 SCORES")
+                                                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2 SCORES")
+
+                                        else:
+                                            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2")
+                                            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1 SCORES")
+                                            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2 SCORES")
+
+                                    else:
+                                        os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1")
+                                        os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2")
+                                        os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1 SCORES")
+                                        os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2 SCORES")
+                                
+                                else:
+                                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/AVG")
+                                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1")
+                                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2")
+                                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1 SCORES")
+                                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2 SCORES")
+                            
+
+                            else:
+                                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}")
+                                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/AVG")
+                                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1")
+                                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2")
+                                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1 SCORES")
+                                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2 SCORES")
+
+                        else:
+                            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}")
+                            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}")
+                            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/AVG")
+                            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1")
+                            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2")
+                            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1 SCORES")
+                            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2 SCORES")
+                            
+
+                    else:
+                        os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}")
+                        os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}")
+                        os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}")
+                        os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/AVG")
+                        os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1")
+                        os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2")
+                        os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1 SCORES")
+                        os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2 SCORES")
+
+                else:
+                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}")
+                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}")
+                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}")
+                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}")
+                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/AVG")
+                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1")
+                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2")
+                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1 SCORES")
+                    os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2 SCORES")
+
+            else:
+                os.mkdir(f"Weather Data/Forecast Model Data/{model}")
+                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}")
+                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}")
+                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}")
+                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}")
+                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/AVG")
+                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1")
+                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2")
+                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1 SCORES")
+                os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2 SCORES")
+
+        else:
+            os.mkdir(f"Weather Data/Forecast Model Data")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/AVG")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1 SCORES")
+            os.mkdir(f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2 SCORES")
+
+        path1 = f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/AVG"
+        path2 = f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1"
+        path3 = f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2"
+        path4 = f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF1 SCORES"
+        path5 = f"Weather Data/Forecast Model Data/{model}/{region}/{reference_system}/{parameter}/{str_level}/EOF2 SCORES"
+    
+        return path1, path2, path3, path4, path5
+
+
     def extract_zipped_files(file_path, extraction_folder):
 
         r'''
