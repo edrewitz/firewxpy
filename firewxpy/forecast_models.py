@@ -45,7 +45,7 @@ provinces = cfeature.NaturalEarthFeature(category='cultural',
 
 props = dict(boxstyle='round', facecolor='wheat', alpha=1)
 
-class ensemble_5_day_mean_eofs:
+class ensemble_8_day_mean_eofs:
 
     r'''
     This class hosts 8-Day stats graphics for forecast ensemble data. 
