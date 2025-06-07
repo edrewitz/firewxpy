@@ -2,7 +2,7 @@
 
 ### **Classes**
 1) [dynamics](#dynamics-class)
-2) [ensemble_8_day_mean_eofs]()
+2) [ensemble_8_day_mean_eofs](#ensemble-8-day-mean-and-eofs)
 3) [temperature](#temperature-class)
 4) [relative_humidity](#relative-humidity-class)
 5) [critical_firewx_conditions](#critical-firewx-conditions-class)
@@ -870,8 +870,8 @@ Returns: Images for the various different forecast times saved to the path: f: W
 
 #### Ensemble 8-day Mean and EOFs
 
-1) [plot_geopotential_height]()
-2) [plot_mslp]()
+1) [plot_geopotential_height](#plot-geopotential-height)
+2) [plot_mslp](#plot-mslp)
 
 ##### Plot Geopotential Height
 
