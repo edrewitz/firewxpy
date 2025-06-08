@@ -29,6 +29,7 @@ For video tutorials/demostrations checkout the FireWxPy Tutorial Series on the S
 19) [sawti](https://github.com/edrewitz/firewxpy/blob/main/Documentation/sawti.md)
 20) [plot_daily_solar_information](https://github.com/edrewitz/firewxpy/blob/main/Documentation/solar_information.md#plot_daily_solar_informationlatitude-longitude)
 21) [fuels charts](https://github.com/edrewitz/firewxpy/blob/main/Documentation/fuels_charts.md)
+22) [ensemble_8_day_mean_eofs](https://github.com/edrewitz/firewxpy/blob/main/Documentation/forecast_models.md#ensemble-8-day-mean-and-eofs)
 
 **Additional Resources For Users Who Download The Data Outside Of The Function And Pass It In**
 
