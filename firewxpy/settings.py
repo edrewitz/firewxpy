@@ -295,7 +295,12 @@ def get_sp_dims_and_textbox_coords(region):
     elif region == 'OSCC' or region == 'oscc':
         fontsize = 8
         x = 0.01
-        y = 0.97   
+        y = 0.97
+
+    elif region == 'Guyana' or region == 'guyana':
+        fontsize = 8
+        x = 0.01
+        y = 0.99     
 
     else:
         fontsize = 8
@@ -1802,7 +1807,7 @@ def get_region_info(model, region):
         
     if region == 'NA' or region == 'na' or region == 'North America' or region == 'north america':
         western_bound, eastern_bound, southern_bound, northern_bound = -180, -51, 20, 85
-        shrink = 0.4
+        shrink = 0.62
         x1, y1 = 0.01, -0.03
         x2, y2 = 0.68, -0.025
         x3, y3 = 0.01, 0.01
@@ -2082,6 +2087,28 @@ def get_region_info(model, region):
             decimate = 7
         if model == 'GFS1p00':
             decimate = 7
+
+    if region == 'Guyana' or region == 'guyana':
+        western_bound = -62
+        eastern_bound = -56
+        southern_bound = 0.5
+        northern_bound = 9
+        shrink = 1
+        x1, y1 = 0.01, -0.03
+        x2, y2 = 0.69, -0.03
+        x3, y3 = 0.01, 0.01
+        signature_fontsize = 6
+        stamp_fontsize = 5
+        if model == 'NAM 1hr' or model == 'NAM' or model == 'NA NAM' or model == 'RAP' or model == 'RAP 32':
+            decimate = 15
+        if model == 'CMCENS' or model == 'GEFS0p50':
+            decimate = 1
+        if model == 'GFS0p25' or model == 'GFS0p25_1h' or model == 'GEFS0p25 ENS MEAN':
+            decimate = 2 
+        if model == 'GFS0p50':
+            decimate = 1
+        if model == 'GFS1p00':
+            decimate = 1
         
     return western_bound, eastern_bound, southern_bound, northern_bound, x1, y1, x2, y2, x3, y3, shrink, decimate, signature_fontsize, stamp_fontsize
 
@@ -2106,8 +2133,8 @@ def coords_for_forecast_model_data(region, western_bound, eastern_bound, souther
 
     if region == 'CONUS & South Canada & North Mexico':
         western_bound = 140
-        eastern_bound = 40
-        southern_bound = 13
+        eastern_bound = 45
+        southern_bound = 20
         northern_bound = 65 
 
     if region == 'Australia New Zealand' or region == 'australia new zealand':
@@ -2115,6 +2142,12 @@ def coords_for_forecast_model_data(region, western_bound, eastern_bound, souther
         eastern_bound = 180
         southern_bound = -48
         northern_bound = -9 
+
+    if region == 'Guyana' or region == 'guyana':
+        western_bound = 62
+        eastern_bound = 56
+        southern_bound = 0.5
+        northern_bound = 9
 
     if region == 'India' or region == 'india':
         western_bound = 293
