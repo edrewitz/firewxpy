@@ -446,8 +446,8 @@ class ensemble_8_day_mean_eofs:
             region_name = 'SOUTHERN HEMISPHERE'
             wb = 360
             eb = 0
-            sb = -25
-            nb = -90
+            sb = -90
+            nb = -25
         
         if data == False:
             ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
@@ -1149,8 +1149,8 @@ class ensemble_8_day_mean_eofs:
             region_name = 'SOUTHERN HEMISPHERE'
             wb = 360
             eb = 0
-            sb = -25
-            nb = -90
+            sb = -90
+            nb = -25
         
         if data == False:
             ds = model_data.get_nomads_opendap_data(model, region, wb, eb, sb, nb)
