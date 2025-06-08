@@ -15,6 +15,7 @@ from firewxpy.forecast_models import temperature as model_temperature
 from firewxpy.forecast_models import relative_humidity as model_relative_humidity
 from firewxpy.forecast_models import critical_firewx_conditions as model_critical_firewx_conditions
 from firewxpy.forecast_models import precipitation as model_precipitation
+from firewxpy.forecast_models import ensemble_8_day_mean_eofs
 
 from firewxpy.cross_sections import time_cross_sections, two_point_cross_sections
 
