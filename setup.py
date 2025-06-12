@@ -21,7 +21,8 @@ setup(
         "cfgrib>=0.9.10.4",
         "cartopy>=0.21.0",
         "pytz>=2024.1",
-        "xeofs>=3.0.4"
+        "xeofs>=3.0.4",
+        "geopandas>=1.1.0"
       
     ],
     author="Eric J. Drewitz",
