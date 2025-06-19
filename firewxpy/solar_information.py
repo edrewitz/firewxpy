@@ -11,6 +11,9 @@ warnings.filterwarnings('ignore')
 from dateutil import tz
 from pysolar import solar, radiation
 from datetime import datetime, timedelta
+from firewxpy.standard import plot_creation_time
+
+local_time, utc_time = plot_creation_time()
 
 def get_solar_noon(times_list, solar_elevation):
 
