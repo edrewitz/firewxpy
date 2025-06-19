@@ -123,6 +123,10 @@ USDA/USFS Predictive Services Meteorologist
 
 Southern California Geographic Area Coordination Center
 
+# Citing FireWxPy
+
+[click here](https://zenodo.org/records/15620392) to find information on how to cite FireWxPy. 
+
 # Citations
 
 **MetPy**: May, R. M., Goebbert, K. H., Thielen, J. E., Leeman, J. R., Camron, M. D., Bruick, Z.,
