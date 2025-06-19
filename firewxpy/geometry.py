@@ -73,7 +73,6 @@ def download_shape_files():
     pz_path = f"NWS Public Zones"
     psa_path = f"PSA Shapefiles"
     gacc_path = f"GACC Boundaries Shapefiles"
-    sce_path = f"SCE Boundaries"
 
     # CWAs
     
@@ -173,15 +172,6 @@ def download_shape_files():
         os.replace('National_PSA_Current.prj', f"PSA Shapefiles/National_PSA_Current.prj")
         os.replace('National_PSA_Current.shp', f"PSA Shapefiles/National_PSA_Current.shp")
         os.replace('National_PSA_Current.shx', f"PSA Shapefiles/National_PSA_Current.shx")
-
-    # SCE Boundaries
-
-    if os.path.exists(sce_path):
-        pass
-    else:
-        os.mkdir("SCE Boundaries")
-        urllib.request.urlretrieve('https://raw.githubusercontent.com/edrewitz/firewxpy/refs/heads/main/shapefiles/SCE/SCE_Service_Territory.geojson', 'SCE_Service_Territory.geojson')
-        os.replace('SCE_Service_Territory.geojson', f"SCE Boundaries/SCE_Service_Territory.geojson")
         
         print("Set Up Complete! Have Fun!")
 
