@@ -2753,7 +2753,7 @@ def plot_critical_firewx(western_bound=None, eastern_bound=None, southern_bound=
     plt.close(fig)
     print(f"Saved RTMA Critical Fire Weather graphic to {path_print}")
 
-def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.5, cwa_border_linewidth=1, sce_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=False, ds=None, ds_24=None, time=None, time_24=None, decimate='default', state='conus', gacc_region=None, utility_service_area=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, show_low_high_thresholds=False):
+def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, shrink=0.7, show_rivers=True, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.5, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25, state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', show_sample_points=True, sample_point_fontsize=8, alpha=0.5, data=False, ds=None, ds_24=None, time=None, time_24=None, decimate='default', state='conus', gacc_region=None, x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, cwa=None, signature_fontsize=6, stamp_fontsize=5, show_low_high_thresholds=False):
 
     r'''
     This function plots the latest available 24-Hour RTMA RH Comparison. 
@@ -2970,8 +2970,6 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
     
     PZs = geometry.get_shapes(f"NWS Public Zones/z_05mr24.shp")
 
-    SCE_area = geometry.get_geo_json(f"SCE Boundaries/SCE_Service_Territory.geojson")
-
     if show_low_high_thresholds == True:
         text = 'With Contour Thresholds'
     else:
@@ -2982,8 +2980,6 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
 
     if gacc_region != None:
         state = gacc_region
-    elif utility_service_area != None:
-        state = utility_service_area
     else:
         state = state
 
@@ -3076,9 +3072,6 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
             show_county_borders = True
             if state == 'US' or state == 'us' or state == 'USA' or state == 'usa':
                 county_border_linewidth=0.25    
-        if reference_system == 'SCE & Counties':
-            show_sce_borders = True
-            show_county_borders = True
 
     path, path_print = file_functions.rtma_graphics_paths(state, gacc_region, f'24 HOUR RTMA RH COMPARISON {text}', reference_system, cwa)
 
@@ -3177,8 +3170,6 @@ def plot_24_hour_relative_humidity_comparison(western_bound=None, eastern_bound=
         ax.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
     else:
         pass  
-    if show_sce_borders == True:
-        ax.add_geometries(SCE_area, crs=datacrs, facecolor='none', edgecolor='red', linewidth=sce_border_linewidth)
 
     plt.title("24-Hour RTMA Relative Humidity Comparison (Δ%)", fontsize=8, fontweight='bold', loc='left')
     
