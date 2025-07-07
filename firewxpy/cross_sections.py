@@ -5843,7 +5843,6 @@ class two_point_cross_sections:
             print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
             tim.sleep(10)
 
-
     def plot_lower_atmosphere_theta_e_and_wind(model, region, starting_point, ending_point, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', north_to_south=False):
     
         r'''
@@ -5997,7 +5996,7 @@ class two_point_cross_sections:
             ref = 'lon'
         else:
             ref = 'lat'
-            
+    
         if reference_system == 'Custom' or reference_system == 'custom':
             show_state_borders = show_state_borders
             show_county_borders = show_county_borders
@@ -6113,7 +6112,7 @@ class two_point_cross_sections:
             else:
                 northern_bound = start_lat
                 southern_bound = end_lat
-                                
+                
             western_bound = western_bound - 1
             eastern_bound = eastern_bound + 1
             southern_bound = southern_bound - 1
@@ -6152,13 +6151,17 @@ class two_point_cross_sections:
         v = (ds['vgrdprs']) * 2.23694
         ds['dwptprs'] = mpcalc.dewpoint_from_relative_humidity(ds['tmpprs'] * units('kelvin'), ds['rhprs'] * units('percent'))
         theta_e = mpcalc.equivalent_potential_temperature(ds['lev'] * units('hPa'), ds['tmpprs'] * units('kelvin'), ds['dwptprs']) 
+        rh = ds['rhprs']
+        vv = ds['vvelprs']
         
-        cross = cross_section(theta_e, starting_point, ending_point)
+        cross = cross_section(vv, starting_point, ending_point)
         u_cross = cross_section(u, starting_point, ending_point)
         v_cross = cross_section(v, starting_point, ending_point)
+        rh_cross = cross_section(rh, starting_point, ending_point)
+        theta_e_cross = cross_section(theta_e, starting_point, ending_point)
         height_cross = cross_section(sfc_pressure, starting_point, ending_point)
-        theta_e_grid, pressure, index, lon, height = xr.broadcast(cross, cross['lev'], cross['index'], cross[ref], height_cross)
-    
+        vv_grid, pressure, index, lon, height = xr.broadcast(cross, cross['lev'], cross['index'], cross[ref], height_cross) 
+
         path, path_print = file_functions.forecast_cross_sections_graphics_paths(model, 'Two Point Cross Section', 'Lower Atmosphere Theta-E & Wind Barbs', reference_system, start_coords=starting_point, end_coords=ending_point)
 
         for file in os.listdir(f"{path}"):
@@ -6170,6 +6173,7 @@ class two_point_cross_sections:
         print(f"Any old images (if any) in {path_print} have been deleted.")
 
         stop_loop = len(ds['time']) - 1
+        print(stop_loop)
         time = ds['time']
         times = time.to_pandas()
 
@@ -6222,85 +6226,117 @@ class two_point_cross_sections:
     
         for i in range(0, stop_loop, step):
 
-            step_c = 1
-            start_c = round(np.nanmin(theta_e[i, :, :]),0)
-            stop_c = (round(np.nanmax(theta_e[i, :, :]),0) + step_c)
-                            
+            try:
+
+                step_c = 1
+                start_c = round(np.nanmin(theta_e[:, i, :]),0)
+                stop_c = (round(np.nanmax(theta_e[:, i, :]),0) + step_c)
     
-            fname = f"Image_{i}.png"
-
-            fig = plt.figure(figsize=(18, 7))
-            gs = gridspec.GridSpec(10, 10)
-            ax1 = fig.add_subplot(gs[0:10, 0:10])
-            ax1.set_yscale('symlog')
-            ax1.set_yticks(np.arange(1000, 50, -100))
-            ax1.set_yticklabels(np.arange(1000, 50, -100))
-            ax1.set_ylim(1000, 475)
-            ax1.fill_between(lon[0, i, :], height[0, i, :], np.nanmax(sfc_pressure), color="black", zorder=10)
-            ax1.contourf(lon[:, i, :], pressure[:, i, :], theta_e_grid[:, i, :], levels=np.arange(start_c, (stop_c + step_c), step_c), cmap=cmap, alpha=0.25, extend='both')
-            c = ax1.contour(lon[:, i, :], pressure[:, i, :], theta_e_grid[:, i, :], levels = np.arange(start_c, (stop_c + 3), 3), colors='black', zorder=2, linewidths=1, linestyles='-')
-            ax1.clabel(c, levels = np.arange(start_c, (stop_c + 3), 3), inline=True, fontsize=8, rightside_up=True)
- 
-            ax1.barbs(lon[::decimate, i, ::decimate], pressure[::decimate, i, ::decimate], u_cross[::decimate, i, ::decimate], v_cross[::decimate, i, ::decimate], clip_on=True, zorder=10, color='black', length=5, alpha=0.5)
-            ax1.text(0.01, -0.08, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS | Map Reference System: "+reference_system, transform=ax1.transAxes, fontsize=6, fontweight='bold', bbox=props)
-            ax1.text(0.8, -0.08, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax1.transAxes, fontsize=6, fontweight='bold', bbox=props)
-
-            plt.title(f"{model.upper()} LOWER ATMOSPHERIC THETA-E [K] & WIND BARBS [MPH]\nSTART: {str(abs(start_lat))}{start_lat_symbol}/{str(abs(start_lon))}{start_lon_symbol} END: {str(abs(end_lat))}{end_lat_symbol}/{str(abs(end_lon))}{end_lon_symbol}\nFORECAST VALID: {times.iloc[i].strftime('%a %d/%H UTC')} | INITIALIZATION: {times.iloc[0].strftime('%a %d/%H UTC')}", fontsize=10, fontweight='bold', loc='left')
-
-            ax2 = fig.add_subplot(gs[0:2, 8:10], projection=ccrs.PlateCarree())
-            ax2.axis("off")
-            ax2.set_extent([wb, eb, sb, nb], ccrs.PlateCarree())
-            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-            ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-            ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-            ax2.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
-            if show_rivers == True:
-                ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-            else:
-                pass
+                low = np.nanmin(vv[i, :, :])
+                high = np.nanmax(vv[i, :, :])
         
-            if show_gacc_borders == True:
-                ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-            else:
-                pass
-            if show_psa_borders == True:
-                ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_county_borders == True:
-                ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_state_borders == True:
-                ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-            else:
-                pass
-            if show_cwa_borders == True:
-                ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_firewx_zones == True:
-                ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_public_zones == True:
-                ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-            else:
-                pass    
-
+                if low < 0 and high >= 0:
+                    vv_range = abs(low) + high
+                if low < 0 and high < 0 :
+                    vv_range = low - high
+                if low >= 0 and high >= 0:
+                    vv_range = high - low
         
-            ax2.plot(start_lon, start_lat, marker='*', markersize=8, color='k', zorder=15)
-            ax2.plot(end_lon, end_lat, marker='*', markersize=8, color='k', zorder=15)
-            ax2.plot(cross['lon'], cross['lat'], c='k', zorder=10)
-            ax2.contourf(ds['lon'], ds['lat'], gph_500[i, :, :], levels=np.arange(480, 601, 1), cmap=colormaps.gph_colormap(), alpha=0.25, transform=datacrs, extend='both')
-            ax2.text(0.01, 0.01, "Reference System: "+reference_system, transform=ax2.transAxes, fontsize=5, fontweight='bold', bbox=props, zorder=11)
-            ax2.set_title(f"500 MB GPH", fontweight='bold', fontsize=8)
-
-            fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            plt.close(fig)
-            print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
-            tim.sleep(10)
+                step = round(vv_range/10, 1)
+        
+                if low < 0 and abs(low) > high and high >=0:
+                    upper_bound = round(abs(low),2)
+                    lower_bound = round(low,2)
+                if low < 0 and high >= 0 and abs(low) <= high:
+                    lower_bound = round((high * -1),2)
+                    upper_bound = round(high,2)
+                if low < 0 and high < 0:
+                    upper_bound = round(high,2)
+                    lower_bound = round(low,2)
+                if low >= 0 and high >= 0:
+                    upper_bound = round(high,2)
+                    lower_bound = round(low,2)
+                
+                step_cs = round(vv_range/100, 2)
+                                
+        
+                fname = f"Image_{i}.png"
+    
+    
+                fig = plt.figure(figsize=(18, 7))
+                gs = gridspec.GridSpec(10, 10)
+                ax1 = fig.add_subplot(gs[0:10, 0:10])
+                ax1.set_yscale('symlog')
+                ax1.set_yticks(np.arange(1000, 50, -100))
+                ax1.set_yticklabels(np.arange(1000, 50, -100))
+                ax1.set_ylim(1000, 475)
+                ax1.fill_between(lon[i, 0, :], height[i, 0, :], np.nanmax(sfc_pressure), color="black", zorder=10)
+                ax1.contourf(lon[i, :, :], pressure[i, :, :], theta_e_cross[:, i, :], levels = np.arange(start_c, (stop_c + 3), 3), cmap=cmap, alpha=0.25, extend='both')
+                
+                c = ax1.contour(lon[i, :, :], pressure[i, :, :], theta_e_cross[:, i, :], levels = np.arange(start_c, (stop_c + 3), 3), colors='black', zorder=2, linewidths=1, linestyles='-')
+                ax1.clabel(c, levels = np.arange(start_c, (stop_c + 3), 3), inline=True, fontsize=8, rightside_up=True)
+                
+                ax1.barbs(lon[i, ::decimate, ::decimate], pressure[i, ::decimate, ::decimate], u_cross[i, ::decimate, ::decimate], v_cross[i, ::decimate, ::decimate], clip_on=True, zorder=10, color='black', length=5, alpha=0.5)
+                ax1.text(0.01, -0.08, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS | Map Reference System: "+reference_system, transform=ax1.transAxes, fontsize=6, fontweight='bold', bbox=props)
+                ax1.text(0.8, -0.08, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax1.transAxes, fontsize=6, fontweight='bold', bbox=props)
+    
+                plt.title(f"{model.upper()} LOWER ATMOSPHERIC THETA-E [K] & WIND BARBS [MPH]\nSTART: {str(abs(start_lat))}{start_lat_symbol}/{str(abs(start_lon))}{start_lon_symbol} END: {str(abs(end_lat))}{end_lat_symbol}/{str(abs(end_lon))}{end_lon_symbol}\nFORECAST VALID: {times.iloc[i].strftime('%a %d/%H UTC')} | INITIALIZATION: {times.iloc[0].strftime('%a %d/%H UTC')}", fontsize=10, fontweight='bold', loc='left')
+    
+                ax2 = fig.add_subplot(gs[0:2, 8:10], projection=ccrs.PlateCarree())
+                ax2.axis("off")
+                ax2.set_extent([wb, eb, sb, nb], ccrs.PlateCarree())
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+                ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
+                ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+                ax2.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+                if show_rivers == True:
+                    ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                else:
+                    pass
+            
+                if show_gacc_borders == True:
+                    ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                else:
+                    pass
+                if show_psa_borders == True:
+                    ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_county_borders == True:
+                    ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_state_borders == True:
+                    ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                else:
+                    pass
+                if show_cwa_borders == True:
+                    ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_firewx_zones == True:
+                    ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_public_zones == True:
+                    ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                else:
+                    pass    
+    
+            
+                ax2.plot(start_lon, start_lat, marker='*', markersize=8, color='k', zorder=15)
+                ax2.plot(end_lon, end_lat, marker='*', markersize=8, color='k', zorder=15)
+                ax2.plot(cross['lon'], cross['lat'], c='k', zorder=10)
+                ax2.contourf(ds['lon'], ds['lat'], gph_500[i, :, :], levels=np.arange(480, 601, 1), cmap=colormaps.gph_colormap(), alpha=0.25, transform=datacrs, extend='both')
+                ax2.set_title(f"500 MB GPH", fontweight='bold', fontsize=8)
+    
+                fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                plt.close(fig)
+                print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
+                tim.sleep(10)
+            except Exception as e:
+                plt.close(fig)
 
 
     def plot_lower_atmosphere_theta_e_rh_vertical_velocity_wind(model, region, starting_point, ending_point, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, show_rivers=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', north_to_south=False):
@@ -6686,113 +6722,118 @@ class two_point_cross_sections:
     
         for i in range(0, stop_loop, step):
 
-            step_c = 1
-            start_c = round(np.nanmin(theta_e[:, i, :]),0)
-            stop_c = (round(np.nanmax(theta_e[:, i, :]),0) + step_c)
+            try:
 
-            low = np.nanmin(vv[i, :, :])
-            high = np.nanmax(vv[i, :, :])
+                step_c = 1
+                start_c = round(np.nanmin(theta_e[:, i, :]),0)
+                stop_c = (round(np.nanmax(theta_e[:, i, :]),0) + step_c)
     
-            if low < 0 and high >= 0:
-                vv_range = abs(low) + high
-            if low < 0 and high < 0 :
-                vv_range = low - high
-            if low >= 0 and high >= 0:
-                vv_range = high - low
-    
-            step = round(vv_range/10, 1)
-    
-            if low < 0 and abs(low) > high and high >=0:
-                upper_bound = round(abs(low),2)
-                lower_bound = round(low,2)
-            if low < 0 and high >= 0 and abs(low) <= high:
-                lower_bound = round((high * -1),2)
-                upper_bound = round(high,2)
-            if low < 0 and high < 0:
-                upper_bound = round(high,2)
-                lower_bound = round(low,2)
-            if low >= 0 and high >= 0:
-                upper_bound = round(high,2)
-                lower_bound = round(low,2)
-            
-            step_cs = round(vv_range/100, 2)
-                            
-    
-            fname = f"Image_{i}.png"
-
-            fig = plt.figure(figsize=(18, 7))
-            gs = gridspec.GridSpec(10, 10)
-            ax1 = fig.add_subplot(gs[0:10, 0:10])
-            ax1.set_yscale('symlog')
-            ax1.set_yticks(np.arange(1000, 50, -100))
-            ax1.set_yticklabels(np.arange(1000, 50, -100))
-            ax1.set_ylim(1000, 475)
-            ax1.fill_between(lon[0, i, :], height[0, i, :], np.nanmax(sfc_pressure), color="black", zorder=10)
-            ax1.contourf(lon[i, :, :], pressure[i, :, :], vv_grid[i, :, :], levels=np.arange(lower_bound, (upper_bound + step_cs), step_cs), cmap=cmap, alpha=0.25, extend='both')
-            c = ax1.contour(lon[i, :, :], pressure[i, :, :], theta_e_cross[:, i, :], levels = np.arange(start_c, (stop_c + 3), 3), colors='black', zorder=2, linewidths=1, linestyles='-')
-            ax1.clabel(c, levels = np.arange(start_c, (stop_c + 3), 3), inline=True, fontsize=8, rightside_up=True)
-            c1 = ax1.contour(lon[i, :, :], pressure[i, :, :], rh_cross[i, :, :], levels = np.arange(0, 110, 10), colors='green', zorder=2, linewidths=1, linestyles='--')
-            ax1.clabel(c1, levels = np.arange(0, 110, 10), inline=True, fontsize=8, rightside_up=True)
-            
-            ax1.barbs(lon[i, ::decimate, ::decimate], pressure[i, ::decimate, ::decimate], u_cross[i, ::decimate, ::decimate], v_cross[i, ::decimate, ::decimate], clip_on=True, zorder=10, color='black', length=5, alpha=0.5)
-            ax1.text(0.01, -0.08, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS | Map Reference System: "+reference_system, transform=ax1.transAxes, fontsize=6, fontweight='bold', bbox=props)
-            ax1.text(0.8, -0.08, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax1.transAxes, fontsize=6, fontweight='bold', bbox=props)
-
-            plt.title(f"{model.upper()} LOWER ATMOSPHERIC VERTICAL VELOCITY (SHADED) [Pa/s] & THETA-E [K] (SOLID CONTOURS) & RH [%] (DASHED CONTOURS) & WIND BARBS [MPH]\nSTART: {str(abs(start_lat))}{start_lat_symbol}/{str(abs(start_lon))}{start_lon_symbol} END: {str(abs(end_lat))}{end_lat_symbol}/{str(abs(end_lon))}{end_lon_symbol}\nFORECAST VALID: {times.iloc[i].strftime('%a %d/%H UTC')} | INITIALIZATION: {times.iloc[0].strftime('%a %d/%H UTC')}", fontsize=10, fontweight='bold', loc='left')
-
-            ax2 = fig.add_subplot(gs[0:2, 8:10], projection=ccrs.PlateCarree())
-            ax2.axis("off")
-            ax2.set_extent([wb, eb, sb, nb], ccrs.PlateCarree())
-            ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
-            ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
-            ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
-            ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
-            ax2.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
-            if show_rivers == True:
-                ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
-            else:
-                pass
+                low = np.nanmin(vv[i, :, :])
+                high = np.nanmax(vv[i, :, :])
         
-            if show_gacc_borders == True:
-                ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
-            else:
-                pass
-            if show_psa_borders == True:
-                ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_county_borders == True:
-                ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_state_borders == True:
-                ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
-            else:
-                pass
-            if show_cwa_borders == True:
-                ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_firewx_zones == True:
-                ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
-            else:
-                pass
-            if show_nws_public_zones == True:
-                ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
-            else:
-                pass    
-
+                if low < 0 and high >= 0:
+                    vv_range = abs(low) + high
+                if low < 0 and high < 0 :
+                    vv_range = low - high
+                if low >= 0 and high >= 0:
+                    vv_range = high - low
         
-            ax2.plot(start_lon, start_lat, marker='*', markersize=8, color='k', zorder=15)
-            ax2.plot(end_lon, end_lat, marker='*', markersize=8, color='k', zorder=15)
-            ax2.plot(cross['lon'], cross['lat'], c='k', zorder=10)
-            ax2.contourf(ds['lon'], ds['lat'], gph_500[i, :, :], levels=np.arange(480, 601, 1), cmap=colormaps.gph_colormap(), alpha=0.25, transform=datacrs, extend='both')
-            ax2.set_title(f"500 MB GPH", fontweight='bold', fontsize=8)
-
-            fig.savefig(f"{path}/{fname}", bbox_inches='tight')
-            plt.close(fig)
-            print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
-            tim.sleep(10)
+                step = round(vv_range/10, 1)
+        
+                if low < 0 and abs(low) > high and high >=0:
+                    upper_bound = round(abs(low),2)
+                    lower_bound = round(low,2)
+                if low < 0 and high >= 0 and abs(low) <= high:
+                    lower_bound = round((high * -1),2)
+                    upper_bound = round(high,2)
+                if low < 0 and high < 0:
+                    upper_bound = round(high,2)
+                    lower_bound = round(low,2)
+                if low >= 0 and high >= 0:
+                    upper_bound = round(high,2)
+                    lower_bound = round(low,2)
+                
+                step_cs = round(vv_range/100, 2)
+                                
+        
+                fname = f"Image_{i}.png"
+    
+    
+                fig = plt.figure(figsize=(18, 7))
+                gs = gridspec.GridSpec(10, 10)
+                ax1 = fig.add_subplot(gs[0:10, 0:10])
+                ax1.set_yscale('symlog')
+                ax1.set_yticks(np.arange(1000, 50, -100))
+                ax1.set_yticklabels(np.arange(1000, 50, -100))
+                ax1.set_ylim(1000, 475)
+                ax1.fill_between(lon[i, 0, :], height[i, 0, :], np.nanmax(sfc_pressure), color="black", zorder=10)
+                ax1.contourf(lon[i, :, :], pressure[i, :, :], vv_grid[i, :, :], levels=np.arange(lower_bound, (upper_bound + step_cs), step_cs), cmap=cmap, alpha=0.25, extend='both')
+                c = ax1.contour(lon[i, :, :], pressure[i, :, :], theta_e_cross[:, i, :], levels = np.arange(start_c, (stop_c + 3), 3), colors='black', zorder=2, linewidths=1, linestyles='-')
+                ax1.clabel(c, levels = np.arange(start_c, (stop_c + 3), 3), inline=True, fontsize=8, rightside_up=True)
+                c1 = ax1.contour(lon[i, :, :], pressure[i, :, :], rh_cross[i, :, :], levels = np.arange(0, 110, 10), colors='green', zorder=2, linewidths=1, linestyles='--')
+                ax1.clabel(c1, levels = np.arange(0, 110, 10), inline=True, fontsize=8, rightside_up=True)
+                
+                ax1.barbs(lon[i, ::decimate, ::decimate], pressure[i, ::decimate, ::decimate], u_cross[i, ::decimate, ::decimate], v_cross[i, ::decimate, ::decimate], clip_on=True, zorder=10, color='black', length=5, alpha=0.5)
+                ax1.text(0.01, -0.08, "Plot Created With FireWxPy (C) Eric J. Drewitz " +utc_time.strftime('%Y')+" | Data Source: NOAA/NCEP/NOMADS | Map Reference System: "+reference_system, transform=ax1.transAxes, fontsize=6, fontweight='bold', bbox=props)
+                ax1.text(0.8, -0.08, "Image Created: " + local_time.strftime('%m/%d/%Y %H:%M Local') + " (" + utc_time.strftime('%H:%M UTC') + ")", transform=ax1.transAxes, fontsize=6, fontweight='bold', bbox=props)
+    
+                plt.title(f"{model.upper()} LOWER ATMOSPHERIC VERTICAL VELOCITY (SHADED) [Pa/s] & THETA-E [K] (SOLID CONTOURS) & RH [%] (DASHED CONTOURS) & WIND BARBS [MPH]\nSTART: {str(abs(start_lat))}{start_lat_symbol}/{str(abs(start_lon))}{start_lon_symbol} END: {str(abs(end_lat))}{end_lat_symbol}/{str(abs(end_lon))}{end_lon_symbol}\nFORECAST VALID: {times.iloc[i].strftime('%a %d/%H UTC')} | INITIALIZATION: {times.iloc[0].strftime('%a %d/%H UTC')}", fontsize=10, fontweight='bold', loc='left')
+    
+                ax2 = fig.add_subplot(gs[0:2, 8:10], projection=ccrs.PlateCarree())
+                ax2.axis("off")
+                ax2.set_extent([wb, eb, sb, nb], ccrs.PlateCarree())
+                ax2.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75, zorder=9)
+                ax2.add_feature(cfeature.LAND, color='beige', zorder=1)
+                ax2.add_feature(cfeature.OCEAN, color='lightcyan', zorder=1)
+                ax2.add_feature(cfeature.LAKES, color='lightcyan', zorder=1)
+                ax2.add_feature(provinces, linewidth=province_border_linewidth, zorder=1)
+                if show_rivers == True:
+                    ax2.add_feature(cfeature.RIVERS, color='lightcyan', zorder=4)
+                else:
+                    pass
+            
+                if show_gacc_borders == True:
+                    ax2.add_feature(GACC, linewidth=gacc_border_linewidth, linestyle=gacc_border_linestyle, zorder=6)
+                else:
+                    pass
+                if show_psa_borders == True:
+                    ax2.add_feature(PSAs, linewidth=psa_border_linewidth, linestyle=psa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_county_borders == True:
+                    ax2.add_feature(USCOUNTIES, linewidth=county_border_linewidth, linestyle=county_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_state_borders == True:
+                    ax2.add_feature(cfeature.STATES, linewidth=state_border_linewidth, linestyle=state_border_linestyle, edgecolor='black', zorder=6)
+                else:
+                    pass
+                if show_cwa_borders == True:
+                    ax2.add_feature(CWAs, linewidth=cwa_border_linewidth, linestyle=cwa_border_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_firewx_zones == True:
+                    ax2.add_feature(FWZs, linewidth=nws_firewx_zones_linewidth, linestyle=nws_firewx_zones_linestyle, zorder=5)
+                else:
+                    pass
+                if show_nws_public_zones == True:
+                    ax2.add_feature(PZs, linewidth=nws_public_zones_linewidth, linestyle=nws_public_zones_linestyle, zorder=5)
+                else:
+                    pass    
+    
+            
+                ax2.plot(start_lon, start_lat, marker='*', markersize=8, color='k', zorder=15)
+                ax2.plot(end_lon, end_lat, marker='*', markersize=8, color='k', zorder=15)
+                ax2.plot(cross['lon'], cross['lat'], c='k', zorder=10)
+                ax2.contourf(ds['lon'], ds['lat'], gph_500[i, :, :], levels=np.arange(480, 601, 1), cmap=colormaps.gph_colormap(), alpha=0.25, transform=datacrs, extend='both')
+                ax2.set_title(f"500 MB GPH", fontweight='bold', fontsize=8)
+    
+                fig.savefig(f"{path}/{fname}", bbox_inches='tight')
+                plt.close(fig)
+                print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
+                tim.sleep(10)
+            except Exception as e:
+                plt.close(fig)
 
 
 
@@ -7270,5 +7311,8 @@ class two_point_cross_sections:
             plt.close(fig)
             print(f"Saved image for forecast {times.iloc[i].strftime('%a %d/%H UTC')} to {path_print}.")
             tim.sleep(10)
+
+
+
 
 
