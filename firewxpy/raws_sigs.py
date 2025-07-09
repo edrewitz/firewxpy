@@ -269,10 +269,15 @@ def get_stats(gacc_region):
                 daily_max = df.groupby('julian_date').max(numeric_only=True)
                 daily_min = df.groupby('julian_date').min(numeric_only=True)
                 daily_avg = df.groupby('julian_date').mean(numeric_only=True)
-                
-            fname_max = f"{df['stationId'].iloc[0]}_max.csv"
-            fname_min = f"{df['stationId'].iloc[0]}_min.csv"
-            fname_avg = f"{df['stationId'].iloc[0]}_avg.csv"
+
+            try:
+                fname_max = f"{df['stationId'].iloc[0]}_max.csv"
+                fname_min = f"{df['stationId'].iloc[0]}_min.csv"
+                fname_avg = f"{df['stationId'].iloc[0]}_avg.csv"
+            except Exception as e:
+                fname_max = f"{df['stationName'].iloc[0]}_max.csv"
+                fname_min = f"{df['stationName'].iloc[0]}_min.csv"
+                fname_avg = f"{df['stationName'].iloc[0]}_avg.csv"                
             daily_max.to_csv(fname_max, index=False)
             os.replace(f"{fname_max}", f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/MAX/{fname_max}")
             daily_min.to_csv(fname_min, index=False)
@@ -835,16 +840,40 @@ def station_forecast(gacc_region):
         for i in range(0, len(files)):
     
             df = pd.read_csv(f"{paths[p]}/{files[i]}")
-            df = df[df['observationTime'].between(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))]
-            df['observationTime'] = pd.to_datetime(df['observationTime'])
-            df['julian_date'] = df['observationTime'].dt.dayofyear
-            data = df.groupby(pd.Grouper(key='observationTime', freq='D'))
-            f100 = data['hundredHR_TL_FuelMoisture'].min()
-            f1000 = data['thousandHR_TL_FuelMoisture'].min()
-            erc = data['energyReleaseComponent'].max()
-            bi = data['burningIndex'].max()
-            sc = data['spreadComponent'].max()
-            ic = data['ignitionComponent'].max()
+            try:
+                df = df[df['observationTime'].between(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))]
+                df['observationTime'] = pd.to_datetime(df['observationTime'])
+                df['julian_date'] = df['observationTime'].dt.dayofyear
+                data = df.groupby(pd.Grouper(key='observationTime', freq='D'))
+            except Exception as e:
+                df = df[df['ObservationTime'].between(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))]
+                df['ObservationTime'] = pd.to_datetime(df['ObservationTime'])
+                df['julian_date'] = df['ObservationTime'].dt.dayofyear
+                data = df.groupby(pd.Grouper(key='ObservationTime', freq='D'))   
+            try:
+                f100 = data['hundredHR_TL_FuelMoisture'].min()
+            except Exception as e:
+                f100 = data['100HrFM'].min()
+            try:
+                f1000 = data['thousandHR_TL_FuelMoisture'].min()
+            except Exception as e:
+                f1000 = data['1000HrFM'].min()
+            try:
+                erc = data['energyReleaseComponent'].max()
+            except Exception as e:
+                erc = data['ERC'].max()
+            try:
+                bi = data['burningIndex'].max()
+            except Exception as e:
+                bi = data['BI'].max()
+            try:
+                sc = data['spreadComponent'].max()
+            except Exception as e:
+                sc = data['SC'].max()
+            try:
+                ic = data['ignitionComponent'].max()
+            except Exception as e:
+                ic = data['IC'].max()
     
             if len(f100) == days and len(f1000) == days and len(erc) == days and len(bi) == days and len(sc) == days:
                 main = pd.DataFrame()
