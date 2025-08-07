@@ -7,9 +7,15 @@ import pandas as pd
 import shutil
 import numpy as np
 
-from firewxpy.data_access import FEMS
-from firewxpy.raws_sigs import get_psa_percentiles, station_stats, sort_data_by_psa, get_stats, get_psa_climatology, station_forecast, sort_forecasts_by_psa
-from firewxpy.standard import plot_creation_time, get_timezone_abbreviation, get_timezone
+from ..data.fems import(
+    get_single_station_data,
+    get_raws_sig_data,
+    get_nfdrs_forecast_data
+)
+
+from ..fems.raws_sigs import *
+from ..utils.standard import *
+import plot_creation_time, get_timezone_abbreviation, get_timezone
 try:
     from datetime import datetime, timedelta, UTC
 except Exception as e:
@@ -320,8 +326,8 @@ def create_psa_100hr_fuels_charts(gacc_region, number_of_years_for_averages=15, 
     path, path_print = file_functions.get_fuels_charts_paths(gacc_region, '100hr Dead Fuel')
 
     if data == False:
-        FEMS.get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
-        FEMS.get_nfdrs_forecast_data(gacc_region, fuel_model)
+        get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
+        get_nfdrs_forecast_data(gacc_region, fuel_model)
     else:
         pass
         
@@ -510,8 +516,8 @@ def create_psa_1000hr_fuels_charts(gacc_region, number_of_years_for_averages=15,
     path, path_print = file_functions.get_fuels_charts_paths(gacc_region, '1000hr Dead Fuel')
 
     if data == False:
-        FEMS.get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
-        FEMS.get_nfdrs_forecast_data(gacc_region, fuel_model)
+        get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
+        get_nfdrs_forecast_data(gacc_region, fuel_model)
     else:
         pass
         
@@ -700,8 +706,8 @@ def create_psa_erc_fuels_charts(gacc_region, number_of_years_for_averages=15, fu
     path, path_print = file_functions.get_fuels_charts_paths(gacc_region, 'ERC')
 
     if data == False:
-        FEMS.get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
-        FEMS.get_nfdrs_forecast_data(gacc_region, fuel_model)
+        get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
+        get_nfdrs_forecast_data(gacc_region, fuel_model)
     else:
         pass
         
@@ -870,8 +876,8 @@ def create_psa_bi_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
     path, path_print = file_functions.get_fuels_charts_paths(gacc_region, 'BI')
 
     if data == False:
-        FEMS.get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
-        FEMS.get_nfdrs_forecast_data(gacc_region, fuel_model)
+        get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
+        get_nfdrs_forecast_data(gacc_region, fuel_model)
     else:
         pass
         
@@ -1040,8 +1046,8 @@ def create_psa_sc_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
     path, path_print = file_functions.get_fuels_charts_paths(gacc_region, 'SC')
 
     if data == False:
-        FEMS.get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
-        FEMS.get_nfdrs_forecast_data(gacc_region, fuel_model)
+        get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
+        get_nfdrs_forecast_data(gacc_region, fuel_model)
     else:
         pass
         
@@ -1210,8 +1216,8 @@ def create_psa_ic_fuels_charts(gacc_region, number_of_years_for_averages=15, fue
     path, path_print = file_functions.get_fuels_charts_paths(gacc_region, 'IC')
 
     if data == False:
-        FEMS.get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
-        FEMS.get_nfdrs_forecast_data(gacc_region, fuel_model)
+        get_raws_sig_data(gacc_region, number_of_years_for_averages, fuel_model, start_date)
+        get_nfdrs_forecast_data(gacc_region, fuel_model)
     else:
         pass
         

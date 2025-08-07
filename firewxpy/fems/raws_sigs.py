@@ -56,7 +56,7 @@ def calculate_daily_stats(df):
 
 def check_folders():
     
-    r'''
+    """
     This function checks if the folder that will house the CSV files exists.
     If not the folder will be created.
 
@@ -65,7 +65,7 @@ def check_folders():
     Optional Arguments: None
 
     Returns: A folder that will house the RAWS SIGs CSV files
-    '''
+    """
 
     gacc_id = ['OSCC', 'ONCC', 'SWCC', 'AICC', 'NWCC', 'GBCC', 'NRCC', 'RMCC', 'EACC', 'SACC']
 
@@ -82,7 +82,7 @@ def check_folders():
 
 def get_raws_sig_info():
 
-    r'''
+    """
     This function will download the CSV files that have the RAWS SIG Information from my github page if they are not detected
     on the user's computer. 
 
@@ -91,7 +91,7 @@ def get_raws_sig_info():
     Optional Arguments: None
 
     Returns: Downloading the RAWS SIG Information CSV files and placing them in the f:RAWS SIGs folder if they aren't there already
-    '''
+    """
 
     if os.path.exists(f"RAWS SIGs/OSCC/OSCC_StationList.csv"):
         pass
@@ -152,7 +152,7 @@ get_raws_sig_info()
 
 def get_sigs(gacc_region):
 
-    r'''
+    """
     This function returns the information of the SIGs in each GACC Region. 
 
     Required Arguments: 
@@ -163,7 +163,7 @@ def get_sigs(gacc_region):
 
     Returns: Returns the station list for each SIG. 
 
-    '''
+    """
 
     df = pd.read_csv(f"RAWS SIGs/{gacc_region.upper()}/{gacc_region.upper()}_StationList.csv")
 
@@ -301,7 +301,7 @@ def get_stats(gacc_region):
 
 def get_psa_percentiles(gacc_region):
 
-    r'''
+    """
     This function will parse through the various RAWS CSV files and calculate the 100-hr DFM, 1000-hr DFM and ERC percentiles by SIG. 
 
     Required Arguments:
@@ -312,7 +312,7 @@ def get_psa_percentiles(gacc_region):
 
     Returns: A CSV file hosting all the PSA percentiles saved to f:FEMS Data/{gacc_region}/PSA Percentiles
 
-    '''
+    """
 
     gacc_region = gacc_region.upper()
     
