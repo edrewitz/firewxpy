@@ -11,7 +11,7 @@ warnings.filterwarnings('ignore')
 from dateutil import tz
 from pysolar import solar, radiation
 from datetime import datetime, timedelta
-from firewxpy.standard import plot_creation_time
+from firewxpy.utils.standard import plot_creation_time
 
 local_time, utc_time = plot_creation_time()
 

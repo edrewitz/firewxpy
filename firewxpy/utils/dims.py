@@ -1,5 +1,5 @@
 import warnings
-from firewxpy.calc import scaling
+from firewxpy.utils.calc import scaling
 warnings.filterwarnings('ignore')
 
 def hawaiian_islands_coords(island):

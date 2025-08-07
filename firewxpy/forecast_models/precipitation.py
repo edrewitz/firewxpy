@@ -31,6 +31,16 @@ from firewxpy.utils.utilities import file_functions
 from metpy.units import units
 from firewxpy.data.data_access import model_data
 
+mpl.rcParams['font.weight'] = 'bold'
+local_time, utc_time = standard.plot_creation_time()
+
+datacrs = ccrs.PlateCarree()
+
+provinces = cfeature.NaturalEarthFeature(category='cultural', 
+    name='admin_1_states_provinces_lines', scale='50m', facecolor='none', edgecolor='k')
+
+props = dict(boxstyle='round', facecolor='wheat', alpha=1)
+
 
 def plot_precipitation_rate(model, region, data=False, ds=None, western_bound=None, eastern_bound=None, southern_bound=None, northern_bound=None, show_rivers=False, reference_system='States & Counties', show_state_borders=False, show_county_borders=False, show_gacc_borders=False, show_psa_borders=False, show_cwa_borders=False, show_nws_firewx_zones=False, show_nws_public_zones=False, state_border_linewidth=1, province_border_linewidth=1, county_border_linewidth=0.25, gacc_border_linewidth=1, psa_border_linewidth=0.25, cwa_border_linewidth=1, nws_firewx_zones_linewidth=0.25, nws_public_zones_linewidth=0.25,  state_border_linestyle='-', county_border_linestyle='-', gacc_border_linestyle='-', psa_border_linestyle='-', cwa_border_linestyle='-', nws_firewx_zones_linestyle='-', nws_public_zones_linestyle='-', x1=0.01, y1=-0.03, x2=0.725, y2=-0.025, x3=0.01, y3=0.01, shrink=1, decimate=7, signature_fontsize=6, stamp_fontsize=5, sample_point_fontsize=8, x=0.01, y=0.97):
 

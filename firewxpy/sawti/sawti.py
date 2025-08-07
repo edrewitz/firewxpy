@@ -5,7 +5,7 @@ import os
 import matplotlib.pyplot as plt
 import matplotlib.dates as md
 import matplotlib as mpl
-import firewxpy.standard as standard
+import firewxpy.utils.standard as standard
 import pytz
 import warnings
 warnings.filterwarnings('ignore')

@@ -10,7 +10,7 @@ warnings.filterwarnings('ignore')
 
 from dateutil import tz
 from datetime import datetime, timedelta
-from firewxpy.calc import unit_conversion
+from firewxpy.utils.calc import unit_conversion
 
 from_zone = tz.tzutc()
 to_zone = tz.tzlocal()

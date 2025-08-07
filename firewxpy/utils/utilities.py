@@ -2,7 +2,6 @@
 This file is written by:
 
 (C) Eric J. Drewitz 2025
-        USDA/USFS
 
 """
 

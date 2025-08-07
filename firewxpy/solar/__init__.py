@@ -1,0 +1,1 @@
+from ..solar.solar_information import plot_daily_solar_information
