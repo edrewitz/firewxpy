@@ -264,11 +264,14 @@ def get_stats(gacc_region):
                 daily_min = df.groupby('julian_date').min(numeric_only=True)
                 daily_avg = df.groupby('julian_date').mean(numeric_only=True)
             except Exception as e:
-                df['observationTime'] = pd.to_datetime(df['observationTime'])
-                df['julian_date'] = df['observationTime'].dt.dayofyear
-                daily_max = df.groupby('julian_date').max(numeric_only=True)
-                daily_min = df.groupby('julian_date').min(numeric_only=True)
-                daily_avg = df.groupby('julian_date').mean(numeric_only=True)
+                try:
+                    df['observationTime'] = pd.to_datetime(df['observationTime'])
+                    df['julian_date'] = df['observationTime'].dt.dayofyear
+                    daily_max = df.groupby('julian_date').max(numeric_only=True)
+                    daily_min = df.groupby('julian_date').min(numeric_only=True)
+                    daily_avg = df.groupby('julian_date').mean(numeric_only=True)
+                except Exception as e:
+                    pass
 
             try:
                 fname_max = f"{df['stationId'].iloc[0]}_max.csv"
@@ -277,13 +280,23 @@ def get_stats(gacc_region):
             except Exception as e:
                 fname_max = f"{df['stationName'].iloc[0]}_max.csv"
                 fname_min = f"{df['stationName'].iloc[0]}_min.csv"
-                fname_avg = f"{df['stationName'].iloc[0]}_avg.csv"                
-            daily_max.to_csv(fname_max, index=False)
-            os.replace(f"{fname_max}", f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/MAX/{fname_max}")
-            daily_min.to_csv(fname_min, index=False)
-            os.replace(f"{fname_min}", f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/MIN/{fname_min}")
-            daily_avg.to_csv(fname_avg, index=False)
-            os.replace(f"{fname_avg}", f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/AVG/{fname_avg}")
+                fname_avg = f"{df['stationName'].iloc[0]}_avg.csv"
+
+            try:
+                daily_max.to_csv(fname_max, index=False)
+                os.replace(f"{fname_max}", f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/MAX/{fname_max}")
+            except Exception as e:
+                pass
+            try:
+                daily_min.to_csv(fname_min, index=False)
+                os.replace(f"{fname_min}", f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/MIN/{fname_min}")
+            except Exception as e:
+                pass
+            try:
+                daily_avg.to_csv(fname_avg, index=False)
+                os.replace(f"{fname_avg}", f"FEMS Data/Station Climo/{gacc_region}/PSA {psa}/AVG/{fname_avg}")
+            except Exception as e:
+                 pass
         psa = psa + 1
 
 def get_psa_percentiles(gacc_region):
