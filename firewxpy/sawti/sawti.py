@@ -15,9 +15,36 @@ from datetime import datetime, timedelta
 mpl.rcParams['font.weight'] = 'bold'
 mpl.rcParams['xtick.labelsize'] = 7
 
-def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, zone_1_threshold_4=40, zone_2_threshold_1=9, zone_2_threshold_2=13, zone_2_threshold_3=20, zone_2_threshold_4=28, zone_3_threshold_1=10, zone_3_threshold_2=16, zone_3_threshold_3=24, zone_3_threshold_4=36, zone_4_threshold_1=9, zone_4_threshold_2=12, zone_4_threshold_3=15, zone_4_threshold_4=25, zone_1_W_weight=1, zone_1_DD_weight=1, zone_1_FMC_weight=1, zone_2_W_weight=1, zone_2_DD_weight=1, zone_2_FMC_weight=1, zone_3_W_weight=1, zone_3_DD_weight=1, zone_3_FMC_weight=1, zone_4_W_weight=1, zone_4_DD_weight=1, zone_4_FMC_weight=1):
+def sawti(zone_1_threshold_1=10, 
+          zone_1_threshold_2=15, 
+          zone_1_threshold_3=21, 
+          zone_1_threshold_4=40, 
+          zone_2_threshold_1=9, 
+          zone_2_threshold_2=13,
+          zone_2_threshold_3=20, 
+          zone_2_threshold_4=28, 
+          zone_3_threshold_1=10, 
+          zone_3_threshold_2=16, 
+          zone_3_threshold_3=24, 
+          zone_3_threshold_4=36, 
+          zone_4_threshold_1=9, 
+          zone_4_threshold_2=12, 
+          zone_4_threshold_3=15, 
+          zone_4_threshold_4=25, 
+          zone_1_W_weight=1, 
+          zone_1_DD_weight=1, 
+          zone_1_FMC_weight=1, 
+          zone_2_W_weight=1, 
+          zone_2_DD_weight=1, 
+          zone_2_FMC_weight=1, 
+          zone_3_W_weight=1, 
+          zone_3_DD_weight=1, 
+          zone_3_FMC_weight=1, 
+          zone_4_W_weight=1, 
+          zone_4_DD_weight=1, 
+          zone_4_FMC_weight=1):
 
-    r'''
+    """
     This function calculates the The Santa Ana Wildfire Threat Index from Rolinski et al. 2016. The function downloads the .CSV files holding the data, performs the Large Fire Potential (LFP) calculation and makes a bar graph
     for each zone. 
 
@@ -56,7 +83,7 @@ def sawti(zone_1_threshold_1=10, zone_1_threshold_2=15, zone_1_threshold_3=21, z
 
     Returns: A graphic showing the LFP forecast for each zone saved to f:Weather Data/SAWTI. 
                         
-    '''
+    """
 
     local_time, utc_time = standard.plot_creation_time()
 

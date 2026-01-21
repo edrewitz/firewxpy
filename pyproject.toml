@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "firewxpy"
-version = "1.6.6"
+version = "2.0"
 authors = [
   { name="Eric J Drewitz, USDA/USFS"},
 ]
@@ -21,18 +21,9 @@ classifiers = [
 ]
 dependencies = [
 	"matplotlib>=3.7",
- 	"protobuf>=3.20.3",
-	"metpy>=1.5.1",
-	"netcdf4>=1.7.1",
-	"numpy>=1.24",
-	"pandas>=2.2",
-	"siphon>=0.10.0",
- 	"xarray>=2023.1.0",
- 	"pysolar>=0.11",
-   	"cfgrib>=0.9.10.4",
-    	"cartopy>=0.21.0",
-      	"pytz>=2024.1",
-        "xeofs>=3.0.4",
+ 	"wxdata>=1.2.3",
+	"xeofs>=3.0.4",
 	"geopandas>=1.1.0"
+        
 ]
 
