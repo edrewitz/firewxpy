@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "firewxpy"
 version = "2.0"
 authors = [
-  { name="Eric J Drewitz, USDA/USFS"},
+  { name="Eric J Drewitz"},
 ]
 description = "Weather Analysis and Forecasting For Fire Weather"
 readme = "README.md"
@@ -21,7 +21,7 @@ classifiers = [
 ]
 dependencies = [
 	"matplotlib>=3.7",
- 	"wxdata>=1.2.3",
+ 	"wxdata>=1.2.6",
 	"xeofs>=3.0.4",
 	"geopandas>=1.1.0"
         

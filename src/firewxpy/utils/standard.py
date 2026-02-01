@@ -40,28 +40,7 @@ def get_timezone_abbreviation():
             
     return capital_letters
 
-def get_timezone():
     
-    """
-    This function returns the timezone the user is in. 
-    
-    Required Arguments: None
-    
-    Optional Arguments: None
-    
-    Returns
-    -------
-    
-    Timezone the computer is in. 
-    """
-
-    now = datetime.now()
-    timezone = now.astimezone().tzinfo
-
-    return timezone
-    
-
-
 def plot_creation_time():
 
     """
