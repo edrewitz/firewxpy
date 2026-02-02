@@ -21,7 +21,7 @@ classifiers = [
 ]
 dependencies = [
 	"matplotlib>=3.7",
- 	"wxdata>=1.2.6",
+ 	"wxdata>=1.2.7",
 	"xeofs>=3.0.4",
 	"geopandas>=1.1.0"
         

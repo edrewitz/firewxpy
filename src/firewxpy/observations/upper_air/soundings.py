@@ -5,16 +5,15 @@ Data Source: University of Wyoming.
 
 (C) Eric J. Drewitz 2024-2026
 """
-import matplotlib.pyplot as plt
-import matplotlib.colors as mcolors
-import matplotlib as mpl
-import pandas as pd
-import metpy.calc as mpcalc
-import numpy as np
-import math
+import matplotlib.pyplot as _plt
+import matplotlib as _mpl
+import pandas as _pd
+import metpy.calc as _mpcalc
+import numpy as _np
+import math as _math
 
-from metpy.plots import SkewT
-from metpy.units import units
+from metpy.plots import SkewT as _SkewT
+from metpy.units import units as _units
 from wxdata import get_observed_sounding_data as _get_observed_sounding_data
 from firewxpy.utils.standard import(
     plot_creation_time as _plot_creation_time,
@@ -22,15 +21,10 @@ from firewxpy.utils.standard import(
 )
 from firewxpy.utils.directory import build_directory_branch as _build_directory_branch
 
-mpl.rcParams['font.weight'] = 'bold'
-pd.options.mode.copy_on_write = True
-local, utc = _plot_creation_time()
-timezone = _get_timezone_abbreviation()
-
-try:
-    nan = np.NaN
-except Exception as e:
-    nan = np.nan
+_mpl.rcParams['font.weight'] = 'bold'
+_pd.options.mode.copy_on_write = True
+_local, _utc = _plot_creation_time()
+_timezone = _get_timezone_abbreviation()
 
 def plot_observed_sounding(station_id,
                            current=True,
@@ -66,14 +60,14 @@ def plot_observed_sounding(station_id,
                            y_top=100,
                            x_bottom=-45,
                            x_top=45,
-                           fig_y=12,
-                           fig_x=10,
+                           fig_x=12,
+                           fig_y=10,
                            parcel_profile_color='yellow',
                            parcel_profile_linestyle='--',
                            parcel_profile_linewidth=2,
                            parcel_profile_alpha=0.5,
-                           signature_box_x=0.1725,
-                           signature_box_y=0.04,
+                           signature_box_x=0.165,
+                           signature_box_y=-0.1,
                            signature_box_style='round',
                            signature_box_color='steelblue',
                            signature_box_alpha=0.5,
@@ -100,7 +94,7 @@ def plot_observed_sounding(station_id,
                            facecolor='lavender',
                            skew_t_background_color='silver',
                            df=None,
-                           date=None,):
+                           date=None):
     
     """
     This function plots the observed sounding data for any upper-air observations site. 
@@ -197,9 +191,9 @@ def plot_observed_sounding(station_id,
     
     30) x_top (Integer) - Default=45. The temperature [Celsius] denoting the far-right side of the skew-t graphic.
     
-    31) fig_y (Integer) - Default=12. The y-direction (number of columns) length of the figure. 
+    31) fig_x (Integer) - Default=12. The x-direction (number of columns) length of the figure. 
     
-    32) fig_x (Integer) - Default=10. The x-direction (number of rows) length of the figure.  
+    32) fig_y (Integer) - Default=10. The y-direction (number of rows) length of the figure.  
     
     33) parcel_profile_color (String) - Default='black'. The color of the parcel profile on the skew-t. 
     
@@ -209,13 +203,11 @@ def plot_observed_sounding(station_id,
     
     36) parcel_profile_alpha (Float) - Default=0.5. Ranges from 0 to 1. 0 being more transparent (faded), 1 being opaque. 
         
-    37) signature_box_x (Float) - Default=0.1725. The x-position on the figure of the signature box. This is based on a 
-        figure with 12 rows and 10 columns. This setting will likely need to be tweaked if the user changes the figure
-        dimensions. 
+    37) signature_box_x (Float) - Default=0.165. The x-position on the figure of the signature box. 
+        The signature box is transformed along the axis of the skew-t subplot. 
         
-    38) signature_box_y (Float) - Default=0.04. The y-position on the figure of the signature box. This is based on a 
-        figure with 12 rows and 10 columns. This setting will likely need to be tweaked if the user changes the figure
-        dimensions. 
+    38) signature_box_y (Float) - Default=-0.1. The y-position on the figure of the signature box. 
+        The signature box is transformed along the axis of the skew-t subplot. 
     
     39) signature_box_style (String) - Default='round'. The style of the signature text box.
     
@@ -344,18 +336,18 @@ def plot_observed_sounding(station_id,
         date = date
     
     
-    pressure = df['PRES'].values * units('hPa')
-    temperature = df['TEMP'].values * units('degC')
-    dewpoint = df['DWPT'].values * units('degC')
-    u = df['U-WIND'].values * units('kts')
-    v = df['V-WIND'].values * units('kts')
-    ws = df['SKNT'].values  * units('kts')
-    wetbulb = df['WET-BULB'].values * units('degC')
+    pressure = df['PRES'].values * _units('hPa')
+    temperature = df['TEMP'].values * _units('degC')
+    dewpoint = df['DWPT'].values * _units('degC')
+    u = df['U-WIND'].values * _units('kts')
+    v = df['V-WIND'].values * _units('kts')
+    ws = df['SKNT'].values  * _units('kts')
+    wetbulb = df['WET-BULB'].values * _units('degC')
     
-    interval = np.logspace(2, 3) 
-    mask = (pressure >= y_top * units('hPa'))
+    interval = _np.logspace(2, 3) 
+    mask = (pressure >= y_top * _units('hPa'))
     pres = pressure[mask]
-    idx = mpcalc.resample_nn_1d(pres.m, 
+    idx = _mpcalc.resample_nn_1d(pres.m, 
                                 interval)
     
     if title_1_box_alpha < 0.5:
@@ -371,14 +363,14 @@ def plot_observed_sounding(station_id,
                        facecolor=title_2_box_color, 
                        alpha=title_2_box_alpha)   
     
-    mpl.rcParams['axes.labelcolor'] = axes_label_color
-    mpl.rcParams['xtick.color'] = xtick_color     
-    mpl.rcParams['ytick.color'] = ytick_color
+    _mpl.rcParams['axes.labelcolor'] = axes_label_color
+    _mpl.rcParams['xtick.color'] = xtick_color     
+    _mpl.rcParams['ytick.color'] = ytick_color
     
-    fig = plt.figure(figsize=(fig_y, fig_x))
+    fig = _plt.figure(figsize=(fig_x, fig_y))
     fig.patch.set_facecolor(facecolor)
     
-    skew = SkewT(fig, 
+    skew = _SkewT(fig, 
                  rotation=45, 
                  subplot=(1,1,1))
     
@@ -392,7 +384,7 @@ def plot_observed_sounding(station_id,
                       color=title_1_fontcolor,
                       x=0.01)
     
-    skew.ax.set_title(f"Valid: {date.strftime('%m/%d/%Y %H:00 UTC')}", 
+    skew.ax.set_title(f"VALID: {date.strftime('%m/%d/%Y %H:00 UTC')}", 
                       fontsize=title_2_fontsize, 
                       fontweight='bold', 
                       loc='right', 
@@ -456,15 +448,15 @@ def plot_observed_sounding(station_id,
               alpha=wet_bulb_line_alpha, 
               linewidth=wet_bulb_linewidth)
     
-    lcl_pressure, lcl_temperature = mpcalc.lcl(pressure[0], 
+    lcl_pressure, lcl_temperature = _mpcalc.lcl(pressure[0], 
                                                temperature[0], 
                                                dewpoint[0])
     
-    lfc_pressure, lfc_temperature = mpcalc.lfc(pressure, 
+    lfc_pressure, lfc_temperature = _mpcalc.lfc(pressure, 
                                                temperature, 
                                                dewpoint)
     
-    el_pressure, el_temperature = mpcalc.el(pressure, 
+    el_pressure, el_temperature = _mpcalc.el(pressure, 
                                             temperature, 
                                             dewpoint)
     
@@ -472,11 +464,11 @@ def plot_observed_sounding(station_id,
     lfc_pressure = float(lfc_pressure.m)
     el_pressure = float(el_pressure.m)
     
-    lcl_nan = math.isnan(lcl_pressure)
-    lfc_nan = math.isnan(lfc_pressure)
-    el_nan = math.isnan(el_pressure)
+    lcl_nan = _math.isnan(lcl_pressure)
+    lfc_nan = _math.isnan(lfc_pressure)
+    el_nan = _math.isnan(el_pressure)
     
-    profile = mpcalc.parcel_profile(pressure, 
+    profile = _mpcalc.parcel_profile(pressure, 
                                     temperature[0], 
                                     dewpoint[0]).to('degC')
     
@@ -546,20 +538,21 @@ def plot_observed_sounding(station_id,
                  facecolor=signature_box_color, 
                  alpha=signature_box_alpha)    
         
-    fig.text(signature_box_x, 
+    skew.ax.text(signature_box_x, 
              signature_box_y, 
-             f"Plot Created With FireWxPy (C) Eric J. Drewitz 2024-{utc.strftime('%Y')} "
-             f"| Data Source: weather.uwyo.edu"
-             f"| Image Created: {utc.strftime('%m/%d/%Y %H:00 UTC')}", 
+             f"Plot Created With FireWxPy (C) Eric J. Drewitz 2024-{_utc.strftime('%Y')} "
+             f"| Data Source: weather.uwyo.edu\n"
+             f"                      Image Created: {_local.strftime(f'%m/%d/%Y %H:00 {_timezone}')} - {_utc.strftime(f'%m/%d/%Y %H:00 UTC')}", 
              fontsize=signature_fontsize, 
              bbox=props, 
              fontweight='bold', 
-             color=signature_fontcolor)
+             color=signature_fontcolor,
+             transform=skew.ax.transAxes)
     
     fig.savefig(f"{path}/{station_id.upper()}.png", 
                 bbox_inches='tight')
     
-    plt.close(fig)
+    _plt.close(fig)
     
     print(f"Saved {station_id.upper()}.png sounding to {path}.")
     
