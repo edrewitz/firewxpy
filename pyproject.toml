@@ -21,8 +21,8 @@ classifiers = [
 ]
 dependencies = [
 	"matplotlib>=3.7",
- 	"wxdata>=1.4.2",
+ 	"wxdata>=1.6",
 	"xeofs>=3.0.4",  
-  "shapeography>-1.1",      
+  "shapeography>-1.2",      
 ]
 

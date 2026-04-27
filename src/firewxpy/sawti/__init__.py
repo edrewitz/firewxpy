@@ -1,1 +1,0 @@
-from firewxpy.sawti.sawti import sawti

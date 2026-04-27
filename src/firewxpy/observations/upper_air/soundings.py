@@ -123,9 +123,9 @@ def plot_observed_sounding(station_id,
         If the user wishes to configure a proxy:
         
         proxies=None ---> proxies={
-                        'http':'http://url',
-                        'https':'https://url'
-                        }
+                               'http':'http://your-proxy-address:port',
+                               'https':'http://your-proxy-address:port'
+                               }
 
         [e.g. get_observed_sounding_data('nkx', proxies=proxies)]
     

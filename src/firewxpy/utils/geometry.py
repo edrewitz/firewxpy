@@ -46,7 +46,9 @@ def import_shapefile_from_web(url,
                                 refresh,
                                 file_extension,
                                 edgecolor,
-                                convert_crs=False):
+                                crs,
+                                convert_crs=False,
+                                convert_to='EPSG:4326'):
     
     """
     This function downloads and imports the geometry from a shapefile hosted on the web.
@@ -120,12 +122,14 @@ def import_shapefile_from_web(url,
     file_path = f"{path}/{extraction_folder}/{fname}"
     
     if convert_crs is True:
-        shapes = geometry.geodataframe(file_path)
+        shapes = geometry.geodataframe(file_path,
+                                       crs=convert_to)
         shapes = shapes['geometry']
     
     else:
         shapes = geometry.cartopy_shapefeature(file_path,
-                                            edgecolor=edgecolor)
+                                            edgecolor=edgecolor,
+                                            crs=crs)
     
         shapes = shapes.geometries()
     
