@@ -29,7 +29,7 @@ There are also graphics in FireWxPy that can be used in the meteorological field
 
 This package makes it easy for meteorologists to create analysis & forecast graphics specific to their needs. 
 
-Copyright (C) Meteorologist Eric J. Drewitz 2025
+Copyright (C) Meteorologist Eric J. Drewitz 2024-2026
 
 # Inspiration
 This package is largely inspired by the MetPy package which was developed and is currently being maintained by Unidata (please see citation below in the citations section).
