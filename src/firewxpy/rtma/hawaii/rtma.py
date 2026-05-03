@@ -1,5 +1,5 @@
 """
-This file hosts the functions for the CONUS Real Time Mesoscale Analysis (RTMA) Graphics
+This file hosts the functions for the Hawaii Real Time Mesoscale Analysis (RTMA) Graphics
 
 (C) Eric J. Drewitz 2024 - 2026
 """
@@ -44,7 +44,7 @@ _from_zone = _tz.tzutc()
 _to_zone = _tz.tzlocal()
 _mpl.rcParams['font.weight'] = 'bold'
 
-def plot_temperature(region='conus',
+def plot_temperature(region='hi',
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -635,7 +635,8 @@ def plot_temperature(region='conus',
                                                                                  northern_bound)
     
     if ds is None:
-        ds = _rtma(proxies=proxies,
+        ds = _rtma(model='hi rtma',
+                   proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
                    western_bound=western_bound,
