@@ -33,6 +33,10 @@ Copyright (C) Meteorologist Eric J. Drewitz 2024-2026
 
 ***Table of Contents***
 
+1) [Documentation](https://github.com/edrewitz/firewxpy/tree/main#documentation)
+2) [Jupyter Lab Tutorials](https://github.com/edrewitz/firewxpy/tree/main#jupyter-lab-tutorials)
+3) [Citations](https://github.com/edrewitz/firewxpy/tree/main#citations)
+
 
 # Documentation
 
@@ -45,6 +49,8 @@ Copyright (C) Meteorologist Eric J. Drewitz 2024-2026
 ***Observational Data***
 1) [Observed Soundings (Current and Archived)](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/observed_soundings.ipynb)
 2) [Vertical Profiles (Current and Archived)](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/vertical_profiles.ipynb)
+
+
 
 ***FireWxPy < 2.0 is Depreciated***
 
