@@ -35,7 +35,8 @@ Copyright (C) Meteorologist Eric J. Drewitz 2024-2026
 
 1) [Documentation](https://github.com/edrewitz/firewxpy/tree/main#documentation)
 2) [Jupyter Lab Tutorials](https://github.com/edrewitz/firewxpy/tree/main#jupyter-lab-tutorials)
-3) [Citations](https://github.com/edrewitz/firewxpy/tree/main#citations)
+3) [Installation Instructions](https://github.com/edrewitz/firewxpy/blob/main/README.md#installation-instructions)
+4) [Citations](https://github.com/edrewitz/firewxpy/tree/main#citations)
 
 
 # Documentation
