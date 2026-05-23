@@ -50,7 +50,35 @@ Copyright (C) Meteorologist Eric J. Drewitz 2024-2026
 1) [Observed Soundings (Current and Archived)](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/observed_soundings.ipynb)
 2) [Vertical Profiles (Current and Archived)](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/vertical_profiles.ipynb)
 
+# Installation Instructions
 
+**How To Install**
+
+Copy and paste either command into your terminal or anaconda prompt:
+
+*Install via Anaconda*
+
+`conda install firewxpy`
+
+*Install via pip*
+
+`pip install firewxpy`
+
+**How To Update To The Latest Version**
+
+Copy and paste either command into your terminal or anaconda prompt:
+
+*Update via Anaconda*
+
+***This is for users who initially installed FireWxPy through Anaconda***
+
+`conda update firewxpy`
+
+*Update via pip*
+
+***This is for users who initially installed FireWxPy through pip***
+
+`pip install --upgrade firewxpy`
 
 ***FireWxPy < 2.0 is Depreciated***
 
