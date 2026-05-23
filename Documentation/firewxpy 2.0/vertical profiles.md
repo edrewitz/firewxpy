@@ -96,7 +96,7 @@
         when plotting past soundings.
         
     2) custom_time (String) - Default=None. When plotting archived sounding data, specify the custom time as a string in the
-        form of 'YYYY-mm-dd'.
+        form of 'YYYY-mm-dd:HH'.
         
     3) proxies (dict or None) - Default=None. If the user is using proxy server(s), the user must change the following:
 
@@ -350,7 +350,7 @@
         when plotting past soundings.
         
     2) custom_time (String) - Default=None. When plotting archived sounding data, specify the custom time as a string in the
-        form of 'YYYY-mm-dd'.
+        form of 'YYYY-mm-dd:HH'.
         
     3) proxies (dict or None) - Default=None. If the user is using proxy server(s), the user must change the following:
 
@@ -607,7 +607,7 @@
         when plotting past soundings.
         
     2) custom_time (String) - Default=None. When plotting archived sounding data, specify the custom time as a string in the
-        form of 'YYYY-mm-dd'.
+        form of 'YYYY-mm-dd:HH'.
         
     3) proxies (dict or None) - Default=None. If the user is using proxy server(s), the user must change the following:
 
@@ -874,10 +874,10 @@
         when plotting past soundings.
         
     2) custom_time_1 (String) - Default=None. When plotting archived sounding data, specify the first custom time as a string in the
-        form of 'YYYY-mm-dd'.
+        form of 'YYYY-mm-dd:HH'.
         
     3) custom_time_2 (String) - Default=None. When plotting archived sounding data, specify the second custom time as a string in the
-        form of 'YYYY-mm-dd'.
+        form of 'YYYY-mm-dd:HH'.
         
     4) proxies (dict or None) - Default=None. If the user is using proxy server(s), the user must change the following:
 
@@ -1148,10 +1148,10 @@
         when plotting past soundings.
         
     2) custom_time_1 (String) - Default=None. When plotting archived sounding data, specify the first custom time as a string in the
-        form of 'YYYY-mm-dd'.
+        form of 'YYYY-mm-dd:HH'.
         
     3) custom_time_2 (String) - Default=None. When plotting archived sounding data, specify the second custom time as a string in the
-        form of 'YYYY-mm-dd'.
+        form of 'YYYY-mm-dd:HH'.
         
     4) proxies (dict or None) - Default=None. If the user is using proxy server(s), the user must change the following:
 
@@ -1391,10 +1391,10 @@
         when plotting past soundings.
         
     2) custom_time_1 (String) - Default=None. When plotting archived sounding data, specify the first custom time as a string in the
-        form of 'YYYY-mm-dd'.
+        form of 'YYYY-mm-dd:HH'.
         
     3) custom_time_2 (String) - Default=None. When plotting archived sounding data, specify the second custom time as a string in the
-        form of 'YYYY-mm-dd'.
+        form of 'YYYY-mm-dd:HH'.
         
     4) proxies (dict or None) - Default=None. If the user is using proxy server(s), the user must change the following:
 
