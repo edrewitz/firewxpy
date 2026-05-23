@@ -31,101 +31,11 @@ This package makes it easy for meteorologists to create analysis & forecast grap
 
 Copyright (C) Meteorologist Eric J. Drewitz 2024-2026
 
-# Inspiration
-This package is largely inspired by the MetPy package which was developed and is currently being maintained by Unidata (please see citation below in the citations section).
 
-# FireWxPy Documentation 
 
-**Table Of Contents**
+***FireWxPy < 2.0 is Depreciated***
 
-This is the landing page for all of the firewxpy documentation. The links below will direct you to the documentation for each firewxpy module. 
-
-To visit the firewxpy tutorials page where you can see examples in jupyter lab - [click here](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/Examples_Guide.md)
-
-For video tutorials/demostrations checkout the FireWxPy Tutorial Series on the South Ops YouTube Channel - [click here](https://www.youtube.com/playlist?list=PLLKWSry9WlbPfeTWEQjuKIdNhYuxd8r96)
-
-**FireWxPy Graphics Classes And Functions**
-
-1) [rtma](https://github.com/edrewitz/firewxpy/blob/main/Documentation/RTMA.md)
-2) [spc](https://github.com/edrewitz/firewxpy/blob/main/Documentation/SPC_Outlook_Graphics.md)
-3) [nws_temperature_forecast](https://github.com/edrewitz/firewxpy/blob/main/Documentation/NWS_Forecasts.md#temperature-class)
-4) [nws_relative_humidity_forecast](https://github.com/edrewitz/firewxpy/blob/main/Documentation/NWS_Forecasts.md#relative-humidity-class)
-5) [nws_critical_firewx_forecast](https://github.com/edrewitz/firewxpy/blob/main/Documentation/NWS_Forecasts.md#critical-fire-weather-class)
-6) [model_dynamics](https://github.com/edrewitz/firewxpy/blob/main/Documentation/forecast_models.md#dynamics-class)
-7) [model_temperature](https://github.com/edrewitz/firewxpy/blob/main/Documentation/forecast_models.md#temperature-class)
-8) [model_relative_humidity](https://github.com/edrewitz/firewxpy/blob/main/Documentation/forecast_models.md#relative-humidity-class)
-9) [model_critical_firewx_conditions](https://github.com/edrewitz/firewxpy/blob/main/Documentation/forecast_models.md#critical-firewx-conditions-class)
-10) [model_precipitation](https://github.com/edrewitz/firewxpy/blob/main/Documentation/forecast_models.md#precipitation-class)
-11) [time_cross_sections](https://github.com/edrewitz/firewxpy/blob/main/Documentation/cross_sections.md#time-cross-sections)
-12) [two_point_cross_sections](https://github.com/edrewitz/firewxpy/blob/main/Documentation/cross_sections.md#cross-sections-between-two-points)
-13) [gridded_obs](https://github.com/edrewitz/firewxpy/blob/main/Documentation/observations.md#gridded-observations-class)
-14) [scatter_obs](https://github.com/edrewitz/firewxpy/blob/main/Documentation/observations.md#scatter-plot-observations-class)
-15) [metar_obs](https://github.com/edrewitz/firewxpy/blob/main/Documentation/observations.md#metar-observations-class)
-16) [plot_observed_sounding](https://github.com/edrewitz/firewxpy/blob/main/Documentation/soundings.md#plot_observed_soundingstation_id)
-17) [plot_observed_sounding_custom_date_time](https://github.com/edrewitz/firewxpy/blob/main/Documentation/soundings.md#plot_observed_sounding_custom_date_timestation_id-year-month-day-hour)
-18) [plot_forecast_soundings](https://github.com/edrewitz/firewxpy/blob/main/Documentation/soundings.md#plot_forecast_soundingsmodel-station_id)
-19) [sawti](https://github.com/edrewitz/firewxpy/blob/main/Documentation/sawti.md)
-20) [plot_daily_solar_information](https://github.com/edrewitz/firewxpy/blob/main/Documentation/solar_information.md#plot_daily_solar_informationlatitude-longitude)
-21) [fuels charts](https://github.com/edrewitz/firewxpy/blob/main/Documentation/fuels_charts.md)
-22) [ensemble_8_day_mean_eofs](https://github.com/edrewitz/firewxpy/blob/main/Documentation/forecast_models.md#ensemble-8-day-mean-and-eofs)
-
-**Additional Resources For Users Who Download The Data Outside Of The Function And Pass It In**
-
-*This is recommended for users generating a lot of graphics with the same dataset (i.e. a lot of RTMA graphics etc.)*
-
-*This method reduces the amount of data requests on the servers hosting the data*
-
-1) [RTMA (Data Access)](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#rtma)
-2) [NDFD_GRIDS (Data Access)](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#ndfd_grids)
-3) [obs (Data Access)](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#obs)
-4) [model_data (Data Access)](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#model_data)
-5) [FEMS (Data Access)](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#fems)
-6) [plot_creation_time](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#plot_creation_time)
-7) [get_metar_mask](https://github.com/edrewitz/firewxpy/blob/main/Documentation/miscellaneous.md#get_metar_maskstate-gacc_region-rtma_wsfalse)
-
-**Regional Abbreviations for Model Data**
-
-If the user wants to analyze model data in the U.S. the regional abbreviations consist of the following:
-
-- CONUS & South Canada & North Mexico
-- CONUS
-- NA
-- 2-letter state abbreviation
-- 4-letter Geographic Area Coordination Center abbreviation
-
-If the user wants to analyze model data for an area outside of the U.S:
-
-*One important thing to note is only global models (GFS, GEFS etc.) are available here*
-
-International Regional Selections:
-
-- Canada
-- Mexico & Central America
-- Caribbean
-- South America
-- Western Europe & Iceland
-- Central & Eastern Europe
-- West Africa
-- Saharan Africa
-- Sub Saharan Africa
-- Middle East
-- Asia
-- East Asia
-- Southeast Asia
-- India
-- Australia New Zealand
-- Guyana
-
-# Author
-Eric J. Drewitz
-
-USDA/USFS Predictive Services Meteorologist
-
-Southern California Geographic Area Coordination Center
-
-# Citing FireWxPy
-
-[click here](https://zenodo.org/records/15620392) to find information on how to cite FireWxPy. 
+[Click Here for the legacy FireWxPy < 2.0 Documentation](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%201.0/Landing_Page.md#table-of-contents)
 
 # Citations
 
@@ -155,6 +65,10 @@ Southern California Geographic Area Coordination Center
 **Pandas**: Pandas: McKinney, W., & others. (2010). Data structures for statistical computing in python. In Proceedings of the 9th Python in Science Conference (Vol. 445, pp. 51–56).
 
 **xeofs**: xeofs: Rieger, N. & Levang, S. J. (2024). xeofs: Comprehensive EOF analysis in Python with xarray. Journal of Open Source Software, 9(93), 6060. DOI: https://doi.org/10.21105/joss.06060
+
+**WxData**: Eric J. Drewitz. (2026). edrewitz/WxData: WxData 2.0.1 (WxData2.0.1). Zenodo. https://doi.org/10.5281/zenodo.20350029
+
+**shapeography**: Eric J. Drewitz. (2026). edrewitz/shapeography: Shapeography 1.2 Released (shapeography1.2). Zenodo. https://doi.org/10.5281/zenodo.19141532
 
 **geopandas**: Kelsey Jordahl, Joris Van den Bossche, Martin Fleischmann, Jacob Wasserman, James McBride, Jeffrey Gerard, … François Leblanc. (2020, July 15). geopandas/geopandas: v0.8.1 (Version v0.8.1). Zenodo. http://doi.org/10.5281/zenodo.3946761
 
