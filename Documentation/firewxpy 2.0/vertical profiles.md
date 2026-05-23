@@ -1422,11 +1422,11 @@
         The higher the number the more interpolated data points. This is for those who want to have a colormapped profile that
         appears as a line but is a series of colormapped scatter points.
         
-    12) relative_humidity_color (String) - Default='red'. The color for the relative humidity line corresponding to custom_time_1. 
+    12) rh_color (String) - Default='red'. The color for the relative humidity line corresponding to custom_time_1. 
     
-    13) relative_humidity_color_comparison (String) - Default='blue'. The color for the relative humidity line corresponding to custom_time_2. 
+    13) rh_comp_color (String) - Default='blue'. The color for the relative humidity line corresponding to custom_time_2. 
     
-    14) relative_humidity_alpha (Float or Integer) - Default=1. A number between 0 and 1 that corresponds to the transparency of the line.
+    14) rh_alpha (Float or Integer) - Default=1. A number between 0 and 1 that corresponds to the transparency of the line.
         0 = Completely Transparent, 1 = Completely Opaque.
         
     15) wind_color (String) - Default='darkorange'. The color for the wind line and wind barbs corresponding to custom_time_1.
