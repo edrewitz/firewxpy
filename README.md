@@ -40,6 +40,11 @@ Copyright (C) Meteorologist Eric J. Drewitz 2024-2026
 1) [Soundings](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/observed%20soundings.md#observed-soundings)
 2) [Vertical Profiles](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/vertical%20profiles.md#observed-vertical-profiles)
 
+# Jupyter Lab Tutorials
+
+***Observational Data***
+1) [Observed Soundings (Current and Archived)](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/observed_soundings.ipynb)
+2) [Vertical Profiles (Current and Archived)](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/vertical_profiles.ipynb)
 
 ***FireWxPy < 2.0 is Depreciated***
 
