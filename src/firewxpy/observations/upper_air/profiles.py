@@ -2813,7 +2813,7 @@ def plot_relative_humidity_wind_profile_comparison(station_id,
     
     13) rh_comp_color (String) - Default='blue'. The color for the relative humidity line corresponding to custom_time_2. 
     
-    14) relative_humidity_alpha (Float or Integer) - Default=1. A number between 0 and 1 that corresponds to the transparency of the line.
+    14) rh_alpha (Float or Integer) - Default=1. A number between 0 and 1 that corresponds to the transparency of the line.
         0 = Completely Transparent, 1 = Completely Opaque.
         
     15) wind_color (String) - Default='darkorange'. The color for the wind line and wind barbs corresponding to custom_time_1.
