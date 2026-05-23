@@ -1,2 +1,0 @@
-import firewxpy.rtma.conus.rtma as rtma_conus
-import firewxpy.rtma.hawaii.rtma as rtma_hawaii

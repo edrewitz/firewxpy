@@ -1588,7 +1588,11 @@ def plot_temperature_relative_humidity_wind_profile_comparison(station_id,
                                                     df_comp=None,
                                                     date=None,
                                                     date_comp=None,
-                                                    subplot_background_color='silver'):
+                                                    subplot_background_color='silver',
+                                                    barb_legend_x_position=0,
+                                                    barb_legend_y_position=0,
+                                                    barb_legend_fontsize=10,
+                                                    barb_legend_zorder=10):
     
 
     """
@@ -1778,6 +1782,15 @@ def plot_temperature_relative_humidity_wind_profile_comparison(station_id,
         is not downloading the data within the function.
         
     76) subplot_background_color (String) - Default='silver'. The background color of each subplot axis.
+    
+    77) barb_legend_x_position (Float or Integer) - Default=0. x-position of wind barb legend with respect to the figure axis.
+    
+    78) barb_legend_y_position (Float or Integer) - Default=0. y-position of wind barb legend with respect to the figure axis.
+    
+    79) barb_legend_fontsize (Integer) - Default=10. Font size of wind barb legend. 
+    
+    80) barb_legend_zorder (Integer) - Default=10. The z-order of the borders on the image. Lower numbers send this to the back
+        higher numbers bring this forward.
                                                     
     Returns
     -------
@@ -2031,8 +2044,8 @@ def plot_temperature_relative_humidity_wind_profile_comparison(station_id,
              color=signature_fontcolor,
              transform=ax1.transAxes)
     
-    ax1.legend(loc=(0, 0), prop={'size': 10})
-
+    leg = ax1.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+    leg.set_zorder(barb_legend_zorder)
     
     ax2 = fig.add_subplot(1,3,2)
     ax2.set_facecolor(subplot_background_color)
@@ -2071,7 +2084,8 @@ def plot_temperature_relative_humidity_wind_profile_comparison(station_id,
                        fontweight='bold',
                        bbox=x_axis2_box)
     
-    ax2.legend(loc=(0, 0), prop={'size': 10})
+    leg = ax2.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+    leg.set_zorder(barb_legend_zorder)
     
     ax3 = fig.add_subplot(1,3,3)
     ax3.set_facecolor(subplot_background_color)
@@ -2139,7 +2153,8 @@ def plot_temperature_relative_humidity_wind_profile_comparison(station_id,
                        fontweight='bold',
                        bbox=x_axis3_box)
     
-    ax3.legend(loc=(0, 0), prop={'size': 10})
+    leg = ax3.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+    leg.set_zorder(barb_legend_zorder)
     
     fig.savefig(f"{path}/{station_id.upper()}.png", 
                 bbox_inches='tight')
@@ -2215,7 +2230,11 @@ def plot_temperature_wind_profile_comparison(station_id,
                                 df_comp=None,
                                 date=None,
                                 date_comp=None,
-                                subplot_background_color='silver'):
+                                subplot_background_color='silver',
+                                barb_legend_fontsize=10,
+                                barb_legend_x_position=0,
+                                barb_legend_y_position=0,
+                                barb_legend_zorder=10):
     
 
     """
@@ -2375,7 +2394,16 @@ def plot_temperature_wind_profile_comparison(station_id,
         the data with WxData outside of the function and passing the date into the function. Set date=date if the user
         is not downloading the data within the function.
         
-    63) subplot_background_color (String) - Default='silver'. The background color of each subplot axis.                   
+    63) subplot_background_color (String) - Default='silver'. The background color of each subplot axis.    
+    
+    64) barb_legend_x_position (Float or Integer) - Default=0. x-position of wind barb legend with respect to the figure axis.
+    
+    65) barb_legend_y_position (Float or Integer) - Default=0. y-position of wind barb legend with respect to the figure axis.
+    
+    66) barb_legend_fontsize (Integer) - Default=10. Font size of wind barb legend. 
+    
+    67) barb_legend_zorder (Integer) - Default=10. The z-order of the borders on the image. Lower numbers send this to the back
+        higher numbers bring this forward.               
                                                     
     Returns
     -------
@@ -2654,7 +2682,8 @@ def plot_temperature_wind_profile_comparison(station_id,
                 length=wind_comp_barb_length,
                 alpha=wind_comp_barb_alpha)
     
-    ax.legend(loc=(0, 0), prop={'size': 10})
+    leg = ax.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+    leg.set_zorder(barb_legend_zorder)
     
     fig.savefig(f"{path}/{station_id.upper()}.png", 
                 bbox_inches='tight')
@@ -2727,7 +2756,11 @@ def plot_relative_humidity_wind_profile_comparison(station_id,
                                 df_comp=None,
                                 date=None,
                                 date_comp=None,
-                                subplot_background_color='silver'):
+                                subplot_background_color='silver',
+                                barb_legend_fontsize=10,
+                                barb_legend_x_position=0,
+                                barb_legend_y_position=0,
+                                barb_legend_zorder=10):
     
 
     """
@@ -2883,7 +2916,16 @@ def plot_relative_humidity_wind_profile_comparison(station_id,
         the data with WxData outside of the function and passing the date into the function. Set date=date if the user
         is not downloading the data within the function.
         
-    61) subplot_background_color (String) - Default='silver'. The background color of each subplot axis.                   
+    61) subplot_background_color (String) - Default='silver'. The background color of each subplot axis.   
+    
+    62) barb_legend_x_position (Float or Integer) - Default=0. x-position of wind barb legend with respect to the figure axis.
+    
+    63) barb_legend_y_position (Float or Integer) - Default=0. y-position of wind barb legend with respect to the figure axis.
+    
+    64) barb_legend_fontsize (Integer) - Default=10. Font size of wind barb legend. 
+    
+    65) barb_legend_zorder (Integer) - Default=10. The z-order of the borders on the image. Lower numbers send this to the back
+        higher numbers bring this forward.                    
                                                     
     Returns
     -------
@@ -3139,7 +3181,8 @@ def plot_relative_humidity_wind_profile_comparison(station_id,
                 length=wind_comp_barb_length,
                 alpha=wind_comp_barb_alpha)
     
-    ax.legend(loc=(0, 0), prop={'size': 10})
+    leg = ax.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+    leg.set_zorder(barb_legend_zorder)
     
     fig.savefig(f"{path}/{station_id.upper()}.png", 
                 bbox_inches='tight')

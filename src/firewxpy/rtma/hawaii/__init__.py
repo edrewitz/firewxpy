@@ -1,1 +1,0 @@
-import firewxpy.rtma.hawaii.rtma as rtma_hawaii
