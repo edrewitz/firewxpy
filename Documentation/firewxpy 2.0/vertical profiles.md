@@ -1,5 +1,13 @@
 # Observed Vertical Profiles
 
+**Table of Contents**
+
+1) [Temperature/Relative Humidity/Wind](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/vertical%20profiles.md#temperaturerelative-humiditywind)
+2) [Temperature/Wind](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/vertical%20profiles.md#temperaturewind)
+3) [Relative Humidity/Winds](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/vertical%20profiles.md#relative-humiditywinds)
+4) [Temperature/Relative Humidity/Wind Comparison](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/vertical%20profiles.md#temperaturerelative-humiditywind-comparison)
+5) [Temperature/Wind Comparison](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/vertical%20profiles.md#temperaturewind-comparison)
+6) [Relative Humidity/Wind Comparison](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/vertical%20profiles.md#relative-humiditywind-comparison)
 
 #### Temperature/Relative Humidity/Wind
 ***def plot_temperature_relative_humidity_wind_profile(station_id,
@@ -766,7 +774,7 @@
     A figure of the vertical profiles saved to {path}
 
 #### Temperature/Relative Humidity/Wind Comparison
-def plot_temperature_relative_humidity_wind_profile_comparison(station_id,
+***def plot_temperature_relative_humidity_wind_profile_comparison(station_id,
                                                     current=True,
                                                     custom_time_1=None,
                                                     custom_time_2=None,
@@ -852,7 +860,7 @@ def plot_temperature_relative_humidity_wind_profile_comparison(station_id,
                                                     barb_legend_x_position=0,
                                                     barb_legend_y_position=0,
                                                     barb_legend_fontsize=10,
-                                                    barb_legend_zorder=10):
+                                                    barb_legend_zorder=10):***
 
     This function plots an observed temperature/relative humidity/wind profile comparison from 2 different atmospheric soundings.
     
