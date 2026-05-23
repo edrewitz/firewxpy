@@ -31,6 +31,14 @@ This package makes it easy for meteorologists to create analysis & forecast grap
 
 Copyright (C) Meteorologist Eric J. Drewitz 2024-2026
 
+***Table of Contents***
+
+
+# Documentation
+
+***Observational Data***
+1) [Soundings](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/observed%20soundings.md#observed-soundings)
+2) [Vertical Profiles](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/vertical%20profiles.md#observed-vertical-profiles)
 
 
 ***FireWxPy < 2.0 is Depreciated***
