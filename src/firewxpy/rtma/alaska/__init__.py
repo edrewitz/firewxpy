@@ -1,0 +1,1 @@
+import firewxpy.rtma.alaska.rtma as rtma_alaska

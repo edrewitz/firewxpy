@@ -46,6 +46,39 @@ def fix_var_array(ds,
         
     return vals
 
+def fix_var_array_rtma_hawaii(ds,
+                              parameter,
+                              decimate):
+    """
+    This function fixes the GRIB data for overlaying onto a station plot for RTMA Hawaii Data.
+    
+    Required Arguments:
+    
+    1) ds (xarray.array) - The GRIB dataset.
+    
+    2) parameter (String) - Parameter key name.
+        
+    3) decimate (Integer) - This determines how the pixel queries appear on the map. Higher numbers
+        equal more sparse and lower numbers equal less sparse. Use larger numbers for larger areas and smaller values for smaller areas. 
+        
+    Returns
+    -------
+    
+    An xarray.array used for plotting station plot overlays. 
+    """
+    lon2d, lat2d = np.meshgrid(ds['longitude'], ds['latitude'])
+    vals2d = ds['2m_relative_humidity'].values
+    lat_dec = lat2d[::decimate, ::decimate]
+    lon_dec = lon2d[::decimate, ::decimate]
+    val_dec = vals2d[::decimate, ::decimate]
+    lats_1d = lat_dec.ravel()
+    lons_1d = lon_dec.ravel()
+    vals_1d = val_dec.ravel()
+    
+    return lats_1d, lons_1d, vals_1d
+
+    
+
 def fix_var_array_ndfd_hawaii(ds,
                   parameter,
                   decimate):
