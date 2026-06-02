@@ -1,6 +1,6 @@
 [project]
 name = "firewxpy"
-version = "2.0"
+version = "2.1"
 description = "A Python package that makes various types of real-time weather graphics with an emphasis on fire weather. These graphics are designed for automation in an operational setting."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -18,7 +18,7 @@ classifiers = [
 
 dependencies = [
   	"matplotlib>=3.7",
- 	"wxdata>=2.0.1",
+ 	"wxdata>=2.0.2",
     "shapeography>=1.2", 
 ]
 
