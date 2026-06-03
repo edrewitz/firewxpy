@@ -67,7 +67,7 @@ def fix_var_array_rtma_hawaii(ds,
     An xarray.array used for plotting station plot overlays. 
     """
     lon2d, lat2d = np.meshgrid(ds['longitude'], ds['latitude'])
-    vals2d = ds['2m_relative_humidity'].values
+    vals2d = ds[parameter].values
     lat_dec = lat2d[::decimate, ::decimate]
     lon_dec = lon2d[::decimate, ::decimate]
     val_dec = vals2d[::decimate, ::decimate]

@@ -19,6 +19,9 @@ Arguments and Settings
 
 - region (String) - Default='ak'. The region of the plot. Use the 2-letter state abbreviation or 4-letter GACC abbreviation.
         If the user wants a completely custom region where they define their own lat/lon bounds, set region='custom'. 
+    
+- hours (Integer) - Default=24. The amount of hours between the current and comparison. Defaults to a 24 hour
+        comparison. 
         
 - show_states (Boolean) - Default=True. When set to True, U.S. state borders are shown. 
     
@@ -231,9 +234,9 @@ Arguments and Settings
 - secondary_title_textbox_alpha (Float or Integer) - Default=1. A value between 0 and 1 representing transparency.
         0 = completely transparent, 1 = completely opaque
         
-- primary_title_fontsize (Integer) - Default=12. Fontsize of the primary title text.
+- primary_title_fontsize (Integer) - Default=10. Fontsize of the primary title text.
     
-- secondary_title_fontsize (Integer) Default=10. Fontsize of the secondary title text.
+- secondary_title_fontsize (Integer) Default=9. Fontsize of the secondary title text.
     
 - local_time (Boolean) - Default=True. Set to False for UTC time.
     
@@ -313,9 +316,13 @@ Arguments and Settings
                                         
             The array of colors being used when colormap='custom'. 
             
-- ds (xarray.array or None) - Default=None. If the user is downloading, processing and plotting the data within the function,
+- ds1 (xarray.array or None) - Default=None. If the user is downloading, processing and plotting the data within the function,
         keep this set as None. If the user wishes to create a medley of plots it is recommended to download the data outside of this
-        function and pass in the data by setting ds=ds. 
+        function and pass in the data by setting ds1=ds1. This is the current time dataset. 
+        
+- ds2 (xarray.array or None) - Default=None. If the user is downloading, processing and plotting the data within the function,
+        keep this set as None. If the user wishes to create a medley of plots it is recommended to download the data outside of this
+        function and pass in the data by setting ds2=ds2. This is the comparison dataset.  
             
 - western_bound (Float or Integer) - Default=-125. When region is set to 'custom' the user defines the bounds of the plot in 
         latitude and longitude coordinates.
@@ -482,7 +489,7 @@ from firewxpy.utils.geometry import(
     import_geojson_local as _import_geojson_local,
     get_filename_from_url as _get_filename_from_url
 )
-from wxdata import rtma as _rtma
+from wxdata import rtma_comparison as _rtma_comparison
 
 _local, _utc = _plot_creation_time()
 _timezone = _get_timezone_abbreviation()
@@ -533,6 +540,7 @@ def _fix_grib_data(ds,
     return lon_masked, lat_masked, vals_masked
 
 def plot_temperature(region='ak',
+                     hours=24,
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -603,19 +611,19 @@ def plot_temperature(region='ak',
                      lakes_zorder=1,
                      land_zorder=1,
                      decimate=50,
-                     start=-30,
-                     stop=130,
+                     start=-25,
+                     stop=25,
                      step=1,
                      facecolor='aliceblue',
-                     primary_title_text='RTMA 2-METER TEMPERATURE [°F]',
+                     primary_title_text='RTMA 2-METER TEMPERATURE COMPARISON [Δ°F]',
                      primary_title_textbox_color='wheat',
                      primary_title_textbox_style='round',
                      primary_title_textbox_alpha=1,
                      secondary_title_textbox_color='wheat',
                      secondary_title_textbox_style='round',
                      secondary_title_textbox_alpha=1,
-                     primary_title_fontsize=12,
-                     secondary_title_fontsize=10,
+                     primary_title_fontsize=8,
+                     secondary_title_fontsize=7,
                      local_time=True,
                      signature_textbox_color='wheat',
                      signature_textbox_style='round',
@@ -658,7 +666,8 @@ def plot_temperature(region='ak',
                              'crimson',
                              'darkred',
                              'grey'],
-                     ds=None,
+                     ds1=None,
+                     ds2=None,
                      western_bound=-125,
                      eastern_bound=-65,
                      southern_bound=20,
@@ -668,8 +677,8 @@ def plot_temperature(region='ak',
                      pixel_query_value_foreground='white',
                      pixel_query_value_fontcolor='black',
                      pixel_query_stroke_linewidth=1,
-                     path='FireWxPy Graphics/RTMA/Temperature',
-                     filename='RTMA Temperature.png',
+                     path='FireWxPy Graphics/RTMA Comparison/Temperature',
+                     filename='RTMA Comparison Temperature.png',
                      proxies=None,
                      clear_recycle_bin=False,
                      clear_data=True,
@@ -742,8 +751,8 @@ def plot_temperature(region='ak',
                                                                                  southern_bound,
                                                                                  northern_bound)
     
-    if ds is None:
-        ds = _rtma(model='ak rtma',
+    if ds1 is None and ds2 is None:
+        ds1, ds2 = _rtma_comparison(model='ak rtma',
                    proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
@@ -751,33 +760,47 @@ def plot_temperature(region='ak',
                    convert_to=convert_to,
                    chunk_size=chunk_size,
                    notifications=notifications,
-                   custom_directory=custom_data_directory)
+                   custom_directory=custom_data_directory,
+                   hours=hours)
     else:
-        ds = ds
+        ds1 = ds1
+        ds2 = ds2
         if convert_temperature is True:
             if convert_from == 'kelvin':
                 if convert_to == 'fahrenheit':
-                    ds[var_key] = _kelvin_to_fahrenheit(ds[var_key])
+                    ds1[var_key] = _kelvin_to_fahrenheit(ds1[var_key])
+                    ds2[var_key] = _kelvin_to_fahrenheit(ds2[var_key])
                 else:
-                    ds[var_key] = _kelvin_to_celsius(ds[var_key])
+                    ds1[var_key] = _kelvin_to_celsius(ds1[var_key])
+                    ds2[var_key] = _kelvin_to_celsius(ds2[var_key])
             else:
                 if convert_to == 'fahrenheit':
-                    ds[var_key] = _celsius_to_fahrenheit(ds[var_key])
+                    ds1[var_key] = _celsius_to_fahrenheit(ds1[var_key])
+                    ds2[var_key] = _celsius_to_fahrenheit(ds2[var_key])
         
         
-    lon_masked, lat_masked, vals_masked = _fix_grib_data(ds,
+    lon_masked_1, lat_masked_1, vals_masked_1 = _fix_grib_data(ds1,
                                                          var_key,
                                                          longitude_key,
                                                          latitude_key)
+    _, _, vals_masked_2 = _fix_grib_data(ds2,
+                                        var_key,
+                                        longitude_key,
+                                        latitude_key)
     if colormap == 'custom':
         cmap = _mcolors.LinearSegmentedColormap.from_list("temperature", colors)
     else:
         cmap = colormap
     
-    valid_time = _pd.to_datetime(ds[time_coord_key].to_pandas())
-    valid_time = valid_time.tz_localize('UTC')
-    time = valid_time.astimezone(_to_zone)
-    time_utc = time.astimezone(_from_zone)
+    valid_time1 = _pd.to_datetime(ds1[time_coord_key].to_pandas())
+    valid_time1 = valid_time1.tz_localize('UTC')
+    time1 = valid_time1.astimezone(_to_zone)
+    time1_utc = time1.astimezone(_from_zone)
+    
+    valid_time2 = _pd.to_datetime(ds2[time_coord_key].to_pandas())
+    valid_time2 = valid_time2.tz_localize('UTC')
+    time2 = valid_time2.astimezone(_to_zone)
+    time2_utc = time2.astimezone(_from_zone)
     
     fig = _plt.figure(figsize=(figure_x_length, figure_y_length))
     fig.set_facecolor(facecolor)
@@ -1005,9 +1028,9 @@ def plot_temperature(region='ak',
                           linewidth=custom_geojson_local_linewidth, 
                           zorder=custom_geojson_local_zorder)
     
-    cs = ax.contourf(lon_masked,
-                lat_masked,
-                vals_masked,
+    cs = ax.contourf(lon_masked_1,
+                lat_masked_1,
+                (vals_masked_1 - vals_masked_2),
                 cmap=cmap,
                 levels=levels,
                 transform=datacrs,
@@ -1029,13 +1052,13 @@ def plot_temperature(region='ak',
                loc='left')
     
     if local_time is True:
-        _plt.title(f"Valid: {time.strftime('%m/%d/%Y %H:00')} {_timezone}", 
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1.strftime('%m/%d/%Y %H:00')} - {time2.strftime('%m/%d/%Y %H:00')} {_timezone}", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
                 loc='right')
     else:
-        _plt.title(f"Valid: {time_utc.strftime('%m/%d/%Y %H:00')} UTC", 
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1_utc.strftime('%m/%d/%Y %H:00')} - {time2_utc.strftime('%m/%d/%Y %H:00')} UTC", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
@@ -1070,12 +1093,17 @@ def plot_temperature(region='ak',
             zorder=reference_system_textbox_zorder)
         
     
-    vals = _fix_var_array(ds,
+    vals_1 = _fix_var_array(ds1,
+                    var_key,
+                    0,
+                    decimate)
+    
+    vals_2 = _fix_var_array(ds2,
                     var_key,
                     0,
                     decimate)
 
-    stn = _mpplots.StationPlot(ax, vals[longitude_key], vals[latitude_key],
+    stn = _mpplots.StationPlot(ax, vals_1[longitude_key], vals_1[latitude_key],
                                 transform=datacrs, 
                                 fontsize=pixel_query_value_fontsize, 
                                 zorder=pixel_query_value_zorder, 
@@ -1083,7 +1111,7 @@ def plot_temperature(region='ak',
 
 
     stn.plot_parameter('C', 
-                       vals[var_key], 
+                       (vals_1[var_key] - vals_2[var_key]), 
                        color=pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
@@ -1097,6 +1125,7 @@ def plot_temperature(region='ak',
         
         
 def plot_dew_point(region='ak',
+                     hours=24,
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -1167,19 +1196,19 @@ def plot_dew_point(region='ak',
                      lakes_zorder=1,
                      land_zorder=1,
                      decimate=50,
-                     start=-20,
-                     stop=80,
+                     start=-25,
+                     stop=25,
                      step=1,
                      facecolor='aliceblue',
-                     primary_title_text='RTMA 2-METER DEW POINT [°F]',
+                     primary_title_text='RTMA 2-METER DEW POINT COMPARISON [Δ°F]',
                      primary_title_textbox_color='wheat',
                      primary_title_textbox_style='round',
                      primary_title_textbox_alpha=1,
                      secondary_title_textbox_color='wheat',
                      secondary_title_textbox_style='round',
                      secondary_title_textbox_alpha=1,
-                     primary_title_fontsize=12,
-                     secondary_title_fontsize=10,
+                     primary_title_fontsize=8,
+                     secondary_title_fontsize=7,
                      local_time=True,
                      signature_textbox_color='wheat',
                      signature_textbox_style='round',
@@ -1216,18 +1245,19 @@ def plot_dew_point(region='ak',
                              'forestgreen',
                              'mediumspringgreen',
                              'aqua'],
-                     ds=None,
+                     ds1=None,
+                     ds2=None,
                      western_bound=-125,
                      eastern_bound=-65,
                      southern_bound=20,
                      northern_bound=50,
-                     pixel_query_value_fontsize=4,
+                     pixel_query_value_fontsize=6,
                      pixel_query_value_zorder=7,
                      pixel_query_value_foreground='white',
                      pixel_query_value_fontcolor='black',
                      pixel_query_stroke_linewidth=1,
-                     path='FireWxPy Graphics/RTMA/Dew Point',
-                     filename='RTMA Dew Point.png',
+                     path='FireWxPy Graphics/RTMA Comparison/Dew Point',
+                     filename='RTMA Comparison Dew Point.png',
                      proxies=None,
                      clear_recycle_bin=False,
                      clear_data=True,
@@ -1300,8 +1330,8 @@ def plot_dew_point(region='ak',
                                                                                  southern_bound,
                                                                                  northern_bound)
     
-    if ds is None:
-        ds = _rtma(model='ak rtma',
+    if ds1 is None and ds2 is None:
+        ds1, ds2 = _rtma_comparison(model='ak rtma',
                    proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
@@ -1309,33 +1339,48 @@ def plot_dew_point(region='ak',
                    convert_to=convert_to,
                    chunk_size=chunk_size,
                    notifications=notifications,
-                   custom_directory=custom_data_directory)
+                   custom_directory=custom_data_directory,
+                   hours=hours)
     else:
-        ds = ds
+        ds1 = ds1
+        ds2= ds2
         if convert_temperature is True:
             if convert_from == 'kelvin':
                 if convert_to == 'fahrenheit':
-                    ds[var_key] = _kelvin_to_fahrenheit(ds[var_key])
+                    ds1[var_key] = _kelvin_to_fahrenheit(ds1[var_key])
+                    ds2[var_key] = _kelvin_to_fahrenheit(ds2[var_key])
                 else:
-                    ds[var_key] = _kelvin_to_celsius(ds[var_key])
+                    ds1[var_key] = _kelvin_to_celsius(ds1[var_key])
+                    ds2[var_key] = _kelvin_to_celsius(ds2[var_key])
             else:
                 if convert_to == 'fahrenheit':
-                    ds[var_key] = _celsius_to_fahrenheit(ds[var_key])
+                    ds1[var_key] = _celsius_to_fahrenheit(ds1[var_key])
+                    ds2[var_key] = _celsius_to_fahrenheit(ds2[var_key])
                     
-    lon_masked, lat_masked, vals_masked = _fix_grib_data(ds,
+    lon_masked_1, lat_masked_1, vals_masked_1 = _fix_grib_data(ds1,
                                                          var_key,
                                                          longitude_key,
                                                          latitude_key)
+    
+    _, _, vals_masked_2 = _fix_grib_data(ds2,
+                                    var_key,
+                                    longitude_key,
+                                    latitude_key)
         
     if colormap == 'custom':
         cmap = _mcolors.LinearSegmentedColormap.from_list("dew point", colors)
     else:
         cmap = colormap
     
-    valid_time = _pd.to_datetime(ds[time_coord_key].to_pandas())
-    valid_time = valid_time.tz_localize('UTC')
-    time = valid_time.astimezone(_to_zone)
-    time_utc = time.astimezone(_from_zone)
+    valid_time1 = _pd.to_datetime(ds1[time_coord_key].to_pandas())
+    valid_time1 = valid_time1.tz_localize('UTC')
+    time1 = valid_time1.astimezone(_to_zone)
+    time1_utc = time1.astimezone(_from_zone)
+    
+    valid_time2 = _pd.to_datetime(ds2[time_coord_key].to_pandas())
+    valid_time2 = valid_time2.tz_localize('UTC')
+    time2 = valid_time2.astimezone(_to_zone)
+    time2_utc = time2.astimezone(_from_zone)
     
     fig = _plt.figure(figsize=(figure_x_length, figure_y_length))
     fig.set_facecolor(facecolor)
@@ -1563,9 +1608,9 @@ def plot_dew_point(region='ak',
                           linewidth=custom_geojson_local_linewidth, 
                           zorder=custom_geojson_local_zorder)
     
-    cs = ax.contourf(lon_masked,
-                lat_masked,
-                vals_masked,
+    cs = ax.contourf(lon_masked_1,
+                lat_masked_1,
+                (vals_masked_1 - vals_masked_2),
                 cmap=cmap,
                 levels=levels,
                 transform=datacrs,
@@ -1587,13 +1632,13 @@ def plot_dew_point(region='ak',
                loc='left')
     
     if local_time is True:
-        _plt.title(f"Valid: {time.strftime('%m/%d/%Y %H:00')} {_timezone}", 
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1.strftime('%m/%d/%Y %H:00')} - {time2.strftime('%m/%d/%Y %H:00')} {_timezone}", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
                 loc='right')
     else:
-        _plt.title(f"Valid: {time_utc.strftime('%m/%d/%Y %H:00')} UTC", 
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1_utc.strftime('%m/%d/%Y %H:00')} - {time2_utc.strftime('%m/%d/%Y %H:00')} UTC", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
@@ -1627,12 +1672,17 @@ def plot_dew_point(region='ak',
             transform=ax.transAxes,
             zorder=reference_system_textbox_zorder)
         
-    vals = _fix_var_array(ds,
+    vals_1 = _fix_var_array(ds1,
+                    var_key,
+                    0,
+                    decimate)
+    
+    vals_2 = _fix_var_array(ds2,
                     var_key,
                     0,
                     decimate)
 
-    stn = _mpplots.StationPlot(ax, vals['longitude'], vals['latitude'],
+    stn = _mpplots.StationPlot(ax, vals_1['longitude'], vals_1['latitude'],
                                 transform=datacrs, 
                                 fontsize=pixel_query_value_fontsize, 
                                 zorder=pixel_query_value_zorder, 
@@ -1640,7 +1690,7 @@ def plot_dew_point(region='ak',
 
 
     stn.plot_parameter('C', 
-                       vals[var_key], 
+                       (vals_1[var_key] - vals_2[var_key]), 
                        color=pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
@@ -1652,6 +1702,7 @@ def plot_dew_point(region='ak',
         print(f"{filename} saved to {path}/{region.upper()}")
         
 def plot_dew_point_depression(region='ak',
+                     hours=24,
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -1722,19 +1773,19 @@ def plot_dew_point_depression(region='ak',
                      lakes_zorder=1,
                      land_zorder=1,
                      decimate=50,
-                     start=0,
+                     start=-50,
                      stop=50,
                      step=1,
                      facecolor='aliceblue',
-                     primary_title_text='RTMA 2-METER DEW POINT DEPRESSION [°F]',
+                     primary_title_text='RTMA 2-METER DEW POINT DEPRESSION COMPARISON [Δ°F]',
                      primary_title_textbox_color='wheat',
                      primary_title_textbox_style='round',
                      primary_title_textbox_alpha=1,
                      secondary_title_textbox_color='wheat',
                      secondary_title_textbox_style='round',
                      secondary_title_textbox_alpha=1,
-                     primary_title_fontsize=12,
-                     secondary_title_fontsize=10,
+                     primary_title_fontsize=8,
+                     secondary_title_fontsize=7,
                      local_time=True,
                      signature_textbox_color='wheat',
                      signature_textbox_style='round',
@@ -1771,18 +1822,19 @@ def plot_dew_point_depression(region='ak',
                              'darkorange',
                              'peru',
                              'saddlebrown'],
-                     ds=None,
+                     ds1=None,
+                     ds2=None,
                      western_bound=-125,
                      eastern_bound=-65,
                      southern_bound=20,
                      northern_bound=50,
-                     pixel_query_value_fontsize=4,
+                     pixel_query_value_fontsize=6,
                      pixel_query_value_zorder=7,
                      pixel_query_value_foreground='white',
                      pixel_query_value_fontcolor='black',
                      pixel_query_stroke_linewidth=1,
-                     path='FireWxPy Graphics/RTMA/Dew Point Depression',
-                     filename='RTMA Dew Point Depression.png',
+                     path='FireWxPy Graphics/RTMA Comparison/Dew Point Depression',
+                     filename='RTMA Comparison Dew Point Depression.png',
                      proxies=None,
                      clear_recycle_bin=False,
                      clear_data=True,
@@ -1855,8 +1907,8 @@ def plot_dew_point_depression(region='ak',
                                                                                  southern_bound,
                                                                                  northern_bound)
     
-    if ds is None:
-        ds = _rtma(model='ak rtma',
+    if ds1 is None and ds2 is None:
+        ds1, ds2 = _rtma_comparison(model='ak rtma',
                    proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
@@ -1864,33 +1916,48 @@ def plot_dew_point_depression(region='ak',
                    convert_to=convert_to,
                    chunk_size=chunk_size,
                    notifications=notifications,
-                   custom_directory=custom_data_directory)
+                   custom_directory=custom_data_directory,
+                   hours=hours)
     else:
-        ds = ds
+        ds1 = ds1
+        ds2 = ds2
         if convert_temperature is True:
             if convert_from == 'kelvin':
                 if convert_to == 'fahrenheit':
-                    ds[var_key] = _kelvin_to_fahrenheit(ds[var_key])
+                    ds1[var_key] = _kelvin_to_fahrenheit(ds1[var_key])
+                    ds2[var_key] = _kelvin_to_fahrenheit(ds2[var_key])
                 else:
-                    ds[var_key] = _kelvin_to_celsius(ds[var_key])
+                    ds1[var_key] = _kelvin_to_celsius(ds1[var_key])
+                    ds2[var_key] = _kelvin_to_celsius(ds2[var_key])
             else:
                 if convert_to == 'fahrenheit':
-                    ds[var_key] = _celsius_to_fahrenheit(ds[var_key])
+                    ds1[var_key] = _celsius_to_fahrenheit(ds1[var_key])
+                    ds2[var_key] = _celsius_to_fahrenheit(ds2[var_key])
                     
-    lon_masked, lat_masked, vals_masked = _fix_grib_data(ds,
+    lon_masked_1, lat_masked_1, vals_masked_1 = _fix_grib_data(ds1,
                                                          var_key,
                                                          longitude_key,
                                                          latitude_key)
+    
+    _, _, vals_masked_2 = _fix_grib_data(ds2,
+                                    var_key,
+                                    longitude_key,
+                                    latitude_key)
         
     if colormap == 'custom':
         cmap = _mcolors.LinearSegmentedColormap.from_list("dew point depression", colors)
     else:
         cmap = colormap
     
-    valid_time = _pd.to_datetime(ds[time_coord_key].to_pandas())
-    valid_time = valid_time.tz_localize('UTC')
-    time = valid_time.astimezone(_to_zone)
-    time_utc = time.astimezone(_from_zone)
+    valid_time1 = _pd.to_datetime(ds1[time_coord_key].to_pandas())
+    valid_time1 = valid_time1.tz_localize('UTC')
+    time1 = valid_time1.astimezone(_to_zone)
+    time1_utc = time1.astimezone(_from_zone)
+    
+    valid_time2 = _pd.to_datetime(ds2[time_coord_key].to_pandas())
+    valid_time2 = valid_time2.tz_localize('UTC')
+    time2 = valid_time2.astimezone(_to_zone)
+    time2_utc = time2.astimezone(_from_zone)
     
     fig = _plt.figure(figsize=(figure_x_length, figure_y_length))
     fig.set_facecolor(facecolor)
@@ -2118,9 +2185,9 @@ def plot_dew_point_depression(region='ak',
                           linewidth=custom_geojson_local_linewidth, 
                           zorder=custom_geojson_local_zorder)
     
-    cs = ax.contourf(lon_masked,
-                lat_masked,
-                vals_masked,
+    cs = ax.contourf(lon_masked_1,
+                lat_masked_1,
+                (vals_masked_1 - vals_masked_2),
                 cmap=cmap,
                 levels=levels,
                 transform=datacrs,
@@ -2142,13 +2209,13 @@ def plot_dew_point_depression(region='ak',
                loc='left')
     
     if local_time is True:
-        _plt.title(f"Valid: {time.strftime('%m/%d/%Y %H:00')} {_timezone}", 
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1.strftime('%m/%d/%Y %H:00')} - {time2.strftime('%m/%d/%Y %H:00')} {_timezone}", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
                 loc='right')
     else:
-        _plt.title(f"Valid: {time_utc.strftime('%m/%d/%Y %H:00')} UTC", 
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1_utc.strftime('%m/%d/%Y %H:00')} - {time2_utc.strftime('%m/%d/%Y %H:00')} UTC", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
@@ -2182,12 +2249,17 @@ def plot_dew_point_depression(region='ak',
             transform=ax.transAxes,
             zorder=reference_system_textbox_zorder)
         
-    vals = _fix_var_array(ds,
+    vals_1 = _fix_var_array(ds1,
+                    var_key,
+                    0,
+                    decimate)
+    
+    vals_2 = _fix_var_array(ds2,
                     var_key,
                     0,
                     decimate)
 
-    stn = _mpplots.StationPlot(ax, vals['longitude'], vals['latitude'],
+    stn = _mpplots.StationPlot(ax, vals_1['longitude'], vals_1['latitude'],
                                 transform=datacrs, 
                                 fontsize=pixel_query_value_fontsize, 
                                 zorder=pixel_query_value_zorder, 
@@ -2195,7 +2267,7 @@ def plot_dew_point_depression(region='ak',
 
 
     stn.plot_parameter('C', 
-                       vals[var_key], 
+                       (vals_1[var_key] - vals_2[var_key]), 
                        color=pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
@@ -2207,6 +2279,7 @@ def plot_dew_point_depression(region='ak',
         print(f"{filename} saved to {path}/{region.upper()}")
         
 def plot_relative_humidity(region='ak',
+                     hours=24,
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -2277,19 +2350,19 @@ def plot_relative_humidity(region='ak',
                      lakes_zorder=1,
                      land_zorder=1,
                      decimate=50,
-                     start=0,
-                     stop=100,
+                     start=-50,
+                     stop=50,
                      step=1,
                      facecolor='aliceblue',
-                     primary_title_text='RTMA 2-METER RELATIVE HUMIDITY [%]',
+                     primary_title_text='RTMA 2-METER RELATIVE HUMIDITY COMPARISON [Δ%]',
                      primary_title_textbox_color='wheat',
                      primary_title_textbox_style='round',
                      primary_title_textbox_alpha=1,
                      secondary_title_textbox_color='wheat',
                      secondary_title_textbox_style='round',
                      secondary_title_textbox_alpha=1,
-                     primary_title_fontsize=12,
-                     secondary_title_fontsize=10,
+                     primary_title_fontsize=8,
+                     secondary_title_fontsize=7,
                      local_time=True,
                      signature_textbox_color='wheat',
                      signature_textbox_style='round',
@@ -2326,18 +2399,19 @@ def plot_relative_humidity(region='ak',
                              'forestgreen',
                              'mediumspringgreen',
                              'aqua'],
-                     ds=None,
+                     ds1=None,
+                     ds2=None,
                      western_bound=-125,
                      eastern_bound=-65,
                      southern_bound=20,
                      northern_bound=50,
-                     pixel_query_value_fontsize=4,
+                     pixel_query_value_fontsize=6,
                      pixel_query_value_zorder=7,
                      pixel_query_value_foreground='white',
                      pixel_query_value_fontcolor='black',
                      pixel_query_stroke_linewidth=1,
-                     path='FireWxPy Graphics/RTMA/Relative Humidity',
-                     filename='RTMA Relative Humidity.png',
+                     path='FireWxPy Graphics/RTMA Comparison/Relative Humidity',
+                     filename='RTMA Comparison Relative Humidity.png',
                      proxies=None,
                      clear_recycle_bin=False,
                      clear_data=True,
@@ -2409,8 +2483,8 @@ def plot_relative_humidity(region='ak',
                                                                                  southern_bound,
                                                                                  northern_bound)
     
-    if ds is None:
-        ds = _rtma(model='ak rtma',
+    if ds1 is None and ds2 is None:
+        ds1, ds2 = _rtma_comparison(model='ak rtma',
                    proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
@@ -2418,24 +2492,36 @@ def plot_relative_humidity(region='ak',
                    convert_to=convert_to,
                    chunk_size=chunk_size,
                    notifications=notifications,
-                   custom_directory=custom_data_directory)
+                   custom_directory=custom_data_directory,
+                   hours=hours)
     else:
-        ds = ds
+        ds1 = ds1
+        ds2 = ds2
         
-    lon_masked, lat_masked, vals_masked = _fix_grib_data(ds,
+    lon_masked_1, lat_masked_1, vals_masked_1 = _fix_grib_data(ds1,
                                                          var_key,
                                                          longitude_key,
                                                          latitude_key)
+    
+    _, _, vals_masked_2 = _fix_grib_data(ds2,
+                                    var_key,
+                                    longitude_key,
+                                    latitude_key)
         
     if colormap == 'custom':
         cmap = _mcolors.LinearSegmentedColormap.from_list("relative humidity", colors)
     else:
         cmap = colormap
     
-    valid_time = _pd.to_datetime(ds[time_coord_key].to_pandas())
-    valid_time = valid_time.tz_localize('UTC')
-    time = valid_time.astimezone(_to_zone)
-    time_utc = time.astimezone(_from_zone)
+    valid_time1 = _pd.to_datetime(ds1[time_coord_key].to_pandas())
+    valid_time1 = valid_time1.tz_localize('UTC')
+    time1 = valid_time1.astimezone(_to_zone)
+    time1_utc = time1.astimezone(_from_zone)
+    
+    valid_time2 = _pd.to_datetime(ds2[time_coord_key].to_pandas())
+    valid_time2 = valid_time2.tz_localize('UTC')
+    time2 = valid_time2.astimezone(_to_zone)
+    time2_utc = time2.astimezone(_from_zone)
     
     fig = _plt.figure(figsize=(figure_x_length, figure_y_length))
     fig.set_facecolor(facecolor)
@@ -2663,9 +2749,9 @@ def plot_relative_humidity(region='ak',
                           linewidth=custom_geojson_local_linewidth, 
                           zorder=custom_geojson_local_zorder)
     
-    cs = ax.contourf(lon_masked,
-                lat_masked,
-                vals_masked,
+    cs = ax.contourf(lon_masked_1,
+                lat_masked_1,
+                (vals_masked_1 - vals_masked_2),
                 cmap=cmap,
                 levels=levels,
                 transform=datacrs,
@@ -2687,13 +2773,13 @@ def plot_relative_humidity(region='ak',
                loc='left')
     
     if local_time is True:
-        _plt.title(f"Valid: {time.strftime('%m/%d/%Y %H:00')} {_timezone}", 
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1.strftime('%m/%d/%Y %H:00')} - {time2.strftime('%m/%d/%Y %H:00')} {_timezone}", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
                 loc='right')
     else:
-        _plt.title(f"Valid: {time_utc.strftime('%m/%d/%Y %H:00')} UTC", 
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1_utc.strftime('%m/%d/%Y %H:00')} - {time2_utc.strftime('%m/%d/%Y %H:00')} UTC", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
@@ -2728,12 +2814,17 @@ def plot_relative_humidity(region='ak',
             zorder=reference_system_textbox_zorder)
         
         
-    vals = _fix_var_array(ds,
+    vals_1 = _fix_var_array(ds1,
+                    var_key,
+                    0,
+                    decimate)
+    
+    vals_2 = _fix_var_array(ds2,
                     var_key,
                     0,
                     decimate)
 
-    stn = _mpplots.StationPlot(ax, vals['longitude'], vals['latitude'],
+    stn = _mpplots.StationPlot(ax, vals_1['longitude'], vals_1['latitude'],
                                 transform=datacrs, 
                                 fontsize=pixel_query_value_fontsize, 
                                 zorder=pixel_query_value_zorder, 
@@ -2741,7 +2832,7 @@ def plot_relative_humidity(region='ak',
 
 
     stn.plot_parameter('C', 
-                       vals[var_key], 
+                       (vals_1[var_key] - vals_2[var_key]), 
                        color=pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
@@ -2754,6 +2845,7 @@ def plot_relative_humidity(region='ak',
         print(f"{filename} saved to {path}/{region.upper()}")
         
 def plot_wind_speed(region='ak',
+                     hours=24,
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -2824,19 +2916,19 @@ def plot_wind_speed(region='ak',
                      lakes_zorder=1,
                      land_zorder=1,
                      decimate=50,
-                     start=0,
-                     stop=70,
+                     start=-25,
+                     stop=25,
                      step=1,
                      facecolor='aliceblue',
-                     primary_title_text='RTMA 10-METER WIND SPEED [MPH]',
+                     primary_title_text='RTMA 10-METER WIND SPEED COMPARISON [ΔMPH]',
                      primary_title_textbox_color='wheat',
                      primary_title_textbox_style='round',
                      primary_title_textbox_alpha=1,
                      secondary_title_textbox_color='wheat',
                      secondary_title_textbox_style='round',
                      secondary_title_textbox_alpha=1,
-                     primary_title_fontsize=12,
-                     secondary_title_fontsize=10,
+                     primary_title_fontsize=8,
+                     secondary_title_fontsize=7,
                      local_time=True,
                      signature_textbox_color='wheat',
                      signature_textbox_style='round',
@@ -2869,18 +2961,19 @@ def plot_wind_speed(region='ak',
                              'darkorange',
                              'darkred',
                              'violet'],
-                     ds=None,
+                     ds1=None,
+                     ds2=None,
                      western_bound=-125,
                      eastern_bound=-65,
                      southern_bound=20,
                      northern_bound=50,
-                     pixel_query_value_fontsize=4,
+                     pixel_query_value_fontsize=6,
                      pixel_query_value_zorder=7,
                      pixel_query_value_foreground='white',
                      pixel_query_value_fontcolor='black',
                      pixel_query_stroke_linewidth=1,
-                     path='FireWxPy Graphics/RTMA/Wind Speed',
-                     filename='RTMA Wind Speed.png',
+                     path='FireWxPy Graphics/RTMA Comparison/Wind Speed',
+                     filename='RTMA Comparison Wind Speed.png',
                      proxies=None,
                      clear_recycle_bin=False,
                      clear_data=True,
@@ -2898,10 +2991,18 @@ def plot_wind_speed(region='ak',
                      convert_wind_speed=True,
                      convert_to='mph',
                      pixel_query_type='barbs',
-                     barb_length=4.5,
-                     barb_width=0.5,
-                     barb_color='black',
-                     barb_zorder=7):
+                     current_barb_length=4,
+                     current_barb_width=0.5,
+                     current_barb_color='gray',
+                     current_barb_zorder=7,
+                     comparison_barb_length=4,
+                     comparison_barb_width=0.5,
+                     comparison_barb_color='indigo',
+                     comparison_barb_zorder=7,
+                     barb_legend_fontsize=7,
+                     barb_legend_x_position=0.825,
+                     barb_legend_y_position=0,
+                     barb_legend_zorder=10):
     
     """
     This function plots the latest Real Time Mesoscale Analysis (RTMA) for sustained wind speed.
@@ -2959,8 +3060,8 @@ def plot_wind_speed(region='ak',
                                                                                  southern_bound,
                                                                                  northern_bound)
     
-    if ds is None:
-        ds = _rtma(model='ak rtma',
+    if ds1 is None and ds2 is None:
+        ds1, ds2 = _rtma_comparison(model='ak rtma',
                    proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
@@ -2968,37 +3069,55 @@ def plot_wind_speed(region='ak',
                    convert_to='fahrenheit',
                    chunk_size=chunk_size,
                    notifications=notifications,
-                   custom_directory=custom_data_directory)
+                   custom_directory=custom_data_directory,
+                   hours=hours)
     else:
-        ds = ds
+        ds1 = ds1
+        ds2 = ds2
         
     if convert_wind_speed == True:
         if convert_to == 'mph':
-            ds[var_key] = _calc.mps_to_mph(ds[var_key])
-            ds[u_var_key] = _calc.mps_to_mph(ds[u_var_key])
-            ds[v_var_key] = _calc.mps_to_mph(ds[v_var_key])
+            ds1[var_key] = _calc.mps_to_mph(ds1[var_key])
+            ds1[u_var_key] = _calc.mps_to_mph(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mps_to_mph(ds1[v_var_key])
+            ds2[var_key] = _calc.mps_to_mph(ds2[var_key])
+            ds2[u_var_key] = _calc.mps_to_mph(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mps_to_mph(ds2[v_var_key])
         else:
-            ds[var_key] = _calc.mph_to_kts(ds[var_key])
-            ds[u_var_key] = _calc.mph_to_kts(ds[u_var_key])
-            ds[v_var_key] = _calc.mph_to_kts(ds[v_var_key])
+            ds1[var_key] = _calc.mph_to_kts(ds1[var_key])
+            ds1[u_var_key] = _calc.mph_to_kts(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mph_to_kts(ds1[v_var_key])
+            ds2[var_key] = _calc.mph_to_kts(ds2[var_key])
+            ds2[u_var_key] = _calc.mph_to_kts(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mph_to_kts(ds2[v_var_key])
             
     else:
         pass
     
-    lon_masked, lat_masked, vals_masked = _fix_grib_data(ds,
+    lon_masked_1, lat_masked_1, vals_masked_1 = _fix_grib_data(ds1,
                                                          var_key,
                                                          longitude_key,
                                                          latitude_key)
+    
+    _, _, vals_masked_2 = _fix_grib_data(ds2,
+                                    var_key,
+                                    longitude_key,
+                                    latitude_key)
         
     if colormap == 'custom':
         cmap = _mcolors.LinearSegmentedColormap.from_list("wind speed", colors)
     else:
         cmap = colormap
     
-    valid_time = _pd.to_datetime(ds[time_coord_key].to_pandas())
-    valid_time = valid_time.tz_localize('UTC')
-    time = valid_time.astimezone(_to_zone)
-    time_utc = time.astimezone(_from_zone)
+    valid_time1 = _pd.to_datetime(ds1[time_coord_key].to_pandas())
+    valid_time1 = valid_time1.tz_localize('UTC')
+    time1 = valid_time1.astimezone(_to_zone)
+    time1_utc = time1.astimezone(_from_zone)
+    
+    valid_time2 = _pd.to_datetime(ds2[time_coord_key].to_pandas())
+    valid_time2 = valid_time2.tz_localize('UTC')
+    time2 = valid_time2.astimezone(_to_zone)
+    time2_utc = time2.astimezone(_from_zone)
     
     fig = _plt.figure(figsize=(figure_x_length, figure_y_length))
     fig.set_facecolor(facecolor)
@@ -3226,9 +3345,9 @@ def plot_wind_speed(region='ak',
                           linewidth=custom_geojson_local_linewidth, 
                           zorder=custom_geojson_local_zorder)
     
-    cs = ax.contourf(lon_masked,
-                lat_masked,
-                vals_masked,
+    cs = ax.contourf(lon_masked_1,
+                lat_masked_1,
+                (vals_masked_1 - vals_masked_2),
                 cmap=cmap,
                 levels=levels,
                 transform=datacrs,
@@ -3250,13 +3369,17 @@ def plot_wind_speed(region='ak',
                loc='left')
     
     if local_time is True:
-        _plt.title(f"Valid: {time.strftime('%m/%d/%Y %H:00')} {_timezone}", 
+        label1 = f"{time1.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        label2 = f"{time2.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1.strftime('%m/%d/%Y %H:00')} - {time2.strftime('%m/%d/%Y %H:00')} {_timezone}",
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
                 loc='right')
     else:
-        _plt.title(f"Valid: {time_utc.strftime('%m/%d/%Y %H:00')} UTC", 
+        label1 = f"{time1_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        label2 = f"{time2_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1_utc.strftime('%m/%d/%Y %H:00')} - {time2_utc.strftime('%m/%d/%Y %H:00')} UTC", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
@@ -3292,42 +3415,75 @@ def plot_wind_speed(region='ak',
         
     
         
-    vals = _fix_var_array(ds,
+    vals_1 = _fix_var_array(ds1,
                     var_key,
                     0,
                     decimate)
     
-    u_vals = _fix_var_array(ds,
+    u_vals_1 = _fix_var_array(ds1,
                     u_var_key,
                     0,
                     decimate)
     
-    v_vals = _fix_var_array(ds,
+    v_vals_1 = _fix_var_array(ds1,
+                    v_var_key,
+                    0,
+                    decimate)
+    
+    vals_2 = _fix_var_array(ds2,
+                    var_key,
+                    0,
+                    decimate)
+    
+    u_vals_2 = _fix_var_array(ds2,
+                    u_var_key,
+                    0,
+                    decimate)
+    
+    v_vals_2 = _fix_var_array(ds2,
                     v_var_key,
                     0,
                     decimate)
 
-    stn = _mpplots.StationPlot(ax, vals['longitude'], vals['latitude'],
+    stn1 = _mpplots.StationPlot(ax, vals_1['longitude'], vals_1['latitude'],
+                                transform=datacrs, 
+                                fontsize=pixel_query_value_fontsize, 
+                                zorder=pixel_query_value_zorder, 
+                                clip_on=True)
+    
+    stn2 = _mpplots.StationPlot(ax, vals_2['longitude'], vals_2['latitude'],
                                 transform=datacrs, 
                                 fontsize=pixel_query_value_fontsize, 
                                 zorder=pixel_query_value_zorder, 
                                 clip_on=True)
 
     if pixel_query_type != 'barbs':
-        stn.plot_parameter('C', 
-                            vals[var_key], 
+        stn1.plot_parameter('C', 
+                            (vals_1[var_key] - vals_2[var_key]), 
                             color=pixel_query_value_fontcolor, 
                             path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                         foreground=pixel_query_value_foreground)], 
                             zorder=pixel_query_value_zorder)
 
     else:
-        stn.plot_barb(u_vals[u_var_key], 
-                        v_vals[v_var_key],
-                        color=barb_color, 
-                        length=barb_length, 
-                        linewidth=barb_width,
-                        zorder=barb_zorder)
+        stn1.plot_barb(u_vals_1[u_var_key], 
+                        v_vals_1[v_var_key],
+                        color=current_barb_color, 
+                        length=current_barb_length, 
+                        linewidth=current_barb_width,
+                        zorder=current_barb_zorder,
+                        label=label1)
+        
+        stn2.plot_barb(u_vals_2[u_var_key], 
+                        v_vals_2[v_var_key],
+                        color=comparison_barb_color, 
+                        length=comparison_barb_length, 
+                        linewidth=comparison_barb_width,
+                        zorder=comparison_barb_zorder,
+                        label=label2)
+        
+        leg = ax.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+        leg.set_zorder(barb_legend_zorder)
 
     fig.savefig(f"{path}/{region.upper()}/{reference_system.upper()}/{filename}", bbox_inches='tight')
     _plt.close(fig)
@@ -3335,6 +3491,7 @@ def plot_wind_speed(region='ak',
         print(f"{filename} saved to {path}/{region.upper()}")
         
 def plot_wind_gust(region='ak',
+                     hours=24,
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -3405,19 +3562,19 @@ def plot_wind_gust(region='ak',
                      lakes_zorder=1,
                      land_zorder=1,
                      decimate=50,
-                     start=0,
-                     stop=70,
+                     start=-25,
+                     stop=25,
                      step=1,
                      facecolor='aliceblue',
-                     primary_title_text='RTMA 10-METER WIND GUST [MPH]',
+                     primary_title_text='RTMA 10-METER WIND GUST COMPARISON [ΔMPH]',
                      primary_title_textbox_color='wheat',
                      primary_title_textbox_style='round',
                      primary_title_textbox_alpha=1,
                      secondary_title_textbox_color='wheat',
                      secondary_title_textbox_style='round',
                      secondary_title_textbox_alpha=1,
-                     primary_title_fontsize=12,
-                     secondary_title_fontsize=10,
+                     primary_title_fontsize=8,
+                     secondary_title_fontsize=7,
                      local_time=True,
                      signature_textbox_color='wheat',
                      signature_textbox_style='round',
@@ -3450,18 +3607,19 @@ def plot_wind_gust(region='ak',
                              'darkorange',
                              'darkred',
                              'violet'],
-                     ds=None,
+                     ds1=None,
+                     ds2=None,
                      western_bound=-125,
                      eastern_bound=-65,
                      southern_bound=20,
                      northern_bound=50,
-                     pixel_query_value_fontsize=4,
+                     pixel_query_value_fontsize=6,
                      pixel_query_value_zorder=7,
                      pixel_query_value_foreground='white',
                      pixel_query_value_fontcolor='black',
                      pixel_query_stroke_linewidth=1,
-                     path='FireWxPy Graphics/RTMA/Wind Gust',
-                     filename='RTMA Wind Gust.png',
+                     path='FireWxPy Graphics/RTMA Comparison/Wind Gust',
+                     filename='RTMA Comparison Wind Gust.png',
                      proxies=None,
                      clear_recycle_bin=False,
                      clear_data=True,
@@ -3480,10 +3638,18 @@ def plot_wind_gust(region='ak',
                      convert_wind_speed=True,
                      convert_to='mph',
                      pixel_query_type='barbs',
-                     barb_length=4.5,
-                     barb_width=0.5,
-                     barb_color='black',
-                     barb_zorder=7):
+                     current_barb_length=4,
+                     current_barb_width=0.5,
+                     current_barb_color='gray',
+                     current_barb_zorder=7,
+                     comparison_barb_length=4,
+                     comparison_barb_width=0.5,
+                     comparison_barb_color='indigo',
+                     comparison_barb_zorder=7,
+                     barb_legend_fontsize=7,
+                     barb_legend_x_position=0.825,
+                     barb_legend_y_position=0,
+                     barb_legend_zorder=10):
     
     """
     This function plots the latest Real Time Mesoscale Analysis (RTMA) for wind gust.
@@ -3541,8 +3707,8 @@ def plot_wind_gust(region='ak',
                                                                                  southern_bound,
                                                                                  northern_bound)
     
-    if ds is None:
-        ds = _rtma(model='ak rtma',
+    if ds1 is None and ds2 is None:
+        ds1, ds2 = _rtma_comparison(model='ak rtma',
                    proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
@@ -3550,29 +3716,48 @@ def plot_wind_gust(region='ak',
                    convert_to='fahrenheit',
                    chunk_size=chunk_size,
                    notifications=notifications,
-                   custom_directory=custom_data_directory)
+                   custom_directory=custom_data_directory,
+                   hours=hours)
     else:
-        ds = ds
+        ds1 = ds1
+        ds2 = ds2
         
     if convert_wind_speed == True:
         if convert_to == 'mph':
-            ds[var_key] = _calc.mps_to_mph(ds[var_key])
-            ds[u_var_key] = _calc.mps_to_mph(ds[u_var_key])
-            ds[v_var_key] = _calc.mps_to_mph(ds[v_var_key])
+            ds1[var_key] = _calc.mps_to_mph(ds1[var_key])
+            ds1[u_var_key] = _calc.mps_to_mph(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mps_to_mph(ds1[v_var_key])
+            ds2[var_key] = _calc.mps_to_mph(ds2[var_key])
+            ds2[u_var_key] = _calc.mps_to_mph(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mps_to_mph(ds2[v_var_key])
         else:
-            ds[var_key] = _calc.mph_to_kts(ds[var_key])
-            ds[u_var_key] = _calc.mph_to_kts(ds[u_var_key])
-            ds[v_var_key] = _calc.mph_to_kts(ds[v_var_key])
+            ds1[var_key] = _calc.mph_to_kts(ds1[var_key])
+            ds1[u_var_key] = _calc.mph_to_kts(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mph_to_kts(ds1[v_var_key])
+            ds2[var_key] = _calc.mph_to_kts(ds2[var_key])
+            ds2[u_var_key] = _calc.mph_to_kts(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mph_to_kts(ds2[v_var_key])
             
     else:
         pass
     
-    lon_masked, lat_masked, vals_masked = _fix_grib_data(ds,
+    lon_masked_1, lat_masked_1, vals_masked_1 = _fix_grib_data(ds1,
                                                          var_key,
                                                          longitude_key,
                                                          latitude_key)
     
-    ds = _calc.u_v_components(ds,
+    _, _, vals_masked_2 = _fix_grib_data(ds2,
+                                    var_key,
+                                    longitude_key,
+                                    latitude_key)
+    
+    ds1 = _calc.u_v_components(ds1,
+                            u_var_key,
+                            v_var_key,
+                            wind_direction_var_key,
+                            var_key)
+    
+    ds2 = _calc.u_v_components(ds2,
                             u_var_key,
                             v_var_key,
                             wind_direction_var_key,
@@ -3583,10 +3768,15 @@ def plot_wind_gust(region='ak',
     else:
         cmap = colormap
     
-    valid_time = _pd.to_datetime(ds[time_coord_key].to_pandas())
-    valid_time = valid_time.tz_localize('UTC')
-    time = valid_time.astimezone(_to_zone)
-    time_utc = time.astimezone(_from_zone)
+    valid_time1 = _pd.to_datetime(ds1[time_coord_key].to_pandas())
+    valid_time1 = valid_time1.tz_localize('UTC')
+    time1 = valid_time1.astimezone(_to_zone)
+    time1_utc = time1.astimezone(_from_zone)
+    
+    valid_time2 = _pd.to_datetime(ds2[time_coord_key].to_pandas())
+    valid_time2 = valid_time2.tz_localize('UTC')
+    time2 = valid_time2.astimezone(_to_zone)
+    time2_utc = time2.astimezone(_from_zone)
     
     fig = _plt.figure(figsize=(figure_x_length, figure_y_length))
     fig.set_facecolor(facecolor)
@@ -3814,9 +4004,9 @@ def plot_wind_gust(region='ak',
                           linewidth=custom_geojson_local_linewidth, 
                           zorder=custom_geojson_local_zorder)
     
-    cs = ax.contourf(lon_masked,
-                lat_masked,
-                vals_masked,
+    cs = ax.contourf(lon_masked_1,
+                lat_masked_1,
+                (vals_masked_1 - vals_masked_2),
                 cmap=cmap,
                 levels=levels,
                 transform=datacrs,
@@ -3838,13 +4028,17 @@ def plot_wind_gust(region='ak',
                loc='left')
     
     if local_time is True:
-        _plt.title(f"Valid: {time.strftime('%m/%d/%Y %H:00')} {_timezone}", 
+        label1 = f"{time1.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        label2 = f"{time2.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1.strftime('%m/%d/%Y %H:00')} - {time2.strftime('%m/%d/%Y %H:00')} {_timezone}",
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
                 loc='right')
     else:
-        _plt.title(f"Valid: {time_utc.strftime('%m/%d/%Y %H:00')} UTC", 
+        label1 = f"{time1_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        label2 = f"{time2_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1_utc.strftime('%m/%d/%Y %H:00')} - {time2_utc.strftime('%m/%d/%Y %H:00')} UTC", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
@@ -3880,42 +4074,75 @@ def plot_wind_gust(region='ak',
         
     
         
-    vals = _fix_var_array(ds,
+    vals_1 = _fix_var_array(ds1,
                     var_key,
                     0,
                     decimate)
     
-    u_vals = _fix_var_array(ds,
+    u_vals_1 = _fix_var_array(ds1,
                     u_var_key,
                     0,
                     decimate)
     
-    v_vals = _fix_var_array(ds,
+    v_vals_1 = _fix_var_array(ds1,
+                    v_var_key,
+                    0,
+                    decimate)
+    
+    vals_2 = _fix_var_array(ds2,
+                    var_key,
+                    0,
+                    decimate)
+    
+    u_vals_2 = _fix_var_array(ds2,
+                    u_var_key,
+                    0,
+                    decimate)
+    
+    v_vals_2 = _fix_var_array(ds2,
                     v_var_key,
                     0,
                     decimate)
 
-    stn = _mpplots.StationPlot(ax, vals['longitude'], vals['latitude'],
+    stn1 = _mpplots.StationPlot(ax, vals_1['longitude'], vals_1['latitude'],
+                                transform=datacrs, 
+                                fontsize=pixel_query_value_fontsize, 
+                                zorder=pixel_query_value_zorder, 
+                                clip_on=True)
+    
+    stn2 = _mpplots.StationPlot(ax, vals_2['longitude'], vals_2['latitude'],
                                 transform=datacrs, 
                                 fontsize=pixel_query_value_fontsize, 
                                 zorder=pixel_query_value_zorder, 
                                 clip_on=True)
 
     if pixel_query_type != 'barbs':
-        stn.plot_parameter('C', 
-                            vals[var_key], 
+        stn1.plot_parameter('C', 
+                            (vals_1[var_key] - vals_2[var_key]), 
                             color=pixel_query_value_fontcolor, 
                             path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                         foreground=pixel_query_value_foreground)], 
                             zorder=pixel_query_value_zorder)
 
     else:
-        stn.plot_barb(u_vals[u_var_key], 
-                        v_vals[v_var_key],
-                        color=barb_color, 
-                        length=barb_length, 
-                        linewidth=barb_width,
-                        zorder=barb_zorder)
+        stn1.plot_barb(u_vals_1[u_var_key], 
+                        v_vals_1[v_var_key],
+                        color=current_barb_color, 
+                        length=current_barb_length, 
+                        linewidth=current_barb_width,
+                        zorder=current_barb_zorder,
+                        label=label1)
+        
+        stn2.plot_barb(u_vals_2[u_var_key], 
+                        v_vals_2[v_var_key],
+                        color=comparison_barb_color, 
+                        length=comparison_barb_length, 
+                        linewidth=comparison_barb_width,
+                        zorder=comparison_barb_zorder,
+                        label=label2)
+        
+        leg = ax.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+        leg.set_zorder(barb_legend_zorder)
 
     fig.savefig(f"{path}/{region.upper()}/{reference_system.upper()}/{filename}", bbox_inches='tight')
     _plt.close(fig)
@@ -3924,6 +4151,7 @@ def plot_wind_gust(region='ak',
         
         
 def plot_temperature_and_wind(region='ak',
+                     hours=24,
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -3994,19 +4222,19 @@ def plot_temperature_and_wind(region='ak',
                      lakes_zorder=1,
                      land_zorder=1,
                      decimate=50,
-                     start=-30,
-                     stop=130,
+                     start=-25,
+                     stop=25,
                      step=1,
                      facecolor='aliceblue',
-                     primary_title_text='RTMA 2-METER TEMPERATURE [°F] & 10-METER WIND [MPH]',
+                     primary_title_text='RTMA COMPARISON 2-METER TEMPERATURE [Δ°F] & 10-METER WIND [ΔMPH]',
                      primary_title_textbox_color='wheat',
                      primary_title_textbox_style='round',
                      primary_title_textbox_alpha=1,
                      secondary_title_textbox_color='wheat',
                      secondary_title_textbox_style='round',
                      secondary_title_textbox_alpha=1,
-                     primary_title_fontsize=12,
-                     secondary_title_fontsize=10,
+                     primary_title_fontsize=8,
+                     secondary_title_fontsize=7,
                      local_time=True,
                      signature_textbox_color='wheat',
                      signature_textbox_style='round',
@@ -4049,7 +4277,8 @@ def plot_temperature_and_wind(region='ak',
                              'crimson',
                              'darkred',
                              'grey'],
-                     ds=None,
+                     ds1=None,
+                     ds2=None,
                      western_bound=-125,
                      eastern_bound=-65,
                      southern_bound=20,
@@ -4060,8 +4289,8 @@ def plot_temperature_and_wind(region='ak',
                      temperature_pixel_query_value_fontcolor='darkred',
                      wind_speed_pixel_query_value_fontcolor='darkblue',
                      pixel_query_stroke_linewidth=1,
-                     path='FireWxPy Graphics/RTMA/Temperature',
-                     filename='RTMA Temperature and Wind.png',
+                     path='FireWxPy Graphics/RTMA Comparison/Temperature',
+                     filename='RTMA Comparison Temperature and Wind.png',
                      proxies=None,
                      clear_recycle_bin=False,
                      clear_data=True,
@@ -4079,10 +4308,18 @@ def plot_temperature_and_wind(region='ak',
                      latitude_key='latitude',
                      convert_wind_speed=True,
                      convert_to='mph',
-                     barb_length=4,
-                     barb_width=0.5,
-                     barb_color='black',
-                     barb_zorder=7,
+                     current_barb_length=4,
+                     current_barb_width=0.5,
+                     current_barb_color='gray',
+                     current_barb_zorder=7,
+                     comparison_barb_length=4,
+                     comparison_barb_width=0.5,
+                     comparison_barb_color='indigo',
+                     comparison_barb_zorder=7,
+                     barb_legend_fontsize=7,
+                     barb_legend_x_position=0.825,
+                     barb_legend_y_position=0,
+                     barb_legend_zorder=10,
                      temp_value_loc='NW',
                      speed_value_loc='NE'):
     
@@ -4142,8 +4379,8 @@ def plot_temperature_and_wind(region='ak',
                                                                                  southern_bound,
                                                                                  northern_bound)
     
-    if ds is None:
-        ds = _rtma(model='ak rtma',
+    if ds1 is None and ds2 is None:
+        ds1, ds2 = _rtma_comparison(model='ak rtma',
                    proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
@@ -4151,37 +4388,55 @@ def plot_temperature_and_wind(region='ak',
                    convert_to='fahrenheit',
                    chunk_size=chunk_size,
                    notifications=notifications,
-                   custom_directory=custom_data_directory)
+                   custom_directory=custom_data_directory,
+                   hours=hours)
     else:
-        ds = ds
+        ds1 = ds1
+        ds2 = ds2
         
     if convert_wind_speed == True:
         if convert_to == 'mph':
-            ds[wind_speed_var_key] = _calc.mps_to_mph(ds[wind_speed_var_key])
-            ds[u_var_key] = _calc.mps_to_mph(ds[u_var_key])
-            ds[v_var_key] = _calc.mps_to_mph(ds[v_var_key])
+            ds1[wind_speed_var_key] = _calc.mps_to_mph(ds1[wind_speed_var_key])
+            ds1[u_var_key] = _calc.mps_to_mph(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mps_to_mph(ds1[v_var_key])
+            ds2[wind_speed_var_key] = _calc.mps_to_mph(ds2[wind_speed_var_key])
+            ds2[u_var_key] = _calc.mps_to_mph(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mps_to_mph(ds2[v_var_key])
         else:
-            ds[wind_speed_var_key] = _calc.mph_to_kts(ds[wind_speed_var_key])
-            ds[u_var_key] = _calc.mph_to_kts(ds[u_var_key])
-            ds[v_var_key] = _calc.mph_to_kts(ds[v_var_key])
+            ds1[wind_speed_var_key] = _calc.mph_to_kts(ds1[wind_speed_var_key])
+            ds1[u_var_key] = _calc.mph_to_kts(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mph_to_kts(ds1[v_var_key])
+            ds2[wind_speed_var_key] = _calc.mph_to_kts(ds2[wind_speed_var_key])
+            ds2[u_var_key] = _calc.mph_to_kts(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mph_to_kts(ds2[v_var_key])
             
     else:
         pass
     
-    lon_masked, lat_masked, vals_masked = _fix_grib_data(ds,
+    lon_masked_1, lat_masked_1, vals_masked_1 = _fix_grib_data(ds1,
                                                          temperature_var_key,
                                                          longitude_key,
                                                          latitude_key)
+    
+    _, _, vals_masked_2 = _fix_grib_data(ds2,
+                                        temperature_var_key,
+                                        longitude_key,
+                                        latitude_key)
         
     if colormap == 'custom':
         cmap = _mcolors.LinearSegmentedColormap.from_list("temperature", colors)
     else:
         cmap = colormap
     
-    valid_time = _pd.to_datetime(ds[time_coord_key].to_pandas())
-    valid_time = valid_time.tz_localize('UTC')
-    time = valid_time.astimezone(_to_zone)
-    time_utc = time.astimezone(_from_zone)
+    valid_time1 = _pd.to_datetime(ds1[time_coord_key].to_pandas())
+    valid_time1 = valid_time1.tz_localize('UTC')
+    time1 = valid_time1.astimezone(_to_zone)
+    time1_utc = time1.astimezone(_from_zone)
+    
+    valid_time2 = _pd.to_datetime(ds2[time_coord_key].to_pandas())
+    valid_time2 = valid_time2.tz_localize('UTC')
+    time2 = valid_time2.astimezone(_to_zone)
+    time2_utc = time2.astimezone(_from_zone)
     
     fig = _plt.figure(figsize=(figure_x_length, figure_y_length))
     fig.set_facecolor(facecolor)
@@ -4409,9 +4664,9 @@ def plot_temperature_and_wind(region='ak',
                           linewidth=custom_geojson_local_linewidth, 
                           zorder=custom_geojson_local_zorder)
     
-    cs = ax.contourf(lon_masked,
-                lat_masked,
-                vals_masked,
+    cs = ax.contourf(lon_masked_1,
+                lat_masked_1,
+                (vals_masked_1 - vals_masked_2),
                 cmap=cmap,
                 levels=levels,
                 transform=datacrs,
@@ -4433,13 +4688,17 @@ def plot_temperature_and_wind(region='ak',
                loc='left')
     
     if local_time is True:
-        _plt.title(f"Valid: {time.strftime('%m/%d/%Y %H:00')} {_timezone}", 
+        label1 = f"{time1.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        label2 = f"{time2.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1.strftime('%m/%d/%Y %H:00')} - {time2.strftime('%m/%d/%Y %H:00')} {_timezone}",
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
                 loc='right')
     else:
-        _plt.title(f"Valid: {time_utc.strftime('%m/%d/%Y %H:00')} UTC", 
+        label1 = f"{time1_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        label2 = f"{time2_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1_utc.strftime('%m/%d/%Y %H:00')} - {time2_utc.strftime('%m/%d/%Y %H:00')} UTC", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
@@ -4475,53 +4734,91 @@ def plot_temperature_and_wind(region='ak',
         
     
         
-    temp_vals = _fix_var_array(ds,
+    temp_vals_1 = _fix_var_array(ds1,
                     temperature_var_key,
                     0,
                     decimate)
     
-    u_vals = _fix_var_array(ds,
+    u_vals_1 = _fix_var_array(ds1,
                     u_var_key,
                     0,
                     decimate)
     
-    v_vals = _fix_var_array(ds,
+    v_vals_1 = _fix_var_array(ds1,
                     v_var_key,
                     0,
                     decimate)
     
-    ws_vals = _fix_var_array(ds,
+    ws_vals_1 = _fix_var_array(ds1,
+                    wind_speed_var_key,
+                    0,
+                    decimate)
+    
+    temp_vals_2 = _fix_var_array(ds2,
+                    temperature_var_key,
+                    0,
+                    decimate)
+    
+    u_vals_2 = _fix_var_array(ds2,
+                    u_var_key,
+                    0,
+                    decimate)
+    
+    v_vals_2 = _fix_var_array(ds2,
+                    v_var_key,
+                    0,
+                    decimate)
+    
+    ws_vals_2 = _fix_var_array(ds2,
                     wind_speed_var_key,
                     0,
                     decimate)
 
-    stn = _mpplots.StationPlot(ax, temp_vals['longitude'], temp_vals['latitude'],
+    stn1 = _mpplots.StationPlot(ax, temp_vals_1['longitude'], temp_vals_1['latitude'],
+                                transform=datacrs, 
+                                fontsize=pixel_query_value_fontsize, 
+                                zorder=pixel_query_value_zorder, 
+                                clip_on=True)
+    
+    stn2 = _mpplots.StationPlot(ax, temp_vals_2['longitude'], temp_vals_2['latitude'],
                                 transform=datacrs, 
                                 fontsize=pixel_query_value_fontsize, 
                                 zorder=pixel_query_value_zorder, 
                                 clip_on=True)
 
 
-    stn.plot_parameter(temp_value_loc.upper(), 
-                       temp_vals[temperature_var_key], 
+    stn1.plot_parameter(temp_value_loc.upper(), 
+                       (temp_vals_1[temperature_var_key] - temp_vals_2[temperature_var_key]), 
                        color=temperature_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
     
-    stn.plot_parameter(speed_value_loc.upper(), 
-                       ws_vals[wind_speed_var_key], 
+    stn1.plot_parameter(speed_value_loc.upper(), 
+                       (ws_vals_1[wind_speed_var_key] - ws_vals_2[wind_speed_var_key]), 
                        color= wind_speed_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
 
-    stn.plot_barb(u_vals[u_var_key], 
-                    v_vals[v_var_key],
-                    color=barb_color, 
-                    length=barb_length, 
-                    linewidth=barb_width,
-                    zorder=barb_zorder)
+    stn1.plot_barb(u_vals_1[u_var_key], 
+                        v_vals_1[v_var_key],
+                        color=current_barb_color, 
+                        length=current_barb_length, 
+                        linewidth=current_barb_width,
+                        zorder=current_barb_zorder,
+                        label=label1)
+        
+    stn2.plot_barb(u_vals_2[u_var_key], 
+                        v_vals_2[v_var_key],
+                        color=comparison_barb_color, 
+                        length=comparison_barb_length, 
+                        linewidth=comparison_barb_width,
+                        zorder=comparison_barb_zorder,
+                        label=label2)
+        
+    leg = ax.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+    leg.set_zorder(barb_legend_zorder)
 
     fig.savefig(f"{path}/{region.upper()}/{reference_system.upper()}/{filename}", bbox_inches='tight')
     _plt.close(fig)
@@ -4530,6 +4827,7 @@ def plot_temperature_and_wind(region='ak',
         
         
 def plot_temperature_and_gust(region='ak',
+                     hours=24,
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -4600,19 +4898,19 @@ def plot_temperature_and_gust(region='ak',
                      lakes_zorder=1,
                      land_zorder=1,
                      decimate=50,
-                     start=-30,
-                     stop=130,
+                     start=-25,
+                     stop=25,
                      step=1,
                      facecolor='aliceblue',
-                     primary_title_text='RTMA 2-METER TEMPERATURE [°F] & 10-METER GUST [MPH]',
+                     primary_title_text='RTMA COMPARISON 2-METER TEMPERATURE [Δ°F] & 10-METER GUST [ΔMPH]',
                      primary_title_textbox_color='wheat',
                      primary_title_textbox_style='round',
                      primary_title_textbox_alpha=1,
                      secondary_title_textbox_color='wheat',
                      secondary_title_textbox_style='round',
                      secondary_title_textbox_alpha=1,
-                     primary_title_fontsize=12,
-                     secondary_title_fontsize=10,
+                     primary_title_fontsize=8,
+                     secondary_title_fontsize=7,
                      local_time=True,
                      signature_textbox_color='wheat',
                      signature_textbox_style='round',
@@ -4655,7 +4953,8 @@ def plot_temperature_and_gust(region='ak',
                              'crimson',
                              'darkred',
                              'grey'],
-                     ds=None,
+                     ds1=None,
+                     ds2=None,
                      western_bound=-125,
                      eastern_bound=-65,
                      southern_bound=20,
@@ -4666,8 +4965,8 @@ def plot_temperature_and_gust(region='ak',
                      temperature_pixel_query_value_fontcolor='darkred',
                      wind_speed_pixel_query_value_fontcolor='darkblue',
                      pixel_query_stroke_linewidth=1,
-                     path='FireWxPy Graphics/RTMA/Temperature',
-                     filename='RTMA Temperature and Gust.png',
+                     path='FireWxPy Graphics/RTMA Comparison/Temperature',
+                     filename='RTMA Comparison Temperature and Gust.png',
                      proxies=None,
                      clear_recycle_bin=False,
                      clear_data=True,
@@ -4686,12 +4985,20 @@ def plot_temperature_and_gust(region='ak',
                      latitude_key='latitude',
                      convert_wind_speed=True,
                      convert_to='mph',
-                     barb_length=4,
-                     barb_width=0.5,
-                     barb_color='black',
-                     barb_zorder=7,
                      temp_value_loc='NW',
-                     gust_value_loc='NE'):
+                     gust_value_loc='NE',
+                     current_barb_length=4,
+                     current_barb_width=0.5,
+                     current_barb_color='gray',
+                     current_barb_zorder=7,
+                     comparison_barb_length=4,
+                     comparison_barb_width=0.5,
+                     comparison_barb_color='indigo',
+                     comparison_barb_zorder=7,
+                     barb_legend_fontsize=7,
+                     barb_legend_x_position=0.825,
+                     barb_legend_y_position=0,
+                     barb_legend_zorder=10):
     
     """
     This function plots the latest Real Time Mesoscale Analysis (RTMA) for temperature + gust.
@@ -4749,8 +5056,8 @@ def plot_temperature_and_gust(region='ak',
                                                                                  southern_bound,
                                                                                  northern_bound)
     
-    if ds is None:
-        ds = _rtma(model='ak rtma',
+    if ds1 is None and ds2 is None:
+        ds1, ds2 = _rtma_comparison(model='ak rtma',
                    proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
@@ -4758,29 +5065,48 @@ def plot_temperature_and_gust(region='ak',
                    convert_to='fahrenheit',
                    chunk_size=chunk_size,
                    notifications=notifications,
-                   custom_directory=custom_data_directory)
+                   custom_directory=custom_data_directory,
+                   hours=hours)
     else:
-        ds = ds
+        ds1 = ds1
+        ds2 = ds2
         
     if convert_wind_speed == True:
         if convert_to == 'mph':
-            ds[wind_gust_var_key] = _calc.mps_to_mph(ds[wind_gust_var_key])
-            ds[u_var_key] = _calc.mps_to_mph(ds[u_var_key])
-            ds[v_var_key] = _calc.mps_to_mph(ds[v_var_key])
+            ds1[wind_gust_var_key] = _calc.mps_to_mph(ds1[wind_gust_var_key])
+            ds1[u_var_key] = _calc.mps_to_mph(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mps_to_mph(ds1[v_var_key])
+            ds2[wind_gust_var_key] = _calc.mps_to_mph(ds2[wind_gust_var_key])
+            ds2[u_var_key] = _calc.mps_to_mph(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mps_to_mph(ds2[v_var_key])
         else:
-            ds[wind_gust_var_key] = _calc.mph_to_kts(ds[wind_gust_var_key])
-            ds[u_var_key] = _calc.mph_to_kts(ds[u_var_key])
-            ds[v_var_key] = _calc.mph_to_kts(ds[v_var_key])
+            ds1[wind_gust_var_key] = _calc.mph_to_kts(ds2[wind_gust_var_key])
+            ds1[u_var_key] = _calc.mph_to_kts(ds2[u_var_key])
+            ds1[v_var_key] = _calc.mph_to_kts(ds2[v_var_key])
+            ds2[wind_gust_var_key] = _calc.mph_to_kts(ds2[wind_gust_var_key])
+            ds2[u_var_key] = _calc.mph_to_kts(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mph_to_kts(ds2[v_var_key])
             
     else:
         pass
     
-    lon_masked, lat_masked, vals_masked = _fix_grib_data(ds,
+    lon_masked_1, lat_masked_1, vals_masked_1 = _fix_grib_data(ds1,
                                                          temperature_var_key,
                                                          longitude_key,
                                                          latitude_key)
     
-    ds = _calc.u_v_components(ds,
+    _, _, vals_masked_2 = _fix_grib_data(ds2,
+                                        temperature_var_key,
+                                        longitude_key,
+                                        latitude_key)
+    
+    ds1 = _calc.u_v_components(ds1,
+                            u_var_key,
+                            v_var_key,
+                            wind_direction_var_key,
+                            wind_gust_var_key)
+    
+    ds2 = _calc.u_v_components(ds2,
                             u_var_key,
                             v_var_key,
                             wind_direction_var_key,
@@ -4791,10 +5117,15 @@ def plot_temperature_and_gust(region='ak',
     else:
         cmap = colormap
     
-    valid_time = _pd.to_datetime(ds[time_coord_key].to_pandas())
-    valid_time = valid_time.tz_localize('UTC')
-    time = valid_time.astimezone(_to_zone)
-    time_utc = time.astimezone(_from_zone)
+    valid_time1 = _pd.to_datetime(ds1[time_coord_key].to_pandas())
+    valid_time1 = valid_time1.tz_localize('UTC')
+    time1 = valid_time1.astimezone(_to_zone)
+    time1_utc = time1.astimezone(_from_zone)
+    
+    valid_time2 = _pd.to_datetime(ds2[time_coord_key].to_pandas())
+    valid_time2 = valid_time2.tz_localize('UTC')
+    time2 = valid_time2.astimezone(_to_zone)
+    time2_utc = time2.astimezone(_from_zone)
     
     fig = _plt.figure(figsize=(figure_x_length, figure_y_length))
     fig.set_facecolor(facecolor)
@@ -5022,9 +5353,9 @@ def plot_temperature_and_gust(region='ak',
                           linewidth=custom_geojson_local_linewidth, 
                           zorder=custom_geojson_local_zorder)
     
-    cs = ax.contourf(ds[longitude_key],
-                ds[latitude_key],
-                ds[temperature_var_key],
+    cs = ax.contourf(lon_masked_1,
+                lat_masked_1,
+                (vals_masked_1 - vals_masked_2),
                 cmap=cmap,
                 levels=levels,
                 transform=datacrs,
@@ -5046,13 +5377,17 @@ def plot_temperature_and_gust(region='ak',
                loc='left')
     
     if local_time is True:
-        _plt.title(f"Valid: {time.strftime('%m/%d/%Y %H:00')} {_timezone}", 
+        label1 = f"{time1.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        label2 = f"{time2.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1.strftime('%m/%d/%Y %H:00')} - {time2.strftime('%m/%d/%Y %H:00')} {_timezone}",
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
                 loc='right')
     else:
-        _plt.title(f"Valid: {time_utc.strftime('%m/%d/%Y %H:00')} UTC", 
+        label1 = f"{time1_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        label2 = f"{time2_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1_utc.strftime('%m/%d/%Y %H:00')} - {time2_utc.strftime('%m/%d/%Y %H:00')} UTC", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
@@ -5088,53 +5423,91 @@ def plot_temperature_and_gust(region='ak',
         
     
         
-    temp_vals = _fix_var_array(ds,
+    temp_vals_1 = _fix_var_array(ds1,
                     temperature_var_key,
                     0,
                     decimate)
     
-    u_vals = _fix_var_array(ds,
+    u_vals_1 = _fix_var_array(ds1,
                     u_var_key,
                     0,
                     decimate)
     
-    v_vals = _fix_var_array(ds,
+    v_vals_1 = _fix_var_array(ds1,
                     v_var_key,
                     0,
                     decimate)
     
-    wg_vals = _fix_var_array(ds,
+    wg_vals_1 = _fix_var_array(ds1,
+                    wind_gust_var_key,
+                    0,
+                    decimate)
+    
+    temp_vals_2 = _fix_var_array(ds2,
+                    temperature_var_key,
+                    0,
+                    decimate)
+    
+    u_vals_2 = _fix_var_array(ds2,
+                    u_var_key,
+                    0,
+                    decimate)
+    
+    v_vals_2 = _fix_var_array(ds2,
+                    v_var_key,
+                    0,
+                    decimate)
+    
+    wg_vals_2 = _fix_var_array(ds2,
                     wind_gust_var_key,
                     0,
                     decimate)
 
-    stn = _mpplots.StationPlot(ax, temp_vals['longitude'], temp_vals['latitude'],
+    stn1 = _mpplots.StationPlot(ax, temp_vals_1['longitude'], temp_vals_1['latitude'],
+                                transform=datacrs, 
+                                fontsize=pixel_query_value_fontsize, 
+                                zorder=pixel_query_value_zorder, 
+                                clip_on=True)
+    
+    stn2 = _mpplots.StationPlot(ax, temp_vals_2['longitude'], temp_vals_2['latitude'],
                                 transform=datacrs, 
                                 fontsize=pixel_query_value_fontsize, 
                                 zorder=pixel_query_value_zorder, 
                                 clip_on=True)
 
 
-    stn.plot_parameter(temp_value_loc.upper(), 
-                       temp_vals[temperature_var_key], 
+    stn1.plot_parameter(temp_value_loc.upper(), 
+                       (temp_vals_1[temperature_var_key] - temp_vals_2[temperature_var_key]), 
                        color=temperature_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
     
-    stn.plot_parameter(gust_value_loc.upper(), 
-                       wg_vals[wind_gust_var_key], 
+    stn1.plot_parameter(gust_value_loc.upper(), 
+                       (wg_vals_1[wind_gust_var_key] - wg_vals_2[wind_gust_var_key]), 
                        color= wind_speed_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
 
-    stn.plot_barb(u_vals[u_var_key], 
-                    v_vals[v_var_key],
-                    color=barb_color, 
-                    length=barb_length, 
-                    linewidth=barb_width,
-                    zorder=barb_zorder)
+    stn1.plot_barb(u_vals_1[u_var_key], 
+                    v_vals_1[v_var_key],
+                    color=current_barb_color, 
+                    length=current_barb_length, 
+                    linewidth=current_barb_width,
+                    zorder=current_barb_zorder,
+                    label=label1)
+    
+    stn2.plot_barb(u_vals_2[u_var_key], 
+                    v_vals_2[v_var_key],
+                    color=comparison_barb_color, 
+                    length=comparison_barb_length, 
+                    linewidth=comparison_barb_width,
+                    zorder=comparison_barb_zorder,
+                    label=label2)
+    
+    leg = ax.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+    leg.set_zorder(barb_legend_zorder)
 
     fig.savefig(f"{path}/{region.upper()}/{reference_system.upper()}/{filename}", bbox_inches='tight')
     _plt.close(fig)
@@ -5142,6 +5515,7 @@ def plot_temperature_and_gust(region='ak',
         print(f"{filename} saved to {path}/{region.upper()}")
         
 def plot_relative_humidity_and_wind(region='ak',
+                     hours=24,
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -5212,19 +5586,19 @@ def plot_relative_humidity_and_wind(region='ak',
                      lakes_zorder=1,
                      land_zorder=1,
                      decimate=50,
-                     start=0,
-                     stop=100,
+                     start=-50,
+                     stop=50,
                      step=1,
                      facecolor='aliceblue',
-                     primary_title_text='RTMA 2-METER RELATIVE HUMIDITY [%] & 10-METER WIND [MPH]',
+                     primary_title_text='RTMA COMPARISON 2-METER RELATIVE HUMIDITY [Δ%] & 10-METER WIND [ΔMPH]',
                      primary_title_textbox_color='wheat',
                      primary_title_textbox_style='round',
                      primary_title_textbox_alpha=1,
                      secondary_title_textbox_color='wheat',
                      secondary_title_textbox_style='round',
                      secondary_title_textbox_alpha=1,
-                     primary_title_fontsize=12,
-                     secondary_title_fontsize=10,
+                     primary_title_fontsize=8,
+                     secondary_title_fontsize=7,
                      local_time=True,
                      signature_textbox_color='wheat',
                      signature_textbox_style='round',
@@ -5261,7 +5635,8 @@ def plot_relative_humidity_and_wind(region='ak',
                              'forestgreen',
                              'mediumspringgreen',
                              'aqua'],
-                     ds=None,
+                     ds1=None,
+                     ds2=None,
                      western_bound=-125,
                      eastern_bound=-65,
                      southern_bound=20,
@@ -5272,8 +5647,8 @@ def plot_relative_humidity_and_wind(region='ak',
                      relative_humidity_pixel_query_value_fontcolor='darkred',
                      wind_speed_pixel_query_value_fontcolor='darkblue',
                      pixel_query_stroke_linewidth=1,
-                     path='FireWxPy Graphics/RTMA/Relative Humidity',
-                     filename='RTMA Relative Humidity and Wind.png',
+                     path='FireWxPy Graphics/RTMA Comparison/Relative Humidity',
+                     filename='RTMA Comparison Relative Humidity and Wind.png',
                      proxies=None,
                      clear_recycle_bin=False,
                      clear_data=True,
@@ -5291,12 +5666,20 @@ def plot_relative_humidity_and_wind(region='ak',
                      latitude_key='latitude',
                      convert_wind_speed=True,
                      convert_to='mph',
-                     barb_length=4,
-                     barb_width=0.5,
-                     barb_color='black',
-                     barb_zorder=7,
                      rh_value_loc='NW',
-                     speed_value_loc='NE'):
+                     speed_value_loc='NE',
+                     current_barb_length=4,
+                     current_barb_width=0.5,
+                     current_barb_color='gray',
+                     current_barb_zorder=7,
+                     comparison_barb_length=4,
+                     comparison_barb_width=0.5,
+                     comparison_barb_color='indigo',
+                     comparison_barb_zorder=7,
+                     barb_legend_fontsize=7,
+                     barb_legend_x_position=0.825,
+                     barb_legend_y_position=0,
+                     barb_legend_zorder=10):
     
     """
     This function plots the latest Real Time Mesoscale Analysis (RTMA) for relative humidity + wind.
@@ -5354,8 +5737,8 @@ def plot_relative_humidity_and_wind(region='ak',
                                                                                  southern_bound,
                                                                                  northern_bound)
     
-    if ds is None:
-        ds = _rtma(model='ak rtma',
+    if ds1 is None and ds2 is None:
+        ds1, ds2 = _rtma_comparison(model='ak rtma',
                    proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
@@ -5363,37 +5746,55 @@ def plot_relative_humidity_and_wind(region='ak',
                    convert_to='fahrenheit',
                    chunk_size=chunk_size,
                    notifications=notifications,
-                   custom_directory=custom_data_directory)
+                   custom_directory=custom_data_directory,
+                   hours=hours)
     else:
-        ds = ds
+        ds1 = ds1
+        ds2 = ds2
         
     if convert_wind_speed == True:
         if convert_to == 'mph':
-            ds[wind_speed_var_key] = _calc.mps_to_mph(ds[wind_speed_var_key])
-            ds[u_var_key] = _calc.mps_to_mph(ds[u_var_key])
-            ds[v_var_key] = _calc.mps_to_mph(ds[v_var_key])
+            ds1[wind_speed_var_key] = _calc.mps_to_mph(ds1[wind_speed_var_key])
+            ds1[u_var_key] = _calc.mps_to_mph(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mps_to_mph(ds1[v_var_key])
+            ds2[wind_speed_var_key] = _calc.mps_to_mph(ds2[wind_speed_var_key])
+            ds2[u_var_key] = _calc.mps_to_mph(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mps_to_mph(ds2[v_var_key])
         else:
-            ds[wind_speed_var_key] = _calc.mph_to_kts(ds[wind_speed_var_key])
-            ds[u_var_key] = _calc.mph_to_kts(ds[u_var_key])
-            ds[v_var_key] = _calc.mph_to_kts(ds[v_var_key])
+            ds1[wind_speed_var_key] = _calc.mph_to_kts(ds1[wind_speed_var_key])
+            ds1[u_var_key] = _calc.mph_to_kts(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mph_to_kts(ds1[v_var_key])
+            ds2[wind_speed_var_key] = _calc.mph_to_kts(ds2[wind_speed_var_key])
+            ds2[u_var_key] = _calc.mph_to_kts(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mph_to_kts(ds2[v_var_key])
             
     else:
         pass
     
-    lon_masked, lat_masked, vals_masked = _fix_grib_data(ds,
+    lon_masked_1, lat_masked_1, vals_masked_1 = _fix_grib_data(ds1,
                                                          relative_humidity_var_key,
                                                          longitude_key,
                                                          latitude_key)
+    
+    _, _, vals_masked_2 = _fix_grib_data(ds2,
+                                        relative_humidity_var_key,
+                                        longitude_key,
+                                        latitude_key)
         
     if colormap == 'custom':
         cmap = _mcolors.LinearSegmentedColormap.from_list("relative humidity", colors)
     else:
         cmap = colormap
     
-    valid_time = _pd.to_datetime(ds[time_coord_key].to_pandas())
-    valid_time = valid_time.tz_localize('UTC')
-    time = valid_time.astimezone(_to_zone)
-    time_utc = time.astimezone(_from_zone)
+    valid_time1 = _pd.to_datetime(ds1[time_coord_key].to_pandas())
+    valid_time1 = valid_time1.tz_localize('UTC')
+    time1 = valid_time1.astimezone(_to_zone)
+    time1_utc = time1.astimezone(_from_zone)
+    
+    valid_time2 = _pd.to_datetime(ds2[time_coord_key].to_pandas())
+    valid_time2 = valid_time2.tz_localize('UTC')
+    time2 = valid_time2.astimezone(_to_zone)
+    time2_utc = time2.astimezone(_from_zone)
     
     fig = _plt.figure(figsize=(figure_x_length, figure_y_length))
     fig.set_facecolor(facecolor)
@@ -5621,9 +6022,9 @@ def plot_relative_humidity_and_wind(region='ak',
                           linewidth=custom_geojson_local_linewidth, 
                           zorder=custom_geojson_local_zorder)
     
-    cs = ax.contourf(lon_masked,
-                lat_masked,
-                vals_masked,
+    cs = ax.contourf(lon_masked_1,
+                lat_masked_1,
+                (vals_masked_1 - vals_masked_2),
                 cmap=cmap,
                 levels=levels,
                 transform=datacrs,
@@ -5645,13 +6046,17 @@ def plot_relative_humidity_and_wind(region='ak',
                loc='left')
     
     if local_time is True:
-        _plt.title(f"Valid: {time.strftime('%m/%d/%Y %H:00')} {_timezone}", 
+        label1 = f"{time1.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        label2 = f"{time2.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1.strftime('%m/%d/%Y %H:00')} - {time2.strftime('%m/%d/%Y %H:00')} {_timezone}",
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
                 loc='right')
     else:
-        _plt.title(f"Valid: {time_utc.strftime('%m/%d/%Y %H:00')} UTC", 
+        label1 = f"{time1_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        label2 = f"{time2_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1_utc.strftime('%m/%d/%Y %H:00')} - {time2_utc.strftime('%m/%d/%Y %H:00')} UTC", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
@@ -5687,53 +6092,91 @@ def plot_relative_humidity_and_wind(region='ak',
         
     
         
-    rh_vals = _fix_var_array(ds,
+    rh_vals_1 = _fix_var_array(ds1,
                     relative_humidity_var_key,
                     0,
                     decimate)
     
-    u_vals = _fix_var_array(ds,
+    u_vals_1 = _fix_var_array(ds1,
                     u_var_key,
                     0,
                     decimate)
     
-    v_vals = _fix_var_array(ds,
+    v_vals_1 = _fix_var_array(ds1,
                     v_var_key,
                     0,
                     decimate)
     
-    ws_vals = _fix_var_array(ds,
+    ws_vals_1 = _fix_var_array(ds1,
+                    wind_speed_var_key,
+                    0,
+                    decimate)
+    
+    rh_vals_2 = _fix_var_array(ds2,
+                    relative_humidity_var_key,
+                    0,
+                    decimate)
+    
+    u_vals_2 = _fix_var_array(ds2,
+                    u_var_key,
+                    0,
+                    decimate)
+    
+    v_vals_2 = _fix_var_array(ds2,
+                    v_var_key,
+                    0,
+                    decimate)
+    
+    ws_vals_2 = _fix_var_array(ds2,
                     wind_speed_var_key,
                     0,
                     decimate)
 
-    stn = _mpplots.StationPlot(ax, rh_vals['longitude'], rh_vals['latitude'],
+    stn1 = _mpplots.StationPlot(ax, rh_vals_1['longitude'], rh_vals_1['latitude'],
+                                transform=datacrs, 
+                                fontsize=pixel_query_value_fontsize, 
+                                zorder=pixel_query_value_zorder, 
+                                clip_on=True)
+    
+    stn2 = _mpplots.StationPlot(ax, rh_vals_2['longitude'], rh_vals_2['latitude'],
                                 transform=datacrs, 
                                 fontsize=pixel_query_value_fontsize, 
                                 zorder=pixel_query_value_zorder, 
                                 clip_on=True)
 
 
-    stn.plot_parameter(rh_value_loc.upper(), 
-                       rh_vals[relative_humidity_var_key], 
+    stn1.plot_parameter(rh_value_loc.upper(), 
+                       (rh_vals_1[relative_humidity_var_key] - rh_vals_2[relative_humidity_var_key]), 
                        color=relative_humidity_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
     
-    stn.plot_parameter(speed_value_loc.upper(), 
-                       ws_vals[wind_speed_var_key], 
+    stn1.plot_parameter(speed_value_loc.upper(), 
+                       (ws_vals_1[wind_speed_var_key] - ws_vals_2[wind_speed_var_key]), 
                        color= wind_speed_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
 
-    stn.plot_barb(u_vals[u_var_key], 
-                    v_vals[v_var_key],
-                    color=barb_color, 
-                    length=barb_length, 
-                    linewidth=barb_width,
-                    zorder=barb_zorder)
+    stn1.plot_barb(u_vals_1[u_var_key], 
+                    v_vals_1[v_var_key],
+                    color=current_barb_color, 
+                    length=current_barb_length, 
+                    linewidth=current_barb_width,
+                    zorder=current_barb_zorder,
+                    label=label1)
+    
+    stn2.plot_barb(u_vals_2[u_var_key], 
+                    v_vals_2[v_var_key],
+                    color=comparison_barb_color, 
+                    length=comparison_barb_length, 
+                    linewidth=comparison_barb_width,
+                    zorder=comparison_barb_zorder,
+                    label=label2)
+    
+    leg = ax.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+    leg.set_zorder(barb_legend_zorder)
 
     fig.savefig(f"{path}/{region.upper()}/{reference_system.upper()}/{filename}", bbox_inches='tight')
     _plt.close(fig)
@@ -5742,6 +6185,7 @@ def plot_relative_humidity_and_wind(region='ak',
         
         
 def plot_relative_humidity_and_gust(region='ak',
+                     hours=24,
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -5812,19 +6256,19 @@ def plot_relative_humidity_and_gust(region='ak',
                      lakes_zorder=1,
                      land_zorder=1,
                      decimate=50,
-                     start=0,
-                     stop=100,
+                     start=-50,
+                     stop=50,
                      step=1,
                      facecolor='aliceblue',
-                     primary_title_text='RTMA 2-METER RELATIVE HUMIDITY [%] & 10-METER GUST [MPH]',
+                     primary_title_text='RTMA COMPARISON 2-METER RELATIVE HUMIDITY [Δ%] & 10-METER GUST [ΔMPH]',
                      primary_title_textbox_color='wheat',
                      primary_title_textbox_style='round',
                      primary_title_textbox_alpha=1,
                      secondary_title_textbox_color='wheat',
                      secondary_title_textbox_style='round',
                      secondary_title_textbox_alpha=1,
-                     primary_title_fontsize=12,
-                     secondary_title_fontsize=10,
+                     primary_title_fontsize=8,
+                     secondary_title_fontsize=7,
                      local_time=True,
                      signature_textbox_color='wheat',
                      signature_textbox_style='round',
@@ -5861,7 +6305,8 @@ def plot_relative_humidity_and_gust(region='ak',
                              'forestgreen',
                              'mediumspringgreen',
                              'aqua'],
-                     ds=None,
+                     ds1=None,
+                     ds2=None,
                      western_bound=-125,
                      eastern_bound=-65,
                      southern_bound=20,
@@ -5872,8 +6317,8 @@ def plot_relative_humidity_and_gust(region='ak',
                      relative_humidity_pixel_query_value_fontcolor='darkred',
                      wind_speed_pixel_query_value_fontcolor='darkblue',
                      pixel_query_stroke_linewidth=1,
-                     path='FireWxPy Graphics/RTMA/Relative Humidity',
-                     filename='RTMA Relative Humidity and Gust.png',
+                     path='FireWxPy Graphics/RTMA Comparison/Relative Humidity',
+                     filename='RTMA Comparison Relative Humidity and Gust.png',
                      proxies=None,
                      clear_recycle_bin=False,
                      clear_data=True,
@@ -5892,12 +6337,20 @@ def plot_relative_humidity_and_gust(region='ak',
                      latitude_key='latitude',
                      convert_wind_speed=True,
                      convert_to='mph',
-                     barb_length=4,
-                     barb_width=0.5,
-                     barb_color='black',
-                     barb_zorder=7,
                      rh_value_loc='NW',
-                     gust_value_loc='NE'):
+                     gust_value_loc='NE',
+                     current_barb_length=4,
+                     current_barb_width=0.5,
+                     current_barb_color='gray',
+                     current_barb_zorder=7,
+                     comparison_barb_length=4,
+                     comparison_barb_width=0.5,
+                     comparison_barb_color='indigo',
+                     comparison_barb_zorder=7,
+                     barb_legend_fontsize=7,
+                     barb_legend_x_position=0.825,
+                     barb_legend_y_position=0,
+                     barb_legend_zorder=10):
     
     """
     This function plots the latest Real Time Mesoscale Analysis (RTMA) for relative_humidity + gust.
@@ -5955,8 +6408,8 @@ def plot_relative_humidity_and_gust(region='ak',
                                                                                  southern_bound,
                                                                                  northern_bound)
     
-    if ds is None:
-        ds = _rtma(model='ak rtma',
+    if ds1 is None and ds2 is None:
+        ds1, ds2 = _rtma_comparison(model='ak rtma',
                    proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
@@ -5964,29 +6417,48 @@ def plot_relative_humidity_and_gust(region='ak',
                    convert_to='fahrenheit',
                    chunk_size=chunk_size,
                    notifications=notifications,
-                   custom_directory=custom_data_directory)
+                   custom_directory=custom_data_directory,
+                   hours=hours)
     else:
-        ds = ds
+        ds1 = ds1
+        ds2 = ds2
         
     if convert_wind_speed == True:
         if convert_to == 'mph':
-            ds[wind_gust_var_key] = _calc.mps_to_mph(ds[wind_gust_var_key])
-            ds[u_var_key] = _calc.mps_to_mph(ds[u_var_key])
-            ds[v_var_key] = _calc.mps_to_mph(ds[v_var_key])
+            ds1[wind_gust_var_key] = _calc.mps_to_mph(ds1[wind_gust_var_key])
+            ds1[u_var_key] = _calc.mps_to_mph(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mps_to_mph(ds1[v_var_key])
+            ds2[wind_gust_var_key] = _calc.mps_to_mph(ds2[wind_gust_var_key])
+            ds2[u_var_key] = _calc.mps_to_mph(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mps_to_mph(ds2[v_var_key])
         else:
-            ds[wind_gust_var_key] = _calc.mph_to_kts(ds[wind_gust_var_key])
-            ds[u_var_key] = _calc.mph_to_kts(ds[u_var_key])
-            ds[v_var_key] = _calc.mph_to_kts(ds[v_var_key])
+            ds1[wind_gust_var_key] = _calc.mph_to_kts(ds1[wind_gust_var_key])
+            ds1[u_var_key] = _calc.mph_to_kts(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mph_to_kts(ds1[v_var_key])
+            ds2[wind_gust_var_key] = _calc.mph_to_kts(ds2[wind_gust_var_key])
+            ds2[u_var_key] = _calc.mph_to_kts(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mph_to_kts(ds2[v_var_key])
             
     else:
         pass
     
-    lon_masked, lat_masked, vals_masked = _fix_grib_data(ds,
+    lon_masked_1, lat_masked_1, vals_masked_1 = _fix_grib_data(ds1,
                                                          relative_humidity_var_key,
                                                          longitude_key,
                                                          latitude_key)
     
-    ds = _calc.u_v_components(ds,
+    _, _, vals_masked_2 = _fix_grib_data(ds2,
+                                        relative_humidity_var_key,
+                                        longitude_key,
+                                        latitude_key)
+    
+    ds1 = _calc.u_v_components(ds1,
+                            u_var_key,
+                            v_var_key,
+                            wind_direction_var_key,
+                            wind_gust_var_key)
+    
+    ds2 = _calc.u_v_components(ds2,
                             u_var_key,
                             v_var_key,
                             wind_direction_var_key,
@@ -5997,10 +6469,15 @@ def plot_relative_humidity_and_gust(region='ak',
     else:
         cmap = colormap
     
-    valid_time = _pd.to_datetime(ds[time_coord_key].to_pandas())
-    valid_time = valid_time.tz_localize('UTC')
-    time = valid_time.astimezone(_to_zone)
-    time_utc = time.astimezone(_from_zone)
+    valid_time1 = _pd.to_datetime(ds1[time_coord_key].to_pandas())
+    valid_time1 = valid_time1.tz_localize('UTC')
+    time1 = valid_time1.astimezone(_to_zone)
+    time1_utc = time1.astimezone(_from_zone)
+    
+    valid_time2 = _pd.to_datetime(ds2[time_coord_key].to_pandas())
+    valid_time2 = valid_time2.tz_localize('UTC')
+    time2 = valid_time2.astimezone(_to_zone)
+    time2_utc = time2.astimezone(_from_zone)
     
     fig = _plt.figure(figsize=(figure_x_length, figure_y_length))
     fig.set_facecolor(facecolor)
@@ -6228,9 +6705,9 @@ def plot_relative_humidity_and_gust(region='ak',
                           linewidth=custom_geojson_local_linewidth, 
                           zorder=custom_geojson_local_zorder)
     
-    cs = ax.contourf(lon_masked,
-                lat_masked,
-                vals_masked,
+    cs = ax.contourf(lon_masked_1,
+                lat_masked_1,
+                (vals_masked_1 - vals_masked_2),
                 cmap=cmap,
                 levels=levels,
                 transform=datacrs,
@@ -6252,13 +6729,17 @@ def plot_relative_humidity_and_gust(region='ak',
                loc='left')
     
     if local_time is True:
-        _plt.title(f"Valid: {time.strftime('%m/%d/%Y %H:00')} {_timezone}", 
+        label1 = f"{time1.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        label2 = f"{time2.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1.strftime('%m/%d/%Y %H:00')} - {time2.strftime('%m/%d/%Y %H:00')} {_timezone}",
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
                 loc='right')
     else:
-        _plt.title(f"Valid: {time_utc.strftime('%m/%d/%Y %H:00')} UTC", 
+        label1 = f"{time1_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        label2 = f"{time2_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1_utc.strftime('%m/%d/%Y %H:00')} - {time2_utc.strftime('%m/%d/%Y %H:00')} UTC", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
@@ -6294,53 +6775,91 @@ def plot_relative_humidity_and_gust(region='ak',
         
     
         
-    rh_vals = _fix_var_array(ds,
+    rh_vals_1 = _fix_var_array(ds1,
                     relative_humidity_var_key,
                     0,
                     decimate)
     
-    u_vals = _fix_var_array(ds,
+    u_vals_1 = _fix_var_array(ds1,
                     u_var_key,
                     0,
                     decimate)
     
-    v_vals = _fix_var_array(ds,
+    v_vals_1 = _fix_var_array(ds1,
                     v_var_key,
                     0,
                     decimate)
     
-    wg_vals = _fix_var_array(ds,
+    wg_vals_1 = _fix_var_array(ds1,
+                    wind_gust_var_key,
+                    0,
+                    decimate)
+    
+    rh_vals_2 = _fix_var_array(ds2,
+                    relative_humidity_var_key,
+                    0,
+                    decimate)
+    
+    u_vals_2 = _fix_var_array(ds2,
+                    u_var_key,
+                    0,
+                    decimate)
+    
+    v_vals_2 = _fix_var_array(ds2,
+                    v_var_key,
+                    0,
+                    decimate)
+    
+    wg_vals_2 = _fix_var_array(ds2,
                     wind_gust_var_key,
                     0,
                     decimate)
 
-    stn = _mpplots.StationPlot(ax, rh_vals['longitude'], rh_vals['latitude'],
+    stn1 = _mpplots.StationPlot(ax, rh_vals_1['longitude'], rh_vals_1['latitude'],
+                                transform=datacrs, 
+                                fontsize=pixel_query_value_fontsize, 
+                                zorder=pixel_query_value_zorder, 
+                                clip_on=True)
+    
+    stn2 = _mpplots.StationPlot(ax, rh_vals_2['longitude'], rh_vals_2['latitude'],
                                 transform=datacrs, 
                                 fontsize=pixel_query_value_fontsize, 
                                 zorder=pixel_query_value_zorder, 
                                 clip_on=True)
 
 
-    stn.plot_parameter(rh_value_loc.upper(), 
-                       rh_vals[relative_humidity_var_key], 
+    stn1.plot_parameter(rh_value_loc.upper(), 
+                       (rh_vals_1[relative_humidity_var_key] - rh_vals_2[relative_humidity_var_key]), 
                        color=relative_humidity_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
     
-    stn.plot_parameter(gust_value_loc.upper(), 
-                       wg_vals[wind_gust_var_key], 
+    stn1.plot_parameter(gust_value_loc.upper(), 
+                       (wg_vals_1[wind_gust_var_key] - wg_vals_2[wind_gust_var_key]), 
                        color= wind_speed_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
 
-    stn.plot_barb(u_vals[u_var_key], 
-                    v_vals[v_var_key],
-                    color=barb_color, 
-                    length=barb_length, 
-                    linewidth=barb_width,
-                    zorder=barb_zorder)
+    stn1.plot_barb(u_vals_1[u_var_key], 
+                    v_vals_1[v_var_key],
+                    color=current_barb_color, 
+                    length=current_barb_length, 
+                    linewidth=current_barb_width,
+                    zorder=current_barb_zorder,
+                    label=label1)
+    
+    stn2.plot_barb(u_vals_2[u_var_key], 
+                    v_vals_2[v_var_key],
+                    color=comparison_barb_color, 
+                    length=comparison_barb_length, 
+                    linewidth=comparison_barb_width,
+                    zorder=comparison_barb_zorder,
+                    label=label2)
+    
+    leg = ax.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+    leg.set_zorder(barb_legend_zorder)
 
     fig.savefig(f"{path}/{region.upper()}/{reference_system.upper()}/{filename}", bbox_inches='tight')
     _plt.close(fig)
@@ -6348,6 +6867,7 @@ def plot_relative_humidity_and_gust(region='ak',
         print(f"{filename} saved to {path}/{region.upper()}")
         
 def plot_dew_point_depression_and_wind(region='ak',
+                     hours=24,
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -6418,19 +6938,19 @@ def plot_dew_point_depression_and_wind(region='ak',
                      lakes_zorder=1,
                      land_zorder=1,
                      decimate=50,
-                     start=0,
+                     start=-50,
                      stop=50,
                      step=1,
                      facecolor='aliceblue',
-                     primary_title_text='RTMA 2-METER DEW POINT DEPRESSION [°F] & 10-METER WIND [MPH]',
+                     primary_title_text='RTMA COMPARISON 2-METER DEW POINT DEPRESSION [Δ°F] & 10-METER WIND [ΔMPH]',
                      primary_title_textbox_color='wheat',
                      primary_title_textbox_style='round',
                      primary_title_textbox_alpha=1,
                      secondary_title_textbox_color='wheat',
                      secondary_title_textbox_style='round',
                      secondary_title_textbox_alpha=1,
-                     primary_title_fontsize=12,
-                     secondary_title_fontsize=10,
+                     primary_title_fontsize=8,
+                     secondary_title_fontsize=7,
                      local_time=True,
                      signature_textbox_color='wheat',
                      signature_textbox_style='round',
@@ -6467,7 +6987,8 @@ def plot_dew_point_depression_and_wind(region='ak',
                              'darkorange',
                              'peru',
                              'saddlebrown'],
-                     ds=None,
+                     ds1=None,
+                     ds2=None,
                      western_bound=-125,
                      eastern_bound=-65,
                      southern_bound=20,
@@ -6478,8 +6999,8 @@ def plot_dew_point_depression_and_wind(region='ak',
                      relative_humidity_pixel_query_value_fontcolor='darkred',
                      wind_speed_pixel_query_value_fontcolor='darkblue',
                      pixel_query_stroke_linewidth=1,
-                     path='FireWxPy Graphics/RTMA/Dew Point Depression',
-                     filename='RTMA Dew Point Depression and Wind.png',
+                     path='FireWxPy Graphics/RTMA Comparison/Dew Point Depression',
+                     filename='RTMA Comparison Dew Point Depression and Wind.png',
                      proxies=None,
                      clear_recycle_bin=False,
                      clear_data=True,
@@ -6497,12 +7018,20 @@ def plot_dew_point_depression_and_wind(region='ak',
                      latitude_key='latitude',
                      convert_wind_speed=True,
                      convert_to='mph',
-                     barb_length=4,
-                     barb_width=0.5,
-                     barb_color='black',
-                     barb_zorder=7,
                      dd_value_loc='NW',
-                     speed_value_loc='NE'):
+                     speed_value_loc='NE',
+                     current_barb_length=4,
+                     current_barb_width=0.5,
+                     current_barb_color='gray',
+                     current_barb_zorder=7,
+                     comparison_barb_length=4,
+                     comparison_barb_width=0.5,
+                     comparison_barb_color='indigo',
+                     comparison_barb_zorder=7,
+                     barb_legend_fontsize=7,
+                     barb_legend_x_position=0.825,
+                     barb_legend_y_position=0,
+                     barb_legend_zorder=10):
     
     """
     This function plots the latest Real Time Mesoscale Analysis (RTMA) for dew point depression + wind.
@@ -6560,8 +7089,8 @@ def plot_dew_point_depression_and_wind(region='ak',
                                                                                  southern_bound,
                                                                                  northern_bound)
     
-    if ds is None:
-        ds = _rtma(model='ak rtma',
+    if ds1 is None and ds2 is None:
+        ds1, ds2 = _rtma_comparison(model='ak rtma',
                    proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
@@ -6569,37 +7098,55 @@ def plot_dew_point_depression_and_wind(region='ak',
                    convert_to='fahrenheit',
                    chunk_size=chunk_size,
                    notifications=notifications,
-                   custom_directory=custom_data_directory)
+                   custom_directory=custom_data_directory,
+                   hours=hours)
     else:
-        ds = ds
+        ds1 = ds1
+        ds2 = ds2
         
     if convert_wind_speed == True:
         if convert_to == 'mph':
-            ds[wind_speed_var_key] = _calc.mps_to_mph(ds[wind_speed_var_key])
-            ds[u_var_key] = _calc.mps_to_mph(ds[u_var_key])
-            ds[v_var_key] = _calc.mps_to_mph(ds[v_var_key])
+            ds1[wind_speed_var_key] = _calc.mps_to_mph(ds1[wind_speed_var_key])
+            ds1[u_var_key] = _calc.mps_to_mph(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mps_to_mph(ds1[v_var_key])
+            ds2[wind_speed_var_key] = _calc.mps_to_mph(ds2[wind_speed_var_key])
+            ds2[u_var_key] = _calc.mps_to_mph(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mps_to_mph(ds2[v_var_key])
         else:
-            ds[wind_speed_var_key] = _calc.mph_to_kts(ds[wind_speed_var_key])
-            ds[u_var_key] = _calc.mph_to_kts(ds[u_var_key])
-            ds[v_var_key] = _calc.mph_to_kts(ds[v_var_key])
+            ds1[wind_speed_var_key] = _calc.mph_to_kts(ds1[wind_speed_var_key])
+            ds1[u_var_key] = _calc.mph_to_kts(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mph_to_kts(ds1[v_var_key])
+            ds2[wind_speed_var_key] = _calc.mph_to_kts(ds2[wind_speed_var_key])
+            ds2[u_var_key] = _calc.mph_to_kts(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mph_to_kts(ds2[v_var_key])
             
     else:
         pass
     
-    lon_masked, lat_masked, vals_masked = _fix_grib_data(ds,
+    lon_masked_1, lat_masked_1, vals_masked_1 = _fix_grib_data(ds1,
                                                          dew_point_depression_var_key,
                                                          longitude_key,
                                                          latitude_key)
+    
+    _, _, vals_masked_2 = _fix_grib_data(ds2,
+                                        dew_point_depression_var_key,
+                                        longitude_key,
+                                        latitude_key)
         
     if colormap == 'custom':
         cmap = _mcolors.LinearSegmentedColormap.from_list("dew point depression", colors)
     else:
         cmap = colormap
     
-    valid_time = _pd.to_datetime(ds[time_coord_key].to_pandas())
-    valid_time = valid_time.tz_localize('UTC')
-    time = valid_time.astimezone(_to_zone)
-    time_utc = time.astimezone(_from_zone)
+    valid_time1 = _pd.to_datetime(ds1[time_coord_key].to_pandas())
+    valid_time1 = valid_time1.tz_localize('UTC')
+    time1 = valid_time1.astimezone(_to_zone)
+    time1_utc = time1.astimezone(_from_zone)
+    
+    valid_time2 = _pd.to_datetime(ds2[time_coord_key].to_pandas())
+    valid_time2 = valid_time2.tz_localize('UTC')
+    time2 = valid_time2.astimezone(_to_zone)
+    time2_utc = time2.astimezone(_from_zone)
     
     fig = _plt.figure(figsize=(figure_x_length, figure_y_length))
     fig.set_facecolor(facecolor)
@@ -6827,9 +7374,9 @@ def plot_dew_point_depression_and_wind(region='ak',
                           linewidth=custom_geojson_local_linewidth, 
                           zorder=custom_geojson_local_zorder)
     
-    cs = ax.contourf(lon_masked,
-                lat_masked,
-                vals_masked,
+    cs = ax.contourf(lon_masked_1,
+                lat_masked_1,
+                (vals_masked_1 - vals_masked_2),
                 cmap=cmap,
                 levels=levels,
                 transform=datacrs,
@@ -6851,13 +7398,17 @@ def plot_dew_point_depression_and_wind(region='ak',
                loc='left')
     
     if local_time is True:
-        _plt.title(f"Valid: {time.strftime('%m/%d/%Y %H:00')} {_timezone}", 
+        label1 = f"{time1.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        label2 = f"{time2.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1.strftime('%m/%d/%Y %H:00')} - {time2.strftime('%m/%d/%Y %H:00')} {_timezone}",
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
                 loc='right')
     else:
-        _plt.title(f"Valid: {time_utc.strftime('%m/%d/%Y %H:00')} UTC", 
+        label1 = f"{time1_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        label2 = f"{time2_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1_utc.strftime('%m/%d/%Y %H:00')} - {time2_utc.strftime('%m/%d/%Y %H:00')} UTC", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
@@ -6893,53 +7444,91 @@ def plot_dew_point_depression_and_wind(region='ak',
         
     
         
-    dd_vals = _fix_var_array(ds,
+    dd_vals_1 = _fix_var_array(ds1,
                     dew_point_depression_var_key,
                     0,
                     decimate)
     
-    u_vals = _fix_var_array(ds,
+    u_vals_1 = _fix_var_array(ds1,
                     u_var_key,
                     0,
                     decimate)
     
-    v_vals = _fix_var_array(ds,
+    v_vals_1 = _fix_var_array(ds1,
                     v_var_key,
                     0,
                     decimate)
     
-    ws_vals = _fix_var_array(ds,
+    ws_vals_1 = _fix_var_array(ds1,
+                    wind_speed_var_key,
+                    0,
+                    decimate)
+    
+    dd_vals_2 = _fix_var_array(ds2,
+                    dew_point_depression_var_key,
+                    0,
+                    decimate)
+    
+    u_vals_2 = _fix_var_array(ds2,
+                    u_var_key,
+                    0,
+                    decimate)
+    
+    v_vals_2 = _fix_var_array(ds2,
+                    v_var_key,
+                    0,
+                    decimate)
+    
+    ws_vals_2 = _fix_var_array(ds2,
                     wind_speed_var_key,
                     0,
                     decimate)
 
-    stn = _mpplots.StationPlot(ax, dd_vals['longitude'], dd_vals['latitude'],
+    stn1 = _mpplots.StationPlot(ax, dd_vals_1['longitude'], dd_vals_1['latitude'],
+                                transform=datacrs, 
+                                fontsize=pixel_query_value_fontsize, 
+                                zorder=pixel_query_value_zorder, 
+                                clip_on=True)
+    
+    stn2 = _mpplots.StationPlot(ax, dd_vals_2['longitude'], dd_vals_2['latitude'],
                                 transform=datacrs, 
                                 fontsize=pixel_query_value_fontsize, 
                                 zorder=pixel_query_value_zorder, 
                                 clip_on=True)
 
 
-    stn.plot_parameter(dd_value_loc.upper(), 
-                       dd_vals[dew_point_depression_var_key], 
+    stn1.plot_parameter(dd_value_loc.upper(), 
+                       (dd_vals_1[dew_point_depression_var_key] - dd_vals_2[dew_point_depression_var_key]), 
                        color=relative_humidity_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
     
-    stn.plot_parameter(speed_value_loc.upper(), 
-                       ws_vals[wind_speed_var_key], 
+    stn1.plot_parameter(speed_value_loc.upper(), 
+                       (ws_vals_1[wind_speed_var_key] - ws_vals_2[wind_speed_var_key]), 
                        color= wind_speed_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
 
-    stn.plot_barb(u_vals[u_var_key], 
-                    v_vals[v_var_key],
-                    color=barb_color, 
-                    length=barb_length, 
-                    linewidth=barb_width,
-                    zorder=barb_zorder)
+    stn1.plot_barb(u_vals_1[u_var_key], 
+                    v_vals_1[v_var_key],
+                    color=current_barb_color, 
+                    length=current_barb_length, 
+                    linewidth=current_barb_width,
+                    zorder=current_barb_zorder,
+                    label=label1)
+    
+    stn2.plot_barb(u_vals_2[u_var_key], 
+                    v_vals_2[v_var_key],
+                    color=comparison_barb_color, 
+                    length=comparison_barb_length, 
+                    linewidth=comparison_barb_width,
+                    zorder=comparison_barb_zorder,
+                    label=label2)
+    
+    leg = ax.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+    leg.set_zorder(barb_legend_zorder)
 
     fig.savefig(f"{path}/{region.upper()}/{reference_system.upper()}/{filename}", bbox_inches='tight')
     _plt.close(fig)
@@ -6948,6 +7537,7 @@ def plot_dew_point_depression_and_wind(region='ak',
         
         
 def plot_dew_point_depression_and_gust(region='ak',
+                     hours=24,
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -7018,19 +7608,19 @@ def plot_dew_point_depression_and_gust(region='ak',
                      lakes_zorder=1,
                      land_zorder=1,
                      decimate=50,
-                     start=0,
+                     start=-50,
                      stop=50,
                      step=1,
                      facecolor='aliceblue',
-                     primary_title_text='RTMA 2-METER DEW POINT DEPRESSION [°F] & 10-METER GUST [MPH]',
+                     primary_title_text='RTMA COMPARISON 2-METER DEW POINT DEPRESSION [Δ°F] & 10-METER GUST [ΔMPH]',
                      primary_title_textbox_color='wheat',
                      primary_title_textbox_style='round',
                      primary_title_textbox_alpha=1,
                      secondary_title_textbox_color='wheat',
                      secondary_title_textbox_style='round',
                      secondary_title_textbox_alpha=1,
-                     primary_title_fontsize=12,
-                     secondary_title_fontsize=10,
+                     primary_title_fontsize=8,
+                     secondary_title_fontsize=7,
                      local_time=True,
                      signature_textbox_color='wheat',
                      signature_textbox_style='round',
@@ -7067,7 +7657,8 @@ def plot_dew_point_depression_and_gust(region='ak',
                             'forestgreen',
                             'mediumspringgreen',
                             'aqua'],
-                     ds=None,
+                     ds1=None,
+                     ds2=None,
                      western_bound=-125,
                      eastern_bound=-65,
                      southern_bound=20,
@@ -7078,8 +7669,8 @@ def plot_dew_point_depression_and_gust(region='ak',
                      relative_humidity_pixel_query_value_fontcolor='darkred',
                      wind_speed_pixel_query_value_fontcolor='darkblue',
                      pixel_query_stroke_linewidth=1,
-                     path='FireWxPy Graphics/RTMA/Dew Point Depression',
-                     filename='RTMA Dew Point Depression and Gust.png',
+                     path='FireWxPy Graphics/RTMA Comparison/Dew Point Depression',
+                     filename='RTMA Comparison Dew Point Depression and Gust.png',
                      proxies=None,
                      clear_recycle_bin=False,
                      clear_data=True,
@@ -7098,12 +7689,20 @@ def plot_dew_point_depression_and_gust(region='ak',
                      latitude_key='latitude',
                      convert_wind_speed=True,
                      convert_to='mph',
-                     barb_length=4,
-                     barb_width=0.5,
-                     barb_color='black',
-                     barb_zorder=7,
                      dd_value_loc='NW',
-                     gust_value_loc='NE'):
+                     gust_value_loc='NE',
+                     current_barb_length=4,
+                     current_barb_width=0.5,
+                     current_barb_color='gray',
+                     current_barb_zorder=7,
+                     comparison_barb_length=4,
+                     comparison_barb_width=0.5,
+                     comparison_barb_color='indigo',
+                     comparison_barb_zorder=7,
+                     barb_legend_fontsize=7,
+                     barb_legend_x_position=0.825,
+                     barb_legend_y_position=0,
+                     barb_legend_zorder=10):
     
     """
     This function plots the latest Real Time Mesoscale Analysis (RTMA) for dew point depression + gust.
@@ -7161,8 +7760,8 @@ def plot_dew_point_depression_and_gust(region='ak',
                                                                                  southern_bound,
                                                                                  northern_bound)
     
-    if ds is None:
-        ds = _rtma(model='ak rtma',
+    if ds1 is None and ds2 is None:
+        ds1, ds2 = _rtma_comparison(model='ak rtma',
                    proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
@@ -7170,29 +7769,48 @@ def plot_dew_point_depression_and_gust(region='ak',
                    convert_to='fahrenheit',
                    chunk_size=chunk_size,
                    notifications=notifications,
-                   custom_directory=custom_data_directory)
+                   custom_directory=custom_data_directory,
+                   hours=hours)
     else:
-        ds = ds
+        ds1 = ds1
+        ds2 = ds2
         
     if convert_wind_speed == True:
         if convert_to == 'mph':
-            ds[wind_gust_var_key] = _calc.mps_to_mph(ds[wind_gust_var_key])
-            ds[u_var_key] = _calc.mps_to_mph(ds[u_var_key])
-            ds[v_var_key] = _calc.mps_to_mph(ds[v_var_key])
+            ds1[wind_gust_var_key] = _calc.mps_to_mph(ds1[wind_gust_var_key])
+            ds1[u_var_key] = _calc.mps_to_mph(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mps_to_mph(ds1[v_var_key])
+            ds2[wind_gust_var_key] = _calc.mps_to_mph(ds2[wind_gust_var_key])
+            ds2[u_var_key] = _calc.mps_to_mph(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mps_to_mph(ds2[v_var_key])
         else:
-            ds[wind_gust_var_key] = _calc.mph_to_kts(ds[wind_gust_var_key])
-            ds[u_var_key] = _calc.mph_to_kts(ds[u_var_key])
-            ds[v_var_key] = _calc.mph_to_kts(ds[v_var_key])
+            ds1[wind_gust_var_key] = _calc.mph_to_kts(ds1[wind_gust_var_key])
+            ds1[u_var_key] = _calc.mph_to_kts(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mph_to_kts(ds1[v_var_key])
+            ds2[wind_gust_var_key] = _calc.mph_to_kts(ds2[wind_gust_var_key])
+            ds2[u_var_key] = _calc.mph_to_kts(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mph_to_kts(ds2[v_var_key])
             
     else:
         pass
     
-    lon_masked, lat_masked, vals_masked = _fix_grib_data(ds,
+    lon_masked_1, lat_masked_1, vals_masked_1 = _fix_grib_data(ds1,
                                                          dew_point_depression_var_key,
                                                          longitude_key,
                                                          latitude_key)
     
-    ds = _calc.u_v_components(ds,
+    _, _, vals_masked_2 = _fix_grib_data(ds2,
+                                        dew_point_depression_var_key,
+                                        longitude_key,
+                                        latitude_key)
+    
+    ds1 = _calc.u_v_components(ds1,
+                            u_var_key,
+                            v_var_key,
+                            wind_direction_var_key,
+                            wind_gust_var_key)
+    
+    ds2 = _calc.u_v_components(ds2,
                             u_var_key,
                             v_var_key,
                             wind_direction_var_key,
@@ -7203,10 +7821,15 @@ def plot_dew_point_depression_and_gust(region='ak',
     else:
         cmap = colormap
     
-    valid_time = _pd.to_datetime(ds[time_coord_key].to_pandas())
-    valid_time = valid_time.tz_localize('UTC')
-    time = valid_time.astimezone(_to_zone)
-    time_utc = time.astimezone(_from_zone)
+    valid_time1 = _pd.to_datetime(ds1[time_coord_key].to_pandas())
+    valid_time1 = valid_time1.tz_localize('UTC')
+    time1 = valid_time1.astimezone(_to_zone)
+    time1_utc = time1.astimezone(_from_zone)
+    
+    valid_time2 = _pd.to_datetime(ds2[time_coord_key].to_pandas())
+    valid_time2 = valid_time2.tz_localize('UTC')
+    time2 = valid_time2.astimezone(_to_zone)
+    time2_utc = time2.astimezone(_from_zone)
     
     fig = _plt.figure(figsize=(figure_x_length, figure_y_length))
     fig.set_facecolor(facecolor)
@@ -7434,9 +8057,9 @@ def plot_dew_point_depression_and_gust(region='ak',
                           linewidth=custom_geojson_local_linewidth, 
                           zorder=custom_geojson_local_zorder)
     
-    cs = ax.contourf(lon_masked,
-                lat_masked,
-                vals_masked,
+    cs = ax.contourf(lon_masked_1,
+                lat_masked_1,
+                (vals_masked_1 - vals_masked_2),
                 cmap=cmap,
                 levels=levels,
                 transform=datacrs,
@@ -7458,13 +8081,17 @@ def plot_dew_point_depression_and_gust(region='ak',
                loc='left')
     
     if local_time is True:
-        _plt.title(f"Valid: {time.strftime('%m/%d/%Y %H:00')} {_timezone}", 
+        label1 = f"{time1.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        label2 = f"{time2.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1.strftime('%m/%d/%Y %H:00')} - {time2.strftime('%m/%d/%Y %H:00')} {_timezone}",
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
                 loc='right')
     else:
-        _plt.title(f"Valid: {time_utc.strftime('%m/%d/%Y %H:00')} UTC", 
+        label1 = f"{time1_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        label2 = f"{time2_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1_utc.strftime('%m/%d/%Y %H:00')} - {time2_utc.strftime('%m/%d/%Y %H:00')} UTC", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
@@ -7500,53 +8127,91 @@ def plot_dew_point_depression_and_gust(region='ak',
         
     
         
-    dd_vals = _fix_var_array(ds,
+    dd_vals_1 = _fix_var_array(ds1,
                     dew_point_depression_var_key,
                     0,
                     decimate)
     
-    u_vals = _fix_var_array(ds,
+    u_vals_1 = _fix_var_array(ds1,
                     u_var_key,
                     0,
                     decimate)
     
-    v_vals = _fix_var_array(ds,
+    v_vals_1 = _fix_var_array(ds1,
                     v_var_key,
                     0,
                     decimate)
     
-    wg_vals = _fix_var_array(ds,
+    wg_vals_1 = _fix_var_array(ds1,
+                    wind_gust_var_key,
+                    0,
+                    decimate)
+    
+    dd_vals_2 = _fix_var_array(ds2,
+                    dew_point_depression_var_key,
+                    0,
+                    decimate)
+    
+    u_vals_2 = _fix_var_array(ds2,
+                    u_var_key,
+                    0,
+                    decimate)
+    
+    v_vals_2 = _fix_var_array(ds2,
+                    v_var_key,
+                    0,
+                    decimate)
+    
+    wg_vals_2 = _fix_var_array(ds2,
                     wind_gust_var_key,
                     0,
                     decimate)
 
-    stn = _mpplots.StationPlot(ax, dd_vals['longitude'], dd_vals['latitude'],
+    stn1 = _mpplots.StationPlot(ax, dd_vals_1['longitude'], dd_vals_1['latitude'],
+                                transform=datacrs, 
+                                fontsize=pixel_query_value_fontsize, 
+                                zorder=pixel_query_value_zorder, 
+                                clip_on=True)
+    
+    stn2 = _mpplots.StationPlot(ax, dd_vals_2['longitude'], dd_vals_2['latitude'],
                                 transform=datacrs, 
                                 fontsize=pixel_query_value_fontsize, 
                                 zorder=pixel_query_value_zorder, 
                                 clip_on=True)
 
 
-    stn.plot_parameter(dd_value_loc.upper(), 
-                       dd_vals[dew_point_depression_var_key], 
+    stn1.plot_parameter(dd_value_loc.upper(), 
+                       (dd_vals_1[dew_point_depression_var_key] - dd_vals_2[dew_point_depression_var_key]), 
                        color=relative_humidity_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
     
-    stn.plot_parameter(gust_value_loc.upper(), 
-                       wg_vals[wind_gust_var_key], 
+    stn1.plot_parameter(gust_value_loc.upper(), 
+                       (wg_vals_1[wind_gust_var_key] - wg_vals_2[wind_gust_var_key]), 
                        color= wind_speed_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
 
-    stn.plot_barb(u_vals[u_var_key], 
-                    v_vals[v_var_key],
-                    color=barb_color, 
-                    length=barb_length, 
-                    linewidth=barb_width,
-                    zorder=barb_zorder)
+    stn1.plot_barb(u_vals_1[u_var_key], 
+                    v_vals_1[v_var_key],
+                    color=current_barb_color, 
+                    length=current_barb_length, 
+                    linewidth=current_barb_width,
+                    zorder=current_barb_zorder,
+                    label=label1)
+    
+    stn2.plot_barb(u_vals_2[u_var_key], 
+                    v_vals_2[v_var_key],
+                    color=comparison_barb_color, 
+                    length=comparison_barb_length, 
+                    linewidth=comparison_barb_width,
+                    zorder=comparison_barb_zorder,
+                    label=label2)
+    
+    leg = ax.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+    leg.set_zorder(barb_legend_zorder)
 
     fig.savefig(f"{path}/{region.upper()}/{reference_system.upper()}/{filename}", bbox_inches='tight')
     _plt.close(fig)
@@ -7554,6 +8219,7 @@ def plot_dew_point_depression_and_gust(region='ak',
         print(f"{filename} saved to {path}/{region.upper()}")
         
 def plot_dew_point_and_wind(region='ak',
+                     hours=24,
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -7624,19 +8290,19 @@ def plot_dew_point_and_wind(region='ak',
                      lakes_zorder=1,
                      land_zorder=1,
                      decimate=50,
-                     start=10,
-                     stop=80,
+                     start=-25,
+                     stop=25,
                      step=1,
                      facecolor='aliceblue',
-                     primary_title_text='RTMA 2-METER DEW POINT[°F] & 10-METER WIND [MPH]',
+                     primary_title_text='RTMA COMPARISON 2-METER DEW POINT [Δ°F] & 10-METER WIND [ΔMPH]',
                      primary_title_textbox_color='wheat',
                      primary_title_textbox_style='round',
                      primary_title_textbox_alpha=1,
                      secondary_title_textbox_color='wheat',
                      secondary_title_textbox_style='round',
                      secondary_title_textbox_alpha=1,
-                     primary_title_fontsize=12,
-                     secondary_title_fontsize=10,
+                     primary_title_fontsize=8,
+                     secondary_title_fontsize=7,
                      local_time=True,
                      signature_textbox_color='wheat',
                      signature_textbox_style='round',
@@ -7673,7 +8339,8 @@ def plot_dew_point_and_wind(region='ak',
                              'forestgreen',
                              'mediumspringgreen',
                              'aqua'],
-                     ds=None,
+                     ds1=None,
+                     ds2=None,
                      western_bound=-125,
                      eastern_bound=-65,
                      southern_bound=20,
@@ -7684,8 +8351,8 @@ def plot_dew_point_and_wind(region='ak',
                      relative_humidity_pixel_query_value_fontcolor='darkred',
                      wind_speed_pixel_query_value_fontcolor='darkblue',
                      pixel_query_stroke_linewidth=1,
-                     path='FireWxPy Graphics/RTMA/Dew Point',
-                     filename='RTMA Dew Point and Wind.png',
+                     path='FireWxPy Graphics/RTMA Comparison/Dew Point',
+                     filename='RTMA Comparison Dew Point and Wind.png',
                      proxies=None,
                      clear_recycle_bin=False,
                      clear_data=True,
@@ -7703,12 +8370,20 @@ def plot_dew_point_and_wind(region='ak',
                      latitude_key='latitude',
                      convert_wind_speed=True,
                      convert_to='mph',
-                     barb_length=4,
-                     barb_width=0.5,
-                     barb_color='black',
-                     barb_zorder=7,
                      dwpt_value_loc='NW',
-                     speed_value_loc='NE'):
+                     speed_value_loc='NE',
+                     current_barb_length=4,
+                     current_barb_width=0.5,
+                     current_barb_color='gray',
+                     current_barb_zorder=7,
+                     comparison_barb_length=4,
+                     comparison_barb_width=0.5,
+                     comparison_barb_color='indigo',
+                     comparison_barb_zorder=7,
+                     barb_legend_fontsize=7,
+                     barb_legend_x_position=0.825,
+                     barb_legend_y_position=0,
+                     barb_legend_zorder=10):
     
     """
     This function plots the latest Real Time Mesoscale Analysis (RTMA) for dew point + wind.
@@ -7766,8 +8441,8 @@ def plot_dew_point_and_wind(region='ak',
                                                                                  southern_bound,
                                                                                  northern_bound)
     
-    if ds is None:
-        ds = _rtma(model='ak rtma',
+    if ds1 is None and ds2 is None:
+        ds1, ds2 = _rtma_comparison(model='ak rtma',
                    proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
@@ -7775,37 +8450,55 @@ def plot_dew_point_and_wind(region='ak',
                    convert_to='fahrenheit',
                    chunk_size=chunk_size,
                    notifications=notifications,
-                   custom_directory=custom_data_directory)
+                   custom_directory=custom_data_directory,
+                   hours=hours)
     else:
-        ds = ds
+        ds1 = ds1
+        ds2 = ds2
         
     if convert_wind_speed == True:
         if convert_to == 'mph':
-            ds[wind_speed_var_key] = _calc.mps_to_mph(ds[wind_speed_var_key])
-            ds[u_var_key] = _calc.mps_to_mph(ds[u_var_key])
-            ds[v_var_key] = _calc.mps_to_mph(ds[v_var_key])
+            ds1[wind_speed_var_key] = _calc.mps_to_mph(ds2[wind_speed_var_key])
+            ds1[u_var_key] = _calc.mps_to_mph(ds2[u_var_key])
+            ds1[v_var_key] = _calc.mps_to_mph(ds2[v_var_key])
+            ds2[wind_speed_var_key] = _calc.mps_to_mph(ds1[wind_speed_var_key])
+            ds2[u_var_key] = _calc.mps_to_mph(ds1[u_var_key])
+            ds2[v_var_key] = _calc.mps_to_mph(ds1[v_var_key])
         else:
-            ds[wind_speed_var_key] = _calc.mph_to_kts(ds[wind_speed_var_key])
-            ds[u_var_key] = _calc.mph_to_kts(ds[u_var_key])
-            ds[v_var_key] = _calc.mph_to_kts(ds[v_var_key])
+            ds1[wind_speed_var_key] = _calc.mph_to_kts(ds1[wind_speed_var_key])
+            ds1[u_var_key] = _calc.mph_to_kts(ds1[u_var_key])
+            ds1[v_var_key] = _calc.mph_to_kts(ds1[v_var_key])
+            ds2[wind_speed_var_key] = _calc.mph_to_kts(ds2[wind_speed_var_key])
+            ds2[u_var_key] = _calc.mph_to_kts(ds2[u_var_key])
+            ds2[v_var_key] = _calc.mph_to_kts(ds2[v_var_key])
             
     else:
         pass
     
-    lon_masked, lat_masked, vals_masked = _fix_grib_data(ds,
+    lon_masked_1, lat_masked_1, vals_masked_1 = _fix_grib_data(ds1,
                                                          dew_point_var_key,
                                                          longitude_key,
                                                          latitude_key)
+    
+    _, _, vals_masked_2 = _fix_grib_data(ds2,
+                                        dew_point_var_key,
+                                        longitude_key,
+                                        latitude_key)
         
     if colormap == 'custom':
         cmap = _mcolors.LinearSegmentedColormap.from_list("dew point", colors)
     else:
         cmap = colormap
     
-    valid_time = _pd.to_datetime(ds[time_coord_key].to_pandas())
-    valid_time = valid_time.tz_localize('UTC')
-    time = valid_time.astimezone(_to_zone)
-    time_utc = time.astimezone(_from_zone)
+    valid_time1 = _pd.to_datetime(ds1[time_coord_key].to_pandas())
+    valid_time1 = valid_time1.tz_localize('UTC')
+    time1 = valid_time1.astimezone(_to_zone)
+    time1_utc = time1.astimezone(_from_zone)
+    
+    valid_time2 = _pd.to_datetime(ds2[time_coord_key].to_pandas())
+    valid_time2 = valid_time2.tz_localize('UTC')
+    time2 = valid_time2.astimezone(_to_zone)
+    time2_utc = time2.astimezone(_from_zone)
     
     fig = _plt.figure(figsize=(figure_x_length, figure_y_length))
     fig.set_facecolor(facecolor)
@@ -8033,9 +8726,9 @@ def plot_dew_point_and_wind(region='ak',
                           linewidth=custom_geojson_local_linewidth, 
                           zorder=custom_geojson_local_zorder)
     
-    cs = ax.contourf(lon_masked,
-                lat_masked,
-                vals_masked,
+    cs = ax.contourf(lon_masked_1,
+                lat_masked_1,
+                (vals_masked_1 - vals_masked_2),
                 cmap=cmap,
                 levels=levels,
                 transform=datacrs,
@@ -8057,13 +8750,17 @@ def plot_dew_point_and_wind(region='ak',
                loc='left')
     
     if local_time is True:
-        _plt.title(f"Valid: {time.strftime('%m/%d/%Y %H:00')} {_timezone}", 
+        label1 = f"{time1.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        label2 = f"{time2.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1.strftime('%m/%d/%Y %H:00')} - {time2.strftime('%m/%d/%Y %H:00')} {_timezone}",
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
                 loc='right')
     else:
-        _plt.title(f"Valid: {time_utc.strftime('%m/%d/%Y %H:00')} UTC", 
+        label1 = f"{time1_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        label2 = f"{time2_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1_utc.strftime('%m/%d/%Y %H:00')} - {time2_utc.strftime('%m/%d/%Y %H:00')} UTC", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
@@ -8099,53 +8796,91 @@ def plot_dew_point_and_wind(region='ak',
         
     
         
-    dwpt_vals = _fix_var_array(ds,
+    dwpt_vals_1 = _fix_var_array(ds1,
                     dew_point_var_key,
                     0,
                     decimate)
     
-    u_vals = _fix_var_array(ds,
+    u_vals_1 = _fix_var_array(ds1,
                     u_var_key,
                     0,
                     decimate)
     
-    v_vals = _fix_var_array(ds,
+    v_vals_1 = _fix_var_array(ds1,
                     v_var_key,
                     0,
                     decimate)
     
-    ws_vals = _fix_var_array(ds,
+    ws_vals_1 = _fix_var_array(ds1,
+                    wind_speed_var_key,
+                    0,
+                    decimate)
+    
+    dwpt_vals_2 = _fix_var_array(ds2,
+                    dew_point_var_key,
+                    0,
+                    decimate)
+    
+    u_vals_2 = _fix_var_array(ds2,
+                    u_var_key,
+                    0,
+                    decimate)
+    
+    v_vals_2 = _fix_var_array(ds2,
+                    v_var_key,
+                    0,
+                    decimate)
+    
+    ws_vals_2 = _fix_var_array(ds2,
                     wind_speed_var_key,
                     0,
                     decimate)
 
-    stn = _mpplots.StationPlot(ax, dwpt_vals['longitude'], dwpt_vals['latitude'],
+    stn1 = _mpplots.StationPlot(ax, dwpt_vals_1['longitude'], dwpt_vals_1['latitude'],
+                                transform=datacrs, 
+                                fontsize=pixel_query_value_fontsize, 
+                                zorder=pixel_query_value_zorder, 
+                                clip_on=True)
+    
+    stn2 = _mpplots.StationPlot(ax, dwpt_vals_2['longitude'], dwpt_vals_2['latitude'],
                                 transform=datacrs, 
                                 fontsize=pixel_query_value_fontsize, 
                                 zorder=pixel_query_value_zorder, 
                                 clip_on=True)
 
 
-    stn.plot_parameter(dwpt_value_loc.upper(), 
-                       dwpt_vals[dew_point_var_key], 
+    stn1.plot_parameter(dwpt_value_loc.upper(), 
+                       (dwpt_vals_1[dew_point_var_key] - dwpt_vals_2[dew_point_var_key]), 
                        color=relative_humidity_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
     
-    stn.plot_parameter(speed_value_loc.upper(), 
-                       ws_vals[wind_speed_var_key], 
+    stn1.plot_parameter(speed_value_loc.upper(), 
+                       (ws_vals_1[wind_speed_var_key] - ws_vals_2[wind_speed_var_key]), 
                        color= wind_speed_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
 
-    stn.plot_barb(u_vals[u_var_key], 
-                    v_vals[v_var_key],
-                    color=barb_color, 
-                    length=barb_length, 
-                    linewidth=barb_width,
-                    zorder=barb_zorder)
+    stn1.plot_barb(u_vals_1[u_var_key], 
+                    v_vals_1[v_var_key],
+                    color=current_barb_color, 
+                    length=current_barb_length, 
+                    linewidth=current_barb_width,
+                    zorder=current_barb_zorder,
+                    label=label1)
+    
+    stn2.plot_barb(u_vals_2[u_var_key], 
+                    v_vals_2[v_var_key],
+                    color=comparison_barb_color, 
+                    length=comparison_barb_length, 
+                    linewidth=comparison_barb_width,
+                    zorder=comparison_barb_zorder,
+                    label=label2)
+    
+    leg = ax.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+    leg.set_zorder(barb_legend_zorder)
 
     fig.savefig(f"{path}/{region.upper()}/{reference_system.upper()}/{filename}", bbox_inches='tight')
     _plt.close(fig)
@@ -8154,6 +8889,7 @@ def plot_dew_point_and_wind(region='ak',
         
         
 def plot_dew_point_and_gust(region='ak',
+                     hours=24,
                      show_states=True,
                      state_border_color='black',
                      state_border_linewidth=0.5,
@@ -8224,19 +8960,19 @@ def plot_dew_point_and_gust(region='ak',
                      lakes_zorder=1,
                      land_zorder=1,
                      decimate=50,
-                     start=10,
-                     stop=80,
+                     start=-25,
+                     stop=25,
                      step=1,
                      facecolor='aliceblue',
-                     primary_title_text='RTMA 2-METER DEW POINT [°F] & 10-METER GUST [MPH]',
+                     primary_title_text='RTMA COMPARISON 2-METER DEW POINT [Δ°F] & 10-METER GUST [ΔMPH]',
                      primary_title_textbox_color='wheat',
                      primary_title_textbox_style='round',
                      primary_title_textbox_alpha=1,
                      secondary_title_textbox_color='wheat',
                      secondary_title_textbox_style='round',
                      secondary_title_textbox_alpha=1,
-                     primary_title_fontsize=12,
-                     secondary_title_fontsize=10,
+                     primary_title_fontsize=8,
+                     secondary_title_fontsize=7,
                      local_time=True,
                      signature_textbox_color='wheat',
                      signature_textbox_style='round',
@@ -8273,7 +9009,8 @@ def plot_dew_point_and_gust(region='ak',
                             'forestgreen',
                             'mediumspringgreen',
                             'aqua'],
-                     ds=None,
+                     ds1=None,
+                     ds2=None,
                      western_bound=-125,
                      eastern_bound=-65,
                      southern_bound=20,
@@ -8284,8 +9021,8 @@ def plot_dew_point_and_gust(region='ak',
                      relative_humidity_pixel_query_value_fontcolor='darkred',
                      wind_speed_pixel_query_value_fontcolor='darkblue',
                      pixel_query_stroke_linewidth=1,
-                     path='FireWxPy Graphics/RTMA/Dew Point',
-                     filename='RTMA Dew Point and Gust.png',
+                     path='FireWxPy Graphics/RTMA Comparison/Dew Point',
+                     filename='RTMA Comparison Dew Point and Gust.png',
                      proxies=None,
                      clear_recycle_bin=False,
                      clear_data=True,
@@ -8304,12 +9041,20 @@ def plot_dew_point_and_gust(region='ak',
                      latitude_key='latitude',
                      convert_wind_speed=True,
                      convert_to='mph',
-                     barb_length=4,
-                     barb_width=0.5,
-                     barb_color='black',
-                     barb_zorder=7,
                      dwpt_value_loc='NW',
-                     gust_value_loc='NE'):
+                     gust_value_loc='NE',
+                     current_barb_length=4,
+                     current_barb_width=0.5,
+                     current_barb_color='gray',
+                     current_barb_zorder=7,
+                     comparison_barb_length=4,
+                     comparison_barb_width=0.5,
+                     comparison_barb_color='indigo',
+                     comparison_barb_zorder=7,
+                     barb_legend_fontsize=7,
+                     barb_legend_x_position=0.825,
+                     barb_legend_y_position=0,
+                     barb_legend_zorder=10):
     
     """
     This function plots the latest Real Time Mesoscale Analysis (RTMA) for dew point + gust.
@@ -8368,7 +9113,7 @@ def plot_dew_point_and_gust(region='ak',
                                                                                  northern_bound)
     
     if ds is None:
-        ds = _rtma(model='ak rtma',
+        ds = _rtma_comparison(model='ak rtma',
                    proxies=proxies,
                    clear_recycle_bin=clear_recycle_bin,
                    clear_data=clear_data,
@@ -8409,10 +9154,15 @@ def plot_dew_point_and_gust(region='ak',
     else:
         cmap = colormap
     
-    valid_time = _pd.to_datetime(ds[time_coord_key].to_pandas())
-    valid_time = valid_time.tz_localize('UTC')
-    time = valid_time.astimezone(_to_zone)
-    time_utc = time.astimezone(_from_zone)
+    valid_time1 = _pd.to_datetime(ds1[time_coord_key].to_pandas())
+    valid_time1 = valid_time1.tz_localize('UTC')
+    time1 = valid_time1.astimezone(_to_zone)
+    time1_utc = time1.astimezone(_from_zone)
+    
+    valid_time2 = _pd.to_datetime(ds2[time_coord_key].to_pandas())
+    valid_time2 = valid_time2.tz_localize('UTC')
+    time2 = valid_time2.astimezone(_to_zone)
+    time2_utc = time2.astimezone(_from_zone)
     
     fig = _plt.figure(figsize=(figure_x_length, figure_y_length))
     fig.set_facecolor(facecolor)
@@ -8664,13 +9414,17 @@ def plot_dew_point_and_gust(region='ak',
                loc='left')
     
     if local_time is True:
-        _plt.title(f"Valid: {time.strftime('%m/%d/%Y %H:00')} {_timezone}", 
+        label1 = f"{time1.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        label2 = f"{time2.strftime('%m/%d/%Y %H:00')} {_timezone}"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1.strftime('%m/%d/%Y %H:00')} - {time2.strftime('%m/%d/%Y %H:00')} {_timezone}",
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
                 loc='right')
     else:
-        _plt.title(f"Valid: {time_utc.strftime('%m/%d/%Y %H:00')} UTC", 
+        label1 = f"{time1_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        label2 = f"{time2_utc.strftime('%m/%d/%Y %H:00')} UTC"
+        _plt.title(f"Valid [Current Time - Comparison Time]\n{time1_utc.strftime('%m/%d/%Y %H:00')} - {time2_utc.strftime('%m/%d/%Y %H:00')} UTC", 
                 fontsize=secondary_title_fontsize, 
                 fontweight='bold',
                 bbox=secondary_title_box,
@@ -8704,55 +9458,91 @@ def plot_dew_point_and_gust(region='ak',
             transform=ax.transAxes,
             zorder=reference_system_textbox_zorder)
         
-    
-        
-    dwpt_vals = _fix_var_array(ds,
+    dwpt_vals_1 = _fix_var_array(ds1,
                     dew_point_var_key,
                     0,
                     decimate)
     
-    u_vals = _fix_var_array(ds,
+    u_vals_1 = _fix_var_array(ds1,
                     u_var_key,
                     0,
                     decimate)
     
-    v_vals = _fix_var_array(ds,
+    v_vals_1 = _fix_var_array(ds1,
                     v_var_key,
                     0,
                     decimate)
     
-    wg_vals = _fix_var_array(ds,
+    wg_vals_1 = _fix_var_array(ds1,
+                    wind_gust_var_key,
+                    0,
+                    decimate)
+    
+    dwpt_vals_2 = _fix_var_array(ds2,
+                    dew_point_var_key,
+                    0,
+                    decimate)
+    
+    u_vals_2 = _fix_var_array(ds2,
+                    u_var_key,
+                    0,
+                    decimate)
+    
+    v_vals_2 = _fix_var_array(ds2,
+                    v_var_key,
+                    0,
+                    decimate)
+    
+    wg_vals_2 = _fix_var_array(ds2,
                     wind_gust_var_key,
                     0,
                     decimate)
 
-    stn = _mpplots.StationPlot(ax, dwpt_vals['longitude'], dwpt_vals['latitude'],
+    stn1 = _mpplots.StationPlot(ax, dwpt_vals_1['longitude'], dwpt_vals_1['latitude'],
+                                transform=datacrs, 
+                                fontsize=pixel_query_value_fontsize, 
+                                zorder=pixel_query_value_zorder, 
+                                clip_on=True)
+    
+    stn2 = _mpplots.StationPlot(ax, dwpt_vals_2['longitude'], dwpt_vals_2['latitude'],
                                 transform=datacrs, 
                                 fontsize=pixel_query_value_fontsize, 
                                 zorder=pixel_query_value_zorder, 
                                 clip_on=True)
 
 
-    stn.plot_parameter(dwpt_value_loc.upper(), 
-                       dwpt_vals[dew_point_var_key], 
+    stn1.plot_parameter(dwpt_value_loc.upper(), 
+                       (dwpt_vals_1[dew_point_var_key] - dwpt_vals_2[dew_point_var_key]), 
                        color=relative_humidity_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
     
-    stn.plot_parameter(gust_value_loc.upper(), 
-                       wg_vals[wind_gust_var_key], 
+    stn1.plot_parameter(gust_value_loc.upper(), 
+                       (wg_vals_1[wind_gust_var_key] - wg_vals_2[wind_gust_var_key]), 
                        color= wind_speed_pixel_query_value_fontcolor, 
                        path_effects=[_withStroke(linewidth=pixel_query_stroke_linewidth, 
                                                  foreground=pixel_query_value_foreground)], 
                        zorder=pixel_query_value_zorder)
 
-    stn.plot_barb(u_vals[u_var_key], 
-                    v_vals[v_var_key],
-                    color=barb_color, 
-                    length=barb_length, 
-                    linewidth=barb_width,
-                    zorder=barb_zorder)
+    stn1.plot_barb(u_vals_1[u_var_key], 
+                    v_vals_1[v_var_key],
+                    color=current_barb_color, 
+                    length=current_barb_length, 
+                    linewidth=current_barb_width,
+                    zorder=current_barb_zorder,
+                    label=label1)
+    
+    stn2.plot_barb(u_vals_2[u_var_key], 
+                    v_vals_2[v_var_key],
+                    color=comparison_barb_color, 
+                    length=comparison_barb_length, 
+                    linewidth=comparison_barb_width,
+                    zorder=comparison_barb_zorder,
+                    label=label2)
+    
+    leg = ax.legend(loc=(barb_legend_x_position, barb_legend_y_position), prop={'size': barb_legend_fontsize})
+    leg.set_zorder(barb_legend_zorder)
 
     fig.savefig(f"{path}/{region.upper()}/{reference_system.upper()}/{filename}", bbox_inches='tight')
     _plt.close(fig)
