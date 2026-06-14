@@ -17,8 +17,16 @@ These functions plot the Real Time Mesoscale Analysis Comparison for Alaska.
 Arguments and Settings
 ----------------------
 
-- region (String) - Default='ak'. The region of the plot. Use the 2-letter state abbreviation or 4-letter GACC abbreviation.
+- region (String) - Default='ak'. The region of the plot. Use the 2-letter state abbreviation or 3-letter NWS CWA abbreviation.
         If the user wants a completely custom region where they define their own lat/lon bounds, set region='custom'. 
+        
+        NWS Abbreviations
+        -----------------
+        
+        'aer' - NWS Anchorage East Domain
+        'alu' - NWS Anchorage West Domain
+        'ajk' - NWS Juneau
+        'afg' - NWS Fairbanks
     
 - hours (Integer) - Default=24. The amount of hours between the current and comparison. Defaults to a 24 hour
         comparison. 
