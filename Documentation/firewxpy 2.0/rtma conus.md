@@ -9,20 +9,20 @@ These functions plot the Real Time Mesoscale Analysis for CONUS.
 Functions
 ---------
 
-1) [`plot_temperature`]()
-2) [`plot_dew_point`]()
-3) [`plot_dew_point_depression`]()
-4) [`plot_relative_humidity`]()
-5) [`plot_wind_speed`]()
-6) [`plot_wind_gust`]()
-7) [`plot_temperature_and_wind`]()
-8) [`plot_temperature_and_gust`]()
-9) [`plot_relative_humidity_and_wind`]()
-10) [`plot_relative_humidity_and_gust`]()
-11) [`plot_dew_point_depression_and_wind`]()
-12) [`plot_dew_point_depression_and_gust`]()
-13) [`plot_dew_point_and_wind`]()
-14) [`plot_dew_point_and_gust`]()
+1) [`plot_temperature`](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/rtma%20conus.md#plot_temperature)
+2) [`plot_dew_point`](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/rtma%20conus.md#plot_dew_point)
+3) [`plot_dew_point_depression`](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/rtma%20conus.md#plot_dew_point_depression)
+4) [`plot_relative_humidity`](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/rtma%20conus.md#plot_relative_humidity)
+5) [`plot_wind_speed`](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/rtma%20conus.md#plot_wind_speed)
+6) [`plot_wind_gust`](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/rtma%20conus.md#plot_wind_gust)
+7) [`plot_temperature_and_wind`](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/rtma%20conus.md#plot_temperature_and_wind)
+8) [`plot_temperature_and_gust`](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/rtma%20conus.md#plot_temperature_and_gust)
+9) [`plot_relative_humidity_and_wind`](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/rtma%20conus.md#plot_relative_humidity_and_wind)
+10) [`plot_relative_humidity_and_gust`](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/rtma%20conus.md#plot_relative_humidity_and_gust)
+11) [`plot_dew_point_depression_and_wind`](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/rtma%20conus.md#plot_dew_point_depression_and_wind)
+12) [`plot_dew_point_depression_and_gust`](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/rtma%20conus.md#plot_dew_point_depression_and_gust)
+13) [`plot_dew_point_and_wind`](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/rtma%20conus.md#plot_dew_point_and_wind)
+14) [`plot_dew_point_and_gust`](https://github.com/edrewitz/firewxpy/blob/main/Documentation/firewxpy%202.0/rtma%20conus.md#plot_dew_point_and_gust)
 
 Arguments and Settings
 ----------------------
