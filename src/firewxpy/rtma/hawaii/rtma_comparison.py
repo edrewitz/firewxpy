@@ -672,7 +672,7 @@ def plot_temperature(region='hi',
             downloading and processing inside of the function. 
             
         3) Important default settings to note:
-            i) Alaska region.
+            i) Hawaii region.
             ii) 'Custom' Colormap from Matplotlib.
             iii) States & Counties cartographic reference system.
             iv) 12x12 figure size.
@@ -1255,7 +1255,7 @@ def plot_dew_point(region='hi',
             downloading and processing inside of the function. 
             
         3) Important default settings to note:
-            i) Alaska region.
+            i) Hawaii region.
             ii) 'terrain_r' Colormap from Matplotlib.
             iii) States & Counties cartographic reference system.
             iv) 12x12 figure size.
@@ -1834,7 +1834,7 @@ def plot_dew_point_depression(region='hi',
             downloading and processing inside of the function. 
             
         3) Important default settings to note:
-            i) Alaska region.
+            i) Hawaii region.
             ii) 'terrain' Colormap from Matplotlib.
             iii) States & Counties cartographic reference system.
             iv) 12x12 figure size.
@@ -2441,7 +2441,7 @@ def plot_relative_humidity(region='hi',
             downloading and processing inside of the function. 
             
         3) Important default settings to note:
-            i) Alaska region.
+            i) Hawaii region.
             ii) 'terrain_r' Colormap from Matplotlib.
             iii) States & Counties cartographic reference system.
             iv) 12x12 figure size.
@@ -3008,7 +3008,7 @@ def plot_wind_speed(region='hi',
             downloading and processing inside of the function. 
             
         3) Important default settings to note:
-            i) Alaska region.
+            i) Hawaii region.
             ii) 'Custom' Colormap from Matplotlib.
             iii) States & Counties cartographic reference system.
             iv) 12x12 figure size.
@@ -3654,7 +3654,7 @@ def plot_wind_gust(region='hi',
             downloading and processing inside of the function. 
             
         3) Important default settings to note:
-            i) Alaska region.
+            i) Hawaii region.
             ii) 'custom' Colormap from Matplotlib.
             iii) States & Counties cartographic reference system.
             iv) 12x12 figure size.
@@ -4303,7 +4303,7 @@ def plot_temperature_and_wind(region='hi',
             downloading and processing inside of the function. 
             
         3) Important default settings to note:
-            i) Alaska region.
+            i) Hawaii region.
             ii) 'custom' Colormap from Matplotlib.
             iii) States & Counties cartographic reference system.
             iv) 12x12 figure size.
@@ -4977,7 +4977,7 @@ def plot_temperature_and_gust(region='hi',
             downloading and processing inside of the function. 
             
         3) Important default settings to note:
-            i) Alaska region.
+            i) Hawaii region.
             ii) 'custom' Colormap from Matplotlib.
             iii) States & Counties cartographic reference system.
             iv) 12x12 figure size.
@@ -5652,7 +5652,7 @@ def plot_relative_humidity_and_wind(region='hi',
             downloading and processing inside of the function. 
             
         3) Important default settings to note:
-            i) Alaska region.
+            i) Hawaii region.
             ii) 'terrain_r' Colormap from Matplotlib.
             iii) States & Counties cartographic reference system.
             iv) 12x12 figure size.
@@ -6303,7 +6303,7 @@ def plot_relative_humidity_and_gust(region='hi',
             downloading and processing inside of the function. 
             
         3) Important default settings to note:
-            i) Alaska region.
+            i) Hawaii region.
             ii) 'terrain_r' Colormap from Matplotlib.
             iii) States & Counties cartographic reference system.
             iv) 12x12 figure size.
@@ -6961,7 +6961,7 @@ def plot_dew_point_depression_and_wind(region='hi',
             downloading and processing inside of the function. 
             
         3) Important default settings to note:
-            i) Alaska region.
+            i) Hawaii region.
             ii) 'terrain' Colormap from Matplotlib.
             iii) States & Counties cartographic reference system.
             iv) 12x12 figure size.
@@ -7669,7 +7669,7 @@ def plot_dew_point_depression_and_gust(region='hi',
             downloading and processing inside of the function. 
             
         3) Important default settings to note:
-            i) Alaska region.
+            i) Hawaii region.
             ii) 'terrain' Colormap from Matplotlib.
             iii) States & Counties cartographic reference system.
             iv) 12x12 figure size.
@@ -8374,7 +8374,7 @@ def plot_dew_point_and_wind(region='hi',
             downloading and processing inside of the function. 
             
         3) Important default settings to note:
-            i) Alaska region.
+            i) Hawaii region.
             ii) 'terrain_r' Colormap from Matplotlib.
             iii) States & Counties cartographic reference system.
             iv) 12x12 figure size.
@@ -9052,7 +9052,7 @@ def plot_dew_point_and_gust(region='hi',
             downloading and processing inside of the function. 
             
         3) Important default settings to note:
-            i) Alaska region.
+            i) Hawaii region.
             ii) 'terrain_r' Colormap from Matplotlib.
             iii) States & Counties cartographic reference system.
             iv) 12x12 figure size.
