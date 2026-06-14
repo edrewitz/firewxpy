@@ -1,6 +1,6 @@
-# Real Time Mesoscale Analysis (RTMA)
+# Real Time Mesoscale Analysis Hawaii (RTMA Hawaii)
 
-These functions plot the Real Time Mesoscale Analysis for CONUS.
+These functions plot the Real Time Mesoscale Analysis for Hawaii.
 
 - FireWxPy >= 2.0 Brings much new customization to each set of graphics where everything is customizable.
 - FireWxPy >= 2.0 Uses the WxData and Shapeography packages as a back-end for automating these graphics.
@@ -11,6 +11,9 @@ Arguments and Settings
 
 - region (String) - Default='hi'. The region of the plot. Use the 2-letter state abbreviation or 4-letter GACC abbreviation.
         If the user wants a completely custom region where they define their own lat/lon bounds, set region='custom'. 
+        
+- hours (Integer) - Default=24. The amount of hours between the current and comparison. Defaults to a 24 hour
+        comparison. 
         
 - show_states (Boolean) - Default=True. When set to True, U.S. state borders are shown. 
     
@@ -275,7 +278,7 @@ Arguments and Settings
     
 - colorbar_aspect (Integer) - Default=50. Ratio of long to short dimensions.
     
-- colormap (String) - Default='jet'. The Matplotlib colormap for filled contours being used OR set to 'custom' to create your own 
+- colormap (String) - Default='custom'. The Matplotlib colormap for filled contours being used OR set to 'custom' to create your own 
         custom colormapping. See the optional colors argument documentation (109) for more information on how to pass
         in a custom array of colors. 
         
@@ -285,29 +288,23 @@ Arguments and Settings
 - contourf_zorder (Integer) - Default=2. The z-order of the borders on the image. Lower numbers send this to the back
         higher numbers bring this forward.
         
-- colors (String List) - Example (Temperature Custom Colormap): colors=['magenta',
-                                                                        'orchid',
-                                                                        'plum',
-                                                                        'darkviolet',
-                                                                        'darkslateblue',
-                                                                        'blue',
-                                                                        'cyan',
-                                                                        'lawngreen',
-                                                                        'greenyellow',
-                                                                        'olive',
-                                                                        'gold',
-                                                                        'goldenrod',
-                                                                        'darkorange',
-                                                                        'deeppink',
+- colors (String List) - Example (Temperature Custom Colormap): colors=['purple',
+                                                                        'darkblue',
+                                                                        'dodgerblue',
+                                                                        'white',
                                                                         'crimson',
                                                                         'darkred',
-                                                                        'grey']
+                                                                        'violet']
                                         
             The array of colors being used when colormap='custom'. 
             
-- ds (xarray.array or None) - Default=None. If the user is downloading, processing and plotting the data within the function,
+- ds1 (xarray.array or None) - Default=None. If the user is downloading, processing and plotting the data within the function,
         keep this set as None. If the user wishes to create a medley of plots it is recommended to download the data outside of this
-        function and pass in the data by setting ds=ds. 
+        function and pass in the data by setting ds1=ds1. This is the current time dataset. 
+        
+- ds2 (xarray.array or None) - Default=None. If the user is downloading, processing and plotting the data within the function,
+        keep this set as None. If the user wishes to create a medley of plots it is recommended to download the data outside of this
+        function and pass in the data by setting ds2=ds2. This is the comparison dataset.  
             
 - western_bound (Float or Integer) - Default=-125. When region is set to 'custom' the user defines the bounds of the plot in 
         latitude and longitude coordinates.
