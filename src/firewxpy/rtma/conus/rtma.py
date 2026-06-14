@@ -10,9 +10,9 @@ This file hosts the functions for the CONUS Real Time Mesoscale Analysis (RTMA) 
 
 These functions plot the Real Time Mesoscale Analysis for CONUS.
 
-FireWxPy >= 2.0 Brings much new customization to each set of graphics where everything is customizable.
-FireWxPy >= 2.0 Uses the WxData and Shapeography packages as a back-end for automating these graphics.
-FireWxPy >= 2.0 Works for users on VPN/PROXY connections as a result of the WxData and Shapeography packages.
+- FireWxPy >= 2.0 Brings much new customization to each set of graphics where everything is customizable.
+- FireWxPy >= 2.0 Uses the WxData and Shapeography packages as a back-end for automating these graphics.
+- FireWxPy >= 2.0 Works for users on VPN/PROXY connections as a result of the WxData and Shapeography packages.
 
 Arguments and Settings
 ----------------------
