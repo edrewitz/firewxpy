@@ -5718,7 +5718,7 @@ def plot_relative_humidity_and_wind(region='hi',
             u = _ms_to_mph(u_1d)
             v = _ms_to_mph(v_1d)
         else:
-            speed_vals = _ms_to_kts(wg_1d)
+            speed_vals = _ms_to_kts(ws_1d)
             u = _ms_to_kts(u_1d)
             v = _ms_to_kts(v_1d)
             
