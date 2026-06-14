@@ -8,7 +8,7 @@ This file hosts the functions for the Alaska Real Time Mesoscale Analysis (RTMA)
 
 ######################################### Documentation ###############################################
 
-These functions plot the Real Time Mesoscale Analysis for Hawaii.
+These functions plot the Real Time Mesoscale Analysis Comparison for Hawaii.
 
 - FireWxPy >= 2.0 Brings much new customization to each set of graphics where everything is customizable.
 - FireWxPy >= 2.0 Uses the WxData and Shapeography packages as a back-end for automating these graphics.
