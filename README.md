@@ -128,7 +128,7 @@ Copy and paste either command into your terminal or anaconda prompt:
 
 **xeofs**: xeofs: Rieger, N. & Levang, S. J. (2024). xeofs: Comprehensive EOF analysis in Python with xarray. Journal of Open Source Software, 9(93), 6060. DOI: https://doi.org/10.21105/joss.06060
 
-**WxData**: Eric J. Drewitz. (2026). edrewitz/WxData: WxData 2.0.2 (WxData2.0.2). Zenodo. https://doi.org/10.5281/zenodo.20350029
+**WxData**: Eric J. Drewitz. (2026). edrewitz/WxData: WxData 2.0.2 (WxData2.0.2). Zenodo. https://doi.org/10.5281/zenodo.17727621
 
 **shapeography**: Eric J. Drewitz. (2026). edrewitz/shapeography: Shapeography 1.2 Released (shapeography1.2). Zenodo. https://doi.org/10.5281/zenodo.19141532
 
