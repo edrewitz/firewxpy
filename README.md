@@ -59,6 +59,12 @@ Copyright (C) Meteorologist Eric J. Drewitz 2024-2026
 1) [Observed Soundings (Current and Archived)](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/observed_soundings.ipynb)
 2) [Vertical Profiles (Current and Archived)](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/vertical_profiles.ipynb)
 
+***Real Time Mesoscale Analysis***
+1) [RTMA CONUS](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/rtma_conus.ipynb)
+2) [RTMA Comparison CONUS](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/rtma_comparison_conus.ipynb)
+3) [RTMA OCONUS](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/rtma_oconus.ipynb)
+4) [RTMA Comparison OCONUS]()
+
 # Installation Instructions
 
 **How To Install**
