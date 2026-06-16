@@ -63,7 +63,7 @@ Copyright (C) Meteorologist Eric J. Drewitz 2024-2026
 1) [RTMA CONUS](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/rtma_conus.ipynb)
 2) [RTMA Comparison CONUS](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/rtma_comparison_conus.ipynb)
 3) [RTMA OCONUS](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/rtma_oconus.ipynb)
-4) [RTMA Comparison OCONUS]()
+4) [RTMA Comparison OCONUS](https://github.com/edrewitz/FireWxPy-Jupyter-Labs/blob/main/FireWxPy%202%20Tutorials/rtma_comparison_oconus.ipynb)
 
 # Installation Instructions
 
