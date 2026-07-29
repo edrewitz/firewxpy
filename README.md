@@ -22,7 +22,7 @@ Anaconda Downloads:
 
 PIP Downloads:
 
-![PyPI - Downloads](https://img.shields.io/pypi/dm/firewxpy)
+[![PyPI Downloads](https://static.pepy.tech/personalized-badge/firewxpy?period=total&units=INTERNATIONAL_SYSTEM&left_color=BLACK&right_color=GREEN&left_text=downloads)](https://pepy.tech/projects/firewxpy)
 
 Thank you for checking out FireWxPy! An open-source user friendly Python package to create visualizations of data specific to fire weather and fire weather forecasting. 
 There are also graphics in FireWxPy that can be used in the meteorological field universally as well. 
